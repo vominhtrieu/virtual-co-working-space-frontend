@@ -1,37 +1,16 @@
-import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import "./App.css";
-const loader = new GLTFLoader();
-
-function Box() {
-    return (
-        <mesh>
-            <boxBufferGeometry attach="geometry" />
-            <meshStandardMaterial attach="material" color="blue" />
-        </mesh>
-    );
-}
-
-// function Load3DModel() {
-//     loader.load(
-//         "src/models/Chair.glb",
-//         function (gltf) {
-//             scene.add(gltf.scene);
-//         },
-//         undefined,
-//         function (error) {
-//             console.error(error);
-//         }
-//     );
-// }
+import Scene from "./components/Scene";
 
 function App() {
     return (
         <div className="App">
-            <Canvas style={{ height: "100vh", background: "#4059CC" }}>
-                <OrbitControls />
-                <Box />
+            <Canvas
+                shadows={{ enabled: true, autoUpdate: true }}
+                camera={{ position: [0, 20, 10], rotation: [45, 0, 0] }}
+                style={{ height: "100vh", background: "#222222" }}
+            >
+                <Scene />
             </Canvas>
         </div>
     );
