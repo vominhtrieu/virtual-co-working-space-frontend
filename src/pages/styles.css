@@ -1,33 +1,28 @@
-  
-  .edit {
-    position:absolute;
-    left: calc(50%/2);
-    width: 50%;
-  }
 
   .edit-item{
     background-color: #EBE645;
     margin-left: 1em;
     margin-right: 1em;
     border:#EBE645 solid 1px;
-    border-radius: 10px;
+    border-radius: 1em;
   }
 
   .btn-next-group {
     position: absolute;
-    left: 36%;
+    left: 38em;
     width: 100%;
-    display: flex;
-    justify-content: center;
-    right: 0;
+    bottom: 79px;
   }
   .btn-prev-group {
     position: absolute;
-    left: -49%;
+    left: 10em;
     width: 100%;
-    display: flex;
-    justify-content: center;
-    right: 0;
+  }
+
+  .custom-button-group{
+    position: absolute;
+    left: 0px;
+    bottom: 35px;
   }
   
   

@@ -1,74 +1,104 @@
+import { useRef, useState } from "react";
 import { Suspense } from "react/cjs/react.production.min";
 import { OrbitControls } from "@react-three/drei";
 import Box from "../components/Models/Box";
-import Chair from "../components/Models/Chair";
 import { Canvas } from "@react-three/fiber";
 import Button from "../components/Button";
-import * as THREE from "three";
-import { useRef} from "react";
-import { RightArrow } from "../assets/icons/RightArrow";
-import { LeftArrow } from "../assets/icons/LeftArrow";
-
+import Office from "../components/Models/Office";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ObjectProperties from "../components/Models/ObjectProperties";
+import {
+  faList,
+  faRotateRight,
+  faRotateLeft,
+  faTrash,
+  faArrowLeft,
+  faArrowRight,
+} from "@fortawesome/free-solid-svg-icons";
+import CustomTransformControl from "../components/Controls/CustomTransformControl";
 import './styles.css'
-import 'react-multi-carousel/lib/styles.css';
-import Carousel from 'react-multi-carousel';
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import Chair from "../components/Models/Chair";
 
-const CustomButtonGroup = ({ next, previous, carouselState }) => {
-  // const { totalItems, currentSlide } = carouselState;
-  return (
-    <div className="custom-button-group">
-      <Button className="btn-prev-group" onClick={() => previous()}
-        style={{ background: "transparent", padding: 0 }} >
-        <LeftArrow width="10" />
-      </Button>
-      <Button className="btn-next-group" onClick={() => next()}
-        style={{ background: "transparent", padding: 0 }}>
-        <RightArrow width="10" />
-      </Button>
-    </div>
-  );
+const responsive = {
+  superLargeDesktop: {
+    // the naming can be any, depends on you.
+    breakpoint: { max: 4000, min: 3000 },
+    items: 5
+  },
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 3
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1
+  }
 };
 
 
-const WorkspaceCustom = (props) => {
-  const objectRef = useRef();
-  const sceneRef = useRef();
+// const CustomButtonGroup = ({ next, previous, carouselState }) => {
+//   // const { totalItems, currentSlide } = carouselState;
+//   return (
+//     <div className="custom-button-group">
+//       <button className="btn-grev-group" onClick={() => previous()}
+//         style={{ backgroundColor: "transparent", border: "none" }} >
+//         <FontAwesomeIcon style={{ width: "1.5rem", height: "1.5rem" }} icon={faArrowLeft} />
+//       </button>
+//       <button className="btn-next-group" onClick={() => next()}
+//         style={{ backgroundColor: "transparent", border: "none" }}>
+//         <FontAwesomeIcon style={{ width: "1.5rem", height: "1.5rem" }} icon={faArrowRight} />
+//       </button>
+//     </div>
+//   );
+// };
 
-  const handleButtonRotateClick = (e) => {
-    objectRef.current.rotation.y += Math.PI / 2;
+
+const WorkspaceCustom = () => {
+  const orbitRef = useRef();
+  const [objectList, setObjectList] = useState([{ key: 0, code: "Chair" }]);
+  const [selectedObject, setSelectedObject] = useState(null);
+  const [objectActionVisible, setObjectActionVisible] = useState(false);
+  const [object3dClickPos, setObjectionClickPos] = useState({ x: 0, y: 0 });
+
+  const handleButtonRotateLeftClick = (e) => {
+    selectedObject.rotation.y += Math.PI / 2;
+  };
+
+  const handleButtonRotateRightClick = (e) => {
+    selectedObject.rotation.y -= Math.PI / 2;
   };
 
   const handleButtonDeleteClick = (e) => {
-    sceneRef.current.remove(objectRef);
+    setObjectActionVisible(false);
   };
 
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 3000 },
-      items: 4
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 3
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 2
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1
-    }
+  const handleObject3dClick = (e) => {
+    setSelectedObject(e.object);
+    setObjectActionVisible(true);
+
+    const x = e.clientX;
+    const y = e.clientY;
+
+    setObjectionClickPos({ x, y });
   };
 
-  const items = [Chair, Chair, Chair, Chair, Chair];
+  const handleObject3dPointerMissed = (e) => {
+    setObjectActionVisible(false);
+  };
+
+  const items = [Chair, Chair, Chair, Chair];
 
   return (
     <>
       <Canvas
-        ref={sceneRef}
         shadows={{ enabled: true, autoUpdate: true }}
-        camera={{ position: [0, 20, 0], rotation: [90, 100, 0.5] }}
+        camera={{ position: [0, 5, 5], rotation: [45, 0, 0] }}
         style={{
           height: "100vh",
           background: "#577BC1",
@@ -76,27 +106,35 @@ const WorkspaceCustom = (props) => {
         }}
       >
         <OrbitControls
+          ref={orbitRef}
           maxZoom={10}
-          maxDistance={10}
-          minDistance={7}
+          maxDistance={15}
+          minDistance={8}
           minZoom={1}
           enablePan="false"
           enableZoom="false"
+          maxPolarAngle={((90 - 10) / 180) * Math.PI}
         />
+        <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45} />
         <ambientLight />
 
-        <primitive object={new THREE.AxesHelper(10)} />
-
         <Suspense fallback={<Box />}>
-          <Chair
-            ref={objectRef}
-            castShadow={true}
-            position={[0, -2, 0]}
-            rotation={[0, 0, 0]}
-          />
+          <Office castShadow={true} />
+          {objectList.map((object) => (
+            <mesh
+              castShadow={true}
+              key={object.key}
+              position={[0, 0.5, 0]}
+              onClick={handleObject3dClick}
+              onPointerMissed={handleObject3dPointerMissed}
+            >
+              {ObjectProperties[object.code]}
+            </mesh>
+          ))}
+
+          {objectActionVisible ? <CustomTransformControl object={selectedObject} orbit={orbitRef} /> : null}
         </Suspense>
       </Canvas>
-
       <div
         style={{
           position: "absolute",
@@ -117,81 +155,106 @@ const WorkspaceCustom = (props) => {
             display: "flex",
             justifyContent: "space-between",
             margin: "0.5rem 1rem",
+            alignItems: "center",
           }}
         >
-          <Button>Menu</Button>
+          <Button>
+            <FontAwesomeIcon style={{ width: "1.5rem", height: "1.5rem" }} icon={faList} />
+          </Button>
           <div>
-            <Button style={{ marginRight: "5px" }}>Cancel</Button>
+            <Button style={{ marginRight: "10px" }}>Cancel</Button>
+
             <Button>Save</Button>
           </div>
         </div>
 
-        <div aria-label="actionContainer">
-          <div
-            style={{
-              position: "absolute",
-              left: "50%",
-              top: "30%",
-              marginLeft: "10rem",
-              display: "flex",
-              flexDirection: "column",
-              gap: "5px",
-            }}
-          >
-            <Button onClick={handleButtonDeleteClick}>Delete</Button>
-            <Button onClick={handleButtonRotateClick}>
-              Rotate by 90 degree
-            </Button>
+        {objectActionVisible && (
+          <div aria-label="actionContainer">
+            <div
+              style={{
+                position: "absolute",
+                left: `${object3dClickPos.x}px`,
+                top: `${object3dClickPos.y - 10}px`,
+                marginLeft: "10rem",
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+              }}
+            >
+              <Button onClick={handleButtonDeleteClick}>
+                <FontAwesomeIcon style={{ width: "1.5rem", height: "1.5rem" }} icon={faTrash} />
+              </Button>
+              <Button onClick={handleButtonRotateLeftClick}>
+                <FontAwesomeIcon style={{ width: "1.5rem", height: "1.5rem" }} icon={faRotateLeft} />
+              </Button>
+              <Button onClick={handleButtonRotateRightClick}>
+                <FontAwesomeIcon style={{ width: "1.5rem", height: "1.5rem" }} icon={faRotateRight} />
+              </Button>
+            </div>
           </div>
-        </div>
+        )}
 
         <div aria-label="bottomMenu">
-          <div style={{ display: "flex", gap: 7, justifyContent: "center" }}>
-            <Button style={{ background: "transparent", padding: 0 }}>
-              <LeftArrow width="10" />
-            </Button>
+          <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>
+            <button style={{ backgroundColor: "transparent", border: "none" }}>
+              <FontAwesomeIcon style={{ width: "1.5rem", height: "1.5rem" }} icon={faArrowLeft} />
+            </button>
 
             <Button
               style={{
-                backgroundColor: "#000957",
-                color: "#ffffff",
+                backgroundColor: "white",
+                color: "black",
                 padding: "0.5rem 0.75rem",
               }}
             >
               Chair
             </Button>
-            <Button style={{ background: "transparent", padding: 0 }}>
-              <RightArrow width="10" />
-            </Button>
-          </div>
 
+            <button style={{ backgroundColor: "transparent", border: "none" }}>
+              <FontAwesomeIcon style={{ width: "1.5rem", height: "1.5rem" }} icon={faArrowRight} />
+            </button>
+          </div>
 
           <div
             style={{
-              display: "flex",
               gap: 10,
               justifyContent: "center",
-              margin: "0.5rem 0 2rem",
+              margin: "0.5rem 0 1.5rem",
             }}
           >
-            <div className="edit">
-            <Carousel
-                  responsive={responsive}
-                  arrows={false}
-                  customButtonGroup={<CustomButtonGroup />}>
-                  {items.map((Item, index) => (
-                    <Button style={{ padding: 0, width: "6rem", height: "6rem" }} key={index} className="edit-item">
-                      <Canvas>
-                        <ambientLight intensity={0.5} />
-                        <Suspense fallback={<>...</>}>
-                          <Item position={[0, -1, 0]} />
-                        </Suspense>
-                      </Canvas>
-                    </Button>
-                  ))}
-                </Carousel>
+            {/* <Button
+              style={{ padding: 0, width: "4rem", height: "4rem" }}
+              onClick={() =>
+                setObjectList([
+                  ...objectList,
+                  { key: objectList[objectList.length - 1].key + 1, code: "Chair" },
+                ])
+              }
+            >
+              ABC
+            </Button>
+            <Button style={{ padding: 0, width: "4rem", height: "4rem" }}>ABC</Button> */}
+            {/* customButtonGroup={<CustomButtonGroup />} */}
+            <div style={{ width: "28em", margin: "0 auto", }}>
+              <Carousel
+                responsive={responsive}
+                arrows={false}
+                >
+                {items.map((Item, index) => (
+                  <Button onClick={(e)=>alert("huhu")} style={{ padding: 0, width: "6rem", height: "6rem" }} key={index} className="edit-item">
+                    <Canvas>
+                      <ambientLight intensity={0.5} />
+                      <Suspense fallback={<>...</>}>
+                        <Item position={[0, -1, 0]} />
+                      </Suspense>
+                    </Canvas>
+                  </Button>
+                ))}
+              </Carousel>
             </div>
+
           </div>
+
         </div>
       </div>
     </>
