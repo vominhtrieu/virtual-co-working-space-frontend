@@ -2,7 +2,6 @@ import './styles.css'
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { Canvas } from "@react-three/fiber";
-import Chair from '../Models/Chair';
 import { Suspense } from "react/cjs/react.production.min";
 
 
@@ -29,7 +28,6 @@ export default function ShowListEditItem({ items, name }) {
         }
     };
 
-    const edits = [Chair, Chair, Chair, Chair,Chair]
 
     return (
         <div className="edit">
