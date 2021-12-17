@@ -72,12 +72,14 @@ const WorkspaceCustom = () => {
                     enableZoom="false"
                     maxPolarAngle={((90 - 10) / 180) * Math.PI}
                 />
+                <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45} />
                 <ambientLight />
 
                 <Suspense fallback={<Box />}>
-                    <Office />
+                    <Office castShadow={true} />
                     {objectList.map((object) => (
                         <mesh
+                            castShadow={true}
                             key={object.key}
                             position={[0, 0.5, 0]}
                             onClick={handleObject3dClick}
