@@ -1,0 +1,33 @@
+  
+  .edit {
+    position:absolute;
+    left: calc(50%/2);
+    width: 50%;
+  }
+
+  .edit-item{
+    background-color: #EBE645;
+    margin-left: 1em;
+    margin-right: 1em;
+    border:#EBE645 solid 1px;
+    border-radius: 10px;
+  }
+
+  .btn-next-group {
+    position: absolute;
+    left: 36%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    right: 0;
+  }
+  .btn-prev-group {
+    position: absolute;
+    left: -49%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    right: 0;
+  }
+  
+  
