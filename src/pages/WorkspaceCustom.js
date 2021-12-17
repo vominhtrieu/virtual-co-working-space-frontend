@@ -11,14 +11,20 @@ import { LeftArrow } from "../assets/icons/LeftArrow";
 
 const WorkspaceCustom = (props) => {
   const objectRef = useRef();
+  const sceneRef = useRef();
 
-  const handleRotate = (e) => {
+  const handleButtonRotateClick = (e) => {
     objectRef.current.rotation.y += Math.PI / 2;
+  };
+
+  const handleButtonDeleteClick = (e) => {
+    sceneRef.current.remove(objectRef);
   };
 
   return (
     <>
       <Canvas
+        ref={sceneRef}
         shadows={{ enabled: true, autoUpdate: true }}
         camera={{ position: [0, 20, 0], rotation: [90, 100, 0.5] }}
         style={{
@@ -90,8 +96,10 @@ const WorkspaceCustom = (props) => {
               gap: "5px",
             }}
           >
-            <Button>Delete</Button>
-            <Button onClick={handleRotate}>Rotate by 90 degree</Button>
+            <Button onClick={handleButtonDeleteClick}>Delete</Button>
+            <Button onClick={handleButtonRotateClick}>
+              Rotate by 90 degree
+            </Button>
           </div>
         </div>
 
