@@ -1,7 +1,7 @@
 const Button = ({ children, style, ...rest }) => {
   const buttonStyle = {
     background: "#EBE645",
-    padding: "1rem 2rem",
+    padding: "0.75rem 1rem",
     color: "#000957",
     fontSize: 14,
     fontWeight: "bold",
