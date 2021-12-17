@@ -1,0 +1,33 @@
+  
+  .edit {
+    position: absolute;
+    left: calc(50%/2);
+    bottom:50px;
+    width: 50%;
+  }
+   .name-item{
+    padding: 10px 20px;
+    background-color: #000957;
+    margin: 0 auto;
+    border-radius: 10px;
+    display: inline;
+    margin-bottom: 20px;
+  }
+  p.name-item{
+   font-size: larger;
+   font-weight: 500;
+  }
+
+  .edit-item{
+    background-color: white;
+    margin-left: 10px;
+    margin-right: 10px;
+    border:#EBE645 solid 1px;
+    border-radius: 10px;
+  }
+
+  .sub-edit-item{
+    margin: 0 auto;
+  }
+
+  
