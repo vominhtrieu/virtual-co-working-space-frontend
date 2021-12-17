@@ -1,7 +1,4 @@
-import { Canvas } from "@react-three/fiber";
 import "./App.css";
-import Button from "./components/Button";
-import Scene from "./components/Scene";
 import WorkspaceCustom from "./pages/WorkspaceCustom";
 
 function App() {

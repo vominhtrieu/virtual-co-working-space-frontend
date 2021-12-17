@@ -5,7 +5,7 @@ import Chair from "../components/Models/Chair";
 import { Canvas } from "@react-three/fiber";
 import Button from "../components/Button";
 import * as THREE from "three";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { RightArrow } from "../assets/icons/RightArrow";
 import { LeftArrow } from "../assets/icons/LeftArrow";
 
