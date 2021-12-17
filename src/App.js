@@ -1,5 +1,4 @@
 import "./App.css";
-import { Canvas } from "@react-three/fiber";
 import WorkspaceCustom from "./pages/WorkspaceCustom";
 
 function App() {

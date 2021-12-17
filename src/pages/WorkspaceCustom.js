@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Suspense } from "react/cjs/react.production.min";
 import { OrbitControls } from "@react-three/drei";
 import Box from "../components/Models/Box";
-import { Canvas, useThree, useFrame } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import Button from "../components/Button";
 import Office from "../components/Models/Office";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
