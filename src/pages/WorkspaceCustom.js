@@ -17,14 +17,20 @@ import CustomTransformControl from "../components/Controls/CustomTransformContro
 // import "./styles.css";
 // import Carousel from "react-multi-carousel";
 // import "react-multi-carousel/lib/styles.css";
-import Chair from "../components/Models/Chair";
 import BottomMenu from "../components/Controls/BottomMenu";
+import { v4 as uuid } from "uuid";
 
-
+const itemGroups = [
+  { groupName: "Chair", items: [{ code: "Chair" }] },
+  { groupName: "Indoor Tree", items: [{ code: "IndoorTree" }] },
+  { groupName: "Table", items: [{ code: "ModernTable" }] },
+];
 
 const WorkspaceCustom = () => {
   const orbitRef = useRef();
-  const [objectList, setObjectList] = useState([{ key: 0, code: "Chair" }]);
+  const [objectList, setObjectList] = useState([
+    { key: uuid(), code: "Chair" },
+  ]);
   const [selectedKey, setSelectedKey] = useState(null);
   const [selectedObject, setSelectedObject] = useState(null);
   const [objectActionVisible, setObjectActionVisible] = useState(false);
@@ -63,9 +69,15 @@ const WorkspaceCustom = () => {
     setObjectActionVisible(false);
   };
 
-
-  const itemList=[{name:"Chair",items:[Chair, Chair, Chair, Chair,Chair]},
-  {name:"Table",items:[Chair, Chair]}]
+  const handleItemInBottomMenuClick = ({ code }) => {
+    setObjectList([
+      ...objectList,
+      {
+        key: uuid(),
+        code,
+      },
+    ]);
+  };
 
   return (
     <>
@@ -105,7 +117,9 @@ const WorkspaceCustom = () => {
             </mesh>
           ))}
 
-          {objectActionVisible ? <CustomTransformControl object={selectedObject} orbit={orbitRef} /> : null}
+          {objectActionVisible ? (
+            <CustomTransformControl object={selectedObject} orbit={orbitRef} />
+          ) : null}
         </Suspense>
       </Canvas>
       <div
@@ -132,7 +146,10 @@ const WorkspaceCustom = () => {
           }}
         >
           <Button>
-            <FontAwesomeIcon style={{ width: "1.5rem", height: "1.5rem" }} icon={faList} />
+            <FontAwesomeIcon
+              style={{ width: "1.5rem", height: "1.5rem" }}
+              icon={faList}
+            />
           </Button>
           <div>
             <Button style={{ marginRight: "10px" }}>Cancel</Button>
@@ -155,13 +172,22 @@ const WorkspaceCustom = () => {
               }}
             >
               <Button onClick={handleButtonDeleteClick}>
-                <FontAwesomeIcon style={{ width: "1.5rem", height: "1.5rem" }} icon={faTrash} />
+                <FontAwesomeIcon
+                  style={{ width: "1.5rem", height: "1.5rem" }}
+                  icon={faTrash}
+                />
               </Button>
               <Button onClick={handleButtonRotateLeftClick}>
-                <FontAwesomeIcon style={{ width: "1.5rem", height: "1.5rem" }} icon={faRotateLeft} />
+                <FontAwesomeIcon
+                  style={{ width: "1.5rem", height: "1.5rem" }}
+                  icon={faRotateLeft}
+                />
               </Button>
               <Button onClick={handleButtonRotateRightClick}>
-                <FontAwesomeIcon style={{ width: "1.5rem", height: "1.5rem" }} icon={faRotateRight} />
+                <FontAwesomeIcon
+                  style={{ width: "1.5rem", height: "1.5rem" }}
+                  icon={faRotateRight}
+                />
               </Button>
             </div>
           </div>
@@ -225,7 +251,12 @@ const WorkspaceCustom = () => {
               </Carousel>
             </div>
           </div> */}
-          <BottomMenu objectList={objectList} setObjectList={setObjectList} itemList={itemList}/>
+          <BottomMenu
+            objectList={objectList}
+            setObjectList={setObjectList}
+            itemGroups={itemGroups}
+            onItemClick={handleItemInBottomMenuClick}
+          />
         </div>
       </div>
     </>
