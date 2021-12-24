@@ -3,7 +3,6 @@ import { OrbitControls } from "@react-three/drei";
 import Office from "./Models/Office";
 import Box from "./Models/Box";
 import Chair from "./Models/Chair";
-import Character from "./Models/Character";
 
 export default function Scene() {
 
@@ -13,7 +12,7 @@ export default function Scene() {
       <ambientLight />
       <Suspense fallback={<Box />}>
         <Office />
-        <Character castShadow={true} position={[0, 1, 0]} />
+        <Chair castShadow={true} position={[0, 1, 0]} />
       </Suspense>
     </>
   );
