@@ -5,11 +5,11 @@ import Scene from "./components/Scene";
 import { Canvas } from "@react-three/fiber";
 
 function App() {
-    return (
-        <div className="App">
-            <WorkspaceCustom style={{ background: "#000957" }} />
-        </div>
-    );
+  return (
+    <div className="App">
+      <WorkspaceCustom style={{ background: "#000957" }} />
+    </div>
+  );
 }
 
 export default App;
