@@ -33,7 +33,14 @@ const itemGroups = [
   },
   {
     groupName: "Table",
-    items: [{ code: "ModernTable", url: "./images/ModernTable.png" }],
+    items: [
+      { code: "ModernTable", url: "./images/ModernTable.png" },
+      { code: "CoffeeTable", url: "./images/CoffeeTable.png" },
+    ],
+  },
+  {
+    groupName: "Keyboard",
+    items: [{ code: "Keyboard", url: "./images/Keyboard.png" }],
   },
 ];
 
