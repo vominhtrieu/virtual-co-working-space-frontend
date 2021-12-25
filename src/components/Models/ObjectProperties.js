@@ -6,6 +6,7 @@ import SofaChair from "./SofaChair";
 import Hair from "./Hair";
 import Eye from "./Eye";
 import Keyboard from "./Keyboard";
+import YellowChair from "./YellowChair";
 import CoffeeTable from "./CoffeeTable";
 
 const ObjectProperties = {
@@ -18,6 +19,7 @@ const ObjectProperties = {
     Eyes1: <Eye eyeStyle={1} />,
     Eye2: <Eye eyeStyle={2} />,
     Keyboard: <Keyboard />,
+    YellowChair: <YellowChair />,
     CoffeeTable: <CoffeeTable />,
 };
 
