@@ -90,11 +90,11 @@ export default function BottomMenu({ itemGroups, onItemClick }) {
                             itemGroups[position].items.map((item, index) => (
                                 <Button
                                     onClick={(e) => onItemClick(item)}
-                                    style={{ padding: 0, width: "6em", height: "6em" }}
+                                    style={{ padding: 0, width: "6em", height: "6em", background:"white",
+                                    marginLeft:"1em",marginRight:"1em"}}
                                     key={item.code}
-                                    className="edit-item"
                                 >
-                                    <img alt="timer" src={item.url} style={{ width: "6em", height: "6em" }} />
+                                    <img alt="models" src={item.url} style={{ width: "6em", height: "6em", borderRadius:"10px"}} />
                                 </Button>
                             ))}
                     </Carousel>

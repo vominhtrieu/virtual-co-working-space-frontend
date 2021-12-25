@@ -26,23 +26,14 @@ const itemGroups = [
   {
     groupName: "Chair",
     items: [
-      { code: "Chair", url: "./images/SofaChair.png" },
-      { code: "Chair", url: "./images/SofaChair.png" },
-      { code: "Chair", url: "./images/SofaChair.png" },
-      { code: "Chair", url: "./images/SofaChair.png" },
-      { code: "Chair", url: "./images/SofaChair.png" },
-      { code: "Chair", url: "./images/SofaChair.png" },
-      { code: "Chair", url: "./images/SofaChair.png" },
+      { code: "SofaChair", url: "./images/SofaChair.png" },
+      { code: "Chair", url: "./images/Chair.png" },
       { code: "YellowChair", url: "/images/YellowChair.png" },
     ],
   },
   {
-    groupName: "Indoor Tree",
-    items: [{ code: "IndoorTree", url: "./images/SofaChair.png" }],
-  },
-  {
     groupName: "Table",
-    items: [{ code: "ModernTable", url: "./images/SofaChair.png" }],
+    items: [{ code: "ModernTable", url: "./images/ModernTable.png" }],
   },
 ];
 
