@@ -101,8 +101,8 @@ const WorkspaceCustom = () => {
                     maxDistance={15}
                     minDistance={8}
                     minZoom={1}
-                    enablePan="false"
-                    enableZoom="false"
+                    enablePan={isCustoming}
+                    enableZoom={isCustoming}
                     maxPolarAngle={((90 - 10) / 180) * Math.PI}
                 />
                 <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45} />
@@ -121,14 +121,16 @@ const WorkspaceCustom = () => {
                             {ObjectProperties[object.code]}
                         </mesh>
                     ))}
-                    <Character
-                        hair={character.hairStyle}
-                        eyes={character.eyeStyle}
-                        startPosition={[0, 0.5, 2]}
-                        scale={[2, 2, 2]}
-                        moveable={true}
-                        orbitRef={orbitRef}
-                    />
+                    {!isCustoming && (
+                        <Character
+                            hair={character.hairStyle}
+                            eyes={character.eyeStyle}
+                            startPosition={[0, 0.5, 2]}
+                            scale={[2, 2, 2]}
+                            moveable={true}
+                            orbitRef={orbitRef}
+                        />
+                    )}
 
                     {/* <Stats className="stats" /> */}
                     {objectActionVisible && isCustoming ? (

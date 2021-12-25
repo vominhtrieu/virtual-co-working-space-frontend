@@ -94,14 +94,6 @@ export default function BottomMenu({ itemGroups, onItemClick }) {
                                     key={item.code}
                                     className="edit-item"
                                 >
-                                    {/* <Canvas camera={{ position: [5, 30, 5]}}>
-                    <ambientLight intensity={1} />
-                    <Suspense fallback={<>...</>}>
-                      <mesh scale={[10, 10, 10]} position={[0, -1.6, 1]}>
-                        {ObjectProperties[item.code]}
-                      </mesh>
-                    </Suspense>
-                  </Canvas> */}
                                     <img alt="timer" src={item.url} style={{ width: "6em", height: "6em" }} />
                                 </Button>
                             ))}
