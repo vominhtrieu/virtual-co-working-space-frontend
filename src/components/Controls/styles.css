@@ -4,7 +4,7 @@
     margin-left: 1em;
     margin-right: 1em;
     border:#EBE645 solid 1px;
-    border-radius: 1em;
+    /* border-radius: 1em; */
   }
 
   .btn-next-group {
@@ -25,4 +25,31 @@
     bottom: 35px;
   }
   
+  .react-multi-carousel-list{
+    display: flex;
+    justify-content:space-around;
+  }
   
+  .sub-bottom-menu{
+    width: 38em;
+    margin: 0 auto;
+  }
+  
+  
+  @media only screen and (max-width: 992px) {
+    .sub-bottom-menu{
+      width: 21em;
+    }
+  }
+  
+  
+  @media only screen and (max-width: 576px) {
+    .sub-bottom-menu{
+      width: 7em;
+    }
+    
+  }
+ 
+  
+
+

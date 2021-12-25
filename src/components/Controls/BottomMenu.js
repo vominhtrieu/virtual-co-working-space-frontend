@@ -1,5 +1,3 @@
-import { Suspense } from "react/cjs/react.production.min";
-import { Canvas } from "@react-three/fiber";
 import Button from "../Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import ObjectProperties from "../Models/ObjectProperties";
@@ -8,24 +6,22 @@ import "./styles.css";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { useState } from "react";
-import ObjectProperties from "../Models/ObjectProperties";
 
 const responsive = {
   superLargeDesktop: {
-    // the naming can be any, depends on you.
     breakpoint: { max: 4000, min: 3000 },
-    items: 5,
+    items: 10,
   },
   desktop: {
-    breakpoint: { max: 3000, min: 1024 },
+    breakpoint: { max: 3000, min: 992 },
     items: 5,
   },
   tablet: {
-    breakpoint: { max: 1024, min: 464 },
-    items: 2,
+    breakpoint: { max: 992, min: 576 },
+    items: 3,
   },
   mobile: {
-    breakpoint: { max: 464, min: 0 },
+    breakpoint: { max: 576, min: 0 },
     items: 1,
   },
 };
@@ -84,26 +80,28 @@ export default function BottomMenu({ itemGroups, onItemClick }) {
           gap: 10,
           justifyContent: "center",
           margin: "0.5rem 0 1.5rem",
+          textAlign: "none"
         }}
       >
-        <div style={{ width: "38em", margin: "0 auto" }}>
+        <div className="sub-bottom-menu">
           <Carousel responsive={responsive} arrows={false}>
             {itemGroups[position].items &&
               itemGroups[position].items.map((item, index) => (
                 <Button
                   onClick={(e) => onItemClick(item)}
-                  style={{ padding: 0, width: "6rem", height: "6rem" }}
+                  style={{ padding: 0,width:"6em",height:"6em"}}
                   key={item.code}
                   className="edit-item"
                 >
-                  <Canvas>
+                  {/* <Canvas camera={{ position: [5, 30, 5]}}>
                     <ambientLight intensity={1} />
                     <Suspense fallback={<>...</>}>
-                      <mesh scale={[1, 1, 1]} position={[0, -1.6, 1]}>
+                      <mesh scale={[10, 10, 10]} position={[0, -1.6, 1]}>
                         {ObjectProperties[item.code]}
                       </mesh>
                     </Suspense>
-                  </Canvas>
+                  </Canvas> */}
+                  <img alt="timer" src={item.url} style={{width:"6em",height:"6em"}}/>
                 </Button>
               ))}
           </Carousel>

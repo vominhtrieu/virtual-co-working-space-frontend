@@ -14,16 +14,19 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import CustomTransformControl from "../components/Controls/CustomTransformControl";
-// import "./styles.css";
-// import Carousel from "react-multi-carousel";
-// import "react-multi-carousel/lib/styles.css";
 import BottomMenu from "../components/Controls/BottomMenu";
 import { v4 as uuid } from "uuid";
 
 const itemGroups = [
-  { groupName: "Chair", items: [{ code: "Chair" }] },
-  { groupName: "Indoor Tree", items: [{ code: "IndoorTree" }] },
-  { groupName: "Table", items: [{ code: "ModernTable" }] },
+  { groupName: "Chair", items: [{ code: "Chair",url:"./images/SofaChair.png" },
+  { code: "Chair",url:"./images/SofaChair.png" },
+  { code: "Chair",url:"./images/SofaChair.png" },
+  { code: "Chair",url:"./images/SofaChair.png" },
+  { code: "Chair",url:"./images/SofaChair.png" },
+  { code: "Chair",url:"./images/SofaChair.png" },
+  { code: "Chair",url:"./images/SofaChair.png" }] },
+  { groupName: "Indoor Tree", items: [{ code: "IndoorTree",url:"./images/SofaChair.png"  }] },
+  { groupName: "Table", items: [{ code: "ModernTable",url:"./images/SofaChair.png"  }] },
 ];
 
 const WorkspaceCustom = () => {
@@ -194,63 +197,6 @@ const WorkspaceCustom = () => {
         )}
 
         <div aria-label="bottomMenu">
-          {/* <div style={{ display: "flex", gap: 4, justifyContent: "center" }}>
-            <Button style={{ backgroundColor: "transparent", border: "none", boxShadow: "none" }}>
-              <FontAwesomeIcon style={{ height: "1.5rem" }} icon={faAngleLeft} />
-            </Button>
-
-            <Button
-              style={{
-                backgroundColor: "white",
-                color: "black",
-                padding: "0.5rem 0.75rem",
-              }}
-            >
-              Chair
-            </Button>
-
-            <Button onClick={(e) => alert("huhu")} style={{ backgroundColor: "transparent", border: "none", boxShadow: "none" }}>
-              <FontAwesomeIcon style={{ height: "1.5rem" }} icon={faAngleRight} />
-            </Button>
-          </div>
-
-          <div
-            style={{
-              gap: 10,
-              justifyContent: "center",
-              margin: "0.5rem 0 1.5rem",
-            }}
-          >
-            <div style={{ width: "28em", margin: "0 auto" }}>
-              <Carousel responsive={responsive} arrows={false}>
-                {items.map((Item, index) => (
-                  <Button
-                    onClick={(e) =>
-                      setObjectList([
-                        ...objectList,
-                        {
-                          key: objectList[objectList.length - 1]
-                            ? objectList[objectList.length - 1].key + 1
-                            : 0,
-                          code: "Chair",
-                        },
-                      ])
-                    }
-                    style={{ padding: 0, width: "6rem", height: "6rem" }}
-                    key={index}
-                    className="edit-item"
-                  >
-                    <Canvas>
-                      <ambientLight intensity={0.5} />
-                      <Suspense fallback={<>...</>}>
-                        <Item scale={[1.2, 1.2, 1.2]} position={[0, -1.5, 1]} />
-                      </Suspense>
-                    </Canvas>
-                  </Button>
-                ))}
-              </Carousel>
-            </div>
-          </div> */}
           <BottomMenu
             objectList={objectList}
             setObjectList={setObjectList}
