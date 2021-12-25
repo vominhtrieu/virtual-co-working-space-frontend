@@ -3,6 +3,7 @@ import Chair from "./Chair";
 import IndoorTree from "./IndoorTree";
 import ModernTable from "./ModernTable";
 import SofaChair from "./SofaChair";
+import YellowChair from "./YellowChair"
 import Hair from "./Hair";
 import Eye from "./Eye"
 
@@ -11,6 +12,7 @@ const ObjectProperties = {
   IndoorTree: <IndoorTree />,
   ModernTable: <ModernTable />,
   SofaChair:<SofaChair/>,
+  YellowChair: <YellowChair />,
   Hair1: <Hair hairStyle={1} />,
   Hair2: <Hair hairStyle={2} />,
   Eyes1: <Eye eyeStyle={1} />,
