@@ -5,6 +5,7 @@ import Box from "./Models/Box";
 import Chair from "./Models/Chair";
 
 export default function Scene() {
+
   return (
     <>
       <OrbitControls />
