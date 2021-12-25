@@ -6,48 +6,16 @@ import React, { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 
 export default function YellowChair(props) {
-  const group = useRef();
-  const { nodes, materials } = useGLTF("/models/YellowChair.glb");
-  return (
-    <group ref={group} {...props} dispose={null}>
-      <mesh
-        geometry={nodes.chair.geometry}
-        material={materials["Material.003"]}
-        position={[0, 1.3, 0]}
-        rotation={[0, -0.34, 0]}
-        scale={[0.86, 1.02, 0.86]}
-      >
-        <mesh
-          geometry={nodes.CHAIR_LEG.geometry}
-          material={nodes.CHAIR_LEG.material}
-          position={[-0.99, -0.69, 0.84]}
-          rotation={[-Math.PI / 2, -1.44, -Math.PI / 2]}
-          scale={[0.03, 0.61, 0.03]}
-        />
-        <mesh
-          geometry={nodes.CHAIR_LEG001.geometry}
-          material={nodes.CHAIR_LEG001.material}
-          position={[-0.99, -0.69, -0.84]}
-          rotation={[-Math.PI / 2, -1.44, -Math.PI / 2]}
-          scale={[0.03, 0.61, 0.03]}
-        />
-        <mesh
-          geometry={nodes.CHAIR_LEG002.geometry}
-          material={nodes.CHAIR_LEG002.material}
-          position={[0.91, -0.69, 0.84]}
-          rotation={[-Math.PI / 2, 1.44, Math.PI / 2]}
-          scale={[0.03, 0.61, 0.03]}
-        />
-        <mesh
-          geometry={nodes.CHAIR_LEG003.geometry}
-          material={nodes.CHAIR_LEG003.material}
-          position={[0.91, -0.69, -0.84]}
-          rotation={[-Math.PI / 2, 1.44, Math.PI / 2]}
-          scale={[0.03, 0.61, 0.03]}
-        />
-      </mesh>
-    </group>
-  );
+    const group = useRef();
+    const { nodes, materials } = useGLTF("/models/YellowChair.glb");
+    return (
+        <group ref={group} {...props} dispose={null}>
+            <group position={[0, 1.3, 0]} rotation={[0, -1.57, 0]} scale={[0.86, 1.02, 0.86]}>
+                <mesh geometry={nodes.Plane002.geometry} material={materials["Material.008"]} />
+                <mesh geometry={nodes.Plane002_1.geometry} material={materials["Material.009"]} />
+            </group>
+        </group>
+    );
 }
 
-useGLTF.preload("/models/YellowChair.glb");
+useGLTF.preload("/YellowChair.glb");

@@ -39,6 +39,10 @@ const itemGroups = [
     ],
   },
   {
+    groupName: "Indoor Tree",
+    items: [{ code: "IndoorTree", url: "./images/ModernTable.png" }],
+  },
+  {
     groupName: "Keyboard",
     items: [{ code: "Keyboard", url: "./images/Keyboard.png" }],
   },

@@ -3,6 +3,7 @@ import Chair from "./Chair";
 import IndoorTree from "./IndoorTree";
 import ModernTable from "./ModernTable";
 import SofaChair from "./SofaChair";
+import YellowChair from "./YellowChair";
 import Hair from "./Hair";
 import Eye from "./Eye";
 import Keyboard from "./Keyboard";

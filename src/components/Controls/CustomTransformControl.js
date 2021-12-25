@@ -18,6 +18,17 @@ export default function CustomTransformControl({ object, orbit }) {
     });
 
     return (
-        <transformControls ref={transform} args={[camera, gl.domElement]} onUpdate={(self) => self.attach(object)} />
+        <transformControls
+            ref={transform}
+            args={[camera, gl.domElement]}
+            onUpdate={(self) => {
+                let temp = object;
+                while (temp.parent && temp.parent.type !== "Scene") {
+                    temp = temp.parent;
+                }
+
+                self.attach(temp);
+            }}
+        />
     );
 }
