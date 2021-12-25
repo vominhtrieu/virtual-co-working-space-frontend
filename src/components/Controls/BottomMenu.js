@@ -40,7 +40,7 @@ export default function BottomMenu({ itemGroups, onItemClick }) {
     };
 
     return (
-        <>
+        <div style={{ position: "fixed", bottom: 50, width: "100vw" }}>
             <div style={{ display: "flex", gap: 4, justifyContent: "center" }}>
                 <Button
                     onClick={handleButtonLeft}
@@ -100,6 +100,6 @@ export default function BottomMenu({ itemGroups, onItemClick }) {
                     </Carousel>
                 </div>
             </div>
-        </>
+        </div>
     );
 }

@@ -7,11 +7,12 @@ import Button from "../components/Button";
 import Office from "../components/Models/Office";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ObjectProperties from "../components/Models/ObjectProperties";
-import { faList, faRotateRight, faRotateLeft, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faList, faRotateRight, faRotateLeft, faTrash, faEdit, faUserEdit } from "@fortawesome/free-solid-svg-icons";
 import CustomTransformControl from "../components/Controls/CustomTransformControl";
 import BottomMenu from "../components/Controls/BottomMenu";
 import CharacterContext from "../context/CharacterContext";
 import Character from "../components/Models/Character";
+import { useNavigate } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 
 const itemGroups = [
@@ -38,7 +39,9 @@ const WorkspaceCustom = () => {
     const [selectedObject, setSelectedObject] = useState(null);
     const [objectActionVisible, setObjectActionVisible] = useState(false);
     const [object3dClickPos, setObjectionClickPos] = useState({ x: 0, y: 0 });
-    const [isCustoming] = useState(false);
+    const [isCustoming, setIsCustoming] = useState(false);
+    const [showMainMenu, setShowMainMenu] = useState(false);
+    const navigate = useNavigate();
     const character = useContext(CharacterContext);
 
     const handleButtonRotateLeftClick = (e) => {
@@ -152,30 +155,88 @@ const WorkspaceCustom = () => {
                     justifyContent: "space-between",
                 }}
             >
-                <div
-                    aria-label="topMenu"
-                    style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        margin: "0.5rem 1rem",
-                        alignItems: "center",
-                    }}
-                >
-                    <Button>
-                        <FontAwesomeIcon style={{ width: "1.5rem", height: "1.5rem" }} icon={faList} />
-                    </Button>
-
-                    {isCustoming ? (
-                        <div>
-                            <Button style={{ marginRight: "10px" }}>Cancel</Button>
-
-                            <Button>Save</Button>
-                        </div>
-                    ) : null}
-                </div>
+                {!isCustoming && (
+                    <div
+                        aria-label="mainMenu"
+                        style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            margin: "0.5rem 1rem",
+                            alignItems: "center",
+                            position: "absolute",
+                        }}
+                    >
+                        <Button onClick={() => setShowMainMenu((value) => !value)}>
+                            <FontAwesomeIcon style={{ width: "1.5rem", height: "1.5rem" }} icon={faList} />
+                        </Button>
+                        {showMainMenu && (
+                            <>
+                                <div style={{ position: "absolute", top: 60, width: "auto" }}>
+                                    <Button
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "left",
+                                            width: "200px",
+                                            textAlign: "left",
+                                        }}
+                                        onClick={() => {
+                                            setIsCustoming((value) => !value);
+                                            setShowMainMenu(false);
+                                        }}
+                                    >
+                                        <FontAwesomeIcon
+                                            style={{ width: "1.5rem", height: "30px", marginRight: 5 }}
+                                            icon={faEdit}
+                                        />
+                                        <span>Customize your office</span>
+                                    </Button>
+                                    <Button
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "left",
+                                            textAlign: "left",
+                                            marginTop: 10,
+                                            width: "200px",
+                                            overflow: "hidden",
+                                        }}
+                                        onClick={() => {
+                                            navigate("/character");
+                                        }}
+                                    >
+                                        <FontAwesomeIcon
+                                            style={{ width: "1.5rem", height: "1.5rem", marginRight: 5 }}
+                                            icon={faUserEdit}
+                                        />
+                                        <span>Change your character</span>
+                                    </Button>
+                                </div>
+                            </>
+                        )}
+                    </div>
+                )}
 
                 {isCustoming ? (
                     <>
+                        <div style={{ position: "fixed", right: 20, top: 10 }}>
+                            <Button
+                                style={{ marginRight: "10px" }}
+                                onClick={() => {
+                                    setIsCustoming(false);
+                                }}
+                            >
+                                Cancel
+                            </Button>
+
+                            <Button
+                                onClick={() => {
+                                    setIsCustoming(false);
+                                }}
+                            >
+                                Save
+                            </Button>
+                        </div>
                         {objectActionVisible && (
                             <div aria-label="actionContainer" style={{ pointerEvents: "none" }}>
                                 <div
