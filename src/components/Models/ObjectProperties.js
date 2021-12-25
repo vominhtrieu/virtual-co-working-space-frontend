@@ -19,6 +19,7 @@ const ObjectProperties = {
   Eyes1: <Eye eyeStyle={1} />,
   Eye2: <Eye eyeStyle={2} />,
   Keyboard: <Keyboard />,
+  YellowChair: <YellowChair />,
   CoffeeTable: <CoffeeTable />,
 };
 
