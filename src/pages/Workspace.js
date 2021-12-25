@@ -42,7 +42,14 @@ const itemGroups = [
   },
   {
     groupName: "Table",
-    items: [{ code: "ModernTable", url: "./images/SofaChair.png" }],
+    items: [
+      { code: "ModernTable", url: "./images/SofaChair.png" },
+      { code: "CoffeeTable", url: "/images/CoffeeTable.png" },
+    ],
+  },
+  {
+    groupName: "Keyboard",
+    items: [{ code: "Keyboard", url: "/images/Keyboard.png" }],
   },
 ];
 
