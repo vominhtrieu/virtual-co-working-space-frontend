@@ -9,14 +9,12 @@ const IndoorTree = React.forwardRef((props, ref) => {
     const { nodes, materials } = useGLTF("/models/IndoorTree.glb");
 
     return (
-        <mesh ref={ref} {...props} dispose={null}>
-            <group>
-                <mesh geometry={nodes.Shape_IndexedFaceSet.geometry} material={materials.MA_IDP_root} />
-                <mesh geometry={nodes.Shape_IndexedFaceSet001.geometry} material={materials.MA_IDP_ground} />
-                <mesh geometry={nodes.Shape_IndexedFaceSet002.geometry} material={materials.MA_IDP_leaves} />
-                <mesh geometry={nodes.Shape_IndexedFaceSet003.geometry} material={materials.MA_IDP_Pot} />
-            </group>
-        </mesh>
+        <group ref={ref} {...props}>
+            <mesh geometry={nodes.Shape_IndexedFaceSet.geometry} material={materials.MA_IDP_root} />
+            <mesh geometry={nodes.Shape_IndexedFaceSet001.geometry} material={materials.MA_IDP_ground} />
+            <mesh geometry={nodes.Shape_IndexedFaceSet002.geometry} material={materials.MA_IDP_leaves} />
+            <mesh geometry={nodes.Shape_IndexedFaceSet003.geometry} material={materials.MA_IDP_Pot} />
+        </group>
     );
 });
 
