@@ -6,28 +6,18 @@ import React from "react";
 import { useGLTF } from "@react-three/drei";
 
 const IndoorTree = React.forwardRef((props, ref) => {
-  const { nodes, materials } = useGLTF("/models/IndoorTree.glb");
+    const { nodes, materials } = useGLTF("/models/IndoorTree.glb");
 
-  return (
-    <group ref={ref} {...props} dispose={null}>
-      <mesh
-        geometry={nodes.Shape_IndexedFaceSet.geometry}
-        material={materials.MA_IDP_root}
-      />
-      <mesh
-        geometry={nodes.Shape_IndexedFaceSet001.geometry}
-        material={materials.MA_IDP_ground}
-      />
-      <mesh
-        geometry={nodes.Shape_IndexedFaceSet002.geometry}
-        material={materials.MA_IDP_leaves}
-      />
-      <mesh
-        geometry={nodes.Shape_IndexedFaceSet003.geometry}
-        material={materials.MA_IDP_Pot}
-      />
-    </group>
-  );
+    return (
+        <mesh ref={ref} {...props} dispose={null}>
+            <group>
+                <mesh geometry={nodes.Shape_IndexedFaceSet.geometry} material={materials.MA_IDP_root} />
+                <mesh geometry={nodes.Shape_IndexedFaceSet001.geometry} material={materials.MA_IDP_ground} />
+                <mesh geometry={nodes.Shape_IndexedFaceSet002.geometry} material={materials.MA_IDP_leaves} />
+                <mesh geometry={nodes.Shape_IndexedFaceSet003.geometry} material={materials.MA_IDP_Pot} />
+            </group>
+        </mesh>
+    );
 });
 
 export default IndoorTree;
