@@ -13,15 +13,15 @@ const itemGroups = [
     {
         groupName: "Hair",
         items: [
-            { code: "Hair1", url: "./images/SofaChair.png" },
-            { code: "Hair2", url: "./images/SofaChair.png" },
+            { code: "Hair1", url: "./images/Hair1.png" },
+            { code: "Hair2", url: "./images/Hair2.png" },
         ],
     },
     {
         groupName: "Eyes",
         items: [
-            { code: "Eyes1", url: "./images/SofaChair.png" },
-            { code: "Eyes2", url: "./images/SofaChair.png" },
+            { code: "Eyes1", url: "./images/Eyes1.png" },
+            { code: "Eyes2", url: "./images/Eyes2.png" },
         ],
     },
 ];
@@ -31,6 +31,7 @@ const CharacterCustom = () => {
     const navigate = useNavigate();
 
     const handleBottomMenuItemClick = ({ code }) => {
+      console.log("bruh");
         switch (code) {
             case "Hair1":
                 character.changeCharacter((character) => ({ ...character, hairStyle: 1 }));
