@@ -72,7 +72,12 @@ const WorkspaceCustom = () => {
     };
 
     const handleObject3dClick = (e, key) => {
-        setSelectedObject(e.object);
+        let temp = e.object;
+        while (temp.parent && temp.parent.type !== "Scene") {
+            temp = temp.parent;
+        }
+
+        setSelectedObject(temp);
         setSelectedKey(key);
         setObjectActionVisible(true);
 
