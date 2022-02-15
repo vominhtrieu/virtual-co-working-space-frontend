@@ -14,7 +14,7 @@ export default function Character(props) {
     const rotateQuarternion = useRef(new THREE.Quaternion());
     const walkDirection = useRef(new THREE.Vector3());
     const currentClip = useRef(null);
-    const { nodes, materials, animations } = useGLTF("/Models/Character.glb");
+    const { nodes, materials, animations } = useGLTF("/models/Character.glb");
     const { orbitRef } = props;
 
     const { actions, mixer } = useAnimations(animations, group);

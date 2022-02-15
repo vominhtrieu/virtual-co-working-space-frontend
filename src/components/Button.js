@@ -1,9 +1,9 @@
 const Button = ({ children, ...rest }) => {
-    return (
-        <button className="main-btn" {...rest}>
-            {children}
-        </button>
-    );
+  return (
+    <button className='main-btn' {...rest}>
+      {children}
+    </button>
+  );
 };
 // const Button = ({ children, style, ...rest }) => {
 //     const buttonStyle = {
