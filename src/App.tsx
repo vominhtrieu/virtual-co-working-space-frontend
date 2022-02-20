@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import "./App.css";
-import CharacterCustom from "./pages/CharacterCustom";
-import Workspace from "./pages/Workspace";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CharacterContext from "./context/CharacterContext";
+import CharacterCustom from "./pages/CharacterCustom";
+import Home from "./pages/Home";
+import Workspace from "./pages/Workspace";
 import { CharacterInterface } from "./types/character";
+import "./App.less";
 
 function App() {
   const [character, setCharacter] = useState<CharacterInterface>({
@@ -23,7 +24,7 @@ function App() {
       <div className='App'>
         <Router>
           <Routes>
-            <Route path='/' element={<Navigate to='/character' />} />
+            <Route path='/' element={<Home />} />
             <Route path='/character' element={<CharacterCustom />}></Route>
             <Route path='/workspace' element={<Workspace />}></Route>
           </Routes>

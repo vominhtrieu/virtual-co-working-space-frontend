@@ -1,18 +1,18 @@
-import { useRef, useState, useContext, Suspense } from "react";
-import { OrbitControls } from "@react-three/drei";
-import Box from "../components/Models/Box";
-import { Canvas } from "@react-three/fiber";
-import Button from "../components/Button";
-import Office from "../components/Models/Office";
+import { faEdit, faList, faRotateLeft, faRotateRight, faTrash, faUserEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ObjectProperties from "../components/Models/ObjectProperties";
-import { faList, faRotateRight, faRotateLeft, faTrash, faEdit, faUserEdit } from "@fortawesome/free-solid-svg-icons";
-import CustomTransformControl from "../components/Controls/CustomTransformControl";
-import BottomMenu from "../components/Controls/BottomMenu";
-import CharacterContext from "../context/CharacterContext";
-import Character from "../components/Models/Character";
+import { OrbitControls } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
+import { Suspense, useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import Button from "../components/Button";
+import BottomMenu from "../components/Controls/BottomMenu";
+import CustomTransformControl from "../components/Controls/CustomTransformControl";
+import Box from "../components/Models/Box";
+import Character from "../components/Models/Character";
+import ObjectProperties from "../components/Models/ObjectProperties";
+import Office from "../components/Models/Office";
+import CharacterContext from "../context/CharacterContext";
 
 const itemGroups = [
   {
@@ -47,7 +47,7 @@ const WorkspaceCustom = () => {
   const [selectedObject, setSelectedObject] = useState<any>(null);
   const [objectActionVisible, setObjectActionVisible] = useState(false);
   const [object3dClickPos, setObjectionClickPos] = useState({ x: 0, y: 0 });
-  const [isCustoming, setIsCustoming] = useState(false);
+  const [isCustomizing, setIsCustoming] = useState(false);
   const [showMainMenu, setShowMainMenu] = useState(false);
   const navigate = useNavigate();
   const character = useContext(CharacterContext);
@@ -117,8 +117,8 @@ const WorkspaceCustom = () => {
           maxDistance={15}
           minDistance={8}
           minZoom={1}
-          enablePan={isCustoming}
-          enableZoom={isCustoming}
+          enablePan={isCustomizing}
+          enableZoom={isCustomizing}
           maxPolarAngle={((90 - 10) / 180) * Math.PI}
           addEventListener={undefined}
           hasEventListener={undefined}
@@ -141,7 +141,7 @@ const WorkspaceCustom = () => {
               {ObjectProperties["Chair"]}
             </mesh>
           ))}
-          {!isCustoming && (
+          {!isCustomizing && (
             <Character
               hair={character.hairStyle}
               eyes={character.eyeStyle}
@@ -153,7 +153,7 @@ const WorkspaceCustom = () => {
           )}
 
           {/* <Stats className="stats" /> */}
-          {objectActionVisible && isCustoming ? (
+          {objectActionVisible && isCustomizing ? (
             <CustomTransformControl object={selectedObject} orbit={orbitRef} />
           ) : null}
         </Suspense>
@@ -172,7 +172,7 @@ const WorkspaceCustom = () => {
           justifyContent: "space-between",
         }}
       >
-        {!isCustoming && (
+        {!isCustomizing && (
           <div
             aria-label='mainMenu'
             style={{
@@ -242,7 +242,7 @@ const WorkspaceCustom = () => {
           </div>
         )}
 
-        {isCustoming ? (
+        {isCustomizing ? (
           <>
             <div style={{ position: "fixed", right: 20, top: 10 }}>
               <Button
