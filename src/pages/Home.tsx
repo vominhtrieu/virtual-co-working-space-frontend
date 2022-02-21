@@ -4,11 +4,7 @@ import Languages from "../components/UI/languages";
 const Home = () => {
   const { t } = useTranslation();
 
-  return (
-    <div>
-      <Languages />
-    </div>
-  );
+  return <div>{t("home.title")}</div>;
 };
 
 export default Home;
