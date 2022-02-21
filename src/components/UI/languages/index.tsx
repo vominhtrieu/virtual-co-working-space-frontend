@@ -1,7 +1,7 @@
 import i18n from "i18next";
 import { Dropdown, Menu } from "antd";
 import { useState } from "react";
-import Button from "../../Button";
+import Button from "@/components/Button";
 
 const Languages = () => {
   const [language, setLanguage] = useState("vi");
