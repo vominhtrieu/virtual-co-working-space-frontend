@@ -1,9 +1,14 @@
 import { useTranslation } from "react-i18next";
+import LoginForm from "../../components/UI/form/loginForm";
 
 const Home = () => {
   const { t } = useTranslation();
 
-  return <div className='home'>{t("home.title")}</div>;
+  return (
+    <section>
+      <LoginForm />
+    </section>
+  );
 };
 
 export default Home;
