@@ -22,7 +22,7 @@
   phone: max-width: 600
   tablet-portrait: max-width: 900
   tablet-landscape: max-width: 1200
-  big-desktop: min-width: 600
+  big-desktop: min-width: 1800
   */
 @mixin respond($value) {
   @if $value == phone {
