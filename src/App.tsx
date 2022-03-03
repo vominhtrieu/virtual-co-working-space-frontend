@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CharacterContext from "./context/CharacterContext";
 import CharacterCustom from "./pages/CharacterCustom";
-import Home from "./pages/Home";
+import Home from "./pages/home/Home";
 import Workspace from "./pages/Workspace";
 import { CharacterInterface } from "./types/character";
-import "./App.css";
 import Login from "./pages/auth/login";
+import "./scss/main.scss";
 
 function App() {
   const [character, setCharacter] = useState<CharacterInterface>({
@@ -26,9 +26,9 @@ function App() {
         <Router>
           <Routes>
             <Route path='/' element={<Home />} />
-            <Route path='/character' element={<CharacterCustom />}/>
-            <Route path='/workspace' element={<Workspace />}/>
-            <Route path='/auth/login' element={<Login />}/>
+            <Route path='/character' element={<CharacterCustom />} />
+            <Route path='/workspace' element={<Workspace />} />
+            <Route path='/auth/login' element={<Login />} />
           </Routes>
         </Router>
       </div>

@@ -1,7 +1,9 @@
 # Các thay đổi:
 
 ## 03/03/2022
-- Setup cấu trúc folder
+
+- [improve] Setup cấu trúc folder
+- [improve] Setup sass
 
 ## 22/02/2022
 

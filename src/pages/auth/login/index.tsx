@@ -3,7 +3,6 @@ import { faEnvelope, faGlobe, faKey } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Col, Row } from "antd";
 import { RiFacebookFill, RiGithubFill, RiGoogleFill, RiLinkedinFill, RiTwitterLine } from "react-icons/ri";
-import "./styles.css";
 
 function Login() {
   const onFinish = (values: any) => {
