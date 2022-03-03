@@ -42,36 +42,13 @@ export default function BottomMenu({ itemGroups, onItemClick }: any) {
   return (
     <div style={{ position: "fixed", bottom: 50, width: "100vw" }}>
       <div style={{ display: "flex", gap: 4, justifyContent: "center" }}>
-        <Button
-          onClick={handleButtonLeft}
-          style={{
-            backgroundColor: "transparent",
-            border: "none",
-            boxShadow: "none",
-          }}
-        >
+        <Button onClick={handleButtonLeft}>
           <FontAwesomeIcon style={{ height: "1.5rem" }} icon={faAngleLeft} />
         </Button>
 
-        <Button
-          style={{
-            backgroundColor: "white",
-            color: "black",
-            width: 100,
-            padding: "0.5rem 0.75rem",
-          }}
-        >
-          {itemGroups[position].groupName}
-        </Button>
+        <Button>{itemGroups[position].groupName}</Button>
 
-        <Button
-          onClick={handleButtonRight}
-          style={{
-            backgroundColor: "transparent",
-            border: "none",
-            boxShadow: "none",
-          }}
-        >
+        <Button onClick={handleButtonRight}>
           <FontAwesomeIcon style={{ height: "1.5rem" }} icon={faAngleRight} />
         </Button>
       </div>
@@ -87,18 +64,7 @@ export default function BottomMenu({ itemGroups, onItemClick }: any) {
           <Carousel responsive={responsive} arrows={false}>
             {itemGroups[position].items &&
               itemGroups[position].items.map((item: any) => (
-                <Button
-                  onClick={() => onItemClick(item)}
-                  style={{
-                    padding: 0,
-                    width: "6em",
-                    height: "6em",
-                    background: "white",
-                    marginLeft: "1em",
-                    marginRight: "1em",
-                  }}
-                  key={item.code}
-                >
+                <Button onClick={() => onItemClick(item)} key={item.code}>
                   <img alt='models' src={item.url} style={{ width: "6em", height: "6em", borderRadius: "10px" }} />
                 </Button>
               ))}

@@ -47,7 +47,7 @@ const WorkspaceCustom = () => {
   const [selectedObject, setSelectedObject] = useState<any>(null);
   const [objectActionVisible, setObjectActionVisible] = useState(false);
   const [object3dClickPos, setObjectionClickPos] = useState({ x: 0, y: 0 });
-  const [isCustomizing, setIsCustoming] = useState(false);
+  const [isCustomizing, setIsCustomizing] = useState(false);
   const [showMainMenu, setShowMainMenu] = useState(false);
   const navigate = useNavigate();
   const character = useContext(CharacterContext);
@@ -190,15 +190,8 @@ const WorkspaceCustom = () => {
               <>
                 <div style={{ position: "absolute", top: 60, width: "auto" }}>
                   <Button
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "left",
-                      width: "200px",
-                      textAlign: "left",
-                    }}
                     onClick={() => {
-                      setIsCustoming((value) => !value);
+                      setIsCustomizing((value) => !value);
                       setShowMainMenu(false);
                     }}
                   >
@@ -213,15 +206,6 @@ const WorkspaceCustom = () => {
                     <span>Customize your office</span>
                   </Button>
                   <Button
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "left",
-                      textAlign: "left",
-                      marginTop: 10,
-                      width: "200px",
-                      overflow: "hidden",
-                    }}
                     onClick={() => {
                       navigate("/character");
                     }}
@@ -246,9 +230,8 @@ const WorkspaceCustom = () => {
           <>
             <div style={{ position: "fixed", right: 20, top: 10 }}>
               <Button
-                style={{ marginRight: "10px" }}
                 onClick={() => {
-                  setIsCustoming(false);
+                  setIsCustomizing(false);
                 }}
               >
                 Cancel
@@ -256,7 +239,7 @@ const WorkspaceCustom = () => {
 
               <Button
                 onClick={() => {
-                  setIsCustoming(false);
+                  setIsCustomizing(false);
                 }}
               >
                 Save

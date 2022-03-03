@@ -5,7 +5,8 @@ import CharacterCustom from "./pages/CharacterCustom";
 import Home from "./pages/Home";
 import Workspace from "./pages/Workspace";
 import { CharacterInterface } from "./types/character";
-import "./App.less";
+import "./App.css";
+import Login from "./pages/auth/login";
 
 function App() {
   const [character, setCharacter] = useState<CharacterInterface>({
@@ -25,8 +26,9 @@ function App() {
         <Router>
           <Routes>
             <Route path='/' element={<Home />} />
-            <Route path='/character' element={<CharacterCustom />}></Route>
-            <Route path='/workspace' element={<Workspace />}></Route>
+            <Route path='/character' element={<CharacterCustom />}/>
+            <Route path='/workspace' element={<Workspace />}/>
+            <Route path='/auth/login' element={<Login />}/>
           </Routes>
         </Router>
       </div>

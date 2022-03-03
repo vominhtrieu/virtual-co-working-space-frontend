@@ -1,6 +1,11 @@
-const Button = ({ children, ...rest }) => {
+interface ButtonProps {
+  children: React.ReactNode;
+  onClick?: () => void;
+}
+
+const Button = ({ children, onClick }: ButtonProps) => {
   return (
-    <button className='main-btn' {...rest}>
+    <button className='main-btn' onClick={onClick}>
       {children}
     </button>
   );
