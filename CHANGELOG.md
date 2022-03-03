@@ -4,6 +4,7 @@
 
 - [improve] Setup cấu trúc folder
 - [improve] Setup sass
+- [improve] Add react hook form
 
 ## 22/02/2022
 
