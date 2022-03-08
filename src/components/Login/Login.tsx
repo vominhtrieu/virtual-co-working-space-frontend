@@ -1,7 +1,7 @@
-// import React, { useState } from "react";
 import 'antd/dist/antd.css';
-import "./styles.css";
-import { Row, Col, Form, Input, Button, Checkbox } from 'antd';
+import "./Login.css";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { Row, Col} from 'antd';
 import { faGlobe, faKey, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { RiFacebookFill, 
@@ -11,17 +11,15 @@ import { RiFacebookFill,
     RiTwitterLine
  } from "react-icons/ri";
 
+ type FormData = {
+    email: string,
+    password: string,
+  };
 
-function Login() {
-
-    const onFinish = (values: any) => {
-        console.log('Success:', values);
-    };
-
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
-    };
-
+const Login=()=>{
+    const { register, setValue, handleSubmit, formState: { errors } } = useForm<FormData>();
+    const onSubmit = handleSubmit(data => console.log(data));
+  
     return (
         <>
             <FontAwesomeIcon
@@ -39,18 +37,21 @@ function Login() {
 
             <Row justify="space-around" style={{ marginTop: "100px" }}>
                 <Col span={6}>
-                    <form>
+                    <form onSubmit={onSubmit}>
                         <h1 style={{ color: "white", textAlign: "left", fontSize: "30px" }}>Login</h1>
                         <div className="input-form">
                             <FontAwesomeIcon icon={faEnvelope} style={{ marginRight: "10px", color: "#DDDDDD" }} />
-                            <input type="text" placeholder="Email" id="username" required />
+                            {/* <input type="text" placeholder="Email" id="username" required /> */}
+                            <input type="text" placeholder="Email"{...register("email",{required:true,minLength: 6,pattern:/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/})}/>
                         </div>
+                        {errors.email && <span style={{color:"red"}}>Email is valid</span>}
 
                         <div className="input-form">
                             <FontAwesomeIcon icon={faKey} style={{ marginRight: "10px", color: "#DDDDDD" }} />
-                            <input type="password" placeholder="Password" id="password" required />
+                            {/* <input type="password" placeholder="Password" id="password" required /> */}
+                            <input type="password" placeholder="Password" {...register("password",{required:true,minLength: 6})}/>
                         </div>
-
+                        {errors.password && <span style={{color:"red"}}>Password is valid</span>}
                         <div className="input-text">
                             <a style={{ textAlign: "left" }}>Forgot password?</a>
                         </div>

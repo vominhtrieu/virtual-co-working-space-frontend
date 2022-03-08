@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CharacterContext from "./context/CharacterContext";
 import CharacterCustom from "./pages/CharacterCustom";
-import Login from "./pages/login/Login";
+import Login from "./components/Login/Login";
+import Main from "./pages/main/Main";
 import Home from "./pages/Home";
 import Workspace from "./pages/Workspace";
 import { CharacterInterface } from "./types/character";
@@ -25,6 +26,7 @@ function App() {
       <div className='App'>
         <Router>
           <Routes>
+          <Route path='/main' element={<Main/>}></Route>
           <Route path='/login' element={<Login/>}></Route>
             <Route path='/' element={<Home />} />
             <Route path='/character' element={<CharacterCustom />}></Route>

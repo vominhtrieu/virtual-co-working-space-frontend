@@ -1,0 +1,22 @@
+.menu-left{
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+    height: 100vh;
+    width: 50px;
+    padding: 5px;
+}
+
+.menu-left .top-left{
+    width: 30px;
+	height: 30px;
+    border-radius: 40px; /* половина ширины и высоты */
+    margin: 10px;
+    background-color: aliceblue;
+}
+
+.menu-left .bottom-left{
+    margin-top: auto;
+    font-size: 30px;
+}
+
