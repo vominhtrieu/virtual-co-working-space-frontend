@@ -1,4 +1,4 @@
-import { login } from "@/services/api/auth/login/login";
+import { login } from "../../../api/auth/login/login";
 
 const loginTransform = (res: any) => {
   const transform = {

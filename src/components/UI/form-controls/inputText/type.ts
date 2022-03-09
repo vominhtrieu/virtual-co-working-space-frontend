@@ -1,16 +1,7 @@
-import { SizeType } from "antd/lib/config-provider/SizeContext";
-import { ReactNode } from "react";
+import { InputProps } from "antd";
 
-export interface InputTextProps {
-  id?: string;
+export interface InputTextProps extends InputProps {
   name: string;
   control: any;
-  required?: boolean;
-  prefix?: ReactNode;
-  type?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  value?: string;
-  defaultValue?: string;
-  maxLength?: number;
-  size?: SizeType;
+  hasLabel?: boolean;
 }

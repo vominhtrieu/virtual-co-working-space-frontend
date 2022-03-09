@@ -4,11 +4,7 @@ import LoginForm from "../../components/UI/form/loginForm";
 const Home = () => {
   const { t } = useTranslation();
 
-  return (
-    <section>
-      <LoginForm />
-    </section>
-  );
+  return <section></section>;
 };
 
 export default Home;

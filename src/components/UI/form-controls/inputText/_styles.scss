@@ -1,0 +1,18 @@
+.ant-input-affix-wrapper {
+  background-color: transparent;
+  color: #fff;
+}
+
+.ant-input {
+  background-color: transparent;
+  color: #fff;
+}
+
+.input-label {
+  color: #fff;
+  font-size: 1.6rem;
+  text-transform: capitalize;
+}
+.input-label + .ant-input-affix-wrapper {
+  margin-top: 0.5rem;
+}

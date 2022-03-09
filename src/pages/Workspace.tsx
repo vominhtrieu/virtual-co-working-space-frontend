@@ -1,8 +1,8 @@
-import { faEdit, faList, faRotateLeft, faRotateRight, faTrash, faUserEdit } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useContext, useRef, useState } from "react";
+import { FaEdit, FaList, FaTrash, FaUserEdit } from "react-icons/fa";
+import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import Button from "../components/Button";
@@ -184,7 +184,7 @@ const WorkspaceCustom = () => {
             }}
           >
             <Button onClick={() => setShowMainMenu((value) => !value)}>
-              <FontAwesomeIcon style={{ width: "1.5rem", height: "1.5rem" }} icon={faList} />
+              <FaList style={{ width: "1.5rem", height: "1.5rem" }} />
             </Button>
             {showMainMenu && (
               <>
@@ -195,13 +195,12 @@ const WorkspaceCustom = () => {
                       setShowMainMenu(false);
                     }}
                   >
-                    <FontAwesomeIcon
+                    <FaEdit
                       style={{
                         width: "1.5rem",
                         height: "30px",
                         marginRight: 5,
                       }}
-                      icon={faEdit}
                     />
                     <span>Customize your office</span>
                   </Button>
@@ -210,13 +209,12 @@ const WorkspaceCustom = () => {
                       navigate("/character");
                     }}
                   >
-                    <FontAwesomeIcon
+                    <FaUserEdit
                       style={{
                         width: "1.5rem",
                         height: "1.5rem",
                         marginRight: 5,
                       }}
-                      icon={faUserEdit}
                     />
                     <span>Change your character</span>
                   </Button>
@@ -259,13 +257,13 @@ const WorkspaceCustom = () => {
                   }}
                 >
                   <Button onClick={handleButtonDeleteClick}>
-                    <FontAwesomeIcon style={{ width: "1.5rem", height: "1.5rem" }} icon={faTrash} />
+                    <FaTrash style={{ width: "1.5rem", height: "1.5rem" }} />
                   </Button>
                   <Button onClick={handleButtonRotateLeftClick}>
-                    <FontAwesomeIcon style={{ width: "1.5rem", height: "1.5rem" }} icon={faRotateLeft} />
+                    <BiRotateLeft style={{ width: "1.5rem", height: "1.5rem" }} />
                   </Button>
                   <Button onClick={handleButtonRotateRightClick}>
-                    <FontAwesomeIcon style={{ width: "1.5rem", height: "1.5rem" }} icon={faRotateRight} />
+                    <BiRotateRight style={{ width: "1.5rem", height: "1.5rem" }} />
                   </Button>
                 </div>
               </div>

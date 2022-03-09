@@ -1,11 +1,10 @@
 import Button from "../Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import ObjectProperties from "../Models/ObjectProperties";
-import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import "./styles.css";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { useState } from "react";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 const responsive = {
   superLargeDesktop: {
@@ -43,13 +42,13 @@ export default function BottomMenu({ itemGroups, onItemClick }: any) {
     <div style={{ position: "fixed", bottom: 50, width: "100vw" }}>
       <div style={{ display: "flex", gap: 4, justifyContent: "center" }}>
         <Button onClick={handleButtonLeft}>
-          <FontAwesomeIcon style={{ height: "1.5rem" }} icon={faAngleLeft} />
+          <FaAngleLeft style={{ height: "1.5rem" }} />
         </Button>
 
         <Button>{itemGroups[position].groupName}</Button>
 
         <Button onClick={handleButtonRight}>
-          <FontAwesomeIcon style={{ height: "1.5rem" }} icon={faAngleRight} />
+          <FaAngleRight style={{ height: "1.5rem" }} />
         </Button>
       </div>
 

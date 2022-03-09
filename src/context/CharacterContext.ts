@@ -1,5 +1,5 @@
 import React from "react";
-import { CharacterInterface } from "@/types/character";
+import { CharacterInterface } from "../types/character";
 
 export default React.createContext({
   hairStyle: 1,
