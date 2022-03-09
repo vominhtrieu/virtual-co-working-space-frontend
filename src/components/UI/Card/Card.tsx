@@ -16,8 +16,13 @@ const Card = () => {
                 <img src="" alt="" />
             </div>
             <div className='icon'>
-                <AiTwotoneAudio />
-                <BsFillCameraVideoFill />
+                <div className='icon-audio'>
+                    <AiTwotoneAudio/>
+                </div>
+                <div className='icon-camera'>
+                    <BsFillCameraVideoFill/>
+                </div>
+               
             </div>
         </div>
     )

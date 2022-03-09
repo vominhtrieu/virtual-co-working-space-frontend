@@ -10,7 +10,7 @@
 .menu-left .top-left{
     width: 30px;
 	height: 30px;
-    border-radius: 40px; /* половина ширины и высоты */
+    border-radius: 40px; 
     margin: 10px;
     background-color: aliceblue;
 }

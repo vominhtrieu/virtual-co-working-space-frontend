@@ -1,3 +1,38 @@
 .card-avatar{
-    height: 2rem;
+    height: 10rem;
+    width: 16rem;
+    padding: 1em;
+    border-radius: 1rem;
+    background-color: #1A1A40;
+    /* background-color: aliceblue; */
+}
+
+.card-avatar p{
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+    margin-left: 2rem;
+    margin-bottom: 0;
+}
+
+.card-avatar .avatar{
+    width: 4rem;
+	height: 4rem;
+    border-radius: 50%; 
+    margin: 0.5rem auto;
+    background-color: rgb(213, 217, 221);
+}
+
+.card-avatar .icon{
+    display: flex;
+    justify-content: center;
+    font-size: 25px;
+}
+
+.card-avatar .icon .icon-audio{
+    margin-right: 0.5rem;
+    color: #95CD41;
+}
+.card-avatar .icon .icon-camera{
+    color: #B8405E;
 }
