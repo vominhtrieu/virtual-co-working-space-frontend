@@ -2,7 +2,7 @@
 
 - Style: sass
 - Form: react hook form
-- Global state: redux saga
+- Global state: redux toolkit
 - Call api: axios
 - Layout UI: Antd
 - Language: i18next
