@@ -1,6 +1,7 @@
 // import React, { useState } from "react";
 import LoginForm from "../../../components/UI/form/loginForm";
 import { Col, Row } from "antd";
+import loginImage from "../../../assets/images/login/login-image.png";
 
 function Login() {
   const handleLogin = (values) => {
@@ -9,14 +10,16 @@ function Login() {
 
   return (
     <section className='login'>
-      <div style={{ clear: "right" }}></div>
-
-      <Row justify='space-around' >
+      <Row justify='space-around'>
         <Col span={6}>
-          <LoginForm handleLoginSubmit={handleLogin} />
+          <div className='login__form'>
+            <LoginForm handleLoginSubmit={handleLogin} />
+          </div>
         </Col>
         <Col span={10}>
-          <img width='80%' src='./images/login.svg' alt='' />
+          <div className='login__img'>
+            <img src={loginImage} alt='ViWorkSpaceloginImage' />
+          </div>
         </Col>
       </Row>
     </section>
