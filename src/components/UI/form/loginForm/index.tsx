@@ -3,6 +3,7 @@ import { RiFacebookFill, RiGithubFill, RiGoogleFill, RiLinkedinFill, RiTwitterLi
 import { FaEnvelope, FaKey } from "react-icons/fa";
 import { FormPropsInterface, InputInterface } from "./types";
 import InputText from "../../form-controls/inputText";
+import { Link } from "react-router-dom";
 
 const LoginForm = ({ handleLoginSubmit }: FormPropsInterface) => {
   const { control, handleSubmit } = useForm<InputInterface>({
@@ -23,54 +24,54 @@ const LoginForm = ({ handleLoginSubmit }: FormPropsInterface) => {
 
   return (
     <form onSubmit={handleSubmit(onLoginSubmit)}>
-      <h1 style={{ color: "white", textAlign: "left", fontSize: "30px" }}>Login</h1>
-
-      <InputText hasLabel name='email' control={control} prefix={<FaEnvelope />} size='large' placeholder='Email' />
-
-      <InputText
-        hasLabel
-        type='password'
-        name='password'
-        control={control}
-        prefix={<FaKey />}
-        size='large'
-        placeholder='Password'
-      />
-
-      <div className='input-text'>
-        <a style={{ textAlign: "left" }}>Forgot password?</a>
+      <h1 className='login-form__title'>Login</h1>
+      <div className='login-form__input-block'>
+        <InputText hasLabel name='email' control={control} prefix={<FaEnvelope />} size='large' placeholder='Email' />
       </div>
 
-      <button type='submit' className='btn-login'>
+      <div className='login-form__input-block'>
+        <InputText
+          hasLabel
+          type='password'
+          name='password'
+          control={control}
+          prefix={<FaKey />}
+          size='large'
+          placeholder='Password'
+        />
+      </div>
+
+      <div className='login-form__forgot-pass'>
+        <Link to={"#"}>Forgot password?</Link>
+      </div>
+
+      <button type='submit' className='login-form__btn'>
         Log In
       </button>
 
-      <div className='input-text'>
-        <a>
-          Not a member? <b>Register now.</b>{" "}
-        </a>
+      <div className='login-form__not-member'>
+        Not a member?
+        <Link to={"#"}>
+          <span>Register now.</span>
+        </Link>
       </div>
 
-      <div className='bar'>
-        <div className='left-bar'></div>
-        <span className='text-bar'>or</span>
-        <div className='right-bar'></div>
-      </div>
+      <div className='login-form__or'>or</div>
 
-      <div className='social'>
-        <div className='fb'>
+      <div className='login-form__social'>
+        <div className='login-form__social-item'>
           <RiFacebookFill />
         </div>
-        <div className='git'>
+        <div className='login-form__social-item'>
           <RiGithubFill />
         </div>
-        <div className='gg'>
+        <div className='login-form__social-item'>
           <RiGoogleFill />
         </div>
-        <div className='in'>
+        <div className='login-form__social-item'>
           <RiLinkedinFill />
         </div>
-        <div className='twitter'>
+        <div className='login-form__social-item'>
           <RiTwitterLine />
         </div>
       </div>

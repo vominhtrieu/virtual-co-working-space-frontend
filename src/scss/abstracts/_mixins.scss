@@ -17,6 +17,12 @@
   transform: translate(-50%, -50%);
 }
 
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /*
   responsive:
   phone: max-width: 600
