@@ -1,5 +1,9 @@
 # Các thay đổi:
 
+## 09/03/2022
+
+- [improve] Setup redux toolkit
+
 ## 03/03/2022
 
 - [improve] Setup cấu trúc folder

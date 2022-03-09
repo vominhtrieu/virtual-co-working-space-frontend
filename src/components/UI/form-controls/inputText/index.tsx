@@ -1,5 +1,5 @@
 import { Input } from "antd";
-import { Controller } from "react-hook-form";
+import { useController } from "react-hook-form";
 import { InputTextProps } from "./type";
 
 const InputText = ({
@@ -9,29 +9,23 @@ const InputText = ({
   control,
   required,
   prefix,
-  onChange,
   value,
   defaultValue,
   maxLength,
   size,
 }: InputTextProps) => {
+  const { field } = useController({ name: name, control: control });
   return (
-    <Controller
-      name={name}
-      control={control}
-      render={() => (
-        <Input
-          id={id}
-          type={type}
-          required={required}
-          prefix={prefix}
-          onChange={onChange}
-          value={value}
-          defaultValue={defaultValue}
-          maxLength={maxLength}
-          size={size}
-        />
-      )}
+    <Input
+      id={id}
+      type={type}
+      required={required}
+      prefix={prefix}
+      onChange={(e) => field.onChange(e.target.value)}
+      value={value}
+      defaultValue={defaultValue}
+      maxLength={maxLength}
+      size={size}
     />
   );
 };
