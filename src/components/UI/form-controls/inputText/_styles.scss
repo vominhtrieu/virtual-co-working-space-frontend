@@ -1,6 +1,8 @@
 .ant-input-affix-wrapper {
   background-color: transparent;
   color: #fff;
+  padding: 1rem 1.5rem;
+  font-size: 2rem;
 }
 
 .ant-input-affix-wrapper.error {
@@ -15,15 +17,18 @@
 .ant-input {
   background-color: transparent;
   color: #fff;
+  margin-left: 1rem;
+  font-size: 1.8rem;
 }
 
 .input-label {
   color: #fff;
   font-size: 1.6rem;
   text-transform: capitalize;
+  font-size: 1.8rem;
 }
 .input-label + .ant-input-affix-wrapper {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
 
 .error-message {
