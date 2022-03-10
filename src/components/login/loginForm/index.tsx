@@ -6,11 +6,20 @@ import InputText from "../../UI/form-controls/inputText";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useTranslation } from "react-i18next";
 
 const LoginForm = ({ handleLoginSubmit }: FormPropsInterface) => {
+  const { t } = useTranslation();
+
   const schema = yup.object().shape({
-    email: yup.string().required().email(),
-    password: yup.string().required().min(6),
+    email: yup
+      .string()
+      .required(t("default.error.required", { field: t("pages.login.email") }))
+      .email(t("default.error.email", { field: t("pages.login.email") })),
+    password: yup
+      .string()
+      .required(t("default.error.required", { field: t("pages.login.password") }))
+      .min(6, t("default.error.minLength", { field: t("pages.login.password"), min: 6 })),
   });
 
   const { control, handleSubmit } = useForm<InputInterface>({
@@ -32,9 +41,16 @@ const LoginForm = ({ handleLoginSubmit }: FormPropsInterface) => {
 
   return (
     <form className='login-form' onSubmit={handleSubmit(onLoginSubmit)}>
-      <h1 className='login-form__title'>Login</h1>
+      <h1 className='login-form__title'>{t("pages.login.title")}</h1>
       <div className='login-form__input-block'>
-        <InputText hasLabel name='email' control={control} prefix={<FaEnvelope />} size='large' placeholder='Email' />
+        <InputText
+          hasLabel
+          name='email'
+          control={control}
+          prefix={<FaEnvelope />}
+          size='large'
+          placeholder={t("pages.login.email")}
+        />
       </div>
 
       <div className='login-form__input-block'>
@@ -45,12 +61,12 @@ const LoginForm = ({ handleLoginSubmit }: FormPropsInterface) => {
           control={control}
           prefix={<FaKey />}
           size='large'
-          placeholder='Password'
+          placeholder={t("pages.login.password")}
         />
       </div>
 
       <div className='login-form__forgot-pass'>
-        <Link to={"#"}>Forgot password?</Link>
+        <Link to={"#"}>{t("pages.login.forgotPass")}</Link>
       </div>
 
       <button type='submit' className='login-form__btn'>
@@ -58,13 +74,13 @@ const LoginForm = ({ handleLoginSubmit }: FormPropsInterface) => {
       </button>
 
       <div className='login-form__not-member'>
-        Not a member?
+        {t("pages.login.notMember")}
         <Link to={"#"}>
-          <span>Register now.</span>
+          <span>{t("pages.login.registerNow")}</span>
         </Link>
       </div>
 
-      <div className='login-form__or'>or</div>
+      <div className='login-form__or'>{t("pages.login.or")}</div>
 
       <div className='login-form__social'>
         <div className='login-form__social-item'>

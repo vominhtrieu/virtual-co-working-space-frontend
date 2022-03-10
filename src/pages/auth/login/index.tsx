@@ -1,7 +1,8 @@
 // import React, { useState } from "react";
-import LoginForm from "../../../components/login/loginForm";
 import { Col, Row } from "antd";
 import loginImage from "../../../assets/images/login/login-image.png";
+import IconLanguages from "../../../components/icon-lang";
+import LoginForm from "../../../components/login/loginForm";
 import { LoginFormValues } from "./type";
 
 function Login() {
@@ -11,6 +12,7 @@ function Login() {
 
   return (
     <section className='login'>
+      <IconLanguages />
       <Row justify='space-around'>
         <Col span={6}>
           <div className='login__form'>

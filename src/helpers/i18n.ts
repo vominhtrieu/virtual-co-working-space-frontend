@@ -1,16 +1,24 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import { TranslationEnCommon } from "../locales/en/common";
+import { TranslationViCommon } from "../locales/vi/common";
 
-import { TranslationVi } from "./../locales/vi/page";
-import { TranslationEn } from "./../locales/en/page";
+import { TranslationViPages } from "../locales/vi/pages";
+import { TranslationEnPages } from "./../locales/en/pages";
 
 i18n.use(initReactI18next).init({
   resources: {
     en: {
-      translation: TranslationEn,
+      translation: {
+        default: TranslationEnCommon,
+        pages: TranslationEnPages,
+      },
     },
     vi: {
-      translation: TranslationVi,
+      translation: {
+        default: TranslationViCommon,
+        pages: TranslationViPages,
+      },
     },
   },
   lng: "en",

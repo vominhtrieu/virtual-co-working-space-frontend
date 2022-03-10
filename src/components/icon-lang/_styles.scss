@@ -1,0 +1,26 @@
+.lang {
+  position: fixed;
+  top: 2.4rem;
+  right: 2.4rem;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+
+  &__item {
+    height: 100%;
+    padding: 0.5rem 1rem;
+
+    &:hover {
+      background-color: $color-primary-light;
+      color: #fff;
+    }
+  }
+}
+
+.ant-dropdown-menu {
+  padding: 0;
+}
+
+.ant-dropdown-menu-item {
+  padding: 0;
+}
