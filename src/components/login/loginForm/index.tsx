@@ -70,7 +70,7 @@ const LoginForm = ({ handleLoginSubmit }: FormPropsInterface) => {
       </div>
 
       <button type='submit' className='login-form__btn'>
-        Log In
+        {t("pages.login.title")}
       </button>
 
       <div className='login-form__not-member'>
