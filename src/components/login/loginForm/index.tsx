@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { RiFacebookFill, RiGithubFill, RiGoogleFill, RiLinkedinFill, RiTwitterLine } from "react-icons/ri";
 import { FaEnvelope, FaKey } from "react-icons/fa";
 import { FormPropsInterface, InputInterface } from "./types";
-import InputText from "../../form-controls/inputText";
+import InputText from "../../UI/form-controls/inputText";
 import { Link } from "react-router-dom";
 
 const LoginForm = ({ handleLoginSubmit }: FormPropsInterface) => {
@@ -23,7 +23,7 @@ const LoginForm = ({ handleLoginSubmit }: FormPropsInterface) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onLoginSubmit)}>
+    <form className='login-form' onSubmit={handleSubmit(onLoginSubmit)}>
       <h1 className='login-form__title'>Login</h1>
       <div className='login-form__input-block'>
         <InputText hasLabel name='email' control={control} prefix={<FaEnvelope />} size='large' placeholder='Email' />

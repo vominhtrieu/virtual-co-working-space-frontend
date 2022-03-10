@@ -12,7 +12,7 @@ const InputText = ({ name, control, hasLabel, ...rest }: InputTextProps) => {
           {label}
         </label>
       ) : null}
-      <Input {...rest} id={name} onChange={(e) => field.onChange(e.target.value)} />
+      <Input {...rest} autoComplete='off' ref={field.ref} id={name} onChange={(e) => field.onChange(e.target.value)} />
     </>
   );
 };

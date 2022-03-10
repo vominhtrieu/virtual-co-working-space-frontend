@@ -1,10 +1,11 @@
 // import React, { useState } from "react";
-import LoginForm from "../../../components/UI/form/loginForm";
+import LoginForm from "../../../components/login/loginForm";
 import { Col, Row } from "antd";
 import loginImage from "../../../assets/images/login/login-image.png";
+import { LoginFormValues } from "./type";
 
 function Login() {
-  const handleLogin = (values) => {
+  const handleLogin = (values: LoginFormValues) => {
     console.log("values login", values);
   };
 

@@ -1,4 +1,5 @@
-import { login } from "../../../api/auth/login/login";
+import { login } from "../../../api/auth/login";
+import { LoginProxyParams } from "./type";
 
 const loginTransform = (res: any) => {
   const transform = {
@@ -18,8 +19,8 @@ const loginTransform = (res: any) => {
   return transform;
 };
 
-const LoginProxy = async () => {
-  const res = await login("a", "a");
+const LoginProxy = async (params: LoginProxyParams) => {
+  const res = await login(params);
 
   if (res.status !== 200) {
     return {

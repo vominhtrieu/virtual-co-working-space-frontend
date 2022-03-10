@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import LoginForm from "../../components/UI/form/loginForm";
+import LoginForm from "../../components/login/loginForm";
 
 const Home = () => {
   const { t } = useTranslation();

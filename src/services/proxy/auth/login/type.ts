@@ -1,1 +1,4 @@
-export interface LoginRequest {}
+export interface LoginProxyParams {
+  email: string;
+  password: string;
+}
