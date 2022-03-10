@@ -3,6 +3,15 @@
   color: #fff;
 }
 
+.ant-input-affix-wrapper.error {
+  border: 1px solid #f00;
+  color: red;
+}
+
+.ant-input-affix-wrapper.error > .ant-input {
+  color: red;
+}
+
 .ant-input {
   background-color: transparent;
   color: #fff;
@@ -15,4 +24,9 @@
 }
 .input-label + .ant-input-affix-wrapper {
   margin-top: 0.5rem;
+}
+
+.error-message {
+  color: red;
+  font-size: 1.6rem;
 }

@@ -3,7 +3,10 @@ import { useController } from "react-hook-form";
 import { InputTextProps } from "./type";
 
 const InputText = ({ name, control, hasLabel, ...rest }: InputTextProps) => {
-  const { field } = useController({ name: name, control: control });
+  const {
+    field,
+    fieldState: { error },
+  } = useController({ name: name, control: control });
   const label = rest.placeholder ? rest.placeholder : name;
   return (
     <>
@@ -12,7 +15,15 @@ const InputText = ({ name, control, hasLabel, ...rest }: InputTextProps) => {
           {label}
         </label>
       ) : null}
-      <Input {...rest} autoComplete='off' ref={field.ref} id={name} onChange={(e) => field.onChange(e.target.value)} />
+      <Input
+        className={error ? "error" : ""}
+        autoComplete='off'
+        ref={field.ref}
+        id={name}
+        onChange={(e) => field.onChange(e.target.value)}
+        {...rest}
+      />
+      {error ? <p className='error-message'>{error.message}</p> : null}
     </>
   );
 };

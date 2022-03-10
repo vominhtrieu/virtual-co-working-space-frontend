@@ -4,13 +4,21 @@ import { FaEnvelope, FaKey } from "react-icons/fa";
 import { FormPropsInterface, InputInterface } from "./types";
 import InputText from "../../UI/form-controls/inputText";
 import { Link } from "react-router-dom";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const LoginForm = ({ handleLoginSubmit }: FormPropsInterface) => {
+  const schema = yup.object().shape({
+    email: yup.string().required().email(),
+    password: yup.string().required().min(6),
+  });
+
   const { control, handleSubmit } = useForm<InputInterface>({
     defaultValues: {
       email: "",
       password: "",
     },
+    resolver: yupResolver(schema),
   });
 
   const onLoginSubmit = (values: InputInterface) => {
