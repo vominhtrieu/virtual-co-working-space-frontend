@@ -6,6 +6,7 @@ import Home from "./pages/home/Home";
 import Workspace from "./pages/Workspace";
 import { CharacterInterface } from "./types/character";
 import Login from "./pages/auth/login";
+import Register from "./pages/auth/register";
 import "./scss/main.scss";
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
             <Route path='/character' element={<CharacterCustom />} />
             <Route path='/workspace' element={<Workspace />} />
             <Route path='/auth/login' element={<Login />} />
+            <Route path='/auth/register' element={<Register/>}/>
           </Routes>
         </Router>
       </div>
