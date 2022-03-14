@@ -8,5 +8,6 @@ export const TranslationViCommon = {
     required: "Vui lòng nhập {{field}}",
     minLength: "{{field}} phải có ít nhất {{min}} ký tự",
     email: "{{field}} phải là địa chỉ email hợp lệ",
+    confirmPassword: "Mật khẩu không trùng khớp.",
   },
 };

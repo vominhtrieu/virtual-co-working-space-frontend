@@ -3,6 +3,7 @@ import { Col, Row } from "antd";
 import registerImage from "../../../assets/images/register/register-img.svg";
 import { RegisterFormValues } from "./type";
 import RegisterForm from "../../../components/register";
+import IconLanguages from "../../../components/icon-lang";
 
 function Register() {
   const handleRegister = (values: RegisterFormValues) => {
@@ -11,6 +12,7 @@ function Register() {
 
   return (
     <section className='register'>
+       <IconLanguages />
       <Row justify='space-around'>
         <Col span={6}>
           <div className='register__form'>

@@ -11,4 +11,13 @@ export const TranslationEnPages = {
     registerNow: "Register now.",
     or: "or",
   },
+  register: {
+    title: "Register",
+    name: "Fullname",
+    email: "Email",
+    password: "Password",
+    confirmPassword: "Confirm Password.",
+    anAccount: "Already have an account?",
+    login: "Login",
+  },
 };

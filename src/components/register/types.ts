@@ -1,8 +1,9 @@
 
 export interface InputInterface {
-    username: string;
+    name: string;
     email: string;
     password: string;
+    passwordConfirm: string;
   }
   
   export interface FormPropsInterface {
@@ -10,8 +11,9 @@ export interface InputInterface {
   }
   
   export interface InputFormatInterface {
-    username: string;
+    name: string;
     email: string;
     password: string;
+    passwordConfirm: string;
   }
   

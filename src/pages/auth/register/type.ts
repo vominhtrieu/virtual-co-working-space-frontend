@@ -1,6 +1,7 @@
 
 export interface RegisterFormValues {
-  username: string;
+  name: string;
   email: string;
   password: string;
+  passwordConfirm: string;
 }
