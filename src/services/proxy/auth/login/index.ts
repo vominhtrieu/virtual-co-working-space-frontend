@@ -6,18 +6,18 @@ import { LoginProxyParams, LoginProxyResponseInterface } from "./type";
 const loginTransform = (res: any): LoginProxyResponseInterface => {
   const transform = {
     userInfo: {
-      id: res.id ?? "",
-      email: res.email ?? "",
-      name: res.name ?? "",
-      phone: res.phone ?? "",
-      avatar: res.avatar ?? "",
-      provider: res.provider ?? "",
-      externalId: res.externalId ?? "",
-      status: res.status ?? "",
-      createAt: res.createAt ?? "",
+      id: res?.user.id ?? "",
+      email: res?.user.email ?? "",
+      name: res?.user.name ?? "",
+      phone: res?.user.phone ?? "",
+      avatar: res?.user.avatar ?? "",
+      provider: res?.user.provider ?? "",
+      externalId: res?.user.externalId ?? "",
+      status: res?.user.status ?? "",
+      createAt: res?.user.createAt ?? "",
     },
-    accessToken: res.accessToken ?? "",
-    refreshToken: res.refreshToken ?? "",
+    accessToken: res?.accessToken ?? "",
+    refreshToken: res?.refreshToken ?? "",
   };
   return transform;
 };
@@ -27,16 +27,16 @@ const LoginProxy = async (
 ): Promise<ProxyFuncType<LoginProxyResponseInterface>> => {
   const res = await login(params);
 
-  if (res.data?.code) {
+  if (res?.code) {
     return {
       status: ProxyStatusEnum.FAIL,
-      message: res.data.message,
-      code: res.data.code,
-      errors: res.data.errors,
+      message: res.message,
+      code: res.code,
+      errors: res.errors,
     };
   }
 
-  const loginRespTransformed = loginTransform(res.data?.user);
+  const loginRespTransformed = loginTransform(res);
   return {
     status: ProxyStatusEnum.SUCCESS,
     data: loginRespTransformed,

@@ -1,12 +1,14 @@
-import HttpClient, { ResponseInterface } from "../../../../helpers/axios";
-import { LoginParamsInterface, LoginApiResponseInterface } from "./types";
+import HttpClient from "../../../../helpers/axios";
+import { LoginApiResponseInterface, LoginParamsInterface } from "./types";
 
-const URL = "/auth/login";
+const baseUrl = process.env.REACT_APP_BASE_URL;
+const URL = baseUrl + "/auth/login";
 
 export async function login(params: LoginParamsInterface) {
-  const response = await HttpClient.post<
-    ResponseInterface<LoginApiResponseInterface>
-  >(URL, params);
+  const response = await HttpClient.post<LoginApiResponseInterface>(
+    URL,
+    params
+  );
 
   return response.data;
 }

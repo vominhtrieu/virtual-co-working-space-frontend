@@ -2,11 +2,32 @@
 import { Col, Row } from "antd";
 import loginImage from "../../../assets/images/login/login-image.png";
 import LoginForm from "../../../components/login/loginForm";
+import LoginProxy from "../../../services/proxy/auth/login";
+import { setAuthenticated, setUserInfo } from "../../../stores/auth-slice";
+import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
 import { LoginFormValues } from "./type";
 
 function Login() {
   const handleLogin = (values: LoginFormValues) => {
-    console.log("values login", values);
+    LoginProxy({
+      email: values.email,
+      password: values.password,
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.status === ProxyStatusEnum.FAIL) {
+          console.log("login fail");
+        }
+
+        if (res.status === ProxyStatusEnum.SUCCESS) {
+          setAuthenticated(true);
+          setUserInfo(res?.data.userInfo);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {});
   };
 
   return (
