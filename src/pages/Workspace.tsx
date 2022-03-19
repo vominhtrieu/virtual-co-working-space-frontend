@@ -13,6 +13,7 @@ import Character from "../components/Models/Character";
 import ObjectProperties from "../components/Models/ObjectProperties";
 import Office from "../components/Models/Office";
 import CharacterContext from "../context/CharacterContext";
+import { Physics, useBox } from "@react-three/cannon";
 
 const itemGroups = [
   {
@@ -127,36 +128,38 @@ const WorkspaceCustom = () => {
         />
         <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45} />
         <ambientLight />
+        
+        <Physics>
+          <Suspense fallback={<Box />}>
+            <Office castShadow={true} />
+            {objectList.map((object, idx) => (
+              <mesh
+                castShadow={true}
+                key={object.key}
+                position={[2, 0.5, 2]}
+                onClick={(e) => handleObject3dClick(e, object.key)}
+                onPointerMissed={handleObject3dPointerMissed}
+              >
+                {ObjectProperties["Chair"]}
+              </mesh>
+            ))}
+            {!isCustomizing && (
+              <Character
+                hair={character.hairStyle}
+                eyes={character.eyeStyle}
+                startPosition={[0, 0.5, 2]}
+                scale={[2, 2, 2]}
+                moveable={true}
+                orbitRef={orbitRef}
+              />
+            )}
 
-        <Suspense fallback={<Box />}>
-          <Office castShadow={true} />
-          {objectList.map((object, idx) => (
-            <mesh
-              castShadow={true}
-              key={object.key}
-              position={[0, 0.5, 0]}
-              onClick={(e) => handleObject3dClick(e, object.key)}
-              onPointerMissed={handleObject3dPointerMissed}
-            >
-              {ObjectProperties["Chair"]}
-            </mesh>
-          ))}
-          {!isCustomizing && (
-            <Character
-              hair={character.hairStyle}
-              eyes={character.eyeStyle}
-              startPosition={[0, 0.5, 2]}
-              scale={[2, 2, 2]}
-              moveable={true}
-              orbitRef={orbitRef}
-            />
-          )}
-
-          {/* <Stats className="stats" /> */}
-          {objectActionVisible && isCustomizing ? (
-            <CustomTransformControl object={selectedObject} orbit={orbitRef} />
-          ) : null}
-        </Suspense>
+            {/* <Stats className="stats" /> */}
+            {objectActionVisible && isCustomizing ? (
+              <CustomTransformControl object={selectedObject} orbit={orbitRef} />
+            ) : null}
+          </Suspense>
+        </Physics>
       </Canvas>
       <div
         style={{
