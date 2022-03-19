@@ -1,4 +1,4 @@
-export interface RegisterFormValuesInterface {
+export interface RegisterProxyParamsInterface {
   name: string;
   email: string;
   password: string;

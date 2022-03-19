@@ -1,8 +1,12 @@
-import axios from "axios";
-import { LoginParamsInterface } from "./type";
+import HttpClient, { ResponseInterface } from "../../../../helpers/axios";
+import { LoginParamsInterface, LoginApiResponseInterface } from "./types";
+
+const URL = "/auth/login";
 
 export async function login(params: LoginParamsInterface) {
-  const response = await axios.post("/api/auth/login", params);
+  const response = await HttpClient.post<
+    ResponseInterface<LoginApiResponseInterface>
+  >(URL, params);
 
-  return response;
+  return response.data;
 }

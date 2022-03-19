@@ -1,12 +1,13 @@
 // import React, { useState } from "react";
 import { Col, Row } from "antd";
 import registerImage from "../../../assets/images/register/register-img.svg";
-import { RegisterFormValues } from "./type";
-import RegisterForm from "../../../components/register";
+import { RegisterFormValuesInterface } from "./type";
+import RegisterForm from "../../../components/register/registerForm";
+import RegisterProxy from "../../../services/proxy/auth/register";
 
 function Register() {
-  const handleRegister = (values: RegisterFormValues) => {
-    console.log("values register", values);
+  const handleRegister = (values: RegisterFormValuesInterface) => {
+    RegisterProxy(values);
   };
 
   return (

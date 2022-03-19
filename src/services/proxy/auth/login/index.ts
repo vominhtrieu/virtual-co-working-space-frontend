@@ -1,39 +1,45 @@
+import { ProxyFuncType } from "./../../../../types/http/proxy/ProxyFuncType";
+import { ProxyStatusEnum } from "../../../../types/http/proxy/ProxyStatus";
 import { login } from "../../../api/auth/login";
-import { LoginProxyParams } from "./type";
+import { LoginProxyParams, LoginProxyResponseInterface } from "./type";
 
-const loginTransform = (res: any) => {
+const loginTransform = (res: any): LoginProxyResponseInterface => {
   const transform = {
     userInfo: {
-      id: res.id,
-      name: res.name,
-      email: res.email,
-      phone: res.phone,
+      id: res.id ?? "",
+      email: res.email ?? "",
+      name: res.name ?? "",
+      phone: res.phone ?? "",
+      avatar: res.avatar ?? "",
+      provider: res.provider ?? "",
+      externalId: res.externalId ?? "",
+      status: res.status ?? "",
+      createAt: res.createAt ?? "",
     },
-    chatInfo: {
-      id: res.chatId ?? "",
-      name: res.chatName,
-      avatar: res.chatAvatar,
-      content: res.message,
-    },
+    accessToken: res.accessToken ?? "",
+    refreshToken: res.refreshToken ?? "",
   };
   return transform;
 };
 
-const LoginProxy = async (params: LoginProxyParams) => {
+const LoginProxy = async (
+  params: LoginProxyParams
+): Promise<ProxyFuncType<LoginProxyResponseInterface>> => {
   const res = await login(params);
 
-  if (res.status !== 200) {
+  if (res.data?.code) {
     return {
-      status: res.status,
-      message: res.statusText,
+      status: ProxyStatusEnum.FAIL,
+      message: res.data.message,
+      code: res.data.code,
+      errors: res.data.errors,
     };
   }
 
-  const getBuEfCusStatisticTransform = loginTransform(res.data.message);
-
+  const loginRespTransformed = loginTransform(res.data?.user);
   return {
-    status: res.status,
-    payload: getBuEfCusStatisticTransform,
+    status: ProxyStatusEnum.SUCCESS,
+    data: loginRespTransformed,
   };
 };
 

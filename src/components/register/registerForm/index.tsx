@@ -2,23 +2,25 @@ import { useForm } from "react-hook-form";
 import { FaEnvelope, FaKey, FaUser } from "react-icons/fa";
 // import { FormPropsInterface, InputInterface } from "./types";
 import { FormPropsInterface, InputInterface } from "./types";
-import InputText from "../UI/form-controls/inputText";
+import InputText from "../../UI/form-controls/inputText";
 import { Link } from "react-router-dom";
 
 const RegisterForm = ({ handleRegisterSubmit }: FormPropsInterface) => {
   const { control, handleSubmit } = useForm<InputInterface>({
     defaultValues: {
-      username: "",
+      name: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
   const onRegisterSubmit = (values: InputInterface) => {
     const formValues = {
-      username: values["username"],
+      name: values["name"],
       email: values["email"],
       password: values["password"],
+      confirmPassword: values["confirmPassword"],
     };
 
     handleRegisterSubmit(formValues);
@@ -29,23 +31,25 @@ const RegisterForm = ({ handleRegisterSubmit }: FormPropsInterface) => {
       <h1 className='register-form__title'>Register</h1>
 
       <div className='register-form__input-block'>
-        <InputText 
-        hasLabel 
-        name='text' 
-        control={control} 
-        prefix={<FaUser />} 
-        size='large' 
-        placeholder='Username' />
+        <InputText
+          hasLabel
+          name='name'
+          control={control}
+          prefix={<FaUser />}
+          size='large'
+          placeholder='Name'
+        />
       </div>
 
       <div className='register-form__input-block'>
-        <InputText 
-        hasLabel 
-        name='email' 
-        control={control} 
-        prefix={<FaEnvelope />} 
-        size='large' 
-        placeholder='Email' />
+        <InputText
+          hasLabel
+          name='email'
+          control={control}
+          prefix={<FaEnvelope />}
+          size='large'
+          placeholder='Email'
+        />
       </div>
 
       <div className='register-form__input-block'>
@@ -60,13 +64,25 @@ const RegisterForm = ({ handleRegisterSubmit }: FormPropsInterface) => {
         />
       </div>
 
+      <div className='register-form__input-block'>
+        <InputText
+          hasLabel
+          type='password'
+          name='confirmPassword'
+          control={control}
+          prefix={<FaKey />}
+          size='large'
+          placeholder='Confirm Password'
+        />
+      </div>
+
       <button type='submit' className='register-form__btn'>
         Register
       </button>
 
       <div className='register-form__an-account'>
         Already have an account?
-        <Link to={"#"}>
+        <Link to='/auth/login'>
           <span>Login.</span>
         </Link>
       </div>
