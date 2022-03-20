@@ -29,8 +29,9 @@ function Login() {
         if (res.status === ProxyStatusEnum.SUCCESS) {
           toastSuccess("login success");
           dispatch(setAuthenticated(true));
-          setUserInfo(res?.data.userInfo);
+          dispatch(setUserInfo(res?.data.userInfo));
           saveDataLocal("user_id", res.data.userInfo.id);
+          saveDataLocal("user_info", JSON.stringify(res.data.userInfo));
           saveDataLocal("access_token", res.data.accessToken);
           saveDataLocal("refresh_token", res.data.refreshToken);
           navigate("/");
