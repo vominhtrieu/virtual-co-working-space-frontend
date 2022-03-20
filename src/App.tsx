@@ -11,12 +11,16 @@ import "./scss/main.scss";
 import { CharacterInterface } from "./types/character";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { useSelector } from "react-redux";
+import NotFound from "./pages/notFound";
 
 function App() {
   const [character, setCharacter] = useState<CharacterInterface>({
     hairStyle: 1,
     eyeStyle: 1,
   });
+
+  const { isAuthenticated } = useSelector((state: any) => state.auth);
 
   return (
     <CharacterContext.Provider
@@ -31,13 +35,20 @@ function App() {
       <IconLanguages />
       <div className='App'>
         <Router>
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/character' element={<CharacterCustom />} />
-            <Route path='/workspace' element={<Workspace />} />
-            <Route path='/auth/login' element={<Login />} />
-            <Route path='/auth/register' element={<Register />} />
-          </Routes>
+          {isAuthenticated ? (
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/character' element={<CharacterCustom />} />
+              <Route path='/workspace' element={<Workspace />} />
+              <Route path='*' element={<NotFound />} />
+            </Routes>
+          ) : (
+            <Routes>
+              <Route path='/auth/login' element={<Login />} />
+              <Route path='/auth/register' element={<Register />} />
+              <Route path='*' element={<NotFound />} />
+            </Routes>
+          )}
         </Router>
       </div>
     </CharacterContext.Provider>

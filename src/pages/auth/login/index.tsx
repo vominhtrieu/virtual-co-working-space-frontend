@@ -1,15 +1,21 @@
 // import React, { useState } from "react";
 import { Col, Row } from "antd";
+import { useNavigate } from "react-router-dom";
 import loginImage from "../../../assets/images/login/login-image.png";
 import LoginForm from "../../../components/login/loginForm";
 import { saveDataLocal } from "../../../helpers/localStorage";
 import { toastError, toastSuccess } from "../../../helpers/toast";
 import LoginProxy from "../../../services/proxy/auth/login";
+import { useAppDispatch } from "../../../stores";
 import { setAuthenticated, setUserInfo } from "../../../stores/auth-slice";
 import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
 import { LoginFormValues } from "./type";
 
 function Login() {
+  const navigate = useNavigate();
+
+  const dispatch = useAppDispatch();
+
   const handleLogin = (values: LoginFormValues) => {
     LoginProxy({
       email: values.email,
@@ -17,20 +23,21 @@ function Login() {
     })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          console.log("login fail");
-          toastError("login fail");
+          toastError(res.message ?? "Login fail");
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
           toastSuccess("login success");
-          setAuthenticated(true);
+          dispatch(setAuthenticated(true));
           setUserInfo(res?.data.userInfo);
           saveDataLocal("user_id", res.data.userInfo.id);
+          saveDataLocal("access_token", res.data.accessToken);
+          saveDataLocal("refresh_token", res.data.refreshToken);
+          navigate("/");
         }
       })
       .catch((err) => {
-        console.log(err);
-        // show toast login fail
+        toastError(err.message ?? "Login fail");
       })
       .finally(() => {});
   };
