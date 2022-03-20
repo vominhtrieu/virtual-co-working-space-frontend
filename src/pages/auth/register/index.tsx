@@ -6,6 +6,7 @@ import RegisterForm from "../../../components/register/registerForm";
 import RegisterProxy from "../../../services/proxy/auth/register";
 import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
 import { useNavigate } from "react-router-dom";
+import { toastError, toastSuccess } from "../../../helpers/toast";
 
 function Register() {
   const navigation = useNavigate();
@@ -19,11 +20,13 @@ function Register() {
     })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          console.log("register fail");
-          // show toast login fail
+          console.log(res.message);
+          toastError("register fail");
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
+          console.log(res.data);
+          toastSuccess("register success");
           navigation('/auth/login');
         }
       })
