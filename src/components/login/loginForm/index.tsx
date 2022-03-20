@@ -1,5 +1,11 @@
 import { useForm } from "react-hook-form";
-import { RiFacebookFill, RiGithubFill, RiGoogleFill, RiLinkedinFill, RiTwitterLine } from "react-icons/ri";
+import {
+  RiFacebookFill,
+  RiGithubFill,
+  RiGoogleFill,
+  RiLinkedinFill,
+  RiTwitterLine,
+} from "react-icons/ri";
 import { FaEnvelope, FaKey } from "react-icons/fa";
 import { FormPropsInterface, InputInterface } from "./types";
 import InputText from "../../UI/form-controls/inputText";
@@ -18,8 +24,16 @@ const LoginForm = ({ handleLoginSubmit }: FormPropsInterface) => {
       .email(t("default.error.email", { field: t("pages.login.email") })),
     password: yup
       .string()
-      .required(t("default.error.required", { field: t("pages.login.password") }))
-      .min(6, t("default.error.minLength", { field: t("pages.login.password"), min: 6 })),
+      .required(
+        t("default.error.required", { field: t("pages.login.password") })
+      )
+      .min(
+        6,
+        t("default.error.minLength", {
+          field: t("pages.login.password"),
+          min: 6,
+        })
+      ),
   });
 
   const { control, handleSubmit } = useForm<InputInterface>({
@@ -75,7 +89,7 @@ const LoginForm = ({ handleLoginSubmit }: FormPropsInterface) => {
 
       <div className='login-form__not-member'>
         {t("pages.login.notMember")}
-        <Link to={"#"}>
+        <Link to='/auth/register'>
           <span>{t("pages.login.registerNow")}</span>
         </Link>
       </div>
