@@ -1,18 +1,41 @@
 // import React, { useState } from "react";
 import { Col, Row } from "antd";
 import loginImage from "../../../assets/images/login/login-image.png";
-import IconLanguages from "../../../components/icon-lang";
 import LoginForm from "../../../components/login/loginForm";
+import { saveDataLocal } from "../../../helpers/localStorage";
+import LoginProxy from "../../../services/proxy/auth/login";
+import { setAuthenticated, setUserInfo } from "../../../stores/auth-slice";
+import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
 import { LoginFormValues } from "./type";
 
 function Login() {
   const handleLogin = (values: LoginFormValues) => {
-    console.log("values login", values);
+    LoginProxy({
+      email: values.email,
+      password: values.password,
+    })
+      .then((res) => {
+        if (res.status === ProxyStatusEnum.FAIL) {
+          console.log("login fail");
+          // show toast login fail
+        }
+
+        if (res.status === ProxyStatusEnum.SUCCESS) {
+          console.log(res.data);
+          setAuthenticated(true);
+          setUserInfo(res?.data.userInfo);
+          saveDataLocal("user_id", res.data.userInfo.id);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        // show toast login fail
+      })
+      .finally(() => {});
   };
 
   return (
     <section className='login'>
-      <IconLanguages />
       <Row justify='space-around'>
         <Col span={6}>
           <div className='login__form'>

@@ -1,39 +1,52 @@
+import { ProxyFuncType } from "./../../../../types/http/proxy/ProxyFuncType";
+import { ProxyStatusEnum } from "../../../../types/http/proxy/ProxyStatus";
 import { login } from "../../../api/auth/login";
-import { LoginProxyParams } from "./type";
+import {
+  LoginProxyParams,
+  LoginProxyResponseInterface,
+  LoginProxyTransformInterface,
+} from "./type";
 
-const loginTransform = (res: any) => {
+const loginTransform = (
+  res: LoginProxyTransformInterface
+): LoginProxyResponseInterface => {
+  console.log(res);
   const transform = {
     userInfo: {
-      id: res.id,
-      name: res.name,
-      email: res.email,
-      phone: res.phone,
+      id: res?.user.id ?? "",
+      email: res?.user.email ?? "",
+      name: res?.user.name ?? "",
+      phone: res?.user.phone ?? "",
+      avatar: res?.user.avatar ?? "",
+      provider: res?.user.provider ?? "",
+      externalId: res?.user.externalId ?? "",
+      status: res?.user.status ?? "",
+      createdAt: res?.user.createdAt ?? "",
     },
-    chatInfo: {
-      id: res.chatId ?? "",
-      name: res.chatName,
-      avatar: res.chatAvatar,
-      content: res.message,
-    },
+    accessToken: res?.accessToken ?? "",
+    refreshToken: res?.refreshToken ?? "",
   };
   return transform;
 };
 
-const LoginProxy = async (params: LoginProxyParams) => {
+const LoginProxy = async (
+  params: LoginProxyParams
+): Promise<ProxyFuncType<LoginProxyResponseInterface>> => {
   const res = await login(params);
 
-  if (res.status !== 200) {
+  if (res?.code) {
     return {
-      status: res.status,
-      message: res.statusText,
+      status: ProxyStatusEnum.FAIL,
+      message: res.message,
+      code: res.code,
+      errors: res.errors,
     };
   }
 
-  const getBuEfCusStatisticTransform = loginTransform(res.data.message);
-
+  const loginRespTransformed = loginTransform(res);
   return {
-    status: res.status,
-    payload: getBuEfCusStatisticTransform,
+    status: ProxyStatusEnum.SUCCESS,
+    data: loginRespTransformed,
   };
 };
 

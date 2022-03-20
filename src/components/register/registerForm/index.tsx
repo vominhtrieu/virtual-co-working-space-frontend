@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { FaEnvelope, FaKey, FaUser } from "react-icons/fa";
 import { FormPropsInterface, InputInterface } from "./types";
-import InputText from "../UI/form-controls/inputText";
+import InputText from "../../UI/form-controls/inputText";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -44,8 +44,7 @@ const RegisterForm = ({ handleRegisterSubmit }: FormPropsInterface) => {
       name: values["name"],
       email: values["email"],
       password: values["password"],
-      passwordConfirm: values["passwordConfirm"]
-    };
+      passwordConfirm: values["confirmPassword"],    };
 
     handleRegisterSubmit(formValues);
   };
@@ -59,7 +58,7 @@ const RegisterForm = ({ handleRegisterSubmit }: FormPropsInterface) => {
           hasLabel
           name='email'
           control={control}
-          prefix={<FaEnvelope />}
+          prefix={<FaUser />}
           size='large'
           placeholder={t('pages.register.email')}
         />
@@ -70,7 +69,7 @@ const RegisterForm = ({ handleRegisterSubmit }: FormPropsInterface) => {
           hasLabel
           name='name'
           control={control}
-          prefix={<FaUser />}
+          prefix={<FaEnvelope />}
           size='large'
           placeholder={t('pages.register.name')}
         />
@@ -106,7 +105,7 @@ const RegisterForm = ({ handleRegisterSubmit }: FormPropsInterface) => {
 
       <div className='register-form__an-account'>
         {t('pages.register.anAccount')}
-        <Link to={"#"}>
+        <Link to='/auth/login'>
           <span>{t('pages.register.login')}</span>
         </Link>
       </div>

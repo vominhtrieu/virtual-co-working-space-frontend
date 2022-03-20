@@ -1,26 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
-import RegisterProxy from "../../services/proxy/auth/register";
 
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     isAuthenticated: false,
-    isRegister: false,
     user: null,
   },
   reducers: {
-    setAuthenticated: () => {},
-    onLoginByEmailAndPassword() {},
-    onLoginByGoogle() {},
-    onLoginByFacebook() {},
-    onLogout() {},
-    onRegister(state, action) {
-      state.isRegister=true;
+    setAuthenticated: (state, action) => {
+      state.isAuthenticated = action.payload;
+    },
+    setUserInfo: (state, action) => {
+      state.user = action.payload;
     },
   },
 });
 
 const { actions, reducer } = authSlice;
-export const { setAuthenticated, onLoginByEmailAndPassword, onLoginByFacebook, onLoginByGoogle, onLogout, onRegister } =
-  actions;
+export const { setAuthenticated, setUserInfo } = actions;
 export default reducer;

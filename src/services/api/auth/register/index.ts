@@ -1,8 +1,14 @@
-import axios from "axios";
-import { RegisterParamsInterface } from "./type";
+import HttpClient from "../../../../helpers/axios";
+import { RegisterApiResponseInterface, RegisterParamsInterface } from "./types";
+
+const baseUrl = process.env.REACT_APP_BASE_URL;
+const URL = baseUrl + "/auth/register";
 
 export async function register(params: RegisterParamsInterface) {
-  const response = await axios.post("/api/auth/register", params);
+  const response = await HttpClient.post<RegisterApiResponseInterface>(
+    URL,
+    params
+  );
 
-  return response;
+  return response.data;
 }

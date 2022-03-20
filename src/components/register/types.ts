@@ -3,7 +3,7 @@ export interface InputInterface {
     name: string;
     email: string;
     password: string;
-    passwordConfirm: string;
+    confirmPassword: string;
   }
   
   export interface FormPropsInterface {
@@ -14,6 +14,6 @@ export interface InputInterface {
     name: string;
     email: string;
     password: string;
-    passwordConfirm: string;
+    confirmPassword: string;
   }
   
