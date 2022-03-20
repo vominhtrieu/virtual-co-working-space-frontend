@@ -4,6 +4,7 @@ import registerImage from "../../../assets/images/register/register-img.svg";
 import IconLanguages from "../../../components/icon-lang";
 import { RegisterFormValuesInterface } from "./type";
 import RegisterForm from "../../../components/register/registerForm";
+import { toastError, toastSuccess } from "../../../helpers/toast";
 
 function Register() {
   const handleRegister = (values: RegisterFormValuesInterface) => {
