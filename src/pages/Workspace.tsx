@@ -13,7 +13,7 @@ import Character from "../components/Models/Character";
 import ObjectProperties from "../components/Models/ObjectProperties";
 import Office from "../components/Models/Office";
 import CharacterContext from "../context/CharacterContext";
-import { Physics, useBox } from "@react-three/cannon";
+import { Debug, Physics, useBox } from "@react-three/cannon";
 
 const itemGroups = [
   {
@@ -129,7 +129,8 @@ const WorkspaceCustom = () => {
         <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45} />
         <ambientLight />
         
-        <Physics>
+        <Physics gravity={[0,0,0]}>
+          <Debug>
           <Suspense fallback={<Box />}>
             <Office castShadow={true} />
             {objectList.map((object, idx) => (
@@ -159,6 +160,7 @@ const WorkspaceCustom = () => {
               <CustomTransformControl object={selectedObject} orbit={orbitRef} />
             ) : null}
           </Suspense>
+          </Debug>
         </Physics>
       </Canvas>
       <div

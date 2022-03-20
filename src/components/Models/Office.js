@@ -8,17 +8,11 @@ import { usePlane } from "@react-three/cannon";
 
 export default function Office(props) {
   const group = useRef();
-  const [ref] = usePlane(() => ({
-    position: [0, 1, 0],
-    type: "Static"
-  }))
+
   const { nodes, materials } = useGLTF("/models/Office.glb");
   return (
-    <mesh ref={ref} >
-      <group ref={group} {...props} dispose={null}>
-        <mesh geometry={nodes.Cube_1.geometry} material={materials.Floor} />
-        <mesh geometry={nodes.Cube_2.geometry} material={materials.Walll} />
-      </group>
+    <mesh position={[5,0,5]}>
+      <planeGeometry args={[1000, 1000]} />
     </mesh>
   );
 }

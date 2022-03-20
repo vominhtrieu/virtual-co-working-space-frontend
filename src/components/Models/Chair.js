@@ -8,7 +8,7 @@ import { useBox } from "@react-three/cannon";
 
 const Chair = React.forwardRef(({ props, ref }) => {
   const { nodes, materials } = useGLTF("/models/Chair.glb");
-  const [box] = useBox(() => ({args: [2, 2, 2], position: [0, 1, 0], type: "Static"}));
+  const [box] = useBox(() => ({args: [3, 3, 3], position: [3,1,3], type: "Static"}));
   return (
     <mesh ref={box} castShadow={true} >
     <boxGeometry args={[1, 1, 1]} />
