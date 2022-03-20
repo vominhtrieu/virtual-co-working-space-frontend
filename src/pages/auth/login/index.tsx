@@ -3,6 +3,7 @@ import { Col, Row } from "antd";
 import loginImage from "../../../assets/images/login/login-image.png";
 import LoginForm from "../../../components/login/loginForm";
 import { saveDataLocal } from "../../../helpers/localStorage";
+import { toastError, toastSuccess } from "../../../helpers/toast";
 import LoginProxy from "../../../services/proxy/auth/login";
 import { setAuthenticated, setUserInfo } from "../../../stores/auth-slice";
 import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
@@ -17,11 +18,11 @@ function Login() {
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
           console.log("login fail");
-          // show toast login fail
+          toastError("login fail");
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          console.log(res.data);
+          toastSuccess("login success");
           setAuthenticated(true);
           setUserInfo(res?.data.userInfo);
           saveDataLocal("user_id", res.data.userInfo.id);

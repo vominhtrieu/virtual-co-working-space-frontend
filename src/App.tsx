@@ -9,6 +9,8 @@ import Home from "./pages/home/Home";
 import Workspace from "./pages/Workspace";
 import "./scss/main.scss";
 import { CharacterInterface } from "./types/character";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const [character, setCharacter] = useState<CharacterInterface>({
@@ -25,6 +27,7 @@ function App() {
           setCharacter(character),
       }}
     >
+      <ToastContainer />
       <IconLanguages />
       <div className='App'>
         <Router>
