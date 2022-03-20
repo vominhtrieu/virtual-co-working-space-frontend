@@ -19,6 +19,7 @@ const InputText = ({ name, control, hasLabel, ...rest }: InputTextProps) => {
         className={error ? "error" : ""}
         autoComplete='off'
         ref={field.ref}
+        onBlur={field.onBlur}
         id={name}
         onChange={(e) => field.onChange(e.target.value)}
         {...rest}

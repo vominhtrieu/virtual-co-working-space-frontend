@@ -1,9 +1,16 @@
 import { ProxyFuncType } from "./../../../../types/http/proxy/ProxyFuncType";
 import { ProxyStatusEnum } from "../../../../types/http/proxy/ProxyStatus";
 import { login } from "../../../api/auth/login";
-import { LoginProxyParams, LoginProxyResponseInterface } from "./type";
+import {
+  LoginProxyParams,
+  LoginProxyResponseInterface,
+  LoginProxyTransformInterface,
+} from "./type";
 
-const loginTransform = (res: any): LoginProxyResponseInterface => {
+const loginTransform = (
+  res: LoginProxyTransformInterface
+): LoginProxyResponseInterface => {
+  console.log(res);
   const transform = {
     userInfo: {
       id: res?.user.id ?? "",
@@ -14,7 +21,7 @@ const loginTransform = (res: any): LoginProxyResponseInterface => {
       provider: res?.user.provider ?? "",
       externalId: res?.user.externalId ?? "",
       status: res?.user.status ?? "",
-      createAt: res?.user.createAt ?? "",
+      createdAt: res?.user.createdAt ?? "",
     },
     accessToken: res?.accessToken ?? "",
     refreshToken: res?.refreshToken ?? "",

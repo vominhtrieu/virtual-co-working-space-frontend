@@ -7,5 +7,5 @@ export interface UserInterface {
   provider: "local" | "google" | "facebook";
   externalId?: string;
   status: "active" | "inactive" | "blocked";
-  createAt: string;
+  createdAt: string;
 }

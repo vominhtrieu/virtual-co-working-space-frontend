@@ -15,13 +15,13 @@ function Login() {
       password: values.password,
     })
       .then((res) => {
-        console.log(res);
         if (res.status === ProxyStatusEnum.FAIL) {
           console.log("login fail");
           // show toast login fail
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
+          console.log(res.data);
           setAuthenticated(true);
           setUserInfo(res?.data.userInfo);
           saveDataLocal("user_id", res.data.userInfo.id);
