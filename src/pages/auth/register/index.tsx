@@ -19,6 +19,7 @@ function Register() {
       passwordConfirm: values.passwordConfirm
     })
       .then((res) => {
+        console.log(res);
         if (res.status === ProxyStatusEnum.FAIL) {
           console.log(res.message);
           toastError("register fail");
