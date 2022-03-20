@@ -1,5 +1,11 @@
 # Các thay đổi:
 
+## 20/03/2022
+
+- [improve] setup toastify
+- [improve] fix api and proxy structure
+- [feature] impl login proxy
+
 ## 10/03/2022
 
 - [ui] add login page
