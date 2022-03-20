@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import RegisterProxy from "../../services/proxy/auth/register";
 
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     isAuthenticated: false,
+    isRegister: false,
     user: null,
   },
   reducers: {
@@ -12,7 +14,9 @@ const authSlice = createSlice({
     onLoginByGoogle() {},
     onLoginByFacebook() {},
     onLogout() {},
-    onRegister() {},
+    onRegister(state, action) {
+      state.isRegister=true;
+    },
   },
 });
 
