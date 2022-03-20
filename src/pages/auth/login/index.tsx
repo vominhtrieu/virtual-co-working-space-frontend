@@ -23,6 +23,8 @@ function Login() {
     })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
+          console.log(res);
+          console.log(res.message);
           toastError(res.message ?? "Login fail");
         }
 

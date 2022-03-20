@@ -6,10 +6,12 @@ const axiosConfig: any = {
 
 export const HTTP_HEADER_KEY = {
   CONTENT_TYPE: "Content-Type",
+  MODE: "mode",
 };
 
 export const HTTP_HEADER_VALUE = {
   APPLICATION_JSON: "application/json",
+  CORS: "cors"
 };
 
 export interface ResponseInterface<T = any> {
@@ -21,6 +23,8 @@ const HttpClient = axios.create({
   axiosConfig,
   headers: {
     [HTTP_HEADER_KEY.CONTENT_TYPE]: HTTP_HEADER_VALUE.APPLICATION_JSON,
+    [HTTP_HEADER_KEY.MODE]: HTTP_HEADER_VALUE.CORS
+
   },
 });
 
