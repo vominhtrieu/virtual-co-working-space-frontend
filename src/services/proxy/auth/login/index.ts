@@ -10,7 +10,6 @@ import {
 const loginTransform = (
   res: LoginProxyTransformInterface
 ): LoginProxyResponseInterface => {
-  console.log(res);
   const transform = {
     userInfo: {
       id: res?.user.id ?? "",
