@@ -10,7 +10,7 @@ export default function LoadingBox(props) {
     return (
         <mesh {...props} castShadow={true} ref={ref}>
             <boxGeometry args={[1, 1, 1]} />
-            <meshStandardMaterial color={"white"} />
+            <meshToonMaterial color={"white"} />
         </mesh>
     );
 }

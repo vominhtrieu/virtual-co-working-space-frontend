@@ -6,47 +6,8 @@ import * as THREE from 'three'
 import {useEffect, useRef, useState} from 'react'
 import {useGLTF, useAnimations} from '@react-three/drei'
 import {useThree, useFrame} from '@react-three/fiber'
-import {GLTF} from 'three-stdlib/loaders/GLTFLoader'
-import {CollideEvent, Triplet, useCylinder} from '@react-three/cannon'
-
-type ActionName = 'Idle' | 'Walking'
-
-//type GLTFActions = Record<ActionName, THREE.AnimationAction>
-interface GLTFActions extends THREE.AnimationClip {
-    name: ActionName
-}
-
-type GLTFResult = GLTF & {
-    nodes: {
-        Cube001: THREE.SkinnedMesh
-        Cube001_1: THREE.SkinnedMesh
-        Cube001_2: THREE.SkinnedMesh
-        Hair_1: THREE.SkinnedMesh
-        Hair_2: THREE.SkinnedMesh
-        Shoe: THREE.SkinnedMesh
-        Plane: THREE.Mesh
-        mixamorigHips: THREE.Bone
-        Ctrl_ArmPole_IK_Left: THREE.Bone
-        Ctrl_Hand_IK_Left: THREE.Bone
-        Ctrl_ArmPole_IK_Right: THREE.Bone
-        Ctrl_Hand_IK_Right: THREE.Bone
-        Ctrl_Foot_IK_Left: THREE.Bone
-        Ctrl_LegPole_IK_Left: THREE.Bone
-        Ctrl_Foot_IK_Right: THREE.Bone
-        Ctrl_LegPole_IK_Right: THREE.Bone
-        Ctrl_Master: THREE.Bone
-    }
-    materials: {
-        Body: THREE.MeshStandardMaterial
-        Head: THREE.MeshStandardMaterial
-        ['Eye 2']: THREE.MeshStandardMaterial
-        ['Hair 1']: THREE.MeshStandardMaterial
-        ['Hair 2']: THREE.MeshStandardMaterial
-        Shoes: THREE.MeshStandardMaterial
-        ['Eye 1']: THREE.MeshStandardMaterial
-    }
-    animations: GLTFActions[]
-}
+import {useCylinder} from '@react-three/cannon'
+import {GLTFActions, GLTFResult, useCustomGLTF} from "../../helpers/utilities";
 
 type CharacterProps = JSX.IntrinsicElements['group'] & {
     hair: number,
@@ -62,42 +23,16 @@ type KeyProps = {
     ArrowLeft?: boolean,
     ArrowRight?: boolean,
     W?: boolean,
-    Ư?: boolean,
     S?: boolean,
     A?: boolean,
     D?: boolean
+    w?: boolean,
+    s?: boolean,
+    a?: boolean,
+    d?: boolean
 }
 
-function useCustomGLTF(path: string): GLTFResult {
-    const result = useGLTF(path) as GLTFResult;
-
-    const colors = new Uint8Array(2);
-
-    for (let c = 0; c <= colors.length; c++) {
-        colors[c] = (c / colors.length) * 256;
-    }
-
-    const gradientMap = new THREE.DataTexture(colors, colors.length, 1, THREE.RedFormat);
-    gradientMap.needsUpdate = true;
-
-    if (result.materials) {
-        for (let key in result.materials) {
-            const currentMaterial = result.materials[key];
-
-            const material = new THREE.MeshToonMaterial({
-                color: currentMaterial.color,
-                gradientMap: gradientMap,
-                map: currentMaterial.map,
-            });
-
-            result.materials[key] = material;
-        }
-    }
-
-    return result;
-}
-
-const MovingSpeed: number = 5;
+const MovingSpeed: number = 6;
 export default function Character(props: CharacterProps) {
     const group = useRef<THREE.Group>()
     const [ref, api] = useCylinder(() => ({
@@ -107,11 +42,12 @@ export default function Character(props: CharacterProps) {
         mass: 1,
     }))
     const rotateAngle = useRef<THREE.Vector3>(new THREE.Vector3(0, 1, 0));
-    const rotateQuarternion = useRef(new THREE.Quaternion());
+    const rotateQuaternion = useRef(new THREE.Quaternion());
     const walkDirection = useRef(new THREE.Vector3());
     const currentClip = useRef<THREE.AnimationClip>(null);
     const {nodes, materials, animations} = useCustomGLTF('/models/Character.glb') as GLTFResult
-    const {actions, mixer} = useAnimations<GLTFActions>(animations, group)
+    const {actions, mixer} = useAnimations<GLTFActions>(animations, group);
+
     const {orbitRef} = props;
     const [keyPressed, setKeyPressed] = useState<KeyProps>({});
 
@@ -120,22 +56,22 @@ export default function Character(props: CharacterProps) {
         if (!keyPressed) {
             return vector;
         }
-        if (keyPressed.ArrowUp || keyPressed.W) {
+        if (keyPressed.ArrowUp || keyPressed.W || keyPressed.w) {
             vector.z = 1;
         }
-        if (keyPressed.ArrowDown || keyPressed.S) {
-            if (keyPressed.ArrowUp || keyPressed.W) {
+        if (keyPressed.ArrowDown || keyPressed.S || keyPressed.s) {
+            if (keyPressed.ArrowUp || keyPressed.W || keyPressed.w) {
                 vector.z = 0;
             } else {
                 vector.z = -1;
             }
         }
 
-        if (keyPressed.ArrowRight || keyPressed.D) {
+        if (keyPressed.ArrowRight || keyPressed.D || keyPressed.d) {
             vector.x = 1;
         }
-        if (keyPressed.ArrowLeft || keyPressed.A) {
-            if (keyPressed.ArrowRight || keyPressed.D) {
+        if (keyPressed.ArrowLeft || keyPressed.A || keyPressed.a) {
+            if (keyPressed.ArrowRight || keyPressed.D || keyPressed.d) {
                 vector.x = 0;
             } else {
                 vector.x = -1;
@@ -194,8 +130,8 @@ export default function Character(props: CharacterProps) {
                 camera.position.z - ref.current.position.z
             );
             const directionOffset = getDirectionOffset();
-            rotateQuarternion.current.setFromAxisAngle(rotateAngle.current, yCameraDirection + directionOffset);
-            ref.current.quaternion.rotateTowards(rotateQuarternion.current, delta * 10);
+            rotateQuaternion.current.setFromAxisAngle(rotateAngle.current, yCameraDirection + directionOffset);
+            ref.current.quaternion.rotateTowards(rotateQuaternion.current, delta * 10);
             camera.getWorldDirection(walkDirection.current);
             walkDirection.current.y = 0;
             walkDirection.current.normalize();
@@ -250,7 +186,7 @@ export default function Character(props: CharacterProps) {
     return (
         <>
             <mesh ref={ref} {...props}>
-                <group position={[0,-1,0]} dispose={null}>
+                <group position={[0, -1, 0]} dispose={null}>
                     <primitive object={nodes.mixamorigHips}/>
                     <primitive object={nodes.Ctrl_ArmPole_IK_Left}/>
                     <primitive object={nodes.Ctrl_Hand_IK_Left}/>
