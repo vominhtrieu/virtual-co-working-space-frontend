@@ -8,6 +8,8 @@ import {useGLTF, useAnimations} from '@react-three/drei'
 import {useThree, useFrame} from '@react-three/fiber'
 import {GLTF} from 'three-stdlib/loaders/GLTFLoader'
 import {CollideEvent, Triplet, useCylinder} from '@react-three/cannon'
+import socket from '../../services/socket/socket'
+import { loadPlugin } from 'immer/dist/internal'
 
 type ActionName = 'Idle' | 'Walking'
 
@@ -62,7 +64,6 @@ type KeyProps = {
     ArrowLeft?: boolean,
     ArrowRight?: boolean,
     W?: boolean,
-    Ư?: boolean,
     S?: boolean,
     A?: boolean,
     D?: boolean
@@ -114,6 +115,21 @@ export default function Character(props: CharacterProps) {
     const {actions, mixer} = useAnimations<GLTFActions>(animations, group)
     const {orbitRef} = props;
     const [keyPressed, setKeyPressed] = useState<KeyProps>({});
+
+    const position = useRef([0, 0, 0])
+    const updatedPosition = useRef(props.startPosition)
+
+    useEffect(() => {
+        socket.emit("office_member:join", {
+            officeId: "4"
+        })
+    }, [])
+
+    useEffect(() => {
+        api.position.subscribe((v) => {
+            position.current = v;
+        })
+    }, [api.position])
 
     const getMovingVector = () => {
         const vector = new THREE.Vector3();
@@ -174,6 +190,10 @@ export default function Character(props: CharacterProps) {
         return directionOffset;
     };
 
+    const shouldUpdate = () => {
+        return Math.sqrt(Math.pow(position.current[0] - updatedPosition.current[0], 2) + Math.pow(position.current[2] - updatedPosition.current[2], 2)) > 0.1
+    }
+
     useThree(({camera}) => {
         if (!props.moveable) {
             camera.position.set(0, 0, 5);
@@ -209,10 +229,34 @@ export default function Character(props: CharacterProps) {
             if (orbitRef.current) {
                 orbitRef.current.target = ref.current.position;
             }
+
+            updatedPosition.current = position.current;
+            
+            socket.emit("office_member:move", {
+                xRotation: 0,
+                yRotation: 1,
+                zRotation: 5,
+                xPosition: position.current[0],
+                yPosition: position.current[1],
+                zPosition: position.current[2]
+            })
+
         } else {
             clip = actions.Idle;
             api.velocity.set(0, 0, 0);
         }
+        
+        //update from remote position
+        if (shouldUpdate()) {
+            walkDirection.current = new THREE.Vector3(updatedPosition.current[0] - position.current[0], 0, updatedPosition.current[2] - position.current[2]);
+            walkDirection.current.y = 0;
+            walkDirection.current.normalize();
+            const moveX = walkDirection.current.x * MovingSpeed;
+            const moveZ = walkDirection.current.z * MovingSpeed;
+
+            api.velocity.set(moveX, 0, moveZ);
+        }
+
         if (clip && clip !== currentClip.current) {
             if (currentClip.current) {
                 currentClip.current.fadeOut(0.2);
@@ -246,6 +290,17 @@ export default function Character(props: CharacterProps) {
             api.position.set(props.startPosition[0], props.startPosition[1], props.startPosition[2]);
         }
     }, [ref.current, props.startPosition]);
+
+    socket.on("office_member:moved", (message) => {
+        updatedPosition.current = [message.xPosition, message.yPosition, message.zPosition];
+        
+        // const walkDirection = new THREE.Vector3(message.xPosition - position.current[0], 0, message.zPosition - position.current[2]);
+        // walkDirection.normalize();
+        // const moveX = walkDirection.x * MovingSpeed;
+        // const moveZ = walkDirection.z * MovingSpeed;
+
+        // api.velocity.set(moveX, 0, moveZ);
+    })
 
     return (
         <>
