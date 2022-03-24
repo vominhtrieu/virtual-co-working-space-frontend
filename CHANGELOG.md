@@ -1,9 +1,11 @@
 # Các thay đổi:
 
+## 24/03/2022
+
 - [ui] thêm `sidebar`
 - [ui] thêm mục `user profile` ở `sidebar`
 - [ui] thêm mục `settings` ở `sidebar`
-- [ui] thêm mục `officer` ở `sidebar`
+- [ui] thêm mục `offices` ở `sidebar`
 
 ## 20/03/2022
 
