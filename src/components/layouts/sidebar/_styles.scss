@@ -1,12 +1,16 @@
+.sidebar-container {
+  display: flex;
+}
+
 .sidebar {
   width: 6rem;
   height: 100vh;
-  background-color: $color-primary;
+  background-color: $color-primary-dark;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 0;
+  padding-top: 2rem;
 
   &__logo {
     width: 4rem;
@@ -25,6 +29,9 @@
 
   &__items {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   &__item {
@@ -35,7 +42,7 @@
     cursor: pointer;
 
     &:hover {
-      background-color: $color-primary-dark;
+      background-color: $color-primary;
     }
   }
 
@@ -46,5 +53,18 @@
   &__icon {
     font-size: 2.5rem;
     color: $color-primary-light;
+  }
+
+  &__bar-line {
+    width: 70%;
+    height: 1px;
+    background-color: $color-gray;
+  }
+
+  &__user-img {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    object-fit: cover;
   }
 }

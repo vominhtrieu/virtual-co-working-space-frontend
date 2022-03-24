@@ -1,0 +1,63 @@
+.sidebar-user {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  height: 100%;
+
+  &__title {
+    font-size: $font-title;
+    color: $color-white;
+    font-weight: 700;
+    margin-bottom: 2rem;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+  }
+
+  &__info {
+    font-size: $font-text-small;
+    color: $color-white;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+
+    &-title {
+      flex: 0 0 30%;
+      font-weight: 600;
+    }
+
+    &-content {
+      flex: 0 0 70%;
+    }
+  }
+
+  &__logout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 1rem;
+
+    &:hover {
+      background-color: $color-primary-light;
+    }
+
+    &-title {
+      font-weight: 600;
+      color: $color-white;
+      font-size: $font-text;
+    }
+
+    &-icon {
+      font-size: $font-icon;
+      color: $color-white;
+    }
+  }
+}
