@@ -1,0 +1,63 @@
+.sidebar-offices {
+  padding: 2rem;
+
+  &__title {
+    font-size: $font-title;
+    font-weight: 700;
+    color: $color-white;
+    margin-bottom: 1.5rem;
+  }
+
+  &__group {
+    margin-bottom: 2rem;
+  }
+
+  &__group-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  &__header-title {
+    font-size: $font-subtitle;
+    font-weight: 600;
+    color: $color-white;
+  }
+
+  &__header-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    padding: 0.5rem;
+    font-size: $font-icon;
+    color: $color-white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: $color-primary-light;
+    }
+  }
+
+  &__item {
+    display: flex;
+    margin-left: 1rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: $color-primary-light;
+    }
+
+    &-icon {
+      margin-right: 1rem;
+      color: $color-white;
+      font-size: $font-icon;
+    }
+
+    &-text {
+      font-size: $font-text;
+      color: $color-white;
+    }
+  }
+}

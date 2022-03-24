@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { BsFillChatFill } from "react-icons/bs";
-import { FaUserAlt } from "react-icons/fa";
+import { MdMeetingRoom } from "react-icons/md";
 import { RiSettings4Fill } from "react-icons/ri";
+import Offices from "./offices";
 import SidebarSettings from "./settings";
 import SidebarUser from "./userInfo";
 
@@ -22,7 +23,17 @@ const Sidebar = () => {
               <BsFillChatFill className='sidebar__icon' />
             </li>
             <li className='sidebar__item'>
-              <FaUserAlt className='sidebar__icon' />
+              <MdMeetingRoom
+                className='sidebar__icon'
+                onClick={() =>
+                  setSidebarOpen((curr) => {
+                    if (curr === "office") {
+                      return "";
+                    }
+                    return "office";
+                  })
+                }
+              />
             </li>
             <li
               className='sidebar__item'
@@ -61,6 +72,7 @@ const Sidebar = () => {
 
       {sidebarOpen === "settings" ? <SidebarSettings /> : null}
       {sidebarOpen === "user" ? <SidebarUser /> : null}
+      {sidebarOpen === "office" ? <Offices /> : null}
     </div>
   );
 };

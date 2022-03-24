@@ -1,5 +1,10 @@
 # Các thay đổi:
 
+- [ui] thêm `sidebar`
+- [ui] thêm mục `user profile` ở `sidebar`
+- [ui] thêm mục `settings` ở `sidebar`
+- [ui] thêm mục `officer` ở `sidebar`
+
 ## 20/03/2022
 
 - [improve] setup toastify
