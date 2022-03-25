@@ -132,7 +132,7 @@ const WorkspaceCustom = () => {
         <Physics gravity={[0,0,0]}>
           <Debug>
           <Suspense fallback={<Box />}>
-            <Office castShadow={true} />
+            <Office castShadow={true} position={[0,-2, 0]} />
             {objectList.map((object, idx) => (
               <mesh
                 castShadow={true}
