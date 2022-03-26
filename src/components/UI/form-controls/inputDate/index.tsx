@@ -12,7 +12,7 @@ const InputDate = ({ name, control, hasLabel, ...rest }: InputDateProps) => {
   const label = rest.placeholder ? rest.placeholder : name;
 
   return (
-    <>
+    <div className='date-picker'>
       {hasLabel ? (
         <label htmlFor={name} className='input-date-label'>
           {label}
@@ -33,7 +33,7 @@ const InputDate = ({ name, control, hasLabel, ...rest }: InputDateProps) => {
         {...rest}
       />
       {error ? <p className='error-message'>{error.message}</p> : null}
-    </>
+    </div>
   );
 };
 

@@ -11,7 +11,7 @@ const InputText = ({ name, control, hasLabel, ...rest }: InputTextProps) => {
   const label = rest.placeholder ? rest.placeholder : name;
 
   return (
-    <>
+    <div className='input-text'>
       {hasLabel ? (
         <label htmlFor={name} className='input-label'>
           {label}
@@ -28,7 +28,7 @@ const InputText = ({ name, control, hasLabel, ...rest }: InputTextProps) => {
         {...rest}
       />
       {error ? <p className='error-message'>{error.message}</p> : null}
-    </>
+    </div>
   );
 };
 

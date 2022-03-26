@@ -2,9 +2,20 @@ import { useForm } from "react-hook-form";
 import Button from "../../../../UI/button";
 import InputDate from "../../../../UI/form-controls/inputDate";
 import InputText from "../../../../UI/form-controls/inputText";
-import { EditProfileInputInterface } from "./types";
+import { EditProfileFormDataInterface, EditProfileFormProps, EditProfileInputInterface } from "./types";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-const EditProfileForm = () => {
+const EditProfileForm = (props: EditProfileFormProps) => {
+  const { onClose } = props;
+
+  const schema = yup.object().shape({
+    name: yup.string().required("Name is required"),
+    email: yup.string().email("Invalid email").required("Email is required"),
+    phone: yup.string().required("Phone is required"),
+    createdAt: yup.string().required("Join date is required"),
+  });
+
   const { control, handleSubmit } = useForm<EditProfileInputInterface>({
     defaultValues: {
       name: "Võ Minh Triều",
@@ -12,10 +23,17 @@ const EditProfileForm = () => {
       phone: "0123456789",
       createdAt: "01/01/2015",
     },
+    resolver: yupResolver(schema),
   });
 
   const handleEditProfileSubmit = (data: EditProfileInputInterface) => {
-    console.log(data);
+    const formatData: EditProfileFormDataInterface = {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      createdAt: data.createdAt,
+    };
+    console.log(formatData);
   };
 
   return (
@@ -52,7 +70,7 @@ const EditProfileForm = () => {
           Lưu thay đổi
         </Button>
 
-        <Button type='reset' variant='outlined'>
+        <Button type='reset' variant='outlined' onClick={onClose}>
           Huỷ
         </Button>
       </div>

@@ -1,3 +1,7 @@
+export interface EditProfileFormProps {
+  onClose: () => void;
+}
+
 export interface EditProfileInputInterface {
   name: string;
   email: string;
@@ -9,5 +13,5 @@ export interface EditProfileFormDataInterface {
   name: string;
   email: string;
   phone: string;
-  createdAt: number;
+  createdAt: string;
 }
