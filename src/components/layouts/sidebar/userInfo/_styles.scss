@@ -19,21 +19,22 @@
   }
 
   &__info {
-    font-size: $font-text-small;
+    font-size: $font-text;
     color: $color-white;
   }
 
   &__item {
     display: flex;
     align-items: center;
+    margin-bottom: 1rem;
 
     &-title {
-      flex: 0 0 30%;
+      flex: 0 0 40%;
       font-weight: 600;
     }
 
     &-content {
-      flex: 0 0 70%;
+      flex: 0 0 60%;
     }
   }
 
@@ -59,5 +60,9 @@
       font-size: $font-icon;
       color: $color-white;
     }
+  }
+
+  &__group-btn {
+    display: flex;
   }
 }

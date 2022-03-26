@@ -1,5 +1,9 @@
 # Các thay đổi:
 
+## 26/03/2022
+
+- [feature] Thêm `InputDate`
+
 ## 24/03/2022
 
 - [ui] thêm `sidebar`

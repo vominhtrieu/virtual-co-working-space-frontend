@@ -1,8 +1,9 @@
-import { Input } from "antd";
+import { DatePicker } from "antd";
 import { useController } from "react-hook-form";
-import { InputTextProps } from "./types";
+import { InputDateProps } from "./types";
+import moment from "moment";
 
-const InputText = ({ name, control, hasLabel, ...rest }: InputTextProps) => {
+const InputDate = ({ name, control, hasLabel, ...rest }: InputDateProps) => {
   const {
     field,
     fieldState: { error },
@@ -11,20 +12,24 @@ const InputText = ({ name, control, hasLabel, ...rest }: InputTextProps) => {
   const label = rest.placeholder ? rest.placeholder : name;
 
   return (
-    <div className='input-text'>
+    <div className='date-picker'>
       {hasLabel ? (
-        <label htmlFor={name} className='input-label'>
+        <label htmlFor={name} className='input-date-label'>
           {label}
         </label>
       ) : null}
-      <Input
+      <DatePicker
         className={error ? "error" : ""}
         autoComplete='off'
         ref={field.ref}
         onBlur={field.onBlur}
-        value={field.value}
         id={name}
-        onChange={(e) => field.onChange(e.target.value)}
+        format='DD/MM/YYYY'
+        value={field.value ? moment(field.value, "DD/MM/YYYY") : null}
+        placeholder=''
+        onChange={(date, dateString) => {
+          field.onChange(dateString);
+        }}
         {...rest}
       />
       {error ? <p className='error-message'>{error.message}</p> : null}
@@ -32,4 +37,4 @@ const InputText = ({ name, control, hasLabel, ...rest }: InputTextProps) => {
   );
 };
 
-export default InputText;
+export default InputDate;

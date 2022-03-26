@@ -17,8 +17,7 @@
 .ant-input {
   background-color: transparent;
   color: #fff;
-  margin-left: 1rem;
-  font-size: 1.8rem;
+  font-size: $font-text;
 }
 
 .input-label {
@@ -34,4 +33,10 @@
 .error-message {
   color: red;
   font-size: 1.6rem;
+}
+
+.input-text {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
