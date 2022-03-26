@@ -2,10 +2,10 @@ import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../components/Button";
 import BottomMenu from "../components/Controls/BottomMenu";
 import Box from "../components/Models/Box";
 import Character from "../components/Models/Character";
+import Button from "../components/UI/button";
 import CharacterContext from "../context/CharacterContext";
 
 const itemGroups = [
@@ -103,7 +103,10 @@ const CharacterCustom = () => {
           <Button onClick={() => navigate("/workspace")}>Save</Button>
         </div>
         <div style={{ height: "100%" }}></div>
-        <BottomMenu itemGroups={itemGroups} onItemClick={handleBottomMenuItemClick} />
+        <BottomMenu
+          itemGroups={itemGroups}
+          onItemClick={handleBottomMenuItemClick}
+        />
       </div>
     </>
   );

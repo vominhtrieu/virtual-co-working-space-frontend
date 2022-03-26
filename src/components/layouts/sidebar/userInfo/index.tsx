@@ -1,5 +1,6 @@
 import { RiLogoutBoxRFill } from "react-icons/ri";
 import SidebarBox from "../sidebarBox";
+import EditProfileForm from "./editProfileForm";
 
 const SidebarUser = () => {
   return (
@@ -9,32 +10,7 @@ const SidebarUser = () => {
         <div className='sidebar-user__container'>
           {/* user info - start */}
           <div className='sidebar-user__info'>
-            <ul className='sidebar-user__items'>
-              {/* user item - start */}
-              <li className='sidebar-user__item'>
-                <div className='sidebar-user__item-title'>Họ và tên:</div>
-                <div className='sidebar-user__item-content'>Võ Minh Triều</div>
-              </li>
-              {/* user item - end */}
-              {/* user item - start */}
-              <li className='sidebar-user__item'>
-                <div className='sidebar-user__item-title'>Tuổi:</div>
-                <div className='sidebar-user__item-content'>22</div>
-              </li>
-              {/* user item - end */}
-              {/* user item - start */}
-              <li className='sidebar-user__item'>
-                <div className='sidebar-user__item-title'>Quê quán:</div>
-                <div className='sidebar-user__item-content'>Long An</div>
-              </li>
-              {/* user item - end */}
-              {/* user item - start */}
-              <li className='sidebar-user__item'>
-                <div className='sidebar-user__item-title'>Nơi ở:</div>
-                <div className='sidebar-user__item-content'>TP Hồ Chí Minh</div>
-              </li>
-              {/* user item - end */}
-            </ul>
+            <EditProfileForm />
           </div>
           {/* user info - end */}
 

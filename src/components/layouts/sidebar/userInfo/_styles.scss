@@ -26,6 +26,7 @@
   &__item {
     display: flex;
     align-items: center;
+    margin-bottom: 1rem;
 
     &-title {
       flex: 0 0 30%;
@@ -59,5 +60,9 @@
       font-size: $font-icon;
       color: $color-white;
     }
+  }
+
+  &__group-btn {
+    display: flex;
   }
 }

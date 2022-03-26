@@ -1,0 +1,22 @@
+.ant-picker {
+  background-color: transparent;
+  color: #fff;
+  padding: 0.5rem 1.5rem;
+  font-size: 2rem;
+  width: 100%;
+
+  input {
+    color: #fff;
+  }
+}
+
+.ant-picker-suffix {
+  color: $color-white;
+}
+
+.input-date-label {
+  color: #fff;
+  font-size: 1.6rem;
+  text-transform: capitalize;
+  font-size: 1.8rem;
+}

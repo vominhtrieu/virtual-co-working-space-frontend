@@ -1,0 +1,30 @@
+.btn {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  font-size: $font-text;
+  cursor: pointer;
+
+  &--primary {
+    background-color: $color-primary-light;
+    color: $color-white;
+    outline: none;
+    border: none;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: $color-primary-dark;
+    }
+  }
+
+  &--outlined {
+    background-color: transparent;
+    color: $color-white;
+    outline: none;
+    border: 1px solid $color-primary-light;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: $color-primary-light;
+    }
+  }
+}

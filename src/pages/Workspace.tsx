@@ -5,7 +5,6 @@ import { FaEdit, FaList, FaTrash, FaUserEdit } from "react-icons/fa";
 import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import Button from "../components/Button";
 import BottomMenu from "../components/Controls/BottomMenu";
 import CustomTransformControl from "../components/Controls/CustomTransformControl";
 import Box from "../components/Models/Box";
@@ -13,6 +12,7 @@ import Character from "../components/Models/Character";
 import ObjectProperties from "../components/Models/ObjectProperties";
 import Office from "../components/Models/Office";
 import CharacterContext from "../context/CharacterContext";
+import Button from "../components/UI/button";
 
 const itemGroups = [
   {
@@ -42,7 +42,9 @@ const itemGroups = [
 
 const WorkspaceCustom = () => {
   const orbitRef = useRef(null);
-  const [objectList, setObjectList] = useState([{ key: uuidv4(), code: "Chair" }]);
+  const [objectList, setObjectList] = useState([
+    { key: uuidv4(), code: "Chair" },
+  ]);
   const [selectedKey, setSelectedKey] = useState(null);
   const [selectedObject, setSelectedObject] = useState<any>(null);
   const [objectActionVisible, setObjectActionVisible] = useState(false);
@@ -244,7 +246,10 @@ const WorkspaceCustom = () => {
               </Button>
             </div>
             {objectActionVisible && (
-              <div aria-label='actionContainer' style={{ pointerEvents: "none" }}>
+              <div
+                aria-label='actionContainer'
+                style={{ pointerEvents: "none" }}
+              >
                 <div
                   style={{
                     position: "absolute",
@@ -260,10 +265,14 @@ const WorkspaceCustom = () => {
                     <FaTrash style={{ width: "1.5rem", height: "1.5rem" }} />
                   </Button>
                   <Button onClick={handleButtonRotateLeftClick}>
-                    <BiRotateLeft style={{ width: "1.5rem", height: "1.5rem" }} />
+                    <BiRotateLeft
+                      style={{ width: "1.5rem", height: "1.5rem" }}
+                    />
                   </Button>
                   <Button onClick={handleButtonRotateRightClick}>
-                    <BiRotateRight style={{ width: "1.5rem", height: "1.5rem" }} />
+                    <BiRotateRight
+                      style={{ width: "1.5rem", height: "1.5rem" }}
+                    />
                   </Button>
                 </div>
               </div>
