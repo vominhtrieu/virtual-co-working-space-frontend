@@ -4,10 +4,24 @@ import Button from "../../../UI/button";
 import SidebarBox from "../sidebarBox";
 import ChangePasswordForm from "./changePassForm";
 import EditProfileForm from "./editProfileForm";
+import {
+  ChangePasswordFormValuesInterface,
+  EditProfileFormValuesInterface,
+} from "./types";
 
 const SidebarUser = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isChangingPass, setIsChangingPass] = useState(false);
+
+  const handleLogout = () => {};
+
+  const handleChangeProfile = (values: EditProfileFormValuesInterface) => {
+    console.log(values);
+  };
+
+  const handleChangePassword = (values: ChangePasswordFormValuesInterface) => {
+    console.log(values);
+  };
 
   return (
     <>
@@ -16,6 +30,7 @@ const SidebarUser = () => {
           onClose={() => {
             setIsChangingPass(false);
           }}
+          onSubmit={handleChangePassword}
         />
       ) : null}
       <SidebarBox>
@@ -29,6 +44,7 @@ const SidebarUser = () => {
                   onClose={() => {
                     setIsEditing(false);
                   }}
+                  onSubmit={handleChangeProfile}
                 />
               ) : (
                 <>
@@ -67,30 +83,32 @@ const SidebarUser = () => {
                     {/* user item - end */}
                   </ul>
 
-                  <Button
-                    variant='primary'
-                    onClick={() => {
-                      setIsEditing(true);
-                    }}
-                  >
-                    Chỉnh sửa thông tin
-                  </Button>
+                  <div className='sidebar-user__group-btn'>
+                    <Button
+                      variant='primary'
+                      onClick={() => {
+                        setIsEditing(true);
+                      }}
+                    >
+                      Chỉnh sửa thông tin
+                    </Button>
 
-                  <Button
-                    variant='primary'
-                    onClick={() => {
-                      setIsChangingPass(true);
-                    }}
-                  >
-                    Đổi mật khẩu
-                  </Button>
+                    <Button
+                      variant='primary'
+                      onClick={() => {
+                        setIsChangingPass(true);
+                      }}
+                    >
+                      Đổi mật khẩu
+                    </Button>
+                  </div>
                 </>
               )}
             </div>
             {/* user info - end */}
 
             {/* logout -start */}
-            <div className='sidebar-user__logout'>
+            <div className='sidebar-user__logout' onClick={handleLogout}>
               <div className='sidebar-user__logout-title'>Đăng xuất</div>
               <RiLogoutBoxRFill className='sidebar-user__logout-icon' />
             </div>

@@ -1,5 +1,6 @@
 export interface EditProfileFormProps {
   onClose: () => void;
+  onSubmit: (values: EditProfileFormDataInterface) => void;
 }
 
 export interface EditProfileInputInterface {

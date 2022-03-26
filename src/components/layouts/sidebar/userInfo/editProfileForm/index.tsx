@@ -2,12 +2,16 @@ import { useForm } from "react-hook-form";
 import Button from "../../../../UI/button";
 import InputDate from "../../../../UI/form-controls/inputDate";
 import InputText from "../../../../UI/form-controls/inputText";
-import { EditProfileFormDataInterface, EditProfileFormProps, EditProfileInputInterface } from "./types";
+import {
+  EditProfileFormDataInterface,
+  EditProfileFormProps,
+  EditProfileInputInterface,
+} from "./types";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 const EditProfileForm = (props: EditProfileFormProps) => {
-  const { onClose } = props;
+  const { onClose, onSubmit } = props;
 
   const schema = yup.object().shape({
     name: yup.string().required("Name is required"),
@@ -33,39 +37,39 @@ const EditProfileForm = (props: EditProfileFormProps) => {
       phone: data.phone,
       createdAt: data.createdAt,
     };
-    console.log(formatData);
+    onSubmit(formatData);
   };
 
   return (
     <form onSubmit={handleSubmit(handleEditProfileSubmit)}>
-      <ul className='sidebar-user__items'>
+      <ul className='edit-profile__items'>
         {/* user item - start */}
-        <li className='sidebar-user__item'>
-          <div className='sidebar-user__item-title'>Họ và tên:</div>
+        <li className='edit-profile__item'>
+          <div className='edit-profile__item-title'>Họ và tên:</div>
           <InputText control={control} name='name' />
         </li>
         {/* user item - end */}
         {/* user item - start */}
-        <li className='sidebar-user__item'>
-          <div className='sidebar-user__item-title'>Email:</div>
+        <li className='edit-profile__item'>
+          <div className='edit-profile__item-title'>Email:</div>
           <InputText control={control} name='email' />
         </li>
         {/* user item - end */}
         {/* user item - start */}
-        <li className='sidebar-user__item'>
-          <div className='sidebar-user__item-title'>Điện thoại:</div>
+        <li className='edit-profile__item'>
+          <div className='edit-profile__item-title'>Điện thoại:</div>
           <InputText control={control} name='phone' />
         </li>
         {/* user item - end */}
         {/* user item - start */}
-        <li className='sidebar-user__item'>
-          <div className='sidebar-user__item-title'>Ngày tham gia:</div>
+        <li className='edit-profile__item'>
+          <div className='edit-profile__item-title'>Ngày tham gia:</div>
           <InputDate control={control} name='createdAt' />
         </li>
         {/* user item - end */}
       </ul>
 
-      <div className='sidebar-user__group-btn'>
+      <div className='edit-profile__group-btn'>
         <Button type='submit' variant='primary'>
           Lưu thay đổi
         </Button>
