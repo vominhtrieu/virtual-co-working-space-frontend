@@ -12,7 +12,7 @@ import {GLTFActions, GLTFResult, useCustomGLTF} from "../../helpers/utilities";
 type CharacterProps = JSX.IntrinsicElements['group'] & {
     hair: number,
     eyes: number,
-    moveable: boolean,
+    movable: boolean,
     startPosition: number[],
     orbitRef?: any
 }
@@ -110,19 +110,15 @@ export default function Character(props: CharacterProps) {
         return directionOffset;
     };
 
-    useThree(({camera}) => {
-        if (!props.moveable) {
-            camera.position.set(0, 0, 5);
-            camera.rotation.set(0, 0, 0);
-        }
-    });
+    useEffect(()=>{
+        
+    })
 
     useFrame((state, delta) => {
         const {camera} = state;
-
-        //api.position.set(0.1, 0, 0);
         let clip: THREE.AnimationClip = null;
-        if (props.moveable && isMoving()) {
+
+        if (props.movable && isMoving()) {
             clip = actions.Walking;
 
             const yCameraDirection = Math.atan2(
@@ -136,11 +132,14 @@ export default function Character(props: CharacterProps) {
             walkDirection.current.y = 0;
             walkDirection.current.normalize();
             walkDirection.current.applyAxisAngle(rotateAngle.current, directionOffset + Math.PI);
-            const moveX = walkDirection.current.x * MovingSpeed;
-            const moveZ = walkDirection.current.z * MovingSpeed;
+            console.log(directionOffset);
+            const moveX = walkDirection.current.x * MovingSpeed ;
+            const moveZ = walkDirection.current.z * MovingSpeed ;
 
             api.velocity.set(moveX, 0, moveZ);
-            // api.position.set(position.current[0] + moveX, position.current[1], position.current[2] + moveZ);
+
+            // camera.position.copy(api.position);
+            api.quaternion.copy(ref.current.quaternion)
 
             if (orbitRef.current) {
                 orbitRef.current.target = ref.current.position;
@@ -162,7 +161,7 @@ export default function Character(props: CharacterProps) {
 
     useEffect(() => {
         actions.Idle?.play();
-        if (!props.moveable) {
+        if (!props.movable) {
             return;
         }
 
@@ -174,19 +173,20 @@ export default function Character(props: CharacterProps) {
         });
 
         orbitRef.current.target = ref.current?.position;
-    }, [actions.Idle, orbitRef, ref, props.moveable]);
+    }, [orbitRef, ref, props.movable]);
 
     useEffect(() => {
         if (ref.current) {
             ref.current.position.set(props.startPosition[0], props.startPosition[1], props.startPosition[2]);
             api.position.set(props.startPosition[0], props.startPosition[1], props.startPosition[2]);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ref.current, props.startPosition]);
-
+    console.log(actions);
     return (
         <>
             <mesh ref={ref} {...props}>
-                <group position={[0, -1, 0]} dispose={null}>
+                <group ref={group} position={[0, -1, 0]} dispose={null}>
                     <primitive object={nodes.mixamorigHips}/>
                     <primitive object={nodes.Ctrl_ArmPole_IK_Left}/>
                     <primitive object={nodes.Ctrl_Hand_IK_Left}/>

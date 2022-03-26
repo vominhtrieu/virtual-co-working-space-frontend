@@ -150,7 +150,7 @@ const WorkspaceCustom = () => {
                 eyes={character.eyeStyle}
                 startPosition={[0, 0.5, 2]}
                 scale={[2, 2, 2]}
-                moveable={true}
+                movable={true}
                 orbitRef={orbitRef}
               />
             )}
