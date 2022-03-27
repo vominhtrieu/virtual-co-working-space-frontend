@@ -11,13 +11,11 @@ import InputText from "../../../../UI/form-controls/inputText";
 import Button from "../../../../UI/button";
 
 const ChangePasswordForm = (props: ChangePasswordFormProps) => {
-  const { onClose } = props;
+  const { onClose, onSubmit } = props;
 
   const schema = yup.object().shape({
-    name: yup.string().required("Name is required"),
-    email: yup.string().email("Invalid email").required("Email is required"),
-    phone: yup.string().required("Phone is required"),
-    createdAt: yup.string().required("Join date is required"),
+    password: yup.string().required("Password is required"),
+    confirmPassword: yup.string().required("Confirm password is required"),
   });
 
   const { control, handleSubmit } = useForm<ChangePasswordInputInterface>({
@@ -33,7 +31,7 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
       password: data.password,
       confirmPassword: data.confirmPassword,
     };
-    console.log(formatData);
+    onSubmit(formatData);
   };
 
   return (
@@ -64,7 +62,7 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
             Thay đổi
           </Button>
 
-          <Button type='reset' variant='outlined'>
+          <Button type='reset' variant='outlined' onClick={onClose}>
             Huỷ
           </Button>
         </div>

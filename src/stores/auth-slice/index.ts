@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "..";
 import { getDataLocal } from "../../helpers/localStorage";
 
 const user_id = getDataLocal("user_id");
@@ -19,6 +20,12 @@ const authSlice = createSlice({
     },
   },
 });
+
+const getUserInfo = (state: RootState) => state.auth.user;
+
+export const userSelectors = {
+  getUserInfo,
+};
 
 const { actions, reducer } = authSlice;
 export const { setAuthenticated, setUserInfo } = actions;

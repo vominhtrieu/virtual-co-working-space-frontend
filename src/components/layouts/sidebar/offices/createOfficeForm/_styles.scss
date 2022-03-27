@@ -1,0 +1,18 @@
+.create-office-form {
+  &__title {
+    font-size: $font-title;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: $color-white;
+  }
+
+  &__input-block {
+    margin-bottom: 2rem;
+  }
+
+  &__group-btn {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 2rem;
+  }
+}

@@ -1,5 +1,6 @@
 export interface ChangePasswordFormProps {
   onClose: () => void;
+  onSubmit: (values: ChangePasswordFormDataInterface) => void;
 }
 
 export interface ChangePasswordInputInterface {

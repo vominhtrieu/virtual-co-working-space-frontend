@@ -1,31 +1,29 @@
 import axios from "axios";
+import { getDataLocal } from "./localStorage";
 
-const accessToken=localStorage.getItem("access_token");
-console.log(accessToken);
-
-const axiosConfig: any = {
-  timeOut: 3000,
-};
+const accessToken = getDataLocal("access_token");
 
 export const HTTP_HEADER_KEY = {
   CONTENT_TYPE: "Content-Type",
-  AUTHORIZATION: "Authorization"
+  AUTHORIZATION: "Authorization",
 };
 
 export const HTTP_HEADER_VALUE = {
   APPLICATION_JSON: "application/json",
-  BEARTOKEN: accessToken?"Bearer " + accessToken:"",
+  BEARTOKEN: accessToken ? "Bearer " + accessToken : "",
 };
 
 export interface ResponseInterface<T = any> {
   data?: T;
 }
 
+console.log(HTTP_HEADER_KEY.CONTENT_TYPE, HTTP_HEADER_VALUE.BEARTOKEN);
+
 const HttpClient = axios.create({
-  //@ts-ignore
-  axiosConfig,
+  baseURL: process.env.REACT_APP_BASE_URL,
+  timeout: 3000,
   headers: {
-    [HTTP_HEADER_KEY.CONTENT_TYPE]: HTTP_HEADER_VALUE.APPLICATION_JSON,
+    "Content-Type": "application/x-www-form-urlencoded",
     [HTTP_HEADER_KEY.AUTHORIZATION]: HTTP_HEADER_VALUE.BEARTOKEN,
   },
 });
