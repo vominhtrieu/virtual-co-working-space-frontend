@@ -22,9 +22,11 @@ const authSlice = createSlice({
 });
 
 const getUserInfo = (state: RootState) => state.auth.user;
+const getIsAuthenticated = (state: RootState) => state.auth.isAuthenticated;
 
 export const userSelectors = {
   getUserInfo,
+  getIsAuthenticated,
 };
 
 const { actions, reducer } = authSlice;

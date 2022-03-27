@@ -1,10 +1,14 @@
-import { UserInterface } from "../../../../types/user";
-
 export interface UserApiResponseInterface {
-    user: UserInterface;
-    status?: string;
-    code?: number;
-    message?: string;
-    errors?: any[];
-  }
-  
+  id: string;
+  email: string;
+  name: string;
+  phone?: string;
+  avatar?: string;
+  provider: "local" | "google" | "facebook";
+  externalId?: string;
+  status: "active" | "inactive" | "blocked";
+  createdAt: string;
+  code?: number;
+  message?: string;
+  errors?: any[];
+}

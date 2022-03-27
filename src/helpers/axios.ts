@@ -9,23 +9,30 @@ export const HTTP_HEADER_KEY = {
 };
 
 export const HTTP_HEADER_VALUE = {
-  APPLICATION_JSON: "application/json",
-  BEARTOKEN: accessToken ? "Bearer " + accessToken : "",
+  APPLICATION_JSON: "Application/json",
+  BEARTOKEN: "Bearber " + accessToken,
 };
 
 export interface ResponseInterface<T = any> {
   data?: T;
 }
 
-console.log(HTTP_HEADER_KEY.CONTENT_TYPE, HTTP_HEADER_VALUE.BEARTOKEN);
+const HttpClient = accessToken
+  ? axios.create({
+      baseURL: process.env.REACT_APP_BASE_URL,
+      timeout: 3000,
+      headers: {
+        [HTTP_HEADER_KEY.CONTENT_TYPE]: HTTP_HEADER_VALUE.APPLICATION_JSON,
+        [HTTP_HEADER_KEY.AUTHORIZATION]: HTTP_HEADER_VALUE.BEARTOKEN,
+      },
+    })
+  : axios.create({
+      baseURL: process.env.REACT_APP_BASE_URL,
+      timeout: 3000,
+      headers: {
+        [HTTP_HEADER_KEY.CONTENT_TYPE]: HTTP_HEADER_VALUE.APPLICATION_JSON,
+      },
+    });
 
-const HttpClient = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
-  timeout: 3000,
-  headers: {
-    "Content-Type": "application/x-www-form-urlencoded",
-    [HTTP_HEADER_KEY.AUTHORIZATION]: HTTP_HEADER_VALUE.BEARTOKEN,
-  },
-});
 
 export default HttpClient;
