@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const accessToken=localStorage.getItem("access_token");
+console.log(accessToken);
 
 const axiosConfig: any = {
   timeOut: 3000,
