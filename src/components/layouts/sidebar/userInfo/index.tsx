@@ -1,7 +1,10 @@
-
-import { useSelector } from "react-redux";
-import { useState, useEffect} from "react";
+import { useEffect, useState } from "react";
 import { RiLogoutBoxRFill } from "react-icons/ri";
+import { toastError } from "../../../../helpers/toast";
+import ProfileProxy from "../../../../services/proxy/users/get-profile";
+import { useAppDispatch, useAppSelector } from "../../../../stores";
+import { setUserInfo, userSelectors } from "../../../../stores/auth-slice";
+import { ProxyStatusEnum } from "../../../../types/http/proxy/ProxyStatus";
 import Button from "../../../UI/button";
 import SidebarBox from "../sidebarBox";
 import ChangePasswordForm from "./changePassForm";
@@ -11,14 +14,7 @@ import {
   EditProfileFormValuesInterface,
 } from "./types";
 
-import { toastError, toastSuccess } from "../../../../helpers/toast";
-import { useAppDispatch } from "../../../../stores";
-import { ProxyStatusEnum } from "../../../../types/http/proxy/ProxyStatus";
-import { setUserInfo } from "../../../../stores/auth-slice";
-import ProfileProxy from "../../../../services/proxy/users/get-profile";
-
 const SidebarUser = () => {
-  
   const [isEditing, setIsEditing] = useState(false);
   const [isChangingPass, setIsChangingPass] = useState(false);
 
@@ -31,22 +27,19 @@ const SidebarUser = () => {
   const handleChangePassword = (values: ChangePasswordFormValuesInterface) => {
     console.log(values);
   };
-  const { user } = useSelector((state: any) => state.auth);
+  
+  const userInfo = useAppSelector(userSelectors.getUserInfo);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log("huhu");
-    console.log(user);
     ProfileProxy()
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-
           toastError(res.message ?? "Load data fail!");
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          toastSuccess("login success");
           dispatch(setUserInfo(res?.data.userInfo));
         }
       })
@@ -54,7 +47,7 @@ const SidebarUser = () => {
         toastError(err.message ?? "Load data fail!");
       })
       .finally(() => {});
-  }, [user]);
+  }, [userInfo, dispatch]);
 
   return (
     <>
@@ -86,14 +79,16 @@ const SidebarUser = () => {
                     <li className='sidebar-user__item'>
                       <div className='sidebar-user__item-title'>Họ và tên:</div>
                       <div className='sidebar-user__item-content'>
-                        {user.name}
+                        {userInfo.name}
                       </div>
                     </li>
                     {/* user item - end */}
                     {/* user item - start */}
                     <li className='sidebar-user__item'>
                       <div className='sidebar-user__item-title'>Email:</div>
-                      <div className='sidebar-user__item-content'>{user.email}</div>
+                      <div className='sidebar-user__item-content'>
+                        {userInfo.email}
+                      </div>
                     </li>
                     {/* user item - end */}
                     {/* user item - start */}
@@ -101,7 +96,9 @@ const SidebarUser = () => {
                       <div className='sidebar-user__item-title'>
                         Số điện thoại:
                       </div>
-                      <div className='sidebar-user__item-content'>{user.phone}</div>
+                      <div className='sidebar-user__item-content'>
+                        {userInfo.phone}
+                      </div>
                     </li>
                     {/* user item - end */}
                     {/* user item - start */}
@@ -110,7 +107,7 @@ const SidebarUser = () => {
                         Ngày tham gia:
                       </div>
                       <div className='sidebar-user__item-content'>
-                        TP Hồ Chí Minh
+                        {userInfo.createdAt}
                       </div>
                     </li>
                     {/* user item - end */}

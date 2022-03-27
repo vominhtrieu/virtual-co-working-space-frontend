@@ -9,9 +9,13 @@ import {
 } from "./types";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAppSelector } from "../../../../../stores";
+import { userSelectors } from "../../../../../stores/auth-slice";
 
 const EditProfileForm = (props: EditProfileFormProps) => {
   const { onClose, onSubmit } = props;
+
+  const userInfo = useAppSelector(userSelectors.getUserInfo);
 
   const schema = yup.object().shape({
     name: yup.string().required("Name is required"),
@@ -22,10 +26,10 @@ const EditProfileForm = (props: EditProfileFormProps) => {
 
   const { control, handleSubmit } = useForm<EditProfileInputInterface>({
     defaultValues: {
-      name: "Võ Minh Triều",
-      email: "vmtrieu@gmail.com",
-      phone: "0123456789",
-      createdAt: "01/01/2015",
+      name: userInfo.name ?? "",
+      email: userInfo.email ?? "",
+      phone: userInfo.phone ?? "",
+      createdAt: userInfo.createdAt ?? "",
     },
     resolver: yupResolver(schema),
   });
