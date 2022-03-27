@@ -1,19 +1,19 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import { useSelector } from "react-redux";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import IconLanguages from "./components/icon-lang";
+import Sidebar from "./components/layouts/sidebar";
 import CharacterContext from "./context/CharacterContext";
 import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
 import CharacterCustom from "./pages/CharacterCustom";
 import Home from "./pages/home/Home";
+import NotFound from "./pages/notFound";
 import Workspace from "./pages/Workspace";
 import "./scss/main.scss";
 import { CharacterInterface } from "./types/character";
-import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
-import { useSelector } from "react-redux";
-import NotFound from "./pages/notFound";
-import Sidebar from "./components/layouts/sidebar";
 
 function App() {
   const [character, setCharacter] = useState<CharacterInterface>({

@@ -1,7 +1,15 @@
 import { UserInterface } from "../../../../types/user";
 
 export interface ProfileProxyTransformInterface {
-  user: UserInterface;
+  id: string;
+  email: string;
+  name: string;
+  phone?: string;
+  avatar?: string;
+  provider: "local" | "google" | "facebook";
+  externalId?: string;
+  status: "active" | "inactive" | "blocked";
+  createdAt: string;
 }
 
 export interface ProfileProxyResponseInterface {

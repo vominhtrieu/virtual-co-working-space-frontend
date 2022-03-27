@@ -19,16 +19,24 @@ export interface ResponseInterface<T = any> {
   data?: T;
 }
 
-console.log(HTTP_HEADER_KEY.CONTENT_TYPE, HTTP_HEADER_VALUE.BEARTOKEN);
+const HttpClient = accessToken
+  ? axios.create({
+      baseURL: process.env.REACT_APP_BASE_URL,
+      timeout: 3000,
+      headers: {
+        [HTTP_HEADER_KEY.CONTENT_TYPE]: HTTP_HEADER_VALUE.APPLICATION_JSON,
+        [HTTP_HEADER_KEY.AUTHORIZATION]: HTTP_HEADER_VALUE.BEARTOKEN,
+        [HTTP_HEADER_KEY.MODE]: HTTP_HEADER_VALUE.CORS,
+      },
+    })
+  : axios.create({
+      baseURL: process.env.REACT_APP_BASE_URL,
+      timeout: 3000,
+      headers: {
+        [HTTP_HEADER_KEY.CONTENT_TYPE]: HTTP_HEADER_VALUE.APPLICATION_JSON,
+        [HTTP_HEADER_KEY.MODE]: HTTP_HEADER_VALUE.CORS,
+      },
+    });
 
-const HttpClient = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
-  timeout: 3000,
-  headers: {
-    "Content-Type": "application/x-www-form-urlencoded",
-    [HTTP_HEADER_KEY.AUTHORIZATION]: HTTP_HEADER_VALUE.BEARTOKEN,
-    [HTTP_HEADER_KEY.MODE]: HTTP_HEADER_VALUE.CORS
-  },
-});
 
 export default HttpClient;
