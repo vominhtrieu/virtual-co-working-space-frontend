@@ -1,4 +1,6 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import * as yup from "yup";
 import Button from "../../../../UI/button";
 import InputDate from "../../../../UI/form-controls/inputDate";
 import InputText from "../../../../UI/form-controls/inputText";
@@ -7,8 +9,6 @@ import {
   EditProfileFormProps,
   EditProfileInputInterface,
 } from "./types";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppSelector } from "../../../../../stores";
 import { userSelectors } from "../../../../../stores/auth-slice";
 
