@@ -13,7 +13,7 @@ import socket from "../../services/socket/socket"
 type CharacterProps = JSX.IntrinsicElements['group'] & {
     hair: number,
     eyes: number,
-    moveable: boolean,
+    movable: boolean,
     startPosition: number[],
     orbitRef?: any
 }
@@ -54,16 +54,22 @@ export default function Character(props: CharacterProps) {
 
     const position = useRef([0, 0, 0])
     const updatedPosition = useRef(props.startPosition)
+    const rotation = useRef([0, 0, 0]);
+
+    const count = useRef(0);
 
     useEffect(() => {
         socket.emit("office_member:join", {
-            officeId: "4"
+            officeId: "1"
         })
     }, [])
 
     useEffect(() => {
         api.position.subscribe((v) => {
             position.current = v;
+        })
+        api.rotation.subscribe((v) => {
+            rotation.current = v;
         })
     }, [api.position])
 
@@ -139,10 +145,12 @@ export default function Character(props: CharacterProps) {
 
     useFrame((state, delta) => {
         const {camera} = state;
-
-        //api.position.set(0.1, 0, 0);
         let clip: THREE.AnimationClip = null;
-        if (props.moveable && isMoving()) {
+        //console.log(rotation);
+        
+
+        if (props.movable && isMoving()) {
+            count.current++;
             clip = actions.Walking;
 
             const yCameraDirection = Math.atan2(
@@ -156,11 +164,14 @@ export default function Character(props: CharacterProps) {
             walkDirection.current.y = 0;
             walkDirection.current.normalize();
             walkDirection.current.applyAxisAngle(rotateAngle.current, directionOffset + Math.PI);
-            const moveX = walkDirection.current.x * MovingSpeed;
-            const moveZ = walkDirection.current.z * MovingSpeed;
+            // console.log(directionOffset);
+            const moveX = walkDirection.current.x * MovingSpeed ;
+            const moveZ = walkDirection.current.z * MovingSpeed ;
 
             api.velocity.set(moveX, 0, moveZ);
-            // api.position.set(position.current[0] + moveX, position.current[1], position.current[2] + moveZ);
+
+            // camera.position.copy(api.position);
+            api.quaternion.copy(ref.current.quaternion)
 
             if (orbitRef.current) {
                 orbitRef.current.target = ref.current.position;
@@ -168,14 +179,17 @@ export default function Character(props: CharacterProps) {
 
             updatedPosition.current = position.current;
             
-            socket.emit("office_member:move", {
-                xRotation: 0,
-                yRotation: 1,
-                zRotation: 5,
-                xPosition: position.current[0],
-                yPosition: position.current[1],
-                zPosition: position.current[2]
-            })
+            if (count.current >= 2) {
+                socket.emit("office_member:move", {
+                    xRotation: rotation.current[0],
+                    yRotation: rotation.current[1],
+                    zRotation: rotation.current[2],
+                    xPosition: position.current[0],
+                    yPosition: position.current[1],
+                    zPosition: position.current[2]
+                })
+                count.current = 0;
+            }
 
         } else {
             clip = actions.Idle;
@@ -184,6 +198,38 @@ export default function Character(props: CharacterProps) {
         
         //update from remote position
         if (shouldUpdate()) {
+            clip = actions.Walking;
+            const tempVector = new THREE.Vector3();
+            const quaternion = new THREE.Quaternion()
+
+            const newDirection = new THREE.Vector3(updatedPosition.current[0] - position.current[0], 0, updatedPosition.current[2] - position.current[2]);
+            // newDirection.normalize();
+            // walkDirection.current.normalize();
+
+        //     const dot = walkDirection.current.dot(newDirection);
+        //     if (dot < -0.999999) {
+        //         tempVector.crossVectors(new THREE.Vector3(1, 0, 0), walkDirection.current);
+        //         if (tempVector.length() < 0.000001) {
+        //             tempVector.crossVectors(new THREE.Vector3(0, 1, 0), walkDirection.current);
+        //         }
+        //         tempVector.normalize();
+        //         quaternion.setFromAxisAngle(tempVector, Math.PI);
+        //    } else if (dot > 0.999999) {
+        //        quaternion.x = quaternion.y = quaternion.z = 0;
+        //        quaternion.w = 1;
+        //    } else {
+        //        tempVector.crossVectors(walkDirection.current, newDirection);
+        //        quaternion.x = tempVector.x;
+        //        quaternion.y = tempVector.y;
+        //        quaternion.z = tempVector.z;
+        //        quaternion.w = 1 + dot;
+        //        quaternion.normalize();
+        //    }
+            const angle = newDirection.angleTo(walkDirection.current);
+
+            //quaternion.setFromAxisAngle(rotateAngle.current, newDirection.angleTo(walkDirection.current))
+            //ref.current.quaternion.rotateTowards(quaternion, delta * 10);
+
             walkDirection.current = new THREE.Vector3(updatedPosition.current[0] - position.current[0], 0, updatedPosition.current[2] - position.current[2]);
             walkDirection.current.y = 0;
             walkDirection.current.normalize();
@@ -191,6 +237,7 @@ export default function Character(props: CharacterProps) {
             const moveZ = walkDirection.current.z * MovingSpeed;
 
             api.velocity.set(moveX, 0, moveZ);
+            //api.quaternion.copy(ref.current.quaternion);
         }
 
         if (clip && clip !== currentClip.current) {
@@ -206,7 +253,7 @@ export default function Character(props: CharacterProps) {
 
     useEffect(() => {
         actions.Idle?.play();
-        if (!props.moveable) {
+        if (!props.movable) {
             return;
         }
 
@@ -218,24 +265,28 @@ export default function Character(props: CharacterProps) {
         });
 
         orbitRef.current.target = ref.current?.position;
-    }, [actions.Idle, orbitRef, ref, props.moveable]);
+    }, [orbitRef, ref, props.movable]);
 
     useEffect(() => {
         if (ref.current) {
             ref.current.position.set(props.startPosition[0], props.startPosition[1], props.startPosition[2]);
             api.position.set(props.startPosition[0], props.startPosition[1], props.startPosition[2]);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ref.current, props.startPosition]);
 
     socket.on("office_member:moved", (message) => {
         updatedPosition.current = [message.xPosition, message.yPosition, message.zPosition];
-        
-        // const walkDirection = new THREE.Vector3(message.xPosition - position.current[0], 0, message.zPosition - position.current[2]);
-        // walkDirection.normalize();
-        // const moveX = walkDirection.x * MovingSpeed;
-        // const moveZ = walkDirection.z * MovingSpeed;
+        api.rotation.set(message.xRotation, message.yRotation, message.zRotation)   
+    })
 
-        // api.velocity.set(moveX, 0, moveZ);
+    socket.on("office_member:error", (message) => {
+        console.log(message);
+    })
+    
+    socket.on("connect_error", message => {
+        console.log("connection error: ", message);
+        
     })
 
     return (

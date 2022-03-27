@@ -72,7 +72,7 @@ const CharacterCustom = () => {
             hair={character.hairStyle}
             eyes={character.eyeStyle}
             startPosition={[0, -0.5, 0]}
-            moveable={false}
+            movable={false}
           />
         </Suspense>
       </Canvas>
