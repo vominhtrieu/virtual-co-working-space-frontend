@@ -24,6 +24,7 @@ function Login() {
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
           toastError(res.message ?? "Login fail");
+          return;
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
@@ -35,6 +36,7 @@ function Login() {
           saveDataLocal("access_token", res.data.accessToken);
           saveDataLocal("refresh_token", res.data.refreshToken);
           navigate("/");
+          return;
         }
       })
       .catch((err) => {

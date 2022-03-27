@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 import { RiLogoutBoxRFill } from "react-icons/ri";
-import { toastError } from "../../../../helpers/toast";
+import { useNavigate } from "react-router-dom";
+import { removeAllDataLocal } from "../../../../helpers/localStorage";
+import { toastError, toastSuccess } from "../../../../helpers/toast";
+import LogoutProxy from "../../../../services/proxy/auth/logout";
 import ProfileProxy from "../../../../services/proxy/users/get-profile";
 import { useAppDispatch, useAppSelector } from "../../../../stores";
-import { setUserInfo, userSelectors } from "../../../../stores/auth-slice";
+import {
+  setAuthenticated,
+  setUserInfo,
+  userSelectors,
+} from "../../../../stores/auth-slice";
 import { ProxyStatusEnum } from "../../../../types/http/proxy/ProxyStatus";
 import Button from "../../../UI/button";
 import SidebarBox from "../sidebarBox";
@@ -18,7 +25,32 @@ const SidebarUser = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isChangingPass, setIsChangingPass] = useState(false);
 
-  const handleLogout = () => {};
+  const userInfo = useAppSelector(userSelectors.getUserInfo);
+
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    LogoutProxy()
+      .then((res) => {
+        if (res.status === ProxyStatusEnum.FAIL) {
+          toastError(res.message ?? "Logout fail");
+          return;
+        }
+
+        if (res.status === ProxyStatusEnum.SUCCESS) {
+          toastSuccess("Logout success");
+          dispatch(setAuthenticated(false));
+          dispatch(setUserInfo({}));
+          removeAllDataLocal();
+          navigate("/auth/login");
+          return;
+        }
+      })
+      .catch((err) => {
+        toastError(err.message ?? "Logout fail");
+      });
+  };
 
   const handleChangeProfile = (values: EditProfileFormValuesInterface) => {
     console.log(values);
@@ -27,10 +59,6 @@ const SidebarUser = () => {
   const handleChangePassword = (values: ChangePasswordFormValuesInterface) => {
     console.log(values);
   };
-  
-  const userInfo = useAppSelector(userSelectors.getUserInfo);
-
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     ProfileProxy()
@@ -47,7 +75,7 @@ const SidebarUser = () => {
         toastError(err.message ?? "Load data fail!");
       })
       .finally(() => {});
-  }, [userInfo, dispatch]);
+  }, [dispatch]);
 
   return (
     <>
