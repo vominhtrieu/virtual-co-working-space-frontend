@@ -13,6 +13,7 @@ import ObjectProperties from "../components/Models/ObjectProperties";
 import Office from "../components/Models/Office";
 import CharacterContext from "../context/CharacterContext";
 import Button from "../components/UI/button";
+import { useSelector } from "react-redux";
 
 const itemGroups = [
   {
@@ -41,6 +42,9 @@ const itemGroups = [
 ];
 
 const WorkspaceCustom = () => {
+  const { open } = useSelector((state: any) => state.sidebar);
+
+
   const orbitRef = useRef(null);
   const [objectList, setObjectList] = useState([
     { key: uuidv4(), code: "Chair" },
@@ -108,9 +112,12 @@ const WorkspaceCustom = () => {
         shadows={{ enabled: true, autoUpdate: true }}
         camera={{ position: [0, 5, 5], rotation: [45, 0, 0] }}
         style={{
+
           height: "100vh",
           background: "#577BC1",
-          position: "fixed",
+          position: "absolute",
+          top: 0,
+          left: open!==""?"46rem":"6rem",
         }}
       >
         <OrbitControls
@@ -164,7 +171,7 @@ const WorkspaceCustom = () => {
         style={{
           position: "absolute",
           top: 0,
-          left: 0,
+          left: open!==""?"46rem":"6rem",
           width: "100%",
           height: "100%",
           pointerEvents: "none",

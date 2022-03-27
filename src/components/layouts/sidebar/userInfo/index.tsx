@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { removeAllDataLocal } from "../../../../helpers/localStorage";
 import { toastError, toastSuccess } from "../../../../helpers/toast";
 import LogoutProxy from "../../../../services/proxy/auth/logout";
+import UpdateProfileProxy from "../../../../services/proxy/users/update-user";
 import ProfileProxy from "../../../../services/proxy/users/get-profile";
 import { useAppDispatch, useAppSelector } from "../../../../stores";
 import {
@@ -52,7 +53,28 @@ const SidebarUser = () => {
   };
 
   const handleChangeProfile = (values: EditProfileFormValuesInterface) => {
-    console.log(values);
+    UpdateProfileProxy({
+      name: values.name,
+      phone: values.phone,
+      avatar: values.avatar
+    })
+      .then((res) => {
+        if (res.status === ProxyStatusEnum.FAIL) {
+          console.log(res.message);
+          toastError(res.message ?? "update fail");
+        }
+
+        if (res.status === ProxyStatusEnum.SUCCESS) {
+          console.log(res.data);
+          toastSuccess("update success");
+          setIsEditing(!isEditing);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        // show toast login fail
+      })
+      .finally(() => {});
   };
 
   const handleChangePassword = (values: ChangePasswordFormValuesInterface) => {

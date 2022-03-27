@@ -5,14 +5,12 @@ export interface EditProfileFormProps {
 
 export interface EditProfileInputInterface {
   name: string;
-  email: string;
   phone: string;
-  createdAt: string;
+  avatar: string;
 }
 
 export interface EditProfileFormDataInterface {
   name: string;
-  email: string;
   phone: string;
-  createdAt: string;
+  avatar: string;
 }

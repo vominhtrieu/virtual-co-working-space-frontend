@@ -6,10 +6,14 @@ import Offices from "./offices";
 import SidebarSettings from "./settings";
 import SidebarUser from "./userInfo";
 
+import { setOpen } from "../../../stores/sidebar-slice";
+import { useAppDispatch } from "../../../stores";
+
 const URL_TEMP =
   "https://64.media.tumblr.com/2b6c2343decf1534ebc6a735e9969819/ef2dfa173b9b5ca6-4f/s1280x1920/16822b4598c99673c8e55ad257dcb206dfb5c121.jpg";
 
 const Sidebar = () => {
+  const dispatch = useAppDispatch();
   const [sidebarOpen, setSidebarOpen] = useState("");
 
   return (
@@ -28,8 +32,10 @@ const Sidebar = () => {
                 onClick={() =>
                   setSidebarOpen((curr) => {
                     if (curr === "office") {
+                      dispatch(setOpen(""));
                       return "";
                     }
+                    dispatch(setOpen("office"));
                     return "office";
                   })
                 }
@@ -40,8 +46,10 @@ const Sidebar = () => {
               onClick={() =>
                 setSidebarOpen((curr) => {
                   if (curr === "settings") {
+                    dispatch(setOpen(""));
                     return "";
                   }
+                  dispatch(setOpen("settings"));
                   return "settings";
                 })
               }
@@ -56,8 +64,10 @@ const Sidebar = () => {
               onClick={() =>
                 setSidebarOpen((curr) => {
                   if (curr === "user") {
+                    dispatch(setOpen(""));
                     return "";
                   }
+                  dispatch(setOpen("user"));
                   return "user";
                 })
               }

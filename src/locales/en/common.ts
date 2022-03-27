@@ -9,6 +9,7 @@ export const TranslationEnCommon = {
     minLength: "{{field}} must be at least {{min}} characters",
     email: "{{field}} must be a valid email address",
     confirmPassword: "Password's not match.",
-    password: "Must contain at least 8 characters, one uppercase, one lowercase, one number and one special character"
+    password: "Must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
+    phone: "Phone must be a valid phone number",
   },
 };

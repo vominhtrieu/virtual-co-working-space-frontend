@@ -11,25 +11,32 @@ import {
 } from "./types";
 import { useAppSelector } from "../../../../../stores";
 import { userSelectors } from "../../../../../stores/auth-slice";
+import { useTranslation } from "react-i18next";
 
 const EditProfileForm = (props: EditProfileFormProps) => {
+  const { t } = useTranslation();
+
   const { onClose, onSubmit } = props;
 
   const userInfo = useAppSelector(userSelectors.getUserInfo);
 
   const schema = yup.object().shape({
-    name: yup.string().required("Name is required"),
-    email: yup.string().email("Invalid email").required("Email is required"),
-    phone: yup.string().required("Phone is required"),
-    createdAt: yup.string().required("Join date is required"),
+    name: yup
+    .string()
+    .required(t("default.error.required", { field: t("pages.register.name") }))
+    .min(6, t("default.error.minLength", { field: t("pages.register.name"), min: 6 }))
+    .max(50, t("default.error.maxLength", { field: t("pages.register.name"), max: 50})),
+    phone: yup
+      .string()
+      .required(t("default.error.required", { field: "phone" }))
+      .matches(/(((\+)84)|0)(3|5|7|8|9)+([0-9]{8})\b/, t("default.error.phone", { field: "phone" })),
   });
 
   const { control, handleSubmit } = useForm<EditProfileInputInterface>({
     defaultValues: {
       name: userInfo.name ?? "",
-      email: userInfo.email ?? "",
       phone: userInfo.phone ?? "",
-      createdAt: userInfo.createdAt ?? "",
+      avatar: userInfo.avatar ?? "",
     },
     resolver: yupResolver(schema),
   });
@@ -37,9 +44,8 @@ const EditProfileForm = (props: EditProfileFormProps) => {
   const handleEditProfileSubmit = (data: EditProfileInputInterface) => {
     const formatData: EditProfileFormDataInterface = {
       name: data.name,
-      email: data.email,
       phone: data.phone,
-      createdAt: data.createdAt,
+      avatar: data.avatar,
     };
     onSubmit(formatData);
   };
@@ -55,20 +61,14 @@ const EditProfileForm = (props: EditProfileFormProps) => {
         {/* user item - end */}
         {/* user item - start */}
         <li className='edit-profile__item'>
-          <div className='edit-profile__item-title'>Email:</div>
-          <InputText control={control} name='email' />
-        </li>
-        {/* user item - end */}
-        {/* user item - start */}
-        <li className='edit-profile__item'>
           <div className='edit-profile__item-title'>Điện thoại:</div>
           <InputText control={control} name='phone' />
         </li>
         {/* user item - end */}
         {/* user item - start */}
         <li className='edit-profile__item'>
-          <div className='edit-profile__item-title'>Ngày tham gia:</div>
-          <InputDate control={control} name='createdAt' />
+          <div className='edit-profile__item-title'>Ảnh đại diện:</div>
+          <InputText control={control} name='avatar' />
         </li>
         {/* user item - end */}
       </ul>
