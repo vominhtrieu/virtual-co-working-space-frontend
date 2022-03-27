@@ -1,0 +1,36 @@
+.office-detail {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  height: 100%;
+
+  &__title {
+    font-size: $font-title;
+    color: $color-white;
+    font-weight: 700;
+    margin-bottom: 2rem;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    font-size: $font-text;
+    color: $color-white;
+
+    &-title {
+      flex: 0 0 40%;
+      font-weight: 600;
+    }
+
+    &-content {
+      flex: 0 0 60%;
+    }
+  }
+
+  &__group-btn {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-gap: 2rem;
+  }
+}

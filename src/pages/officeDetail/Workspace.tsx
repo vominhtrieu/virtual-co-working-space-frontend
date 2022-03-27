@@ -1,18 +1,20 @@
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useContext, useRef, useState } from "react";
-import { FaEdit, FaList, FaTrash, FaUserEdit } from "react-icons/fa";
 import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
-import { useNavigate } from "react-router-dom";
+import { FaEdit, FaList, FaTrash, FaUserEdit } from "react-icons/fa";
+import { useLocation, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import BottomMenu from "../components/Controls/BottomMenu";
-import CustomTransformControl from "../components/Controls/CustomTransformControl";
-import Box from "../components/Models/Box";
-import Character from "../components/Models/Character";
-import ObjectProperties from "../components/Models/ObjectProperties";
-import Office from "../components/Models/Office";
-import CharacterContext from "../context/CharacterContext";
-import Button from "../components/UI/button";
+import BottomMenu from "../../components/Controls/BottomMenu";
+import CustomTransformControl from "../../components/Controls/CustomTransformControl";
+import Box from "../../components/Models/Box";
+import Character from "../../components/Models/Character";
+import ObjectProperties from "../../components/Models/ObjectProperties";
+import Office from "../../components/Models/Office";
+import Button from "../../components/UI/button";
+import CharacterContext from "../../context/CharacterContext";
+import { AiOutlineBars } from "react-icons/ai";
+import OfficeDetailForm from "../../components/officeDetailForm";
 
 const itemGroups = [
   {
@@ -41,6 +43,8 @@ const itemGroups = [
 ];
 
 const WorkspaceCustom = () => {
+  const [isShowDetailForm, setIsShowDetailForm] = useState(false);
+
   const orbitRef = useRef(null);
   const [objectList, setObjectList] = useState([
     { key: uuidv4(), code: "Chair" },
@@ -53,6 +57,11 @@ const WorkspaceCustom = () => {
   const [showMainMenu, setShowMainMenu] = useState(false);
   const navigate = useNavigate();
   const character = useContext(CharacterContext);
+
+  const location = useLocation();
+
+  const locationState: any = location.state;
+  const officeId = locationState["officeId"];
 
   const handleButtonRotateLeftClick = () => {
     selectedObject.rotation.y += Math.PI / 2;
@@ -164,7 +173,7 @@ const WorkspaceCustom = () => {
         style={{
           position: "absolute",
           top: 0,
-          left: 0,
+          right: 0,
           width: "100%",
           height: "100%",
           pointerEvents: "none",
@@ -289,6 +298,24 @@ const WorkspaceCustom = () => {
           </>
         ) : null}
       </div>
+
+      <div className='office-detail__view'>
+        <AiOutlineBars
+          className='office-detail__edit-icon'
+          onClick={() => {
+            setIsShowDetailForm(true);
+          }}
+        />
+      </div>
+
+      {isShowDetailForm ? (
+        <OfficeDetailForm
+          onClose={() => {
+            setIsShowDetailForm(false);
+          }}
+          id={officeId}
+        />
+      ) : null}
     </>
   );
 };

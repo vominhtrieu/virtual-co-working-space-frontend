@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { MdMeetingRoom } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import { toastError, toastSuccess } from "../../../../helpers/toast";
 import CreateOfficeProxy from "../../../../services/proxy/offices/create-office";
 import GetOfficeListProxy from "../../../../services/proxy/offices/office-list";
@@ -20,6 +21,8 @@ const Offices = () => {
 
   const userInfo = useAppSelector(userSelectors.getUserInfo);
   const { id: userId } = userInfo;
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     let isMounted = true;
@@ -102,7 +105,17 @@ const Offices = () => {
               <ul className='sidebar-offices__items'>
                 {officeCreatedList?.map((office, key) => {
                   return (
-                    <li className='sidebar-offices__item' key={key}>
+                    <li
+                      className='sidebar-offices__item'
+                      key={key}
+                      onClick={() => {
+                        navigate(`/office/${office.id}`, {
+                          state: {
+                            officeId: office.id,
+                          },
+                        });
+                      }}
+                    >
                       <MdMeetingRoom className='sidebar-offices__item-icon' />
                       <div className='sidebar-offices__item-text'>
                         {office.name}
@@ -123,7 +136,17 @@ const Offices = () => {
               <ul className='sidebar-offices__items'>
                 {officeJoinedList?.map((office, key) => {
                   return (
-                    <li className='sidebar-offices__item' key={key}>
+                    <li
+                      className='sidebar-offices__item'
+                      key={key}
+                      onClick={() => {
+                        navigate(`/office/${office.id}`, {
+                          state: {
+                            officeId: office.id,
+                          },
+                        });
+                      }}
+                    >
                       <MdMeetingRoom className='sidebar-offices__item-icon' />
                       <div className='sidebar-offices__item-text'>
                         {office.name}
