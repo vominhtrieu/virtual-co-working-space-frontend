@@ -1,0 +1,19 @@
+.office-detail {
+  &__view {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 3rem;
+    right: 3rem;
+    background-color: $color-gray;
+    cursor: pointer;
+
+    @include flex-center;
+  }
+
+  &__edit-icon {
+    font-size: $font-icon;
+    color: $color-white;
+  }
+}

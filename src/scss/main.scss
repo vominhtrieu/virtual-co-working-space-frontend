@@ -26,6 +26,8 @@
 @import "../components/UI/form-controls/inputDate/styles";
 @import "../components/UI/button/styles";
 @import "../components/UI/popup/styles";
+@import "../components/officeDetailForm/styles";
+@import "../components/officeDetailForm/editOfficeForm/styles";
 
 @import "../components/login/loginForm/styles";
 @import "../components/register/registerForm/styles";
@@ -34,3 +36,4 @@
 @import "../pages/auth/login/styles";
 @import "../pages/auth/register/styles";
 @import "../pages/home/style";
+@import "../pages/officeDetail/styles";

@@ -1,16 +1,28 @@
 import { useEffect, useState } from "react";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { MdMeetingRoom } from "react-icons/md";
-import { toastError } from "../../../../helpers/toast";
+import { useNavigate } from "react-router-dom";
+import { toastError, toastSuccess } from "../../../../helpers/toast";
+import CreateOfficeProxy from "../../../../services/proxy/offices/create-office";
 import GetOfficeListProxy from "../../../../services/proxy/offices/office-list";
+import { useAppSelector } from "../../../../stores";
+import { userSelectors } from "../../../../stores/auth-slice";
 import { ProxyStatusEnum } from "../../../../types/http/proxy/ProxyStatus";
 import { OfficeInterface } from "../../../../types/office";
 import SidebarBox from "../sidebarBox";
 import CreateOfficeForm from "./createOfficeForm";
+import { CreateOfficeFormValuesInterface } from "./types";
 
 const Offices = () => {
   const [officeJoinedList, setOfficeJoinedList] = useState<OfficeInterface[]>();
+  const [officeCreatedList, setOfficeCreatedList] =
+    useState<OfficeInterface[]>();
   const [isCreateOffice, setIsCreateOffice] = useState(false);
+
+  const userInfo = useAppSelector(userSelectors.getUserInfo);
+  const { id: userId } = userInfo;
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     let isMounted = true;
@@ -19,24 +31,52 @@ const Offices = () => {
         if (!isMounted) return;
 
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Login fail");
+          toastError(res.message ?? "Get offices fail");
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          setOfficeJoinedList(res.data.officeList ?? []);
+          const joined: OfficeInterface[] = [];
+          const created: OfficeInterface[] = [];
+          for (const office of res.data.officeList) {
+            if (office.createdBy.id === userId) {
+              created.push(office);
+            } else {
+              joined.push(office);
+            }
+          }
+
+          setOfficeCreatedList(created);
+          setOfficeJoinedList(joined);
         }
       })
       .catch((err) => {
-        toastError(err.message ?? "Login fail");
+        toastError(err.message ?? "Get offices fail");
       });
 
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [userId]);
 
-  const handleCreateOfficeSubmit = (values) => {
-    console.log(values);
+  const handleCreateOfficeSubmit = (
+    values: CreateOfficeFormValuesInterface
+  ) => {
+    CreateOfficeProxy(values)
+      .then((res) => {
+        if (res.status === ProxyStatusEnum.FAIL) {
+          toastError(res.message ?? "Create office fail");
+          return;
+        }
+
+        if (res.status === ProxyStatusEnum.SUCCESS) {
+          setIsCreateOffice(false);
+          toastSuccess("Create office success");
+          return;
+        }
+      })
+      .catch((err) => {
+        toastError(err.message ?? "Create office fail");
+      });
   };
 
   return (
@@ -63,9 +103,19 @@ const Offices = () => {
                 />
               </div>
               <ul className='sidebar-offices__items'>
-                {officeJoinedList?.map((office, key) => {
+                {officeCreatedList?.map((office, key) => {
                   return (
-                    <li className='sidebar-offices__item' key={key}>
+                    <li
+                      className='sidebar-offices__item'
+                      key={key}
+                      onClick={() => {
+                        navigate(`/office/${office.id}`, {
+                          state: {
+                            officeId: office.id,
+                          },
+                        });
+                      }}
+                    >
                       <MdMeetingRoom className='sidebar-offices__item-icon' />
                       <div className='sidebar-offices__item-text'>
                         {office.name}
@@ -73,30 +123,6 @@ const Offices = () => {
                     </li>
                   );
                 })}
-                {/* office item - start */}
-                <li className='sidebar-offices__item'>
-                  <MdMeetingRoom className='sidebar-offices__item-icon' />
-                  <div className='sidebar-offices__item-text'>Team IT</div>
-                </li>
-                {/* office item - end */}
-                {/* office item - start */}
-                <li className='sidebar-offices__item'>
-                  <MdMeetingRoom className='sidebar-offices__item-icon' />
-                  <div className='sidebar-offices__item-text'>Team IT</div>
-                </li>
-                {/* office item - end */}
-                {/* office item - start */}
-                <li className='sidebar-offices__item'>
-                  <MdMeetingRoom className='sidebar-offices__item-icon' />
-                  <div className='sidebar-offices__item-text'>Team IT</div>
-                </li>
-                {/* office item - end */}
-                {/* office item - start */}
-                <li className='sidebar-offices__item'>
-                  <MdMeetingRoom className='sidebar-offices__item-icon' />
-                  <div className='sidebar-offices__item-text'>Team IT</div>
-                </li>
-                {/* office item - end */}
               </ul>
             </div>
             {/* box content - end */}
@@ -108,30 +134,26 @@ const Offices = () => {
                 <IoMdAddCircleOutline className='sidebar-offices__header-icon' />
               </div>
               <ul className='sidebar-offices__items'>
-                {/* office item - start */}
-                <li className='sidebar-offices__item'>
-                  <MdMeetingRoom className='sidebar-offices__item-icon' />
-                  <div className='sidebar-offices__item-text'>Team IT</div>
-                </li>
-                {/* office item - end */}
-                {/* office item - start */}
-                <li className='sidebar-offices__item'>
-                  <MdMeetingRoom className='sidebar-offices__item-icon' />
-                  <div className='sidebar-offices__item-text'>Team IT</div>
-                </li>
-                {/* office item - end */}
-                {/* office item - start */}
-                <li className='sidebar-offices__item'>
-                  <MdMeetingRoom className='sidebar-offices__item-icon' />
-                  <div className='sidebar-offices__item-text'>Team IT</div>
-                </li>
-                {/* office item - end */}
-                {/* office item - start */}
-                <li className='sidebar-offices__item'>
-                  <MdMeetingRoom className='sidebar-offices__item-icon' />
-                  <div className='sidebar-offices__item-text'>Team IT</div>
-                </li>
-                {/* office item - end */}
+                {officeJoinedList?.map((office, key) => {
+                  return (
+                    <li
+                      className='sidebar-offices__item'
+                      key={key}
+                      onClick={() => {
+                        navigate(`/office/${office.id}`, {
+                          state: {
+                            officeId: office.id,
+                          },
+                        });
+                      }}
+                    >
+                      <MdMeetingRoom className='sidebar-offices__item-icon' />
+                      <div className='sidebar-offices__item-text'>
+                        {office.name}
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
             {/* box content - end */}

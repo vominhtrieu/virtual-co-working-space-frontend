@@ -11,7 +11,7 @@ import Register from "./pages/auth/register";
 import CharacterCustom from "./pages/CharacterCustom";
 import Home from "./pages/home/Home";
 import NotFound from "./pages/notFound";
-import Workspace from "./pages/Workspace";
+import Workspace from "./pages/officeDetail/Workspace";
 import "./scss/main.scss";
 import { CharacterInterface } from "./types/character";
 
@@ -41,7 +41,7 @@ function App() {
             <Routes>
               <Route path='/' element={<Home />} />
               <Route path='/character' element={<CharacterCustom />} />
-              <Route path='/workspace' element={<Workspace />} />
+              <Route path='/office/:id' element={<Workspace />} />
               <Route path='*' element={<NotFound />} />
             </Routes>
           ) : (
