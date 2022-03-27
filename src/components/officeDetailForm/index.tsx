@@ -80,8 +80,8 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
               <div className='office-detail__item-title'>Thành viên:</div>
               <div className='office-detail__item-content'>
                 <ul>
-                  {officeDetail?.officeMembers.map((member) => {
-                    return <li>{member.member.name}</li>;
+                  {officeDetail?.officeMembers.map((member, key) => {
+                    return <li key={key}>{member.member.name}</li>;
                   })}
                 </ul>
               </div>

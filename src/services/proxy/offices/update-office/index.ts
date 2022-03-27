@@ -1,5 +1,5 @@
 import { ProxyStatusEnum } from "../../../../types/http/proxy/ProxyStatus";
-import { officeDetail } from "../../../api/offices/office-detail";
+import { updateOffice } from "../../../api/offices/update-office";
 import { ProxyFuncType } from "./../../../../types/http/proxy/ProxyFuncType";
 import {
   UpdateOfficeProxyParamsInterface,
@@ -19,7 +19,7 @@ const officeDetailTransform = (
 const UpdateOfficeProxy = async (
   params: UpdateOfficeProxyParamsInterface
 ): Promise<ProxyFuncType<UpdateOfficeProxyResponseInterface>> => {
-  const res = await officeDetail(params);
+  const res = await updateOffice(params);
 
   if (res?.code) {
     return {
