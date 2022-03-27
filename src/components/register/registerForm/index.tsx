@@ -15,7 +15,7 @@ const RegisterForm = ({ handleRegisterSubmit }: FormPropsInterface) => {
       .string()
       .required(t("default.error.required", { field: t("pages.register.name") }))
       .min(6, t("default.error.minLength", { field: t("pages.register.name"), min: 6 }))
-      .max(20, t("default.error.maxLength", { field: t("pages.register.name"), max: 20 })),
+      .max(50, t("default.error.maxLength", { field: t("pages.register.name"), max: 50})),
     email: yup
       .string()
       .required(t("default.error.required", { field: t("pages.register.email") }))
@@ -23,7 +23,7 @@ const RegisterForm = ({ handleRegisterSubmit }: FormPropsInterface) => {
     password: yup
       .string()
       .required(t("default.error.required", { field: t("pages.register.password") }))
-      .min(6, t("default.error.minLength", { field: t("pages.register.password"), min: 6 })),
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/, t("default.error.password", { field: t("pages.register.password") })),
     confirmPassword: yup
       .string()
       .required(t("default.error.required", { field: t("pages.register.confirmPassword") }))
