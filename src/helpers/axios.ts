@@ -1,30 +1,33 @@
 import axios from "axios";
+import { getDataLocal } from "./localStorage";
 
-const axiosConfig: any = {
-  timeOut: 3000,
-};
+const accessToken = getDataLocal("access_token");
 
 export const HTTP_HEADER_KEY = {
   CONTENT_TYPE: "Content-Type",
   MODE: "mode",
+  AUTHORIZATION: "Authorization",
 };
 
 export const HTTP_HEADER_VALUE = {
   APPLICATION_JSON: "application/json",
-  CORS: "cors"
+  CORS: "cors",
+  BEARTOKEN: accessToken ? "Bearer " + accessToken : "",
 };
 
 export interface ResponseInterface<T = any> {
   data?: T;
 }
 
-const HttpClient = axios.create({
-  //@ts-ignore
-  axiosConfig,
-  headers: {
-    [HTTP_HEADER_KEY.CONTENT_TYPE]: HTTP_HEADER_VALUE.APPLICATION_JSON,
-    [HTTP_HEADER_KEY.MODE]: HTTP_HEADER_VALUE.CORS
+console.log(HTTP_HEADER_KEY.CONTENT_TYPE, HTTP_HEADER_VALUE.BEARTOKEN);
 
+const HttpClient = axios.create({
+  baseURL: process.env.REACT_APP_BASE_URL,
+  timeout: 3000,
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded",
+    [HTTP_HEADER_KEY.AUTHORIZATION]: HTTP_HEADER_VALUE.BEARTOKEN,
+    [HTTP_HEADER_KEY.MODE]: HTTP_HEADER_VALUE.CORS
   },
 });
 

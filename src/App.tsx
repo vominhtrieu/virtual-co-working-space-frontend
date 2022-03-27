@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
 import NotFound from "./pages/notFound";
+import Sidebar from "./components/layouts/sidebar";
 
 function App() {
   const [character, setCharacter] = useState<CharacterInterface>({
@@ -35,6 +36,7 @@ function App() {
       <IconLanguages />
       <div className='App'>
         <Router>
+          {isAuthenticated ? <Sidebar /> : null}
           {isAuthenticated ? (
             <Routes>
               <Route path='/' element={<Home />} />

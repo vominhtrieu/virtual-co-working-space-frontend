@@ -1,10 +1,10 @@
-import Button from "../Button";
 // import ObjectProperties from "../Models/ObjectProperties";
 import "./styles.css";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import Button from "../UI/button";
 
 const responsive = {
   superLargeDesktop: {
@@ -64,7 +64,15 @@ export default function BottomMenu({ itemGroups, onItemClick }: any) {
             {itemGroups[position].items &&
               itemGroups[position].items.map((item: any) => (
                 <Button onClick={() => onItemClick(item)} key={item.code}>
-                  <img alt='models' src={item.url} style={{ width: "6em", height: "6em", borderRadius: "10px" }} />
+                  <img
+                    alt='models'
+                    src={item.url}
+                    style={{
+                      width: "6em",
+                      height: "6em",
+                      borderRadius: "10px",
+                    }}
+                  />
                 </Button>
               ))}
           </Carousel>
