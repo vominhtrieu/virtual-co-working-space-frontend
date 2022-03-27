@@ -15,9 +15,6 @@ const CreateOfficeForm = (props: CreateOfficeFormProps) => {
 
   const schema = yup.object().shape({
     name: yup.string().required("Name is required"),
-    email: yup.string().email("Invalid email").required("Email is required"),
-    phone: yup.string().required("Phone is required"),
-    createdAt: yup.string().required("Join date is required"),
   });
 
   const { control, handleSubmit } = useForm<CreateOfficeFormInputInterface>({
@@ -32,6 +29,7 @@ const CreateOfficeForm = (props: CreateOfficeFormProps) => {
       name: data.name,
     };
     onSubmit(formatData);
+    onClose();
   };
   return (
     <Popup onClose={onClose}>

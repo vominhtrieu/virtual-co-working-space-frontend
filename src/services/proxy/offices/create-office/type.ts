@@ -1,10 +1,12 @@
 import { OfficeInterface } from "../../../../types/office";
-export interface OfficeProxyTransformInterface {
+
+export interface CreateOfficeProxyParamsInterface {
+  name: string;
+}
+export interface CreateOfficeProxyTransformInterface {
   office: OfficeInterface;
 }
 
-export interface OfficeProxyResponseInterface {
+export interface CreateOfficeProxyResponseInterface {
   office: OfficeInterface;
 }
-
-
