@@ -43,8 +43,9 @@ const itemGroups = [
 
 const WorkspaceCustom = () => {
   const orbitRef = useRef(null);
-  const [objectList, setObjectList] = useState([{ key: uuidv4(), code: "Chair" }]);
   const [selectedKey, setSelectedKey] = useState(null);
+  const [objectList, setObjectList] = useState([{ key: uuidv4(), code: "Chair" },
+    { key: "2121212", code: "IndoorTree" }]);
   const [selectedObject, setSelectedObject] = useState<any>(null);
   const [objectActionVisible, setObjectActionVisible] = useState(false);
   const [object3dClickPos, setObjectionClickPos] = useState({ x: 0, y: 0 });
@@ -141,7 +142,7 @@ const WorkspaceCustom = () => {
                 onClick={(e) => handleObject3dClick(e, object.key)}
                 onPointerMissed={handleObject3dPointerMissed}
               >
-                {ObjectProperties["Chair"]}
+                {ObjectProperties[object.code]}
               </mesh>
             ))}
             {!isCustomizing && (

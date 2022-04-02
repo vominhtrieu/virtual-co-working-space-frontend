@@ -6,7 +6,7 @@ import * as THREE from 'three'
 import {useEffect, useRef, useState} from 'react'
 import {useGLTF, useAnimations} from '@react-three/drei'
 import {useThree, useFrame} from '@react-three/fiber'
-import {useCylinder} from '@react-three/cannon'
+import {Triplet, useCylinder} from '@react-three/cannon'
 import {GLTFActions, GLTFResult, useCustomGLTF} from "../../helpers/utilities";
 
 type CharacterProps = JSX.IntrinsicElements['group'] & {
@@ -110,11 +110,21 @@ export default function Character(props: CharacterProps) {
         return directionOffset;
     };
 
-    useEffect(()=>{
-        
+    const position = useRef<Triplet>();
+    useEffect(() => {
+        if (!props.movable) {
+            return;
+        }
+        api.position.subscribe((_position: Triplet) => {
+            position.current = _position;
+        })
     })
 
+
     useFrame((state, delta) => {
+        if (!props.movable) {
+            return;
+        }
         const {camera} = state;
         let clip: THREE.AnimationClip = null;
 
@@ -132,21 +142,20 @@ export default function Character(props: CharacterProps) {
             walkDirection.current.y = 0;
             walkDirection.current.normalize();
             walkDirection.current.applyAxisAngle(rotateAngle.current, directionOffset + Math.PI);
-            console.log(directionOffset);
-            const moveX = walkDirection.current.x * MovingSpeed ;
-            const moveZ = walkDirection.current.z * MovingSpeed ;
+
+            const moveX = walkDirection.current.x * MovingSpeed;
+            const moveZ = walkDirection.current.z * MovingSpeed;
 
             api.velocity.set(moveX, 0, moveZ);
 
             // camera.position.copy(api.position);
             api.quaternion.copy(ref.current.quaternion)
-
-            if (orbitRef.current) {
-                orbitRef.current.target = ref.current.position;
-            }
         } else {
             clip = actions.Idle;
             api.velocity.set(0, 0, 0);
+        }
+        if (orbitRef.current) {
+            orbitRef.current.target = new THREE.Vector3(position[0], position[1], position[2]);
         }
         if (clip && clip !== currentClip.current) {
             if (currentClip.current) {
@@ -182,7 +191,7 @@ export default function Character(props: CharacterProps) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ref.current, props.startPosition]);
-    console.log(actions);
+
     return (
         <>
             <mesh ref={ref} {...props}>

@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import BottomMenu from "../components/Controls/BottomMenu";
 import Box from "../components/Models/Box";
-import Character from "../components/Models/Character";
 import CharacterContext from "../context/CharacterContext";
+import DisplayCharacter from "../components/Models/DisplayCharacter";
 
 const itemGroups = [
   {
@@ -68,7 +68,7 @@ const CharacterCustom = () => {
         <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45} />
         <ambientLight />
         <Suspense fallback={<Box />}>
-          <Character
+          <DisplayCharacter
             hair={character.hairStyle}
             eyes={character.eyeStyle}
             startPosition={[0, -0.5, 0]}
