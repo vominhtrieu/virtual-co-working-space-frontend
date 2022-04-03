@@ -1,20 +1,47 @@
 import { useState } from "react";
 import { BsFillChatFill } from "react-icons/bs";
+import { FaUserAlt } from "react-icons/fa";
 import { MdMeetingRoom } from "react-icons/md";
-import { RiSettings4Fill } from "react-icons/ri";
+import { RiLogoutBoxRFill, RiSettings4Fill } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
+import { removeAllDataLocal } from "../../../helpers/localStorage";
+import { toastError, toastSuccess } from "../../../helpers/toast";
+import LogoutProxy from "../../../services/proxy/auth/logout";
 import { useAppDispatch, useAppSelector } from "../../../stores";
+import { setAuthenticated, setUserInfo } from "../../../stores/auth-slice";
 import { setOpen, sidebarSelectors } from "../../../stores/sidebar-slice";
+import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
 import Offices from "./offices";
 import SidebarSettings from "./settings";
 import SidebarUser from "./userInfo";
-
-const URL_TEMP =
-  "https://64.media.tumblr.com/2b6c2343decf1534ebc6a735e9969819/ef2dfa173b9b5ca6-4f/s1280x1920/16822b4598c99673c8e55ad257dcb206dfb5c121.jpg";
 
 const Sidebar = () => {
   const dispatch = useAppDispatch();
   const [sidebarOpen, setSidebarOpen] = useState("");
   const currSidebar = useAppSelector(sidebarSelectors.getOpen);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    LogoutProxy()
+      .then((res) => {
+        if (res.status === ProxyStatusEnum.FAIL) {
+          toastError(res.message ?? "Logout fail");
+          return;
+        }
+
+        if (res.status === ProxyStatusEnum.SUCCESS) {
+          toastSuccess("Logout success");
+          dispatch(setAuthenticated(false));
+          dispatch(setUserInfo({}));
+          removeAllDataLocal();
+          navigate("/auth/login");
+          return;
+        }
+      })
+      .catch((err) => {
+        toastError(err.message ?? "Logout fail");
+      });
+  };
 
   return (
     <div className='sidebar-container'>
@@ -34,21 +61,24 @@ const Sidebar = () => {
               className={
                 "sidebar__item" + (currSidebar === "office" ? " active" : "")
               }
+              onClick={() =>
+                setSidebarOpen((curr) => {
+                  if (curr === "office") {
+                    dispatch(setOpen(""));
+                    return "";
+                  }
+                  dispatch(setOpen("office"));
+                  return "office";
+                })
+              }
             >
-              <MdMeetingRoom
-                className='sidebar__icon'
-                onClick={() =>
-                  setSidebarOpen((curr) => {
-                    if (curr === "office") {
-                      dispatch(setOpen(""));
-                      return "";
-                    }
-                    dispatch(setOpen("office"));
-                    return "office";
-                  })
-                }
-              />
+              <MdMeetingRoom className='sidebar__icon' />
             </li>
+          </ul>
+        </div>
+
+        <div className='sidebar__menu'>
+          <ul className='sidebar__items'>
             <li
               className={
                 "sidebar__item" + (currSidebar === "settings" ? " active" : "")
@@ -67,8 +97,6 @@ const Sidebar = () => {
               <RiSettings4Fill className='sidebar__icon' />
             </li>
 
-            <div className='sidebar__bar-line' />
-
             <li
               className={
                 "sidebar__item" + (currSidebar === "user" ? " active" : "")
@@ -84,9 +112,11 @@ const Sidebar = () => {
                 })
               }
             >
-              <div className='sidebar__user'>
-                <img className='sidebar__user-img' src={URL_TEMP} alt='' />
-              </div>
+              <FaUserAlt className='sidebar__icon' />
+            </li>
+
+            <li className={"sidebar__item"} onClick={handleLogout}>
+              <RiLogoutBoxRFill className='sidebar__icon' />
             </li>
           </ul>
         </div>

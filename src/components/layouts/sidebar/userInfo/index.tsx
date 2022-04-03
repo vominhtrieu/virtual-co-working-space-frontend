@@ -1,17 +1,9 @@
 import { useEffect, useState } from "react";
-import { RiLogoutBoxRFill } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
-import { removeAllDataLocal } from "../../../../helpers/localStorage";
 import { toastError, toastSuccess } from "../../../../helpers/toast";
-import LogoutProxy from "../../../../services/proxy/auth/logout";
-import UpdateProfileProxy from "../../../../services/proxy/users/update-user";
 import ProfileProxy from "../../../../services/proxy/users/get-profile";
+import UpdateProfileProxy from "../../../../services/proxy/users/update-user";
 import { useAppDispatch, useAppSelector } from "../../../../stores";
-import {
-  setAuthenticated,
-  setUserInfo,
-  userSelectors,
-} from "../../../../stores/auth-slice";
+import { setUserInfo, userSelectors } from "../../../../stores/auth-slice";
 import { ProxyStatusEnum } from "../../../../types/http/proxy/ProxyStatus";
 import Button from "../../../UI/button";
 import SidebarBox from "../sidebarBox";
@@ -27,36 +19,13 @@ const SidebarUser = () => {
   const [isChangingPass, setIsChangingPass] = useState(false);
   const userInfo = useAppSelector(userSelectors.getUserInfo);
 
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
-  const handleLogout = () => {
-    LogoutProxy()
-      .then((res) => {
-        if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Logout fail");
-          return;
-        }
-
-        if (res.status === ProxyStatusEnum.SUCCESS) {
-          toastSuccess("Logout success");
-          dispatch(setAuthenticated(false));
-          dispatch(setUserInfo({}));
-          removeAllDataLocal();
-          navigate("/auth/login");
-          return;
-        }
-      })
-      .catch((err) => {
-        toastError(err.message ?? "Logout fail");
-      });
-  };
 
   const handleChangeProfile = (values: EditProfileFormValuesInterface) => {
     UpdateProfileProxy({
       name: values.name,
       phone: values.phone,
-      avatar: values.avatar
+      avatar: values.avatar,
     })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
@@ -185,12 +154,6 @@ const SidebarUser = () => {
               )}
             </div>
             {/* user info - end */}
-
-            {/* logout -start */}
-            <div className='sidebar-user__logout' onClick={handleLogout}>
-              <div className='sidebar-user__logout-title'>Đăng xuất</div>
-              <RiLogoutBoxRFill className='sidebar-user__logout-icon' />
-            </div>
           </div>
         </div>
       </SidebarBox>
