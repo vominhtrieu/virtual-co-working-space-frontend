@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../../stores";
 import { setAuthenticated, setUserInfo } from "../../../stores/auth-slice";
 import { setOpen, sidebarSelectors } from "../../../stores/sidebar-slice";
 import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
+import SidebarChat from "./chat";
 import Offices from "./offices";
 import SidebarSettings from "./settings";
 import SidebarUser from "./userInfo";
@@ -53,6 +54,16 @@ const Sidebar = () => {
             <li
               className={
                 "sidebar__item" + (currSidebar === "chat" ? " active" : "")
+              }
+              onClick={() =>
+                setSidebarOpen((curr) => {
+                  if (curr === "chat") {
+                    dispatch(setOpen(""));
+                    return "";
+                  }
+                  dispatch(setOpen("chat"));
+                  return "chat";
+                })
               }
             >
               <BsFillChatFill className='sidebar__icon' />
@@ -125,6 +136,7 @@ const Sidebar = () => {
       {sidebarOpen === "settings" ? <SidebarSettings /> : null}
       {sidebarOpen === "user" ? <SidebarUser /> : null}
       {sidebarOpen === "office" ? <Offices /> : null}
+      {sidebarOpen === "chat" ? <SidebarChat /> : null}
     </div>
   );
 };
