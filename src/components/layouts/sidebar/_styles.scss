@@ -1,8 +1,16 @@
 .sidebar-container {
   display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
 }
 
 .sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
   width: 6rem;
   height: 100vh;
   background-color: $color-primary-dark;
@@ -45,7 +53,7 @@
       background-color: $color-blue;
     }
   }
-  
+
   &__item.active {
     background-color: $color-blue;
   }

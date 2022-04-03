@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { IoMdAddCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { toastError, toastSuccess } from "../../../../helpers/toast";
 import CreateOfficeProxy from "../../../../services/proxy/offices/create-office";
@@ -8,6 +7,7 @@ import { useAppSelector } from "../../../../stores";
 import { userSelectors } from "../../../../stores/auth-slice";
 import { ProxyStatusEnum } from "../../../../types/http/proxy/ProxyStatus";
 import { OfficeInterface } from "../../../../types/office";
+import Button from "../../../UI/button";
 import Thumbnail from "../../../UI/thumbnail";
 import SidebarBox from "../sidebarBox";
 import CreateOfficeForm from "./createOfficeForm";
@@ -82,13 +82,6 @@ const Offices = () => {
           <div className='sidebar-offices__container'>
             {/* box content - start */}
             <div className='sidebar-offices__group'>
-              <div className='sidebar-offices__group-header'>
-                <div className='sidebar-offices__header-title'>Created</div>
-                <IoMdAddCircleOutline
-                  className='sidebar-offices__header-icon'
-                  onClick={() => setIsCreateOffice(true)}
-                />
-              </div>
               <div className='sidebar-offices__items'>
                 {officeList?.map((office, key) => {
                   return (
@@ -108,6 +101,17 @@ const Offices = () => {
               </div>
             </div>
             {/* box content - end */}
+            <div className='sidebar-offices__group-btn'>
+              <Button
+                variant='primary'
+                onClick={() => {
+                  setIsCreateOffice(true);
+                }}
+              >
+                Tạo phòng
+              </Button>
+              <Button variant='primary'>Tham gia phòng</Button>
+            </div>
           </div>
         </div>
       </SidebarBox>

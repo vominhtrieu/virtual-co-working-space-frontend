@@ -1,8 +1,10 @@
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useContext, useRef, useState } from "react";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
 import { FaEdit, FaList, FaTrash, FaUserEdit } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import BottomMenu from "../../components/Controls/BottomMenu";
@@ -11,11 +13,9 @@ import Box from "../../components/Models/Box";
 import Character from "../../components/Models/Character";
 import ObjectProperties from "../../components/Models/ObjectProperties";
 import Office from "../../components/Models/Office";
+import OfficeDetailForm from "../../components/officeDetailForm";
 import Button from "../../components/UI/button";
 import CharacterContext from "../../context/CharacterContext";
-import { AiOutlineBars } from "react-icons/ai";
-import OfficeDetailForm from "../../components/officeDetailForm";
-import { useSelector } from "react-redux";
 const itemGroups = [
   {
     groupName: "Chair",
@@ -117,12 +117,11 @@ const WorkspaceCustom = () => {
         shadows={{ enabled: true, autoUpdate: true }}
         camera={{ position: [0, 5, 5], rotation: [45, 0, 0] }}
         style={{
-
           height: "100vh",
           background: "#577BC1",
-          position: "absolute",
+          position: "fixed",
           top: 0,
-          left: open!==""?"46rem":"6rem",
+          left: 0,
         }}
       >
         <OrbitControls
@@ -176,7 +175,7 @@ const WorkspaceCustom = () => {
         style={{
           position: "absolute",
           top: 0,
-          left: open!==""?"46rem":"6rem",
+          left: open !== "" ? "46rem" : "6rem",
           right: 0,
           width: "100%",
           height: "100%",
@@ -304,7 +303,7 @@ const WorkspaceCustom = () => {
       </div>
 
       <div className='office-detail__view'>
-        <AiOutlineBars
+        <AiOutlineInfoCircle
           className='office-detail__edit-icon'
           onClick={() => {
             setIsShowDetailForm(true);
