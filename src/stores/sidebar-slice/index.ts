@@ -15,10 +15,10 @@ const sidebarSlice = createSlice({
 
 const getOpen = (state: RootState) => state.sidebar.open;
 
-export const userSelectors = {
-  getOpen
+export const sidebarSelectors = {
+  getOpen,
 };
 
 const { actions, reducer } = sidebarSlice;
-export const { setOpen} = actions;
+export const { setOpen } = actions;
 export default reducer;

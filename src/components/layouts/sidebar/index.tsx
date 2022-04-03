@@ -2,12 +2,11 @@ import { useState } from "react";
 import { BsFillChatFill } from "react-icons/bs";
 import { MdMeetingRoom } from "react-icons/md";
 import { RiSettings4Fill } from "react-icons/ri";
+import { useAppDispatch, useAppSelector } from "../../../stores";
+import { setOpen, sidebarSelectors } from "../../../stores/sidebar-slice";
 import Offices from "./offices";
 import SidebarSettings from "./settings";
 import SidebarUser from "./userInfo";
-
-import { setOpen } from "../../../stores/sidebar-slice";
-import { useAppDispatch } from "../../../stores";
 
 const URL_TEMP =
   "https://64.media.tumblr.com/2b6c2343decf1534ebc6a735e9969819/ef2dfa173b9b5ca6-4f/s1280x1920/16822b4598c99673c8e55ad257dcb206dfb5c121.jpg";
@@ -15,6 +14,7 @@ const URL_TEMP =
 const Sidebar = () => {
   const dispatch = useAppDispatch();
   const [sidebarOpen, setSidebarOpen] = useState("");
+  const currSidebar = useAppSelector(sidebarSelectors.getOpen);
 
   return (
     <div className='sidebar-container'>
@@ -23,10 +23,18 @@ const Sidebar = () => {
 
         <div className='sidebar__menu'>
           <ul className='sidebar__items'>
-            <li className='sidebar__item'>
+            <li
+              className={
+                "sidebar__item" + (currSidebar === "chat" ? " active" : "")
+              }
+            >
               <BsFillChatFill className='sidebar__icon' />
             </li>
-            <li className='sidebar__item'>
+            <li
+              className={
+                "sidebar__item" + (currSidebar === "office" ? " active" : "")
+              }
+            >
               <MdMeetingRoom
                 className='sidebar__icon'
                 onClick={() =>
@@ -42,7 +50,9 @@ const Sidebar = () => {
               />
             </li>
             <li
-              className='sidebar__item'
+              className={
+                "sidebar__item" + (currSidebar === "settings" ? " active" : "")
+              }
               onClick={() =>
                 setSidebarOpen((curr) => {
                   if (curr === "settings") {
@@ -60,7 +70,9 @@ const Sidebar = () => {
             <div className='sidebar__bar-line' />
 
             <li
-              className='sidebar__item'
+              className={
+                "sidebar__item" + (currSidebar === "user" ? " active" : "")
+              }
               onClick={() =>
                 setSidebarOpen((curr) => {
                   if (curr === "user") {
