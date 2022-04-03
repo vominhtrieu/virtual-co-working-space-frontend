@@ -28,4 +28,25 @@
       background-color: $color-primary-light;
     }
   }
+
+  &--menu-custom{
+    border-radius: 1rem;
+    color: $color-pure-black;
+    border: 2px solid $color-primary-light;
+    &:hover {
+      background-color: $color-primary-light;
+      color: $color-gray-light;
+    }
+  }
+
+  &--character{
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    text-align: left;
+    margin-bottom: 1rem;
+    width: 25rem;
+    overflow: hidden;
+  }
 }
