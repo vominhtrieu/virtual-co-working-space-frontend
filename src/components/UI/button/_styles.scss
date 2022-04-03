@@ -29,17 +29,17 @@
     }
   }
 
-  &--menu-custom{
+  &--menu-custom {
     border-radius: 1rem;
     color: $color-pure-black;
     border: 2px solid $color-primary-light;
     &:hover {
       background-color: $color-primary-light;
-      color: $color-gray-light;
+      color: $color-gray-10;
     }
   }
 
-  &--character{
+  &--character {
     border-radius: 1rem;
     display: flex;
     align-items: center;

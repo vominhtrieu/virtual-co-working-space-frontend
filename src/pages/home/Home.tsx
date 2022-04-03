@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { Layout } from 'antd';
+import { useState } from "react";
+import { Layout } from "antd";
 const Home = () => {
-  return <section>
-    <Layout>
-      
-    </Layout>
-  </section>;
+  return (
+    <section>
+      <Layout></Layout>
+    </section>
+  );
 };
 
 export default Home;
