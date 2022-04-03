@@ -1,58 +1,64 @@
-import { OrbitControls } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
 import { Suspense, useContext, useRef, useState } from "react";
+import { OrbitControls } from "@react-three/drei";
+import Box from "../../components/Models/Box";
+import { Canvas } from "@react-three/fiber";
+import Button from "../../components/UI/button";
+import Office from "../../components/Models/Office";
 import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
 import { FaEdit, FaList, FaTrash, FaUserEdit } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import BottomMenu from "../../components/Controls/BottomMenu";
 import CustomTransformControl from "../../components/Controls/CustomTransformControl";
-import Box from "../../components/Models/Box";
 import Character from "../../components/Models/Character";
 import ObjectProperties from "../../components/Models/ObjectProperties";
-import Office from "../../components/Models/Office";
-import Button from "../../components/UI/button";
 import CharacterContext from "../../context/CharacterContext";
 import { AiOutlineBars } from "react-icons/ai";
 import OfficeDetailForm from "../../components/officeDetailForm";
 import { useSelector } from "react-redux";
+
 const itemGroups = [
   {
     groupName: "Chair",
     items: [
-      { code: "SofaChair", url: "./images/SofaChair.png" },
-      { code: "Chair", url: "./images/Chair.png" },
+      { code: "SofaChair", url: "/images/SofaChair.png" },
+      { code: "Chair", url: "/images/Chair.png" },
       { code: "YellowChair", url: "/images/YellowChair.png" },
     ],
   },
   {
     groupName: "Table",
     items: [
-      { code: "ModernTable", url: "./images/ModernTable.png" },
-      { code: "CoffeeTable", url: "./images/CoffeeTable.png" },
+      { code: "ModernTable", url: "/images/ModernTable.png" },
+      { code: "CoffeeTable", url: "/images/CoffeeTable.png" },
     ],
   },
   {
     groupName: "Indoor Tree",
-    items: [{ code: "IndoorTree", url: "./images/IndoorTree.png" }],
+    items: [{ code: "IndoorTree", url: "/images/IndoorTree.png" }],
   },
   {
     groupName: "Keyboard",
-    items: [{ code: "Keyboard", url: "./images/Keyboard.png" }],
+    items: [{ code: "Keyboard", url: "/images/Keyboard.png" }],
   },
 ];
+
+export type positionType = {
+  x: number;
+  y: number;
+}; 
 
 const WorkspaceCustom = () => {
   const { open } = useSelector((state: any) => state.sidebar);
   const [isShowDetailForm, setIsShowDetailForm] = useState(false);
   const orbitRef = useRef(null);
-  const [objectList, setObjectList] = useState([
-    { key: uuidv4(), code: "Chair" },
-  ]);
+  const [objectList, setObjectList] = useState<Array<{
+      key: string,
+      code: string}>>([]);
   const [selectedKey, setSelectedKey] = useState(null);
   const [selectedObject, setSelectedObject] = useState<any>(null);
   const [objectActionVisible, setObjectActionVisible] = useState(false);
-  const [object3dClickPos, setObjectionClickPos] = useState({ x: 0, y: 0 });
+  const [object3dClickPos, setObjectionClickPos] = useState<positionType>({ x: 0, y: 0 });
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [showMainMenu, setShowMainMenu] = useState(false);
   const navigate = useNavigate();
@@ -87,6 +93,7 @@ const WorkspaceCustom = () => {
       temp = temp.parent;
     }
 
+    console.log(temp);
     setSelectedObject(temp);
     setSelectedKey(key);
     setObjectActionVisible(true);
@@ -95,20 +102,23 @@ const WorkspaceCustom = () => {
     const y = e.clientY;
 
     setObjectionClickPos({ x, y });
+    console.log("false");
   };
 
   const handleObject3dPointerMissed = () => {
     setObjectActionVisible(false);
+    console.log("false");
   };
 
   const handleItemInBottomMenuClick = ({ code }: any) => {
-    setObjectList([
+
+    setObjectList((objectList) => [
       ...objectList,
       {
         key: uuidv4(),
         code,
       },
-    ]);
+    ])
   };
 
   return (
@@ -117,12 +127,11 @@ const WorkspaceCustom = () => {
         shadows={{ enabled: true, autoUpdate: true }}
         camera={{ position: [0, 5, 5], rotation: [45, 0, 0] }}
         style={{
-
           height: "100vh",
           background: "#577BC1",
           position: "absolute",
           top: 0,
-          left: open!==""?"46rem":"6rem",
+          left: open !== "" ? "46rem" : "6rem",
         }}
       >
         <OrbitControls
@@ -152,7 +161,7 @@ const WorkspaceCustom = () => {
               onClick={(e) => handleObject3dClick(e, object.key)}
               onPointerMissed={handleObject3dPointerMissed}
             >
-              {ObjectProperties["Chair"]}
+              {ObjectProperties[object.code]}
             </mesh>
           ))}
           {!isCustomizing && (
@@ -176,12 +185,12 @@ const WorkspaceCustom = () => {
         style={{
           position: "absolute",
           top: 0,
-          left: open!==""?"46rem":"6rem",
+          left: open !== "" ? "46rem" : "6rem",
           right: 0,
           width: "100%",
           height: "100%",
-          pointerEvents: "none",
           textAlign: "left",
+          pointerEvents: "none",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
@@ -196,15 +205,20 @@ const WorkspaceCustom = () => {
               margin: "0.5rem 1rem",
               alignItems: "center",
               position: "absolute",
+              zIndex: "999999",
+              pointerEvents: "auto",
             }}
           >
-            <Button onClick={() => setShowMainMenu((value) => !value)}>
+            <Button onClick={() => setShowMainMenu((value) => !value)} type="button" variant="outlined" className="menu-custom">
               <FaList style={{ width: "1.5rem", height: "1.5rem" }} />
             </Button>
             {showMainMenu && (
               <>
                 <div style={{ position: "absolute", top: 60, width: "auto" }}>
                   <Button
+                    type="button"
+                    variant="primary"
+                    className="character"
                     onClick={() => {
                       setIsCustomizing((value) => !value);
                       setShowMainMenu(false);
@@ -213,13 +227,17 @@ const WorkspaceCustom = () => {
                     <FaEdit
                       style={{
                         width: "1.5rem",
-                        height: "30px",
+                        height: "1.5rem",
                         marginRight: 5,
                       }}
                     />
                     <span>Customize your office</span>
                   </Button>
+
                   <Button
+                    type="button"
+                    variant="primary"
+                    className="character"
                     onClick={() => {
                       navigate("/character");
                     }}
@@ -241,8 +259,16 @@ const WorkspaceCustom = () => {
 
         {isCustomizing ? (
           <>
-            <div style={{ position: "fixed", right: 20, top: 10 }}>
-              <Button
+            <div style={{
+              position: "fixed",
+              right: "1.5rem",
+              top: "1rem",
+              pointerEvents: "auto",
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px"
+            }}>
+              <Button type="button" variant="outlined" className="menu-custom"
                 onClick={() => {
                   setIsCustomizing(false);
                 }}
@@ -250,7 +276,8 @@ const WorkspaceCustom = () => {
                 Cancel
               </Button>
 
-              <Button
+              <Button type="button"
+                variant="outlined" className="menu-custom"
                 onClick={() => {
                   setIsCustomizing(false);
                 }}
@@ -272,17 +299,30 @@ const WorkspaceCustom = () => {
                     display: "flex",
                     flexDirection: "column",
                     gap: "10px",
+                    pointerEvents: "auto"
                   }}
                 >
-                  <Button onClick={handleButtonDeleteClick}>
+                  <Button
+                    type="button"
+                    variant="outlined"
+                    className="menu-custom"
+                    onClick={handleButtonDeleteClick}>
                     <FaTrash style={{ width: "1.5rem", height: "1.5rem" }} />
                   </Button>
-                  <Button onClick={handleButtonRotateLeftClick}>
+
+                  <Button
+                    type="button"
+                    variant="outlined" className="menu-custom"
+                    onClick={handleButtonRotateLeftClick}>
                     <BiRotateLeft
                       style={{ width: "1.5rem", height: "1.5rem" }}
                     />
                   </Button>
-                  <Button onClick={handleButtonRotateRightClick}>
+
+                  <Button
+                    type="button"
+                    variant="outlined" className="menu-custom"
+                    onClick={handleButtonRotateRightClick}>
                     <BiRotateRight
                       style={{ width: "1.5rem", height: "1.5rem" }}
                     />
@@ -291,10 +331,10 @@ const WorkspaceCustom = () => {
               </div>
             )}
 
-            <div aria-label='bottomMenu'>
+            <div aria-label='bottomMenu' style={{ pointerEvents: "auto" }}>
               <BottomMenu
-                // objectList={objectList}
-                // setObjectList={setObjectList}
+                objectList={objectList}
+                setObjectList={setObjectList}
                 itemGroups={itemGroups}
                 onItemClick={handleItemInBottomMenuClick}
               />

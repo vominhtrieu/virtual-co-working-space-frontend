@@ -12,6 +12,7 @@ import CharacterCustom from "./pages/CharacterCustom";
 import Home from "./pages/home/Home";
 import NotFound from "./pages/notFound";
 import Workspace from "./pages/officeDetail/Workspace";
+import Active from "./pages/auth/active";
 import "./scss/main.scss";
 import { CharacterInterface } from "./types/character";
 
@@ -48,6 +49,7 @@ function App() {
             <Routes>
               <Route path='/auth/login' element={<Login />} />
               <Route path='/auth/register' element={<Register />} />
+              <Route path='/auth/activate/:token' element={<Active />} />
               <Route path='*' element={<NotFound />} />
             </Routes>
           )}
