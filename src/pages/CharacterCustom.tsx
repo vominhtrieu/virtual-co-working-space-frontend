@@ -7,6 +7,7 @@ import Box from "../components/Models/Box";
 import Character from "../components/Models/Character";
 import Button from "../components/UI/button";
 import CharacterContext from "../context/CharacterContext";
+import { useSelector } from "react-redux";
 
 const itemGroups = [
   {
@@ -26,6 +27,7 @@ const itemGroups = [
 ];
 
 const CharacterCustom = () => {
+  const { open } = useSelector((state: any) => state.sidebar);
   const character = useContext(CharacterContext);
   const navigate = useNavigate();
 
@@ -56,15 +58,16 @@ const CharacterCustom = () => {
         style={{
           height: "100vh",
           background: "#577BC1",
-          position: "fixed",
+          position: "absolute",
+          top: 0,
+          left: open !== "" ? "46rem" : "6rem",
         }}
       >
         <OrbitControls
           addEventListener={undefined}
           hasEventListener={undefined}
           removeEventListener={undefined}
-          dispatchEvent={undefined}
-        />
+          dispatchEvent={undefined}/>
         <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45} />
         <ambientLight />
         <Suspense fallback={<Box />}>
@@ -80,11 +83,12 @@ const CharacterCustom = () => {
         style={{
           position: "absolute",
           top: 0,
-          left: 0,
+          left: open !== "" ? "46rem" : "6rem",
+          right: 0,
           width: "100%",
           height: "100%",
-          pointerEvents: "none",
           textAlign: "left",
+          pointerEvents: "none",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
@@ -93,20 +97,26 @@ const CharacterCustom = () => {
         <div
           aria-label='topMenu'
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            margin: "0.5rem 1rem",
-            alignItems: "center",
+            position: "fixed", 
+              right: "1.5rem", 
+              top: "1rem", 
+              pointerEvents:"auto",
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px"
           }}
         >
+          <Button type="button" variant="outlined" className="menu-custom" onClick={() => navigate("/workspace")}>Save</Button>
+
           <div />
-          <Button onClick={() => navigate("/workspace")}>Save</Button>
         </div>
-        <div style={{ height: "100%" }}></div>
-        <BottomMenu
-          itemGroups={itemGroups}
-          onItemClick={handleBottomMenuItemClick}
-        />
+        <div style={{ height: "100%", pointerEvents: "auto" }}>
+          <BottomMenu
+            itemGroups={itemGroups}
+            onItemClick={handleBottomMenuItemClick}
+          />
+        </div>
+
       </div>
     </>
   );
