@@ -9,9 +9,11 @@ import {
   EditProfileFormProps,
   EditProfileInputInterface,
 } from "./types";
+import { useState } from "react";
 import { useAppSelector } from "../../../../../stores";
 import { userSelectors } from "../../../../../stores/auth-slice";
 import { useTranslation } from "react-i18next";
+import ProfileAvatar from "./avatar";
 
 const EditProfileForm = (props: EditProfileFormProps) => {
   const { t } = useTranslation();
@@ -20,12 +22,14 @@ const EditProfileForm = (props: EditProfileFormProps) => {
 
   const userInfo = useAppSelector(userSelectors.getUserInfo);
 
+  const [isAvatar, setIsAvatar] = useState<string>(userInfo.avatar);
+
   const schema = yup.object().shape({
     name: yup
-    .string()
-    .required(t("default.error.required", { field: t("pages.register.name") }))
-    .min(6, t("default.error.minLength", { field: t("pages.register.name"), min: 6 }))
-    .max(50, t("default.error.maxLength", { field: t("pages.register.name"), max: 50})),
+      .string()
+      .required(t("default.error.required", { field: t("pages.register.name") }))
+      .min(6, t("default.error.minLength", { field: t("pages.register.name"), min: 6 }))
+      .max(50, t("default.error.maxLength", { field: t("pages.register.name"), max: 50 })),
     phone: yup
       .string()
       .required(t("default.error.required", { field: "phone" }))
@@ -45,7 +49,7 @@ const EditProfileForm = (props: EditProfileFormProps) => {
     const formatData: EditProfileFormDataInterface = {
       name: data.name,
       phone: data.phone,
-      avatar: data.avatar,
+      avatar: isAvatar,
     };
     onSubmit(formatData);
   };
@@ -54,21 +58,21 @@ const EditProfileForm = (props: EditProfileFormProps) => {
     <form onSubmit={handleSubmit(handleEditProfileSubmit)}>
       <ul className='edit-profile__items'>
         {/* user item - start */}
+        <li className='edit-profile__item-avatar'>
+        <ProfileAvatar user={userInfo} size={120} setIsAvatar={setIsAvatar} isAvatar={isAvatar}/>
+        </li>
+        {/* user item - end */}
+        {/* user item - start */}
         <li className='edit-profile__item'>
           <div className='edit-profile__item-title'>Họ và tên:</div>
           <InputText control={control} name='name' />
         </li>
         {/* user item - end */}
+
         {/* user item - start */}
         <li className='edit-profile__item'>
           <div className='edit-profile__item-title'>Điện thoại:</div>
           <InputText control={control} name='phone' />
-        </li>
-        {/* user item - end */}
-        {/* user item - start */}
-        <li className='edit-profile__item'>
-          <div className='edit-profile__item-title'>Ảnh đại diện:</div>
-          <InputText control={control} name='avatar' />
         </li>
         {/* user item - end */}
       </ul>

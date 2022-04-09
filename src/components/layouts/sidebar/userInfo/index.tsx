@@ -66,6 +66,7 @@ const SidebarUser = () => {
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
           console.log(res.data);
+          dispatch(setUserInfo(res?.data.userInfo));
           toastSuccess("update success");
           setIsEditing(!isEditing);
         }

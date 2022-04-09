@@ -1,15 +1,16 @@
 import { ProxyFuncType } from "./../../../../types/http/proxy/ProxyFuncType";
 import { ProxyStatusEnum } from "../../../../types/http/proxy/ProxyStatus";
-import { updateProfile } from "../../../api/users/update-profile";
+import { reset } from "../../../api/auth/resetPassword";
 import {
-  UpdateProfileProxyParams,
-  UpdateProfileProxyTransformInterface,
-  UpdateProfileProxyResponseInterface,
+  ResetProxyParams,
+  ResetProxyResponseInterface,
+  ResetProxyTransformInterface,
+  ResetProxyBody,
 } from "./type";
 
-const updateProfileTransform = (
-  res: UpdateProfileProxyTransformInterface
-): UpdateProfileProxyResponseInterface => {
+const ResetTransform = (
+  res: ResetProxyTransformInterface
+): ResetProxyResponseInterface => {
   console.log(res);
   const transform = {
     userInfo: {
@@ -27,11 +28,10 @@ const updateProfileTransform = (
   return transform;
 };
 
-const UpdateProfileProxy = async (
-    params: UpdateProfileProxyParams
-  ): Promise<ProxyFuncType<UpdateProfileProxyResponseInterface>> =>  {
-  const res = await updateProfile(params);
-  console.log(res);
+const ResetProxy = async (
+  params: ResetProxyParams, body: ResetProxyBody
+): Promise<ProxyFuncType<ResetProxyResponseInterface>> => {
+  const res = await reset(params, body);
 
   if (res?.code) {
     return {
@@ -42,11 +42,11 @@ const UpdateProfileProxy = async (
     };
   }
 
-  const profileRespTransformed = updateProfileTransform(res);
+  const ResetRespTransformed = ResetTransform(res);
   return {
     status: ProxyStatusEnum.SUCCESS,
-    data: profileRespTransformed,
+    data: ResetRespTransformed,
   };
 };
 
-export default UpdateProfileProxy;
+export default ResetProxy;

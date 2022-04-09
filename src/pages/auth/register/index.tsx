@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { toastError, toastSuccess } from "../../../helpers/toast";
 
 function Register() {
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
   const handleRegister = (values: RegisterFormValues) => {
     RegisterProxy({
@@ -19,16 +19,17 @@ function Register() {
       passwordConfirm: values.passwordConfirm
     })
       .then((res) => {
-        console.log(res);
         if (res.status === ProxyStatusEnum.FAIL) {
+          console.log(res);
           console.log(res.message);
-          toastError("register fail");
+          toastError(res.message ?? "Register fail");
+          return;
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          console.log(res.data);
           toastSuccess("register success");
-          navigation('/auth/login');
+          navigate("/auth/login");
+          return;
         }
       })
       .catch((err) => {

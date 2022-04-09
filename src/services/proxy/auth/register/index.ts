@@ -23,6 +23,8 @@ const registerTransform = (
       status: res?.user.status ?? "",
       createdAt: res?.user.createdAt ?? "",
     },
+    accessToken: res?.accessToken ?? "",
+    refreshToken: res?.refreshToken ?? "",
   };
   return transform;
 };

@@ -23,6 +23,7 @@
 @import "../components/layouts/sidebar/offices/styles";
 @import "../components/layouts/sidebar/offices/createOfficeForm/styles";
 @import "../components/layouts/sidebar/settings/styles";
+@import "../components/layouts/sidebar/userInfo/editProfileForm/avatar/styles";
 
 @import "../components/UI/form-controls/inputDate/styles";
 @import "../components/UI/button/styles";
@@ -32,9 +33,13 @@
 
 @import "../components/login/loginForm/styles";
 @import "../components/register/registerForm/styles";
+@import "../components/password/forgotForm/styles";
+@import "../components/password/resetForm/styles";
 
 // import pages
 @import "../pages/auth/login/styles";
 @import "../pages/auth/register/styles";
 @import "../pages/home/style";
 @import "../pages/officeDetail/styles";
+@import "../pages/auth/forgotPassword/styles";
+@import "../pages/auth/resetPassword/styles";

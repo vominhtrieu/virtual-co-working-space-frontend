@@ -30,8 +30,9 @@ const activeTransform = (
 const ActiveProxy = async (
   params: ActiveProxyParams
 ): Promise<ProxyFuncType<ActiveProxyResponseInterface>> => {
+  console.log(params);
   const res = await active(params);
-
+  console.log(res);
   if (res?.code) {
     return {
       status: ProxyStatusEnum.FAIL,

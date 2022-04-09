@@ -5,7 +5,6 @@ import Login from "../login/index"
 import { toastError, toastSuccess } from "../../../helpers/toast";
 import ActiveProxy from "../../../services/proxy/auth/active";
 import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
-import { ActiveValues } from "./type";
 
 
 function Active() {
@@ -13,9 +12,10 @@ function Active() {
   const {token}: any = params;
 
   
-  const handleActive = (token: ActiveValues) => {
+  const handleActive = () => {
     ActiveProxy(token)
       .then((res) => {
+        console.log(token);
         if (res.status === ProxyStatusEnum.FAIL) {
           console.log(res);
           console.log(res.message);
@@ -35,7 +35,7 @@ function Active() {
   };
 
   useEffect(() => {
-      handleActive(token);
+      handleActive();
   }, [])
 
 

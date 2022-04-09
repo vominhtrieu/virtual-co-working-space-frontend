@@ -1,16 +1,16 @@
 import { UserInterface } from "./../../../../types/user";
 
-export interface RegisterParamsInterface {
-  name: string;
-  email: string;
+export interface ResetParamsInterface {
+  token: string;
+}
+
+export interface ResetBodyInterface {
   password: string;
   passwordConfirm: string;
 }
 
-export interface RegisterApiResponseInterface {
+export interface ResetApiResponseInterface {
   user: UserInterface;
-  accessToken: string;
-  refreshToken: string;
   status?: string;
   code?: number;
   message?: string;

@@ -1,15 +1,15 @@
 import { ProxyFuncType } from "./../../../../types/http/proxy/ProxyFuncType";
 import { ProxyStatusEnum } from "../../../../types/http/proxy/ProxyStatus";
-import { updateProfile } from "../../../api/users/update-profile";
+import { forgot } from "../../../api/auth/forgotPassword";
 import {
-  UpdateProfileProxyParams,
-  UpdateProfileProxyTransformInterface,
-  UpdateProfileProxyResponseInterface,
+  ForgotProxyParams,
+  ForgotProxyResponseInterface,
+  ForgotProxyTransformInterface,
 } from "./type";
 
-const updateProfileTransform = (
-  res: UpdateProfileProxyTransformInterface
-): UpdateProfileProxyResponseInterface => {
+const ForgotTransform = (
+  res: ForgotProxyTransformInterface
+): ForgotProxyResponseInterface => {
   console.log(res);
   const transform = {
     userInfo: {
@@ -27,12 +27,11 @@ const updateProfileTransform = (
   return transform;
 };
 
-const UpdateProfileProxy = async (
-    params: UpdateProfileProxyParams
-  ): Promise<ProxyFuncType<UpdateProfileProxyResponseInterface>> =>  {
-  const res = await updateProfile(params);
+const ForgotProxy = async (
+  params: ForgotProxyParams
+): Promise<ProxyFuncType<ForgotProxyResponseInterface>> => {
+  const res = await forgot(params);
   console.log(res);
-
   if (res?.code) {
     return {
       status: ProxyStatusEnum.FAIL,
@@ -42,11 +41,11 @@ const UpdateProfileProxy = async (
     };
   }
 
-  const profileRespTransformed = updateProfileTransform(res);
+  const ForgotRespTransformed = ForgotTransform(res);
   return {
     status: ProxyStatusEnum.SUCCESS,
-    data: profileRespTransformed,
+    data: ForgotRespTransformed,
   };
 };
 
-export default UpdateProfileProxy;
+export default ForgotProxy;

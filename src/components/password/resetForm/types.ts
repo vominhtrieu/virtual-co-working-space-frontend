@@ -1,13 +1,13 @@
 export interface InputInterface {
   password: string;
-  confirmPassword: string;
+  passwordConfirm: string;
 }
 
 export interface FormPropsInterface {
-  handleForgotSubmit: (values: InputFormatInterface) => void;
+  handleResetSubmit: (values: InputFormatInterface) => void;
 }
 
 export interface InputFormatInterface {
   password: string;
-  confirmPassword: string;
+  passwordConfirm: string;
 }
