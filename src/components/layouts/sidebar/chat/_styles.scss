@@ -104,6 +104,11 @@
     margin-bottom: 1.5rem;
   }
 
+  &__items {
+    max-height: 35rem;
+    overflow: auto;
+  }
+
   &__form {
     display: flex;
     justify-content: space-between;
@@ -121,6 +126,11 @@
 
 .chat-box.full-height {
   height: 75rem;
+
+  .chat-box__items {
+    max-height: 65rem;
+    overflow: auto;
+  }
 }
 
 .chat-box-item {

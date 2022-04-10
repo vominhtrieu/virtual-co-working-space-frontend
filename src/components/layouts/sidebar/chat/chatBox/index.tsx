@@ -37,6 +37,48 @@ const ChatBox = (props: ChatBoxPropsInterface) => {
             <li className='chat-box__item'>
               <ChatBoxItem isMe />
             </li>
+            <li className='chat-box__item'>
+              <ChatBoxItem />
+            </li>
+            <li className='chat-box__item'>
+              <ChatBoxItem isMe />
+            </li>
+            <li className='chat-box__item'>
+              <ChatBoxItem />
+            </li>
+            <li className='chat-box__item'>
+              <ChatBoxItem isMe />
+            </li>
+            <li className='chat-box__item'>
+              <ChatBoxItem />
+            </li>
+            <li className='chat-box__item'>
+              <ChatBoxItem isMe />
+            </li>
+            <li className='chat-box__item'>
+              <ChatBoxItem />
+            </li>
+            <li className='chat-box__item'>
+              <ChatBoxItem isMe />
+            </li>
+            <li className='chat-box__item'>
+              <ChatBoxItem />
+            </li>
+            <li className='chat-box__item'>
+              <ChatBoxItem isMe />
+            </li>
+            <li className='chat-box__item'>
+              <ChatBoxItem />
+            </li>
+            <li className='chat-box__item'>
+              <ChatBoxItem isMe />
+            </li>
+            <li className='chat-box__item'>
+              <ChatBoxItem />
+            </li>
+            <li className='chat-box__item'>
+              <ChatBoxItem isMe />
+            </li>
           </ul>
         </div>
       </div>
