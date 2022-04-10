@@ -1,37 +1,9 @@
-<<<<<<< HEAD
-import { useState } from "react";
-import { Avatar } from "antd";
-import { BsFillChatFill } from "react-icons/bs";
-import { FaUserAlt } from "react-icons/fa";
-import { MdMeetingRoom } from "react-icons/md";
-import { RiLogoutBoxRFill, RiSettings4Fill } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
-import { removeAllDataLocal } from "../../../helpers/localStorage";
-import { toastError, toastSuccess } from "../../../helpers/toast";
-import LogoutProxy from "../../../services/proxy/auth/logout";
-import { useAppDispatch, useAppSelector } from "../../../stores";
-import { setAuthenticated, setUserInfo } from "../../../stores/auth-slice";
-import { setOpen, sidebarSelectors } from "../../../stores/sidebar-slice";
-import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
-import SidebarChat from "./chat";
-import Offices from "./offices";
-import SidebarSettings from "./settings";
-import SidebarUser from "./userInfo";
-import { UserOutlined } from "@ant-design/icons";
-import { userSelectors } from "../../../stores/auth-slice";
 
-const Sidebar = () => {
-  const dispatch = useAppDispatch();
-  const [sidebarOpen, setSidebarOpen] = useState("");
-  const currSidebar = useAppSelector(sidebarSelectors.getOpen);
-  const navigate = useNavigate();
-  const userInfo = useAppSelector(userSelectors.getUserInfo);
-
-=======
 import { useState } from 'react'
 import { BsFillChatFill } from 'react-icons/bs'
 import { FaUserAlt } from 'react-icons/fa'
 import { MdMeetingRoom } from 'react-icons/md'
+import { UserOutlined } from "@ant-design/icons";
 import {
   RiLogoutBoxRFill,
   RiSettings4Fill,
@@ -45,17 +17,19 @@ import { useAppDispatch, useAppSelector } from '../../../stores'
 import { setAuthenticated, setUserInfo } from '../../../stores/auth-slice'
 import { setOpen, sidebarSelectors } from '../../../stores/sidebar-slice'
 import { ProxyStatusEnum } from '../../../types/http/proxy/ProxyStatus'
+import { userSelectors } from '../../../stores/auth-slice'
 import SidebarChat from './chat'
 import Offices from './offices'
 import SidebarSettings from './settings'
 import SidebarUser from './userInfo'
+import Avatar from 'antd/lib/avatar/avatar'
 
 const Sidebar = () => {
   const dispatch = useAppDispatch()
   const [sidebarOpen, setSidebarOpen] = useState('')
   const currSidebar = useAppSelector(sidebarSelectors.getOpen)
   const navigate = useNavigate()
->>>>>>> dev
+  const userInfo = useAppSelector(userSelectors.getUserInfo);
 
   const handleLogout = () => {
     LogoutProxy()
@@ -170,16 +144,12 @@ const Sidebar = () => {
                 })
               }
             >
-<<<<<<< HEAD
               {userInfo.avatar !== "" ? (
                 <Avatar size={40} src={userInfo.avatar} />
               ) : (
                 <Avatar size={40} icon={<UserOutlined />} />
-              )}            </li>
-=======
-              <FaUserAlt className="sidebar__icon" />
+              )}            
             </li>
->>>>>>> dev
 
             <li className={'sidebar__item'} onClick={handleLogout}>
               <RiLogoutBoxRFill className="sidebar__icon" />
