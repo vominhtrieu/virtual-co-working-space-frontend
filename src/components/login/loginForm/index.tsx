@@ -1,4 +1,7 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { FaEnvelope, FaKey } from 'react-icons/fa'
 import {
   RiFacebookFill,
   RiGithubFill,
@@ -6,20 +9,13 @@ import {
   RiLinkedinFill,
   RiTwitterLine,
 } from 'react-icons/ri'
-import { FaEnvelope, FaKey } from 'react-icons/fa'
-import { FormPropsInterface, InputInterface } from './types'
-import InputText from '../../UI/form-controls/inputText'
 import { Link } from 'react-router-dom'
 import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useTranslation } from 'react-i18next'
+import InputText from '../../UI/form-controls/inputText'
+import { FormPropsInterface, InputInterface } from './types'
 
 const LoginForm = (props: FormPropsInterface) => {
-  const {
-    handleLoginSubmit,
-    handleLoginGoogleSubmit,
-    handleLoginFacebookSubmit,
-  } = props
+  const { handleLoginSubmit } = props
   const { t } = useTranslation()
 
   const schema = yup.object().shape({
