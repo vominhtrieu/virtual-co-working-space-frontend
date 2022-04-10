@@ -1,15 +1,14 @@
-import { ProxyFuncType } from "./../../../../types/http/proxy/ProxyFuncType";
 import { ProxyStatusEnum } from "../../../../types/http/proxy/ProxyStatus";
-import { login } from "../../../api/auth/login";
+import { loginGoogle } from "../../../api/auth/loginGoogle";
+import { ProxyFuncType } from "./../../../../types/http/proxy/ProxyFuncType";
 import {
-  LoginProxyParams,
-  LoginProxyResponseInterface,
-  LoginProxyTransformInterface,
-} from "./type";
+  LoginGoogleProxyResponseInterface,
+  LoginGoogleProxyTransformInterface,
+} from "./types";
 
 const loginTransform = (
-  res: LoginProxyTransformInterface
-): LoginProxyResponseInterface => {
+  res: LoginGoogleProxyTransformInterface
+): LoginGoogleProxyResponseInterface => {
   const transform = {
     userInfo: {
       id: res?.user.id ?? "",
@@ -28,11 +27,11 @@ const loginTransform = (
   return transform;
 };
 
-const LoginProxy = async (
-  params: LoginProxyParams
-): Promise<ProxyFuncType<LoginProxyResponseInterface>> => {
-  const res = await login(params);
-  console.log(res?.code);
+const LoginGoogleProxy = async (): Promise<
+  ProxyFuncType<LoginGoogleProxyResponseInterface>
+> => {
+  const res = await loginGoogle();
+
   if (res?.code) {
     return {
       status: ProxyStatusEnum.FAIL,
@@ -49,4 +48,4 @@ const LoginProxy = async (
   };
 };
 
-export default LoginProxy;
+export default LoginGoogleProxy;

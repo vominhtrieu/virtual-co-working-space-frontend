@@ -5,7 +5,7 @@ import { useState } from "react";
 import { use } from "i18next";
 
 
-const ProfileAvatar = ({user, size, isAvatar, setIsAvatar}: any) => {
+const ProfileAvatar = ({ size, isAvatar, setIsAvatar}: any) => {
 
   const [uploadingAvatar, setUploadingAvatar] = useState<boolean>(false);
   console.log(isAvatar);

@@ -1,21 +1,22 @@
-import { Suspense, useContext, useRef, useState } from "react";
-import { OrbitControls } from "@react-three/drei";
-import Box from "../../components/Models/Box";
+import { OrbitControls, OrbitControlsProps } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import Button from "../../components/UI/button";
-import Office from "../../components/Models/Office";
+import { Suspense, useContext, useRef, useState } from "react";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
 import { FaEdit, FaList, FaTrash, FaUserEdit } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import BottomMenu from "../../components/Controls/BottomMenu";
 import CustomTransformControl from "../../components/Controls/CustomTransformControl";
+import Box from "../../components/Models/Box";
 import Character from "../../components/Models/Character";
 import ObjectProperties from "../../components/Models/ObjectProperties";
-import CharacterContext from "../../context/CharacterContext";
-import { AiOutlineBars } from "react-icons/ai";
+import Office from "../../components/Models/Office";
 import OfficeDetailForm from "../../components/officeDetailForm";
-import { useSelector } from "react-redux";
+import Button from "../../components/UI/button";
+import CharacterContext from "../../context/CharacterContext";
+
 
 const itemGroups = [
   {
@@ -46,21 +47,27 @@ const itemGroups = [
 export type positionType = {
   x: number;
   y: number;
-}; 
+};
 
 const WorkspaceCustom = () => {
   const { open } = useSelector((state: any) => state.sidebar);
   const [isShowDetailForm, setIsShowDetailForm] = useState(false);
-  const orbitRef = useRef(null);
-  const [objectList, setObjectList] = useState<Array<{
-      key: string,
-      code: string}>>([]);
-  const [selectedKey, setSelectedKey] = useState(null);
+  const orbitRef = useRef<any>(null);
+  const [objectList, setObjectList] = useState<
+    Array<{
+      key: string;
+      code: string;
+    }>
+  >([]);
+  const [selectedKey, setSelectedKey] = useState<any>(null);
   const [selectedObject, setSelectedObject] = useState<any>(null);
-  const [objectActionVisible, setObjectActionVisible] = useState(false);
-  const [object3dClickPos, setObjectionClickPos] = useState<positionType>({ x: 0, y: 0 });
-  const [isCustomizing, setIsCustomizing] = useState(false);
-  const [showMainMenu, setShowMainMenu] = useState(false);
+  const [objectActionVisible, setObjectActionVisible] = useState<any>(false);
+  const [object3dClickPos, setObjectionClickPos] = useState<positionType>({
+    x: 0,
+    y: 0,
+  });
+  const [isCustomizing, setIsCustomizing] = useState<any>(false);
+  const [showMainMenu, setShowMainMenu] = useState<any>(false);
   const navigate = useNavigate();
   const character = useContext(CharacterContext);
 
@@ -111,15 +118,15 @@ const WorkspaceCustom = () => {
   };
 
   const handleItemInBottomMenuClick = ({ code }: any) => {
-
     setObjectList((objectList) => [
       ...objectList,
       {
         key: uuidv4(),
         code,
       },
-    ])
+    ]);
   };
+  console.log(objectList);
 
   return (
     <>
@@ -129,9 +136,9 @@ const WorkspaceCustom = () => {
         style={{
           height: "100vh",
           background: "#577BC1",
-          position: "absolute",
+          position: "fixed",
           top: 0,
-          left: open !== "" ? "46rem" : "6rem",
+          left: 0,
         }}
       >
         <OrbitControls
@@ -209,16 +216,21 @@ const WorkspaceCustom = () => {
               pointerEvents: "auto",
             }}
           >
-            <Button onClick={() => setShowMainMenu((value) => !value)} type="button" variant="outlined" className="menu-custom">
+            <Button
+              onClick={() => setShowMainMenu((value) => !value)}
+              type='button'
+              variant='outlined'
+              className='menu-custom'
+            >
               <FaList style={{ width: "1.5rem", height: "1.5rem" }} />
             </Button>
             {showMainMenu && (
               <>
                 <div style={{ position: "absolute", top: 60, width: "auto" }}>
                   <Button
-                    type="button"
-                    variant="primary"
-                    className="character"
+                    type='button'
+                    variant='primary'
+                    className='character'
                     onClick={() => {
                       setIsCustomizing((value) => !value);
                       setShowMainMenu(false);
@@ -235,9 +247,9 @@ const WorkspaceCustom = () => {
                   </Button>
 
                   <Button
-                    type="button"
-                    variant="primary"
-                    className="character"
+                    type='button'
+                    variant='primary'
+                    className='character'
                     onClick={() => {
                       navigate("/character");
                     }}
@@ -259,16 +271,21 @@ const WorkspaceCustom = () => {
 
         {isCustomizing ? (
           <>
-            <div style={{
-              position: "fixed",
-              right: "1.5rem",
-              top: "1rem",
-              pointerEvents: "auto",
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px"
-            }}>
-              <Button type="button" variant="outlined" className="menu-custom"
+            <div
+              style={{
+                position: "fixed",
+                right: "1.5rem",
+                top: "1rem",
+                pointerEvents: "auto",
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+              }}
+            >
+              <Button
+                type='button'
+                variant='outlined'
+                className='menu-custom'
                 onClick={() => {
                   setIsCustomizing(false);
                 }}
@@ -276,8 +293,10 @@ const WorkspaceCustom = () => {
                 Cancel
               </Button>
 
-              <Button type="button"
-                variant="outlined" className="menu-custom"
+              <Button
+                type='button'
+                variant='outlined'
+                className='menu-custom'
                 onClick={() => {
                   setIsCustomizing(false);
                 }}
@@ -299,30 +318,35 @@ const WorkspaceCustom = () => {
                     display: "flex",
                     flexDirection: "column",
                     gap: "10px",
-                    pointerEvents: "auto"
+                    pointerEvents: "auto",
                   }}
                 >
                   <Button
-                    type="button"
-                    variant="outlined"
-                    className="menu-custom"
-                    onClick={handleButtonDeleteClick}>
+                    type='button'
+                    variant='outlined'
+                    className='menu-custom'
+                    onClick={handleButtonDeleteClick}
+                  >
                     <FaTrash style={{ width: "1.5rem", height: "1.5rem" }} />
                   </Button>
 
                   <Button
-                    type="button"
-                    variant="outlined" className="menu-custom"
-                    onClick={handleButtonRotateLeftClick}>
+                    type='button'
+                    variant='outlined'
+                    className='menu-custom'
+                    onClick={handleButtonRotateLeftClick}
+                  >
                     <BiRotateLeft
                       style={{ width: "1.5rem", height: "1.5rem" }}
                     />
                   </Button>
 
                   <Button
-                    type="button"
-                    variant="outlined" className="menu-custom"
-                    onClick={handleButtonRotateRightClick}>
+                    type='button'
+                    variant='outlined'
+                    className='menu-custom'
+                    onClick={handleButtonRotateRightClick}
+                  >
                     <BiRotateRight
                       style={{ width: "1.5rem", height: "1.5rem" }}
                     />
@@ -344,7 +368,7 @@ const WorkspaceCustom = () => {
       </div>
 
       <div className='office-detail__view'>
-        <AiOutlineBars
+        <AiOutlineInfoCircle
           className='office-detail__edit-icon'
           onClick={() => {
             setIsShowDetailForm(true);

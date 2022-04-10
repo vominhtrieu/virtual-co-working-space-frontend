@@ -14,7 +14,12 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
 
-const LoginForm = ({ handleLoginSubmit }: FormPropsInterface) => {
+const LoginForm = (props: FormPropsInterface) => {
+  const {
+    handleLoginSubmit,
+    handleLoginGoogleSubmit,
+    handleLoginFacebookSubmit,
+  } = props;
   const { t } = useTranslation();
 
   const schema = yup.object().shape({
@@ -97,14 +102,17 @@ const LoginForm = ({ handleLoginSubmit }: FormPropsInterface) => {
       <div className='login-form__or'>{t("pages.login.or")}</div>
 
       <div className='login-form__social'>
-        <div className='login-form__social-item'>
+        <div
+          className='login-form__social-item'
+          onClick={handleLoginFacebookSubmit}
+        >
           <RiFacebookFill />
         </div>
         <div className='login-form__social-item'>
           <RiGithubFill />
         </div>
         <div className='login-form__social-item'>
-          <RiGoogleFill />
+          <RiGoogleFill onClick={handleLoginGoogleSubmit} />
         </div>
         <div className='login-form__social-item'>
           <RiLinkedinFill />

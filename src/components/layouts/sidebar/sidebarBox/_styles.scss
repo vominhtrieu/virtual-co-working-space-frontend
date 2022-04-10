@@ -2,4 +2,8 @@
   width: 40rem;
   height: 100vh;
   background-color: $color-primary;
+  position: fixed;
+  top: 0;
+  left: 6rem;
+  z-index: 200;
 }

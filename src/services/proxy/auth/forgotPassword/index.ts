@@ -30,8 +30,10 @@ const ForgotTransform = (
 const ForgotProxy = async (
   params: ForgotProxyParams
 ): Promise<ProxyFuncType<ForgotProxyResponseInterface>> => {
+  console.log("Hihi"+params);
+
   const res = await forgot(params);
-  console.log(res);
+  console.log("HUHU"+res);
   if (res?.code) {
     return {
       status: ProxyStatusEnum.FAIL,

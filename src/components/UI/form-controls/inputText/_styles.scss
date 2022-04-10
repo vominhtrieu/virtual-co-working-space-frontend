@@ -2,7 +2,6 @@
   background-color: transparent;
   color: #fff;
   padding: 1rem 1.5rem;
-  // font-size: 2rem;
 }
 
 .ant-input-affix-wrapper.error {
@@ -17,12 +16,9 @@
 .ant-input {
   background-color: transparent;
   color: #fff;
-<<<<<<< HEAD
-  margin-left: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid $color-primary-dark;
   // font-size: 1.8rem;
-=======
-  font-size: $font-text;
->>>>>>> dev
 }
 
 .input-label {

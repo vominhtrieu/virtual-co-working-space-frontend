@@ -2,6 +2,7 @@
   width: 100%;
   padding: 0.5rem 1rem;
   font-size: $font-text;
+  border-radius: 0.5rem;
   cursor: pointer;
 
   &--primary {
@@ -28,17 +29,17 @@
     }
   }
 
-  &--menu-custom{
+  &--menu-custom {
     border-radius: 1rem;
     color: $color-pure-black;
     border: 2px solid $color-primary-light;
     &:hover {
       background-color: $color-primary-light;
-      color: $color-gray-light;
+      color: $color-gray-10;
     }
   }
 
-  &--character{
+  &--character {
     border-radius: 1rem;
     display: flex;
     align-items: center;

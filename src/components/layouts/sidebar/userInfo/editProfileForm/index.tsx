@@ -59,7 +59,7 @@ const EditProfileForm = (props: EditProfileFormProps) => {
       <ul className='edit-profile__items'>
         {/* user item - start */}
         <li className='edit-profile__item-avatar'>
-        <ProfileAvatar user={userInfo} size={120} setIsAvatar={setIsAvatar} isAvatar={isAvatar}/>
+        <ProfileAvatar size={120} setIsAvatar={setIsAvatar} isAvatar={isAvatar}/>
         </li>
         {/* user item - end */}
         {/* user item - start */}
