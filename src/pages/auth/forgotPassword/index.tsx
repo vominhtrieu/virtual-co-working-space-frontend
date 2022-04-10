@@ -13,20 +13,16 @@ function ForgotPassword() {
       email: values.email,
     })
       .then((res) => {
-        console.log("HIHI");
         if (res.status === ProxyStatusEnum.FAIL) {
-          console.log(res.message);
           toastError("Forgot password fail");
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          console.log(res.data);
           toastSuccess("Forgot password successfully. Please check mail to change password.");
         }
       })
       .catch((err) => {
         console.log(err);
-        // show toast login fail
       })
       .finally(() => {});
   };

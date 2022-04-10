@@ -10,7 +10,6 @@ import {
 const registerTransform = (
   res: RegisterProxyTransformInterface
 ): RegisterProxyResponseInterface => {
-  console.log(res);
   const transform = {
     userInfo: {
       id: res?.user.id ?? "",

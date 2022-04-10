@@ -1,4 +1,3 @@
-import { UserInterface } from "./../../../../types/user";
 
 export interface ResetParamsInterface {
   token: string;
@@ -6,11 +5,11 @@ export interface ResetParamsInterface {
 
 export interface ResetBodyInterface {
   password: string;
-  passwordConfirm: string;
+  confirmPassword: string;
 }
 
 export interface ResetApiResponseInterface {
-  user: UserInterface;
+  msg: string;
   status?: string;
   code?: number;
   message?: string;

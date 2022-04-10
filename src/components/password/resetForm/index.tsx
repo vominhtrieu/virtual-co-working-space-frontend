@@ -23,7 +23,7 @@ const ResetForm = ({ handleResetSubmit }: FormPropsInterface) => {
   const { control, handleSubmit } = useForm<InputInterface>({
     defaultValues: {
       password: "",
-      passwordConfirm: "",
+      confirmPassword: "",
     },
     resolver: yupResolver(schema),
   });
@@ -31,9 +31,10 @@ const ResetForm = ({ handleResetSubmit }: FormPropsInterface) => {
   const onResetSubmit = (values: InputInterface) => {
     const formValues = {
       password: values["password"],
-      passwordConfirm: values["confirmPassword"],
+      confirmPassword: values["confirmPassword"],
     };
 
+    console.log(formValues);
     handleResetSubmit(formValues);
   };
 

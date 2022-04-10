@@ -15,9 +15,10 @@ function ResetPassword() {
   const navigation = useNavigate();
 
   const handleReset = (values: ResetPasswordFormValues) => {
+    console.log(values);
     ResetProxy(token,{
       password: values.password,
-      passwordConfirm: values.passwordConfirm,
+      confirmPassword: values.confirmPassword,
     })
       .then((res) => {
         console.log(res);

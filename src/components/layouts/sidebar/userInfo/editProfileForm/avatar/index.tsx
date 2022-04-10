@@ -2,15 +2,12 @@ import { Avatar, Button, message, Space, Spin, Upload } from "antd";
 import { UserOutlined, CameraOutlined } from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
 import { useState } from "react";
-import { use } from "i18next";
 
 
 const ProfileAvatar = ({ size, isAvatar, setIsAvatar}: any) => {
 
   const [uploadingAvatar, setUploadingAvatar] = useState<boolean>(false);
-  console.log(isAvatar);
   const handleAvatarChange = (info: any) => {
-    console.log()
       if (info.file.status === "uploading") {
           setUploadingAvatar(true);
           return;

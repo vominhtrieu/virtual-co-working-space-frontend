@@ -1,5 +1,3 @@
-import { UserInterface } from "./../../../../types/user";
-
 export interface ForgotParamsInterface {
   email: string;
 }

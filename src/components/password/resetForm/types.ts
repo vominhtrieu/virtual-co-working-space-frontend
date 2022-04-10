@@ -1,6 +1,6 @@
 export interface InputInterface {
   password: string;
-  passwordConfirm: string;
+  confirmPassword: string;
 }
 
 export interface FormPropsInterface {
@@ -9,5 +9,5 @@ export interface FormPropsInterface {
 
 export interface InputFormatInterface {
   password: string;
-  passwordConfirm: string;
+  confirmPassword: string;
 }

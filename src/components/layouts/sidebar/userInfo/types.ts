@@ -5,7 +5,7 @@ export interface EditProfileFormValuesInterface {
 }
 
 export interface ChangePasswordFormValuesInterface {
-    password: string;
-    confirmPassword: string;
+  password: string;
+  confirmPassword: string;
 }
   

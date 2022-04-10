@@ -10,18 +10,17 @@ import {
 const updateProfileTransform = (
   res: UpdateProfileProxyTransformInterface
 ): UpdateProfileProxyResponseInterface => {
-  console.log(res);
   const transform = {
     userInfo: {
-      id: res?.user.id ?? "",
-      email: res?.user.email ?? "",
-      name: res?.user.name ?? "",
-      phone: res?.user.phone ?? "",
-      avatar: res?.user.avatar ?? "",
-      provider: res?.user.provider ?? "",
-      externalId: res?.user.externalId ?? "",
-      status: res?.user.status ?? "",
-      createdAt: res?.user.createdAt ?? "",
+      id: res?.id ?? "",
+      email: res?.email ?? "",
+      name: res?.name ?? "",
+      phone: res?.phone ?? "",
+      avatar: res?.avatar ?? "",
+      provider: res?.provider ?? "",
+      externalId: res?.externalId ?? "",
+      status: res?.status ?? "",
+      createdAt: res?.createdAt ?? "",
     },
   };
   return transform;
@@ -31,7 +30,6 @@ const UpdateProfileProxy = async (
     params: UpdateProfileProxyParams
   ): Promise<ProxyFuncType<UpdateProfileProxyResponseInterface>> =>  {
   const res = await updateProfile(params);
-  console.log(res);
 
   if (res?.code) {
     return {

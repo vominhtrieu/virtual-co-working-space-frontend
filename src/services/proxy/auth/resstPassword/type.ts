@@ -1,4 +1,3 @@
-import { UserInterface } from "../../../../types/user";
 
 export interface ResetProxyParams {
   token:string;
@@ -6,14 +5,14 @@ export interface ResetProxyParams {
 
 export interface ResetProxyBody {
   password: string;
-  passwordConfirm: string;
+  confirmPassword: string;
 }
 
 
 export interface ResetProxyTransformInterface {
-  user: UserInterface;
+  msg: string;
 }
 
 export interface ResetProxyResponseInterface {
-  userInfo: UserInterface;
+  msg: string;
 }

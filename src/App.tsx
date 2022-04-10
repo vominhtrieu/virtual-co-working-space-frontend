@@ -25,7 +25,6 @@ function App() {
   });
 
   const { isAuthenticated } = useSelector((state: any) => state.auth);
-  console.log(isAuthenticated);
 
   return (
     <CharacterContext.Provider
