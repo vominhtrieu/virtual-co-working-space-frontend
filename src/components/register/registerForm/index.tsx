@@ -23,7 +23,7 @@ const RegisterForm = ({ handleRegisterSubmit }: FormPropsInterface) => {
     password: yup
       .string()
       .required(t("default.error.required", { field: t("pages.register.password") }))
-      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/, t("default.error.password", { field: t("pages.register.password") })),
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*~])(?=.{8,})/, t("default.error.password", { field: t("pages.register.password") })),
     confirmPassword: yup
       .string()
       .required(t("default.error.required", { field: t("pages.register.confirmPassword") }))

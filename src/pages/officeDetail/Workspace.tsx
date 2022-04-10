@@ -17,6 +17,7 @@ import OfficeDetailForm from '../../components/officeDetailForm'
 import Button from '../../components/UI/button'
 import CharacterContext from '../../context/CharacterContext'
 
+
 const itemGroups = [
   {
     groupName: 'Chair',

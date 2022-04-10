@@ -12,17 +12,7 @@ const activeTransform = (
 ): ActiveProxyResponseInterface => {
   console.log(res);
   const transform = {
-    userInfo: {
-      id: res?.user.id ?? "",
-      email: res?.user.email ?? "",
-      name: res?.user.name ?? "",
-      phone: res?.user.phone ?? "",
-      avatar: res?.user.avatar ?? "",
-      provider: res?.user.provider ?? "",
-      externalId: res?.user.externalId ?? "",
-      status: res?.user.status ?? "",
-      createdAt: res?.user.createdAt ?? "",
-    },
+    msg: res?.msg??"",
   };
   return transform;
 };
@@ -30,8 +20,9 @@ const activeTransform = (
 const ActiveProxy = async (
   params: ActiveProxyParams
 ): Promise<ProxyFuncType<ActiveProxyResponseInterface>> => {
+  console.log(params);
   const res = await active(params);
-
+  console.log(res);
   if (res?.code) {
     return {
       status: ProxyStatusEnum.FAIL,

@@ -5,9 +5,9 @@ export interface ActiveProxyParams {
 }
 
 export interface ActiveProxyTransformInterface {
-  user: UserInterface;
+  msg: string;
 }
 
 export interface ActiveProxyResponseInterface {
-  userInfo: UserInterface;
+  msg: string;
 }

@@ -4,7 +4,7 @@ export interface InputInterface {
 }
 
 export interface FormPropsInterface {
-  handleForgotSubmit: (values: InputFormatInterface) => void;
+  handleResetSubmit: (values: InputFormatInterface) => void;
 }
 
 export interface InputFormatInterface {

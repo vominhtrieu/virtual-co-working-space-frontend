@@ -7,18 +7,18 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
 
-const ForgotForm = ({ handleForgotSubmit }: FormPropsInterface) => {
+const ResetForm = ({ handleResetSubmit }: FormPropsInterface) => {
   const { t } = useTranslation();
 
   const schema = yup.object().shape({
     password: yup
       .string()
       .required(t("default.error.required", { field: t("pages.register.password") }))
-      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/, t("default.error.password", { field: t("pages.register.password") })),
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*~])(?=.{8,})/, t("default.error.password", { field: t("pages.register.password") })),
     confirmPassword: yup
       .string()
       .required(t("default.error.required", { field: t("pages.register.confirmPassword") }))
-      .oneOf([yup.ref("password")], t("default.error.confirmPassword", { field: t("pages.register.confirmPassword")}))
+      .oneOf([yup.ref("password")], t("default.error.confirmPassword", { field: t("pages.register.confirmPassword") }))
   });
   const { control, handleSubmit } = useForm<InputInterface>({
     defaultValues: {
@@ -28,20 +28,21 @@ const ForgotForm = ({ handleForgotSubmit }: FormPropsInterface) => {
     resolver: yupResolver(schema),
   });
 
-  const onForgotSubmit = (values: InputInterface) => {
+  const onResetSubmit = (values: InputInterface) => {
     const formValues = {
       password: values["password"],
       confirmPassword: values["confirmPassword"],
     };
 
-    handleForgotSubmit(formValues);
+    console.log(formValues);
+    handleResetSubmit(formValues);
   };
 
   return (
-    <form className='forgot-form' onSubmit={handleSubmit(onForgotSubmit)}>
-      <h1 className='forgot-form__title'>{t("pages.login.title")}</h1>
-
-      <div className='forgot-form__input-block'>
+    <form className='reset-form' onSubmit={handleSubmit(onResetSubmit)}>
+      <h3 className='reset-form__title'>Reset Password</h3>
+      <p className='reset-form__content'> Enter your email to reset password.</p>
+      <div className='reset-form__input-block'>
         <InputText
           hasLabel
           type='password'
@@ -49,11 +50,11 @@ const ForgotForm = ({ handleForgotSubmit }: FormPropsInterface) => {
           control={control}
           prefix={<FaKey />}
           size='large'
-          placeholder={t("pages.login.password")}
+          placeholder="Password"
         />
       </div>
 
-      <div className='forgot-form__input-block'>
+      <div className='reset-form__input-block'>
         <InputText
           hasLabel
           type='password'
@@ -61,19 +62,20 @@ const ForgotForm = ({ handleForgotSubmit }: FormPropsInterface) => {
           control={control}
           prefix={<FaKey />}
           size='large'
-          placeholder={t("pages.login.password")}
+          placeholder=" Confirm Password"
         />
       </div>
-
-      <div className='forgot-form__forgot-pass'>
-        <Link to={"#"}>{t("pages.login.forgotPass")}</Link>
-      </div>
-
-      <button type='submit' className='forgot-form__btn'>
-        {t("pages.login.title")}
+      <button type='submit' className='reset-form__btn'>
+        Submit
       </button>
+
+      <div className='reset-form__an-account'>
+        <Link to='/auth/login'>
+          <span>{t('pages.register.login')}</span>
+        </Link>
+      </div>
     </form>
   );
 };
 
-export default ForgotForm;
+export default ResetForm;
