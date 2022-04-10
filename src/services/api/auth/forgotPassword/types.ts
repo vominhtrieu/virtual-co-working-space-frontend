@@ -5,7 +5,7 @@ export interface ForgotParamsInterface {
 }
 
 export interface ForgotApiResponseInterface {
-  user: UserInterface;
+  msg:string;
   status?: string;
   code?: number;
   message?: string;

@@ -10,19 +10,8 @@ import {
 const ForgotTransform = (
   res: ForgotProxyTransformInterface
 ): ForgotProxyResponseInterface => {
-  console.log(res);
   const transform = {
-    userInfo: {
-      id: res?.user.id ?? "",
-      email: res?.user.email ?? "",
-      name: res?.user.name ?? "",
-      phone: res?.user.phone ?? "",
-      avatar: res?.user.avatar ?? "",
-      provider: res?.user.provider ?? "",
-      externalId: res?.user.externalId ?? "",
-      status: res?.user.status ?? "",
-      createdAt: res?.user.createdAt ?? "",
-    },
+    msg: res?.msg??"",
   };
   return transform;
 };
@@ -33,7 +22,8 @@ const ForgotProxy = async (
   console.log("Hihi"+params);
 
   const res = await forgot(params);
-  console.log("HUHU"+res);
+  console.log(res);
+  console.log("huhu");
   if (res?.code) {
     return {
       status: ProxyStatusEnum.FAIL,
