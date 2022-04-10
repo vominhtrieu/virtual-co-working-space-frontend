@@ -20,8 +20,6 @@ function Register() {
     })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          console.log(res);
-          console.log(res.message);
           toastError(res.message ?? "Register fail");
           return;
         }

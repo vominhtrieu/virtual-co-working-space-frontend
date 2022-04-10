@@ -1,11 +1,18 @@
 .office-detail {
+  &__group-btn {
+    position: fixed;
+    bottom: 3rem;
+    right: 3rem;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
   &__view {
     width: 4rem;
     height: 4rem;
     border-radius: 50%;
-    position: fixed;
-    bottom: 3rem;
-    right: 3rem;
     background-color: $color-gray;
     cursor: pointer;
 
