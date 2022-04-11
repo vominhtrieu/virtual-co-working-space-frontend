@@ -81,7 +81,7 @@ const LoginForm = (props: FormPropsInterface) => {
       </div>
 
       <div className="login-form__forgot-pass">
-        <Link to={'#'}>{t('pages.login.forgotPass')}</Link>
+        <Link to="/auth/forgot">{t('pages.login.forgotPass')}</Link>
       </div>
 
       <button type="submit" className="login-form__btn">

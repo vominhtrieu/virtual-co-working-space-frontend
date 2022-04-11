@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { BsFillChatFill } from 'react-icons/bs'
 import { FaUserAlt } from 'react-icons/fa'
 import { MdMeetingRoom } from 'react-icons/md'
-import { UserOutlined } from "@ant-design/icons";
 import {
   RiLogoutBoxRFill,
   RiSettings4Fill,
@@ -22,7 +21,9 @@ import SidebarChat from './chat'
 import Offices from './offices'
 import SidebarSettings from './settings'
 import SidebarUser from './userInfo'
-import Avatar from 'antd/lib/avatar/avatar'
+import { Avatar } from 'antd'
+import { UserOutlined } from "@ant-design/icons";
+
 
 const Sidebar = () => {
   const dispatch = useAppDispatch()

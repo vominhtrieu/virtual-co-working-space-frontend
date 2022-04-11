@@ -20,6 +20,8 @@ import NotFound from './pages/notFound'
 import Workspace from './pages/officeDetail/Workspace'
 import './scss/main.scss'
 import { CharacterInterface } from './types/character'
+import ForgotPassword from './pages/auth/forgotPassword'
+import ResetPassword from './pages/auth/resetPassword'
 
 function App() {
   const [character, setCharacter] = useState<CharacterInterface>({
@@ -48,13 +50,16 @@ function App() {
               <Route path="/" element={<Navigate to="/character" replace />} />
               <Route path="/character" element={<CharacterCustom />} />
               <Route path="/office/:id" element={<Workspace />} />
+              <Route path="/auth/activate/:token" element={<Active />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           ) : (
             <Routes>
+              <Route path="/auth/forgot" element={<ForgotPassword />} />
               <Route path="/auth/login" element={<Login />} />
               <Route path="/auth/register" element={<Register />} />
-              <Route path="/auth/activate/:token" element={<Active />} />
+              <Route path="/auth/reset/:token" element={<ResetPassword />} />
+
               <Route path="*" element={<NotFound />} />
 
               {/* redirect */}
