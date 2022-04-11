@@ -52,15 +52,16 @@ export default function Character(props: CharacterProps) {
     const {orbitRef} = props;
     const [keyPressed, setKeyPressed] = useState<KeyProps>({});
 
-    const position = useRef([0, 0, 0])
-    const updatedPosition = useRef(props.startPosition)
+    const position = useRef([0, 0, 0]);
+    const updatedPosition = useRef(props.startPosition);
     const rotation = useRef([0, 0, 0]);
+    const updatedRotation = useRef<THREE.Euler>(new THREE.Euler);
 
     const count = useRef(0);
 
     useEffect(() => {
         socket.emit("office_member:join", {
-            officeId: "1"
+            officeId: "20"
         })
     }, [])
 
@@ -146,7 +147,6 @@ export default function Character(props: CharacterProps) {
     useFrame((state, delta) => {
         const {camera} = state;
         let clip: THREE.AnimationClip = null;
-        //console.log(rotation);
         
 
         if (props.movable && isMoving()) {
@@ -169,7 +169,8 @@ export default function Character(props: CharacterProps) {
             const moveZ = walkDirection.current.z * MovingSpeed ;
 
             api.velocity.set(moveX, 0, moveZ);
-
+            console.log(directionOffset);
+            
             // camera.position.copy(api.position);
             api.quaternion.copy(ref.current.quaternion)
 
@@ -179,7 +180,7 @@ export default function Character(props: CharacterProps) {
 
             updatedPosition.current = position.current;
             
-            if (count.current >= 2) {
+            if (count.current >= 10) {
                 socket.emit("office_member:move", {
                     xRotation: rotation.current[0],
                     yRotation: rotation.current[1],
@@ -199,45 +200,21 @@ export default function Character(props: CharacterProps) {
         //update from remote position
         if (shouldUpdate()) {
             clip = actions.Walking;
-            const tempVector = new THREE.Vector3();
-            const quaternion = new THREE.Quaternion()
 
-            const newDirection = new THREE.Vector3(updatedPosition.current[0] - position.current[0], 0, updatedPosition.current[2] - position.current[2]);
-            // newDirection.normalize();
-            // walkDirection.current.normalize();
+            const newDirection = new THREE.Vector3(updatedPosition.current[0] - position.current[0], 0, updatedPosition.current[2] - position.current[2]);          
 
-        //     const dot = walkDirection.current.dot(newDirection);
-        //     if (dot < -0.999999) {
-        //         tempVector.crossVectors(new THREE.Vector3(1, 0, 0), walkDirection.current);
-        //         if (tempVector.length() < 0.000001) {
-        //             tempVector.crossVectors(new THREE.Vector3(0, 1, 0), walkDirection.current);
-        //         }
-        //         tempVector.normalize();
-        //         quaternion.setFromAxisAngle(tempVector, Math.PI);
-        //    } else if (dot > 0.999999) {
-        //        quaternion.x = quaternion.y = quaternion.z = 0;
-        //        quaternion.w = 1;
-        //    } else {
-        //        tempVector.crossVectors(walkDirection.current, newDirection);
-        //        quaternion.x = tempVector.x;
-        //        quaternion.y = tempVector.y;
-        //        quaternion.z = tempVector.z;
-        //        quaternion.w = 1 + dot;
-        //        quaternion.normalize();
-        //    }
-            const angle = newDirection.angleTo(walkDirection.current);
+            rotateQuaternion.current.setFromEuler(updatedRotation.current);
+            
+            ref.current.quaternion.rotateTowards(rotateQuaternion.current, delta * 10);
 
-            //quaternion.setFromAxisAngle(rotateAngle.current, newDirection.angleTo(walkDirection.current))
-            //ref.current.quaternion.rotateTowards(quaternion, delta * 10);
-
-            walkDirection.current = new THREE.Vector3(updatedPosition.current[0] - position.current[0], 0, updatedPosition.current[2] - position.current[2]);
+            walkDirection.current = newDirection;
             walkDirection.current.y = 0;
             walkDirection.current.normalize();
             const moveX = walkDirection.current.x * MovingSpeed;
             const moveZ = walkDirection.current.z * MovingSpeed;
 
             api.velocity.set(moveX, 0, moveZ);
-            //api.quaternion.copy(ref.current.quaternion);
+            api.quaternion.copy(ref.current.quaternion);
         }
 
         if (clip && clip !== currentClip.current) {
@@ -275,9 +252,11 @@ export default function Character(props: CharacterProps) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ref.current, props.startPosition]);
 
-    socket.on("office_member:moved", (message) => {
+    socket.on("office_member:moved", (message) => {    
         updatedPosition.current = [message.xPosition, message.yPosition, message.zPosition];
-        api.rotation.set(message.xRotation, message.yRotation, message.zRotation)   
+        updatedRotation.current = new THREE.Euler(message.xRotation, message.yRotation, message.zRotation);
+        console.log(rotation.current);
+        
     })
 
     socket.on("office_member:error", (message) => {
