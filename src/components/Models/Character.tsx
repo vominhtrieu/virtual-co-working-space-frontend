@@ -60,6 +60,8 @@ export default function Character(props: CharacterProps) {
     const count = useRef(0);
 
     useEffect(() => {
+        console.log(actions);
+        
         socket.emit("office_member:join", {
             officeId: "20"
         })
@@ -169,7 +171,6 @@ export default function Character(props: CharacterProps) {
             const moveZ = walkDirection.current.z * MovingSpeed ;
 
             api.velocity.set(moveX, 0, moveZ);
-            console.log(directionOffset);
             
             // camera.position.copy(api.position);
             api.quaternion.copy(ref.current.quaternion)
@@ -282,25 +283,31 @@ export default function Character(props: CharacterProps) {
                     <primitive object={nodes.Ctrl_Foot_IK_Right}/>
                     <primitive object={nodes.Ctrl_LegPole_IK_Right}/>
                     <primitive object={nodes.Ctrl_Master}/>
-                    <skinnedMesh geometry={nodes.Cube001.geometry} material={materials.Body}
+                    {/* <skinnedMesh geometry={nodes.Cube001.geometry} material={materials.Body}
                                  skeleton={nodes.Cube001.skeleton}/>
                     <skinnedMesh geometry={nodes.Cube001_1.geometry} material={materials.Head}
-                                 skeleton={nodes.Cube001_1.skeleton}/>
-                    <skinnedMesh
+                                 skeleton={nodes.Cube001_1.skeleton}/> */}
+                    <skinnedMesh geometry={nodes.Cube006.geometry} material={materials.Body}
+                                skeleton={nodes.Cube006.skeleton}/>
+                    <skinnedMesh geometry={nodes.Cube006_1.geometry} material={materials.Head}
+                                skeleton={nodes.Cube006_1.skeleton}/>
+                    <skinnedMesh geometry={nodes.Cube006_2.geometry} material={materials.Eye}
+                                skeleton={nodes.Cube006_2.skeleton}/>
+                    {/* <skinnedMesh
                         geometry={nodes.Cube001_2.geometry}
                         material={props.eyes === 1 ? materials["Eye 1"] : materials["Eye 2"]}
                         skeleton={nodes.Cube001_2.skeleton}
-                    />
+                    /> */}
                     {props.hair === 1 ? (
                         <skinnedMesh
                             geometry={nodes.Hair_1.geometry}
-                            material={materials["Hair 1"]}
+                            material={materials["Hair_1"]}
                             skeleton={nodes.Hair_1.skeleton}
                         />
                     ) : (
                         <skinnedMesh
                             geometry={nodes.Hair_2.geometry}
-                            material={materials["Hair 2"]}
+                            material={materials["Hair_2"]}
                             skeleton={nodes.Hair_2.skeleton}
                         />
                     )}
