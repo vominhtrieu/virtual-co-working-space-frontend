@@ -2,6 +2,7 @@
 // import Carousel from "react-multi-carousel";
 import 'react-multi-carousel/lib/styles.css'
 import styled from 'styled-components'
+// @ts-ignore
 import Carousel from '@jjunyjjuny/react-carousel'
 import { useState } from 'react'
 import { Row, Col } from 'antd'
