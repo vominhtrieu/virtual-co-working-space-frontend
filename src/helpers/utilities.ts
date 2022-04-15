@@ -5,7 +5,7 @@ import {GLTF} from "three-stdlib/loaders/GLTFLoader";
 export const formatDate = (date: Date) => {
 }
 
-type ActionName = 'Idle' | 'Rumba' | 'Walking'
+type ActionName = 'Idle' | 'Rumba' | 'Walking' | 'Wave'
 
 //type GLTFActions = Record<ActionName, THREE.AnimationAction>
 export interface GLTFActions extends THREE.AnimationClip {

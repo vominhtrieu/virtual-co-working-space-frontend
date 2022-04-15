@@ -30,7 +30,8 @@ type KeyProps = {
     w?: boolean,
     s?: boolean,
     a?: boolean,
-    d?: boolean
+    d?: boolean,
+    g?: boolean
 }
 
 const MovingSpeed: number = 6;
@@ -51,12 +52,12 @@ export default function Character(props: CharacterProps) {
 
     const {orbitRef} = props;
     const [keyPressed, setKeyPressed] = useState<KeyProps>({});
+    const [gesturePlaying, setGesturePlaying] = useState<boolean>(false);
 
     const position = useRef([0, 0, 0]);
     const updatedPosition = useRef(props.startPosition);
     const rotation = useRef([0, 0, 0]);
-    const updatedRotation = useRef<THREE.Euler>(new THREE.Euler);
-
+    const updatedRotation = useRef<THREE.Euler>(new THREE.Euler());
     const count = useRef(0);
 
     useEffect(() => {
@@ -75,6 +76,12 @@ export default function Character(props: CharacterProps) {
             rotation.current = v;
         })
     }, [api.position])
+
+    useEffect(() => {
+        if (keyPressed.g) {
+            setGesturePlaying(true);
+        }
+    }, [keyPressed.g])
 
     const getMovingVector = () => {
         const vector = new THREE.Vector3();
@@ -149,9 +156,11 @@ export default function Character(props: CharacterProps) {
     useFrame((state, delta) => {
         const {camera} = state;
         let clip: THREE.AnimationClip = null;
-        
 
         if (props.movable && isMoving()) {
+            if (gesturePlaying) {
+                setGesturePlaying(false);
+            }
             count.current++;
             clip = actions.Walking;
 
@@ -194,7 +203,11 @@ export default function Character(props: CharacterProps) {
             }
 
         } else {
-            clip = actions.Idle;
+            if (gesturePlaying) {
+                clip = actions.Wave
+            } else {
+                clip = actions.Idle;
+            }
             api.velocity.set(0, 0, 0);
         }
         
