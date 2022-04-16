@@ -6,7 +6,7 @@ import * as THREE from 'three'
 import {useEffect, useRef, useState} from 'react'
 import {useGLTF, useAnimations} from '@react-three/drei'
 import {useThree, useFrame} from '@react-three/fiber'
-import {useCylinder} from '@react-three/cannon'
+import {Triplet, useCylinder} from '@react-three/cannon'
 import {GLTFActions, GLTFResult, useCustomGLTF} from "../../helpers/utilities";
 import socket from "../../services/socket/socket"
 
@@ -62,7 +62,7 @@ export default function Character(props: CharacterProps) {
 
     useEffect(() => {
         console.log(actions);
-        
+
         socket.emit("office_member:join", {
             officeId: "20"
         })
@@ -153,7 +153,20 @@ export default function Character(props: CharacterProps) {
         }
     });
 
+    useEffect(() => {
+        if (!props.movable) {
+            return;
+        }
+        api.position.subscribe((_position: Triplet) => {
+            position.current = _position;
+        })
+    })
+
+
     useFrame((state, delta) => {
+        if (!props.movable) {
+            return;
+        }
         const {camera} = state;
         let clip: THREE.AnimationClip = null;
 
@@ -175,12 +188,13 @@ export default function Character(props: CharacterProps) {
             walkDirection.current.y = 0;
             walkDirection.current.normalize();
             walkDirection.current.applyAxisAngle(rotateAngle.current, directionOffset + Math.PI);
-            // console.log(directionOffset);
-            const moveX = walkDirection.current.x * MovingSpeed ;
-            const moveZ = walkDirection.current.z * MovingSpeed ;
+
+
+            const moveX = walkDirection.current.x * MovingSpeed;
+            const moveZ = walkDirection.current.z * MovingSpeed;
 
             api.velocity.set(moveX, 0, moveZ);
-            
+
             // camera.position.copy(api.position);
             api.quaternion.copy(ref.current.quaternion)
 
@@ -189,7 +203,7 @@ export default function Character(props: CharacterProps) {
             }
 
             updatedPosition.current = position.current;
-            
+
             if (count.current >= 10) {
                 socket.emit("office_member:move", {
                     xRotation: rotation.current[0],
@@ -201,7 +215,6 @@ export default function Character(props: CharacterProps) {
                 })
                 count.current = 0;
             }
-
         } else {
             if (gesturePlaying) {
                 clip = actions.Wave
@@ -210,15 +223,15 @@ export default function Character(props: CharacterProps) {
             }
             api.velocity.set(0, 0, 0);
         }
-        
+
         //update from remote position
         if (shouldUpdate()) {
             clip = actions.Walking;
 
-            const newDirection = new THREE.Vector3(updatedPosition.current[0] - position.current[0], 0, updatedPosition.current[2] - position.current[2]);          
+            const newDirection = new THREE.Vector3(updatedPosition.current[0] - position.current[0], 0, updatedPosition.current[2] - position.current[2]);
 
             rotateQuaternion.current.setFromEuler(updatedRotation.current);
-            
+
             ref.current.quaternion.rotateTowards(rotateQuaternion.current, delta * 10);
 
             walkDirection.current = newDirection;
@@ -229,6 +242,10 @@ export default function Character(props: CharacterProps) {
 
             api.velocity.set(moveX, 0, moveZ);
             api.quaternion.copy(ref.current.quaternion);
+        }
+
+        if (orbitRef.current) {
+            orbitRef.current.target = new THREE.Vector3(position[0], position[1], position[2]);
         }
 
         if (clip && clip !== currentClip.current) {
@@ -266,20 +283,18 @@ export default function Character(props: CharacterProps) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ref.current, props.startPosition]);
 
-    socket.on("office_member:moved", (message) => {    
+    socket.on("office_member:moved", (message) => {
         updatedPosition.current = [message.xPosition, message.yPosition, message.zPosition];
         updatedRotation.current = new THREE.Euler(message.xRotation, message.yRotation, message.zRotation);
-        console.log(rotation.current);
-        
     })
 
     socket.on("office_member:error", (message) => {
         console.log(message);
     })
-    
+
     socket.on("connect_error", message => {
         console.log("connection error: ", message);
-        
+
     })
 
     return (

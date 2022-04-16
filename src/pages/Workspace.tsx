@@ -13,7 +13,8 @@ import Character from "../components/Models/Character";
 import ObjectProperties from "../components/Models/ObjectProperties";
 import Office from "../components/Models/Office";
 import CharacterContext from "../context/CharacterContext";
-import { Debug, Physics, useBox } from "@react-three/cannon";
+import { Debug, Physics } from "@react-three/cannon";
+import CallingBar from "../components/UI/CallingBar";
 
 const itemGroups = [
   {
@@ -43,8 +44,9 @@ const itemGroups = [
 
 const WorkspaceCustom = () => {
   const orbitRef = useRef(null);
-  const [objectList, setObjectList] = useState([{ key: uuidv4(), code: "Chair" }]);
   const [selectedKey, setSelectedKey] = useState(null);
+  const [objectList, setObjectList] = useState([{ key: uuidv4(), code: "Chair" },
+    { key: "2121212", code: "IndoorTree" }]);
   const [selectedObject, setSelectedObject] = useState<any>(null);
   const [objectActionVisible, setObjectActionVisible] = useState(false);
   const [object3dClickPos, setObjectionClickPos] = useState({ x: 0, y: 0 });
@@ -141,7 +143,7 @@ const WorkspaceCustom = () => {
                 onClick={(e) => handleObject3dClick(e, object.key)}
                 onPointerMissed={handleObject3dPointerMissed}
               >
-                {ObjectProperties["Chair"]}
+                {ObjectProperties[object.code]}
               </mesh>
             ))}
             {!isCustomizing && (
@@ -163,6 +165,7 @@ const WorkspaceCustom = () => {
           </Debug>
         </Physics>
       </Canvas>
+      <CallingBar />
       <div
         style={{
           position: "absolute",
