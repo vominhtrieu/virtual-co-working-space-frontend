@@ -23,20 +23,19 @@ function Login() {
     })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          console.log(res)
-          console.log(res.message)
           toastError(res.message ?? 'Login fail')
           return
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
+          console.log("success");
           toastSuccess('login success')
-          dispatch(setAuthenticated(true))
-          dispatch(setUserInfo(res?.data.userInfo))
           saveDataLocal('user_id', res.data.userInfo.id)
           saveDataLocal('user_info', JSON.stringify(res.data.userInfo))
           saveDataLocal('access_token', res.data.accessToken)
           saveDataLocal('refresh_token', res.data.refreshToken)
+          dispatch(setUserInfo(res?.data.userInfo))
+          dispatch(setAuthenticated(true))
           navigate('/')
           return
         }

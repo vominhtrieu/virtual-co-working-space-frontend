@@ -32,7 +32,6 @@ const LoginProxy = async (
   params: LoginProxyParams
 ): Promise<ProxyFuncType<LoginProxyResponseInterface>> => {
   const res = await login(params);
-  console.log(res?.code);
   if (res?.code) {
     return {
       status: ProxyStatusEnum.FAIL,

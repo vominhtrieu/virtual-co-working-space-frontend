@@ -5,7 +5,6 @@ import { FaEdit, FaList, FaTrash, FaUserEdit } from "react-icons/fa";
 import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import Button from "../components/Button";
 import BottomMenu from "../components/Controls/BottomMenu";
 import CustomTransformControl from "../components/Controls/CustomTransformControl";
 import Box from "../components/Models/Box";
@@ -13,7 +12,9 @@ import Character from "../components/Models/Character";
 import ObjectProperties from "../components/Models/ObjectProperties";
 import Office from "../components/Models/Office";
 import CharacterContext from "../context/CharacterContext";
-import { Debug, Physics, useBox } from "@react-three/cannon";
+import { Debug, Physics } from "@react-three/cannon";
+import CallingBar from "../components/UI/CallingBar";
+import Button from "../components/UI/button";
 
 const itemGroups = [
   {
@@ -43,8 +44,9 @@ const itemGroups = [
 
 const WorkspaceCustom = () => {
   const orbitRef = useRef(null);
-  const [objectList, setObjectList] = useState([{ key: uuidv4(), code: "Chair" }]);
   const [selectedKey, setSelectedKey] = useState(null);
+  const [objectList, setObjectList] = useState([{ key: uuidv4(), code: "Chair" },
+    { key: "2121212", code: "IndoorTree" }]);
   const [selectedObject, setSelectedObject] = useState<any>(null);
   const [objectActionVisible, setObjectActionVisible] = useState(false);
   const [object3dClickPos, setObjectionClickPos] = useState({ x: 0, y: 0 });
@@ -128,7 +130,7 @@ const WorkspaceCustom = () => {
         />
         <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45} />
         <ambientLight />
-        
+
         <Physics gravity={[0,0,0]}>
           <Debug>
           <Suspense fallback={<Box />}>
@@ -141,7 +143,7 @@ const WorkspaceCustom = () => {
                 onClick={(e) => handleObject3dClick(e, object.key)}
                 onPointerMissed={handleObject3dPointerMissed}
               >
-                {ObjectProperties["Chair"]}
+                {ObjectProperties[object.code]}
               </mesh>
             ))}
             {!isCustomizing && (
@@ -163,6 +165,7 @@ const WorkspaceCustom = () => {
           </Debug>
         </Physics>
       </Canvas>
+      <CallingBar />
       <div
         style={{
           position: "absolute",

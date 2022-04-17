@@ -1,6 +1,9 @@
 const localStorage = window.localStorage;
 
 export function saveDataLocal(key: string, value: string) {
+  console.log("Key: " + key);
+  console.log("Value:" + value);
+  console.log("---------------");
   return localStorage.setItem(key, value);
 }
 

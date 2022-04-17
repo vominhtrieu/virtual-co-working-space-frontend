@@ -127,23 +127,6 @@ export default function BottomMenu({ itemGroups, onItemClick }: any) {
         </Container>
       </div>
 
-      <Container>
-        {itemGroups[position].items &&
-          itemGroups[position].items.map((item: any) => {
-            return (
-              <img
-                alt="models"
-                src={item.url}
-                style={{
-                  width: '6em',
-                  height: '6em',
-                  borderRadius: '10px',
-                  margin: '0 1rem',
-                }}
-              />
-            )
-          })}
-      </Container>
     </div>
   )
 }
