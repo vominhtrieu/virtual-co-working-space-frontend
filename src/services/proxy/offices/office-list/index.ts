@@ -25,7 +25,7 @@ const GetOfficeListProxy = async (
 ): Promise<ProxyFuncType<OfficeListProxyResponseInterface>> => {
   const res = await getOfficeList(params);
 
-  if (res?.code) {
+  if (res?.code && res.code !== 200) {
     return {
       status: ProxyStatusEnum.FAIL,
       message: res.message,

@@ -77,12 +77,12 @@ const Offices = () => {
         />
       ) : null}
       <SidebarBox>
-        <div className='sidebar-offices'>
-          <div className='sidebar-offices__title'>Offices</div>
-          <div className='sidebar-offices__container'>
+        <div className="sidebar-offices">
+          <div className="sidebar-offices__title">Offices</div>
+          <div className="sidebar-offices__container">
             {/* box content - start */}
-            <div className='sidebar-offices__group'>
-              <div className='sidebar-offices__items'>
+            <div className="sidebar-offices__group">
+              <div className="sidebar-offices__items">
                 {officeList?.map((office, key) => {
                   return (
                     <Thumbnail
@@ -101,16 +101,16 @@ const Offices = () => {
               </div>
             </div>
             {/* box content - end */}
-            <div className='sidebar-offices__group-btn'>
+            <div className="sidebar-offices__group-btn">
               <Button
-                variant='primary'
+                variant="primary"
                 onClick={() => {
                   setIsCreateOffice(true);
                 }}
               >
                 Tạo phòng
               </Button>
-              <Button variant='primary'>Tham gia phòng</Button>
+              <Button variant="primary">Tham gia phòng</Button>
             </div>
           </div>
         </div>
