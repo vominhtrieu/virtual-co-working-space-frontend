@@ -6,7 +6,7 @@ const ENDPOINT = "https://api.vispace.tech";
 const socket = io(ENDPOINT, {
     transports: ["websocket"],
     auth: (cb) => {
-        cb({ accessToken: getDataLocal("token")})
+        cb({ accessToken: getDataLocal("access_token")})
     }
 });
 

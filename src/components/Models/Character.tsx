@@ -64,11 +64,25 @@ export default function Character(props: CharacterProps) {
     const updatedRotation = useRef<THREE.Euler>(new THREE.Euler());
     const count = useRef(0);
 
-    const colorMap = useLoader(TextureLoader, 'logo512.png')
+    const colorMap = useLoader(TextureLoader, '/images/Hair1.png')
 
-    useEffect(() => {
+    useEffect(() => {       
         socket.emit("office_member:join", {
-            officeId: "20"
+            officeId: "24"
+        })
+
+        socket.on("office_member:moved", (message) => {
+            updatedPosition.current = [message.xPosition, message.yPosition, message.zPosition];
+            updatedRotation.current = new THREE.Euler(message.xRotation, message.yRotation, message.zRotation);
+        })
+    
+        socket.on("office_member:error", (message) => {
+            console.log(message);
+        })
+    
+        socket.on("connect_error", message => {
+            console.log("connection error: ", message);
+    
         })
     }, [])
 
@@ -300,20 +314,6 @@ export default function Character(props: CharacterProps) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ref.current, props.startPosition]);
-
-    socket.on("office_member:moved", (message) => {
-        updatedPosition.current = [message.xPosition, message.yPosition, message.zPosition];
-        updatedRotation.current = new THREE.Euler(message.xRotation, message.yRotation, message.zRotation);
-    })
-
-    socket.on("office_member:error", (message) => {
-        console.log(message);
-    })
-
-    socket.on("connect_error", message => {
-        console.log("connection error: ", message);
-
-    })
 
     return (
         <>
