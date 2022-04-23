@@ -1,7 +1,7 @@
 // import ObjectProperties from "../Models/ObjectProperties";
 // import Carousel from "react-multi-carousel";
 import 'react-multi-carousel/lib/styles.css'
-import styled from 'styled-components'
+// import styled from 'styled-components'
 // @ts-ignore
 import Carousel from '@jjunyjjuny/react-carousel'
 import { useState } from 'react'
@@ -27,20 +27,6 @@ const responsive = {
     items: 1,
   },
 }
-
-const Container = styled.div`
-  margin: 0 auto;
-  margin-top: 1 rem;
-  width: 480px;
-`
-const Item = styled.div`
-  background: #dbe4ff;
-  text-align: center;
-  font-size: 2rem;
-  line-height: 145px;
-  height: 150px;
-  border-radius: 10px;
-`
 
 export default function BottomMenu({ itemGroups, onItemClick }: any) {
   const [position, setPosition] = useState(0)
@@ -95,7 +81,7 @@ export default function BottomMenu({ itemGroups, onItemClick }: any) {
       </Row>
 
       <div style={{ marginTop: '1rem' }}>
-        <Container>
+        {/* <Container>
           <Carousel itemCountPerPanel={3}>
             {itemGroups[position].items &&
               itemGroups[position].items.map((item: any) => {
@@ -124,7 +110,7 @@ export default function BottomMenu({ itemGroups, onItemClick }: any) {
                 )
               })}
           </Carousel>
-        </Container>
+        </Container> */}
       </div>
 
     </div>
