@@ -21,7 +21,7 @@ const CreateOfficeProxy = async (
 ): Promise<ProxyFuncType<CreateOfficeProxyResponseInterface>> => {
   const res = await createOffice(params);
 
-  if (res?.code) {
+  if (res?.code && res?.code!==200) {
     return {
       status: ProxyStatusEnum.FAIL,
       message: res.message,

@@ -21,7 +21,7 @@ const OfficeDetailProxy = async (
 ): Promise<ProxyFuncType<OfficeDetailProxyResponseInterface>> => {
   const res = await officeDetail(params);
 
-  if (res?.code) {
+  if (res?.code && res?.code!==200) {
     return {
       status: ProxyStatusEnum.FAIL,
       message: res.message,
