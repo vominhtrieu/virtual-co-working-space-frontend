@@ -53,6 +53,7 @@ export type positionType = {
 const WorkspaceCustom = () => {
     const {open} = useSelector((state: any) => state.sidebar)
     const [isShowDetailForm, setIsShowDetailForm] = useState(false)
+    
     const orbitRef = useRef(null)
     const [objectList, setObjectList] = useState<Array<{
         key: string
@@ -108,7 +109,7 @@ const WorkspaceCustom = () => {
         const y = e.clientY
 
         setObjectionClickPos({x, y})
-        console.log('false')
+        console.log('hi')
     }
 
     const handleObject3dPointerMissed = () => {
