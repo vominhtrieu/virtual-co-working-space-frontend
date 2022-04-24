@@ -1,6 +1,7 @@
 export interface OfficeDetailFormProps {
   onClose: () => void;
   id: number;
+  isOwner: boolean;
 }
 
 export interface EditOfficeDetailFormValuesInterface {
