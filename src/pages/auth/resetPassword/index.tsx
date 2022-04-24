@@ -5,7 +5,7 @@ import { ResetPasswordFormValues} from "./type";
 import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
 import { useNavigate } from "react-router-dom";
 import { toastError, toastSuccess } from "../../../helpers/toast";
-import ResetProxy from "../../../services/proxy/auth/resstPassword";
+import ResetProxy from "../../../services/proxy/auth/resetPassword";
 import ResetForm from "../../../components/password/resetForm";
 
 function ResetPassword() {

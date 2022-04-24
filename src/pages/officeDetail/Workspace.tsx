@@ -1,6 +1,6 @@
 import {OrbitControls} from '@react-three/drei'
 import {Canvas} from '@react-three/fiber'
-import {Suspense, useContext, useRef, useState} from 'react'
+import {Suspense, useContext, useEffect, useRef, useState} from 'react'
 import {AiFillSetting, AiOutlineInfoCircle} from 'react-icons/ai'
 import {BiRotateLeft, BiRotateRight} from 'react-icons/bi'
 import {FaEdit, FaList, FaTrash, FaUserEdit} from 'react-icons/fa'
@@ -157,7 +157,7 @@ const WorkspaceCustom = () => {
                 <ambientLight/>
 
                 <Suspense fallback={<Box/>}>
-                    <Physics>
+                    <Physics gravity={[0, 0, 0]}>
                         <Debug>
                         <Office castShadow={true}/>
                         {objectList.map((object, idx) => (

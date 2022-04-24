@@ -27,7 +27,6 @@ const responsive = {
   },
 }
 
-
 export default function BottomMenu({ itemGroups, onItemClick }: any) {
   const [position, setPosition] = useState(0)
 
@@ -81,7 +80,6 @@ export default function BottomMenu({ itemGroups, onItemClick }: any) {
       </Row>
 
       <div style={{ marginTop: '1rem' }}>
-
           <Carousel itemCountPerPanel={3}>
             {itemGroups[position].items &&
               itemGroups[position].items.map((item: any) => {
