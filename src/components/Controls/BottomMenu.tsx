@@ -43,7 +43,7 @@ export default function BottomMenu({ itemGroups, onItemClick }: any) {
   }
 
   return (
-    <div style={{ position: 'fixed', bottom: 50, width: '100%' }}>
+    <div style={{ position: 'fixed', bottom: 50, width: '100%', pointerEvents: "none", }}>
       <Row>
         <Col span={2} offset={6}>
           <Button
