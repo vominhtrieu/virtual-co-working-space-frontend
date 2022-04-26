@@ -1,10 +1,17 @@
 import { Slider } from "antd";
 import SidebarBox from "../sidebarBox";
 import ChangeLanguage from "./changeLanguage/changeLanguage";
+import { useAppDispatch,useAppSelector } from "../../../../stores";
+import { setVolume} from "../../../../stores/volume-slice";
+import { volumeSelectors } from "../../../../stores/volume-slice";
+
+
 
 const SidebarSettings = () => {
+  const volume = useAppSelector(volumeSelectors.getVolume);
+  const dispatch = useAppDispatch();
   const handleChangeVolume = (e) => {
-    console.log("Âm lượng: ", e);
+    dispatch(setVolume(Number.parseInt(e)));
   };
 
   return (
@@ -15,7 +22,7 @@ const SidebarSettings = () => {
         <div className='sidebar-settings__block'>
           <div className='sidebar-settings__block-title'>Âm lượng</div>
           <div className='sidebar-settings__block-content'>
-            <Slider defaultValue={30} onChange={handleChangeVolume} />
+            <Slider defaultValue={100} onChange={handleChangeVolume} value={volume} />
           </div>
         </div>
         {/* block - end */}
