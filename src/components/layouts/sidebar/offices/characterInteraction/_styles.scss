@@ -1,0 +1,35 @@
+.interact-menu {
+    width: 40rem;
+    height: 20rem;
+    padding: 2rem;
+    border-radius: 1rem;
+    background-color: $color-primary;
+    position: absolute;
+    transform: translateX(5rem);
+    z-index: 200;
+
+    &__content {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    &__item {
+        max-width: 10rem;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-right: 1rem;
+    }
+
+    &__item-img {
+        background-color: aquamarine;
+        height: 5rem;
+        width: 5rem;
+    }
+
+    &__item-text {
+        font-weight: 600;
+    }
+}

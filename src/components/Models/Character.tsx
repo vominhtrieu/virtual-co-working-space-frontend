@@ -10,13 +10,20 @@ import {useThree, useFrame, useLoader} from '@react-three/fiber'
 import {GLTFActions, GLTFResult, useCustomGLTF} from "../../helpers/utilities";
 import socket from "../../services/socket/socket"
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
+import { matchPath } from "react-router-dom"
 
 type CharacterProps = JSX.IntrinsicElements['group'] & {
     hair: number,
     eyes: number,
     movable: boolean,
     startPosition: number[],
-    orbitRef?: any
+    orbitRef?: any,
+    currentGesture?: {
+        idx: number
+    },
+    currentEmoji?: {
+        idx: number
+    }
 }
 
 type KeyProps = {
@@ -64,11 +71,51 @@ export default function Character(props: CharacterProps) {
     const updatedRotation = useRef<THREE.Euler>(new THREE.Euler());
     const count = useRef(0);
 
-    const colorMap = useLoader(TextureLoader, '/images/Hair1.png')
+    // const colorMap = useLoader(TextureLoader, '/images/Hair1.png')
+    const loader = new THREE.TextureLoader();
+    let emojiMap;
+
+    const match = matchPath({ path: "/office/:id"}, window.location.pathname);
+
+    const getGesture = () => {
+        switch (props.currentGesture?.idx) {
+            case 0:
+                return "Wave";
+            case 1:
+                return "Rumba";
+        
+            default:
+                return "Idle"
+        }
+    }
+
+    const getEmoji = () => {
+        switch (props.currentEmoji?.idx) {
+            case 0:
+                return loader.load('/images/Hair1.png')
+            case 1:
+                return loader.load('/images/Hair2.png')
+        
+            default:
+                return null
+        }
+    }
+
+    useEffect(() => {
+        setGesturePlaying(true);
+    }, [props.currentGesture])
+
+    useEffect(() => {
+        setEmojiPlaying(true);
+    }, [props.currentEmoji])
 
     useEffect(() => {       
         socket.emit("office_member:join", {
-            officeId: "24"
+            officeId: match?.params.id
+        })
+
+        socket.on("office_member:online", (message) => {
+            console.log(message)
         })
 
         socket.on("office_member:moved", (message) => {
@@ -84,7 +131,7 @@ export default function Character(props: CharacterProps) {
             console.log("connection error: ", message);
     
         })
-    }, [])
+    }, [match?.params.id])
 
     useEffect(() => {
         api.position.subscribe((v) => {
@@ -93,7 +140,7 @@ export default function Character(props: CharacterProps) {
         api.rotation.subscribe((v) => {
             rotation.current = v;
         })
-    }, [api.position])
+    }, [api.position, api.rotation])
 
     useEffect(() => {
         if (keyPressed.g) {
@@ -249,7 +296,7 @@ export default function Character(props: CharacterProps) {
             }
         } else {
             if (gesturePlaying) {
-                clip = actions.Wave
+                clip = actions[getGesture()];
             } else {
                 clip = actions.Idle;
             }
@@ -320,7 +367,7 @@ export default function Character(props: CharacterProps) {
             <mesh ref={ref} {...props}>
                 <group ref={group} position={[0, -1, 0]} dispose={null}>
                     <sprite position={[0, 2.6, 0]} visible={emojiPlaying} >
-                        <spriteMaterial map={colorMap} />
+                        <spriteMaterial map={getEmoji()} />
                     </sprite>
                     <primitive object={nodes.mixamorigHips}/>
                     <primitive object={nodes.Ctrl_ArmPole_IK_Left}/>

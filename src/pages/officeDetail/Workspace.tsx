@@ -17,6 +17,7 @@ import OfficeDetailForm from '../../components/officeDetailForm'
 import Button from '../../components/UI/button'
 import CharacterContext from '../../context/CharacterContext'
 import {Debug, Physics} from "@react-three/cannon";
+import InteractionMenu from '../../components/layouts/sidebar/offices/characterInteraction'
 
 
 const itemGroups = [
@@ -67,6 +68,9 @@ const WorkspaceCustom = () => {
     })
     const [isCustomizing, setIsCustomizing] = useState(false)
     const [showMainMenu, setShowMainMenu] = useState(false)
+    const [showInteractMenu, setShowInteractMenu] = useState(false);
+    const [characterGesture, setCharacterGesture] = useState({ idx: -1});
+    const [characterEmoji, setCharacterEmoji] = useState({ idx: -1})
     const navigate = useNavigate()
     const character = useContext(CharacterContext)
 
@@ -112,6 +116,7 @@ const WorkspaceCustom = () => {
     }
 
     const handleObject3dPointerMissed = () => {
+        console.log(objectList)
         setObjectActionVisible(false)
         console.log('false')
     }
@@ -178,7 +183,9 @@ const WorkspaceCustom = () => {
                                 startPosition={[0, 3, 2]}
                                 scale={[2, 2, 2]}
                                 orbitRef={orbitRef}
-                                movable/>
+                                currentEmoji={characterEmoji}
+                                currentGesture={characterGesture}
+                                movable />
                         )}
 
                         {/* <Stats className="stats" /> */}
@@ -268,6 +275,37 @@ const WorkspaceCustom = () => {
                             </>
                         )}
                     </div>
+                )}
+
+                {!isCustomizing && (
+                    <>
+                        <div
+                            aria-label="interactionMenu"
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                margin: '5.5rem 1rem',
+                                alignItems: 'flex=start',
+                                position: 'absolute',
+                                zIndex: '999999',
+                                pointerEvents: 'auto',
+                            }}
+                        >
+                            <Button
+                                onClick={() => setShowInteractMenu((value) => !value)}
+                                type="button"
+                                variant="outlined"
+                                className="menu-custom"
+                            >
+                                <FaList style={{width: '1.5rem', height: '1.5rem'}}/>
+                            </Button>
+                            {showInteractMenu && (
+                                <InteractionMenu 
+                                    onGestureClick={(value: number) => setCharacterGesture({ idx: value})}
+                                    onEmojiClick={(value: number) => setCharacterEmoji({idx: value})} />
+                            )}
+                        </div>
+                    </>
                 )}
 
                 {isCustomizing ? (

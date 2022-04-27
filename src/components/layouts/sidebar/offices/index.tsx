@@ -12,7 +12,6 @@ import Thumbnail from "../../../UI/thumbnail";
 import SidebarBox from "../sidebarBox";
 import CreateOfficeForm from "./createOfficeForm";
 import { CreateOfficeFormValuesInterface } from "./types";
-import socket from "../../../../services/socket/socket"
 
 const Offices = () => {
   const [officeList, setOfficeList] = useState<OfficeInterface[]>();
@@ -27,6 +26,7 @@ const Offices = () => {
     let isMounted = true;
     GetOfficeListProxy({ page: 1, size: 5 })
       .then((res) => {
+        console.log(res)
         if (!isMounted) return;
 
         if (res.status === ProxyStatusEnum.FAIL) {
@@ -90,9 +90,6 @@ const Offices = () => {
                       title={office.name}
                       key={key}
                       onClick={() => {
-                        socket.emit("office_member:join", {
-                          officeId: office.id
-                        })
                         navigate(`/office/${office.id}`, {
                           state: {
                             officeId: office.id,
