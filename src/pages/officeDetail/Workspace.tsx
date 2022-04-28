@@ -208,10 +208,10 @@ const WorkspaceCustom = () => {
                     pointerEvents: 'none',
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'space-between',
+                    justifyContent: 'flex-end',
                 }}
             >
-                {!isCustomizing && (
+                {/* {!isCustomizing && (
                     <div
                         aria-label="mainMenu"
                         style={{
@@ -275,7 +275,7 @@ const WorkspaceCustom = () => {
                             </>
                         )}
                     </div>
-                )}
+                )} */}
 
                 {!isCustomizing && (
                     <>
@@ -284,8 +284,8 @@ const WorkspaceCustom = () => {
                             style={{
                                 display: 'flex',
                                 justifyContent: 'space-between',
-                                margin: '5.5rem 1rem',
-                                alignItems: 'flex=start',
+                                margin: '0.5rem 1rem',
+                                alignItems: 'flex-start',
                                 position: 'absolute',
                                 zIndex: '999999',
                                 pointerEvents: 'auto',

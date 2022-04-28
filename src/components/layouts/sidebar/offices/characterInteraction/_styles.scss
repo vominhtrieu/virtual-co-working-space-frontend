@@ -1,17 +1,19 @@
 .interact-menu {
-    width: 40rem;
-    height: 20rem;
-    padding: 2rem;
+    width: 52rem;
+    height: 26rem;
     border-radius: 1rem;
     background-color: $color-primary;
     position: absolute;
-    transform: translateX(5rem);
+    transform: translate(10%, -83%);
     z-index: 200;
+    overflow: hidden;
 
     &__content {
         display: flex;
         justify-content: flex-start;
         flex-wrap: wrap;
+        overflow-y: scroll;
+        max-height: 18rem;
     }
 
     &__item {
@@ -20,16 +22,60 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-right: 1rem;
+        margin-left: 1.5rem;
+        background-color: #ffffff22;
+
+        &:nth-child(5n+1) {
+            margin-left: 0;
+        }
+
+        &:nth-child(n+6) {
+            margin-top: 1.5rem;
+        }
     }
 
     &__item-img {
         background-color: aquamarine;
-        height: 5rem;
-        width: 5rem;
+        height: 8rem;
+        min-width: 8rem;
     }
 
     &__item-text {
         font-weight: 600;
     }
+}
+
+.ant-tabs {
+    font-size: 20px;
+    font-weight: 600;
+    color: rgba(255, 255, 255);
+    
+    &-nav-wrap {
+        justify-content: space-around;
+    }
+
+    &-nav-list {
+        width: 100%;
+    }
+
+    &-tab {
+        width: 100%;
+        justify-content: center;
+
+        & + & {
+            margin: 0px;
+        }
+
+        &-active {
+            background-color: #202044;
+        }
+    }
+
+    &-content-holder {
+        padding: 0 1.5rem;
+    }
+}
+
+.ant-btn {
+    padding: 0;
 }

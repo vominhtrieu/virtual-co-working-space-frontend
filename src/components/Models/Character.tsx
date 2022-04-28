@@ -73,7 +73,6 @@ export default function Character(props: CharacterProps) {
 
     // const colorMap = useLoader(TextureLoader, '/images/Hair1.png')
     const loader = new THREE.TextureLoader();
-    let emojiMap;
 
     const match = matchPath({ path: "/office/:id"}, window.location.pathname);
 
@@ -102,11 +101,11 @@ export default function Character(props: CharacterProps) {
     }
 
     useEffect(() => {
-        setGesturePlaying(true);
+        if (props.currentGesture && props.currentGesture.idx >= 0) setGesturePlaying(true);
     }, [props.currentGesture])
 
     useEffect(() => {
-        setEmojiPlaying(true);
+        if (props.currentEmoji && props.currentEmoji.idx >= 0) setEmojiPlaying(true);
     }, [props.currentEmoji])
 
     useEffect(() => {       
