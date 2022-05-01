@@ -1,12 +1,12 @@
 import {OrbitControls} from "@react-three/drei";
 import {Canvas} from "@react-three/fiber";
-import {Suspense, useContext} from "react";
+import {Suspense, useContext, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
-import Button from "../components/UI/button";
-import BottomMenu from "../components/Controls/BottomMenu";
-import Box from "../components/Models/Box";
-import CharacterContext from "../context/CharacterContext";
-import DisplayCharacter from "../components/Models/DisplayCharacter";
+import Button from "../../components/UI/button";
+import BottomMenu from "../../components/Controls/BottomMenu";
+import Box from "../../components/Models/Box";
+import CharacterContext from "../../context/CharacterContext";
+import DisplayCharacter from "../../components/Models/DisplayCharacter";
 
 const itemGroups = [
     {
@@ -25,9 +25,16 @@ const itemGroups = [
     },
 ];
 
-const CharacterCustom = () => {
-    const character = useContext(CharacterContext);
+const CharacterCustomMobile = () => {
     const navigate = useNavigate();
+    const character = useContext(CharacterContext);
+
+    useEffect(() => {
+        const webview = (window as any).ReactNativeWebView;
+        if (webview && webview.postMessage)
+            webview.postMessage("Alo");
+    }, []);
+
 
     const handleBottomMenuItemClick = ({code}: any) => {
         switch (code) {
@@ -72,8 +79,8 @@ const CharacterCustom = () => {
                 <ambientLight/>
                 <Suspense fallback={<Box/>}>
                     <DisplayCharacter
-                        hair={character.hairStyle}
-                        eyes={character.eyeStyle}
+                        hair={1}
+                        eyes={1}
                         startPosition={[0, -0.5, 0]}
                         movable={false}
                     />
@@ -111,4 +118,4 @@ const CharacterCustom = () => {
     );
 };
 
-export default CharacterCustom;
+export default CharacterCustomMobile;
