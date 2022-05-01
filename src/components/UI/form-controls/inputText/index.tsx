@@ -27,7 +27,7 @@ const InputText = ({ name, control, hasLabel, ...rest }: InputTextProps) => {
         onChange={(e) => field.onChange(e.target.value)}
         {...rest}
       />
-      {error ? <p className='error-message'>{error.message}</p> : null}
+      {error ? <p className='error-message'>{error.message}</p> : <p className='error-message'></p>}
     </div>
   );
 };

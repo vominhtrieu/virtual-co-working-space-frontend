@@ -1,14 +1,21 @@
-export interface OfficeDetailFormProps {
-  onClose: () => void;
+export interface OfficeParamsInterface {
   id: number;
-  isOwner: boolean;
 }
 
-export interface EditOfficeDetailFormValuesInterface {
-  name: string;
+export interface OfficeApiResponseInterface {
+  status?: string;
+  code?: number;
+  data: MemberOfficeDataInterface
+  message?: string;
+  errors?: any[];
 }
 
-export interface OfficeDetailInterface {
+interface MemberOfficeDataInterface{
+  office:MemberOfficeInterface,
+  members:OfficeMembersInterface[],
+}
+
+interface MemberOfficeInterface {
   id: number;
   name: string;
   invitationCode: string;

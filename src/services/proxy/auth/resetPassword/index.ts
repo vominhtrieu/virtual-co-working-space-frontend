@@ -1,4 +1,4 @@
-import { ProxyFuncType } from "./../../../../types/http/proxy/ProxyFuncType";
+import { ProxyFuncType } from "../../../../types/http/proxy/ProxyFuncType";
 import { ProxyStatusEnum } from "../../../../types/http/proxy/ProxyStatus";
 import { reset } from "../../../api/auth/resetPassword";
 import {

@@ -14,6 +14,24 @@
 
     img {
       width: 80%;
+      border-radius: 50%;
     }
   }
+}
+
+.ant-spin-nested-loading > div > .ant-spin {
+  background-color: rgb(190 190 190 / 0%);
+  opacity: calc(0.5);
+  max-height: 100%;
+}
+
+.ant-spin-nested-loading > div > .ant-spin .ant-spin-dot {
+  font-size: 7rem;
+}
+
+.ant-spin-dot-item {
+  width: 1rem;
+  height: 1rem;
+  background-color: $color-white;
+  border-radius: 100%;
 }

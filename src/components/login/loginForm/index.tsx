@@ -56,7 +56,9 @@ const LoginForm = (props: FormPropsInterface) => {
 
   return (
     <form className="login-form" onSubmit={handleSubmit(onLoginSubmit)}>
-      <h1 className="login-form__title">{t('pages.login.title')}</h1>
+      <div className="login-form__title">
+        <h1 className="login-form__title-cell">{t('pages.login.title')}</h1>
+      </div>
       <div className="login-form__input-block">
         <InputText
           hasLabel

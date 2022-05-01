@@ -8,11 +8,13 @@ const ProfileAvatar = ({ size, isAvatar, setIsAvatar}: any) => {
 
   const [uploadingAvatar, setUploadingAvatar] = useState<boolean>(false);
   const handleAvatarChange = (info: any) => {
+    console.log(info.file);
       if (info.file.status === "uploading") {
           setUploadingAvatar(true);
           return;
       }
       if (info.file.status === "done") {
+          console.log(info.file);
           setUploadingAvatar(false);
           setIsAvatar(info.file.response.data.url);
           return message.success("Your avatar has been changed!");

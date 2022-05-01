@@ -1,9 +1,5 @@
-// import ObjectProperties from "../Models/ObjectProperties";
-// import Carousel from "react-multi-carousel";
+import Carousel from "react-multi-carousel";
 import 'react-multi-carousel/lib/styles.css'
-import styled from 'styled-components'
-// @ts-ignore
-import Carousel from '@jjunyjjuny/react-carousel'
 import { useState } from 'react'
 import { Row, Col } from 'antd'
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
@@ -28,20 +24,6 @@ const responsive = {
   },
 }
 
-const Container = styled.div`
-  margin: 0 auto;
-  margin-top: 1 rem;
-  width: 480px;
-`
-const Item = styled.div`
-  background: #dbe4ff;
-  text-align: center;
-  font-size: 2rem;
-  line-height: 145px;
-  height: 150px;
-  border-radius: 10px;
-`
-
 export default function BottomMenu({ itemGroups, onItemClick }: any) {
   const [position, setPosition] = useState(0)
 
@@ -58,7 +40,7 @@ export default function BottomMenu({ itemGroups, onItemClick }: any) {
   }
 
   return (
-    <div style={{ position: 'fixed', bottom: 50, width: '100%' }}>
+    <div style={{ position: 'fixed', bottom: 50, width: '100%', pointerEvents: "none", }}>
       <Row>
         <Col span={2} offset={6}>
           <Button
@@ -95,13 +77,11 @@ export default function BottomMenu({ itemGroups, onItemClick }: any) {
       </Row>
 
       <div style={{ marginTop: '1rem' }}>
-        <Container>
-          <Carousel itemCountPerPanel={3}>
+          <Carousel responsive={responsive}>
             {itemGroups[position].items &&
               itemGroups[position].items.map((item: any) => {
                 return (
-                  <Item key={item.code}>
-                    <Button
+                    <Button key={item.code}
                       type="button"
                       variant="outlined"
                       className="menu-custom"
@@ -120,11 +100,9 @@ export default function BottomMenu({ itemGroups, onItemClick }: any) {
                         }}
                       />
                     </Button>
-                  </Item>
                 )
               })}
           </Carousel>
-        </Container>
       </div>
 
     </div>

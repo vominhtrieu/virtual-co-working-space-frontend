@@ -14,6 +14,7 @@ import { useAppSelector } from "../../../../../stores";
 import { userSelectors } from "../../../../../stores/auth-slice";
 import { useTranslation } from "react-i18next";
 import ProfileAvatar from "./avatar";
+import { RiPhoneLockLine } from "react-icons/ri";
 
 const EditProfileForm = (props: EditProfileFormProps) => {
   const { t } = useTranslation();
@@ -45,10 +46,18 @@ const EditProfileForm = (props: EditProfileFormProps) => {
     resolver: yupResolver(schema),
   });
 
+  const formatPhoneNumber = (phone) => {
+    phone=phone.trim();
+    if (phone[0]==='0'){
+      return "+84"+phone.slice(1,10);
+    }
+    return phone;
+  }
+
   const handleEditProfileSubmit = (data: EditProfileInputInterface) => {
     const formatData: EditProfileFormDataInterface = {
       name: data.name,
-      phone: data.phone,
+      phone: formatPhoneNumber(data.phone),
       avatar: isAvatar,
     };
     onSubmit(formatData);

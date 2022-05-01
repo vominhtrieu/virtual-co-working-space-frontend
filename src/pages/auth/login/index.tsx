@@ -1,7 +1,9 @@
 // import React, { useState } from "react";
 import { Col, Row } from 'antd'
+import { useState } from 'react'
+import { Spin } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import loginImage from '../../../assets/images/login/login-image.png'
+import loginImage from '../../../assets/images/login/login.gif'
 import LoginForm from '../../../components/login/loginForm'
 import { saveDataLocal } from '../../../helpers/localStorage'
 import { toastError, toastSuccess } from '../../../helpers/toast'
@@ -12,17 +14,20 @@ import { ProxyStatusEnum } from '../../../types/http/proxy/ProxyStatus'
 import { LoginFormValues } from './type'
 
 function Login() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate()
 
   const dispatch = useAppDispatch()
 
   const handleLogin = (values: LoginFormValues) => {
+    setIsLoading(true);
     LoginProxy({
       email: values.email,
       password: values.password,
     })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
+          setIsLoading(false);
           toastError(res.message ?? 'Login fail')
           return
         }
@@ -37,17 +42,20 @@ function Login() {
           dispatch(setUserInfo(res?.data.userInfo))
           dispatch(setAuthenticated(true))
           navigate('/')
+          setIsLoading(false);
           return
         }
       })
       .catch((err) => {
         toastError(err.message ?? 'Login fail')
+        setIsLoading(false);
       })
-      .finally(() => {})
+      .finally(() => { })
+
   }
 
-  return (
-    <section className="login">
+  const FormLogin = () => {
+    return (
       <Row justify="space-around">
         <Col span={6}>
           <div className="login__form">
@@ -62,6 +70,16 @@ function Login() {
           </div>
         </Col>
       </Row>
+    );
+  }
+
+  return (
+    <section className="login">
+      {isLoading ?
+        <Spin> 
+          <FormLogin/>
+        </Spin> :<FormLogin/>
+        }
     </section>
   )
 }
