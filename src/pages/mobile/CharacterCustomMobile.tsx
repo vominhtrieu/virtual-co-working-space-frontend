@@ -1,0 +1,121 @@
+import {OrbitControls} from "@react-three/drei";
+import {Canvas} from "@react-three/fiber";
+import {Suspense, useContext, useEffect} from "react";
+import {useNavigate} from "react-router-dom";
+import Button from "../../components/UI/button";
+import BottomMenu from "../../components/Controls/BottomMenu";
+import Box from "../../components/Models/Box";
+import CharacterContext from "../../context/CharacterContext";
+import DisplayCharacter from "../../components/Models/DisplayCharacter";
+
+const itemGroups = [
+    {
+        groupName: "Hair",
+        items: [
+            {code: "Hair1", url: "./images/Hair1.png"},
+            {code: "Hair2", url: "./images/Hair2.png"},
+        ],
+    },
+    {
+        groupName: "Eyes",
+        items: [
+            {code: "Eyes1", url: "./images/Eyes1.png"},
+            {code: "Eyes2", url: "./images/Eyes2.png"},
+        ],
+    },
+];
+
+const CharacterCustomMobile = () => {
+    const navigate = useNavigate();
+    const character = useContext(CharacterContext);
+
+    useEffect(() => {
+        const webview = (window as any).ReactNativeWebView;
+        if (webview && webview.postMessage)
+            webview.postMessage("Alo");
+    }, []);
+
+
+    const handleBottomMenuItemClick = ({code}: any) => {
+        switch (code) {
+            case "Hair1":
+                character.changeCharacter({...character, hairStyle: 1});
+                break;
+            case "Hair2":
+                character.changeCharacter({...character, hairStyle: 2});
+                break;
+            case "Eyes1":
+                character.changeCharacter({...character, eyeStyle: 1});
+                break;
+            case "Eyes2":
+                character.changeCharacter({...character, eyeStyle: 2});
+                break;
+            default:
+                break;
+        }
+    };
+
+    return (
+        <>
+            <Canvas
+                shadows={{enabled: true, autoUpdate: true}}
+                camera={{position: [0, 2, 5], zoom: 2.2}}
+                style={{
+                    height: "100vh",
+                    background: "#577BC1",
+                    position: "fixed",
+                }}
+            >
+                <OrbitControls
+                    addEventListener={undefined}
+                    hasEventListener={undefined}
+                    removeEventListener={undefined}
+                    dispatchEvent={undefined}
+                    enablePan={false}
+                    minPolarAngle={Math.PI/2}
+                    maxPolarAngle={Math.PI/2}
+                />
+                <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45}/>
+                <ambientLight/>
+                <Suspense fallback={<Box/>}>
+                    <DisplayCharacter
+                        hair={1}
+                        eyes={1}
+                        startPosition={[0, -0.5, 0]}
+                        movable={false}
+                    />
+                </Suspense>
+            </Canvas>
+            <div
+                style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    pointerEvents: "none",
+                    textAlign: "left",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                }}
+            >
+                <div
+                    aria-label='topMenu'
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "0.5rem 1rem",
+                        alignItems: "center",
+                    }}
+                >
+                    <div/>
+                    <Button onClick={() => navigate("/workspace")}>Save</Button>
+                </div>
+                <BottomMenu itemGroups={itemGroups} onItemClick={handleBottomMenuItemClick}/>
+            </div>
+        </>
+    );
+};
+
+export default CharacterCustomMobile;

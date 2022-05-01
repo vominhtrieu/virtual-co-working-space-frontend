@@ -76,6 +76,21 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
       });
   };
 
+  const padTo2Digits = (num: number) => {
+    return num.toString().padStart(2, '0');
+  }
+
+  const parseStringToDate = (dateSTr) => {
+    const date = new Date(dateSTr);
+    return (
+      [
+        padTo2Digits(date.getDate()),
+        padTo2Digits(date.getMonth() + 1),
+        date.getFullYear(),
+      ].join('/') 
+    );
+  }
+
   const DetailForm = (
     <div className="office-detail-form">
       <h1 className="office-detail-form__title">Chi tiết văn phòng</h1>
@@ -112,7 +127,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
         <li className="office-detail-form__item">
           <div className="office-detail-form__item-title">Ngày tạo:</div>
           <div className="office-detail-form__item-content">
-            {officeDetail?.createdAt}
+            {parseStringToDate(officeDetail?.createdAt)}
           </div>
         </li>
         {/* user item - end */}

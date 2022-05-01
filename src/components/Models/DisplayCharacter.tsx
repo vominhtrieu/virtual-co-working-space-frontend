@@ -12,9 +12,11 @@ type CharacterProps = JSX.IntrinsicElements['group'] & {
     eyes: number,
 }
 
+const url = "https://vispace-model.s3.amazonaws.com/Character/Character.gltf";
+
 export default function DisplayCharacter(props: CharacterProps) {
     const group = useRef<THREE.Group>()
-    const {nodes, materials, animations} = useCustomGLTF('/models/Character.glb') as GLTFResult
+    const {nodes, materials, animations} = useCustomGLTF(url) as GLTFResult
     const {actions} = useAnimations<GLTFActions>(animations, group);
     useEffect(() => {
         actions.Idle?.play();
@@ -38,12 +40,16 @@ export default function DisplayCharacter(props: CharacterProps) {
                                  skeleton={nodes.Cube001.skeleton}/>
                     <skinnedMesh geometry={nodes.Cube001_1.geometry} material={materials.Head}
                                  skeleton={nodes.Cube001_1.skeleton}/> */}
-                    <skinnedMesh geometry={nodes.Cube006.geometry} material={materials.Body}
-                                 skeleton={nodes.Cube006.skeleton}/>
-                    <skinnedMesh geometry={nodes.Cube006_1.geometry} material={materials.Head}
-                                 skeleton={nodes.Cube006_1.skeleton}/>
-                    <skinnedMesh geometry={nodes.Cube006_2.geometry} material={materials.Eye}
-                                 skeleton={nodes.Cube006_2.skeleton}/>
+                    <skinnedMesh geometry={nodes.Character_1.geometry} material={materials.Body}
+                                 skeleton={nodes.Character_1.skeleton}/>
+                    <skinnedMesh geometry={nodes.Character_2.geometry} material={materials.Skin}
+                                 skeleton={nodes.Character_2.skeleton}/>
+                    <skinnedMesh geometry={nodes.Character_3.geometry} material={materials.Head}
+                                 skeleton={nodes.Character_3.skeleton}/>
+                    <skinnedMesh geometry={nodes.Character_4.geometry} material={materials.Eye}
+                                 skeleton={nodes.Character_4.skeleton}/>
+                    <skinnedMesh geometry={nodes.Character_5.geometry} material={materials.Pant}
+                                 skeleton={nodes.Character_5.skeleton}/>
                     {/* <skinnedMesh
                         geometry={nodes.Cube001_2.geometry}
                         material={props.eyes === 1 ? materials["Eye 1"] : materials["Eye 2"]}

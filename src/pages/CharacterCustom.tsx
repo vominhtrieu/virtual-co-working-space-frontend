@@ -68,6 +68,9 @@ const CharacterCustom = () => {
                     hasEventListener={undefined}
                     removeEventListener={undefined}
                     dispatchEvent={undefined}
+                    enablePan={false}
+                    minPolarAngle={Math.PI/2}
+                    maxPolarAngle={Math.PI/2}
                 />
                 <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45} />
                 <ambientLight />
@@ -108,6 +111,7 @@ const CharacterCustom = () => {
                     <Button onClick={() => navigate("/")}>Save</Button>
                     <CharacterCustomForm itemGroups={itemGroups} onItemClick={handleBottomMenuItemClick} />
                 </div>
+                {/* <BottomMenu itemGroups={itemGroups} onItemClick={handleBottomMenuItemClick}/> */}
             </div>
         </>
     );
