@@ -12,10 +12,11 @@ import Thumbnail from "../../../UI/thumbnail";
 import SidebarBox from "../sidebarBox";
 import CreateOfficeForm from "./createOfficeForm";
 import { CreateOfficeFormValuesInterface } from "./types";
-import socket from "../../../../services/socket/socket"
+import socket from "../../../../services/socket/socket";
 
 const Offices = () => {
   const [officeList, setOfficeList] = useState<OfficeInterface[]>();
+  const [countGetOffices, setCountGetOffices] = useState(0);
   const [isCreateOffice, setIsCreateOffice] = useState(false);
 
   const userInfo = useAppSelector(userSelectors.getUserInfo);
@@ -44,7 +45,7 @@ const Offices = () => {
     return () => {
       isMounted = false;
     };
-  }, [userId]);
+  }, [userId, countGetOffices]);
 
   const handleCreateOfficeSubmit = (
     values: CreateOfficeFormValuesInterface
@@ -59,6 +60,7 @@ const Offices = () => {
         if (res.status === ProxyStatusEnum.SUCCESS) {
           setIsCreateOffice(false);
           toastSuccess("Create office success");
+          setCountGetOffices((curr) => curr + 1);
           return;
         }
       })
@@ -91,8 +93,8 @@ const Offices = () => {
                       key={key}
                       onClick={() => {
                         socket.emit("office_member:join", {
-                          officeId: office.id
-                        })
+                          officeId: office.id,
+                        });
                         navigate(`/office/${office.id}`, {
                           state: {
                             officeId: office.id,
