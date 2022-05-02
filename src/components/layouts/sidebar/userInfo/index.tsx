@@ -22,29 +22,33 @@ const SidebarUser = () => {
   const dispatch = useAppDispatch();
 
   const handleChangeProfile = (values: EditProfileFormValuesInterface) => {
-    UpdateProfileProxy({
-      name: values.name,
-      phone: values.phone,
-      avatar: values.avatar,
-    })
-      .then((res) => {
-        if (res.status === ProxyStatusEnum.FAIL) {
-          console.log(res.message);
-          toastError(res.message ?? "update fail");
-        }
-
-        if (res.status === ProxyStatusEnum.SUCCESS) {
-          console.log(res.data);
-          dispatch(setUserInfo(res?.data.userInfo));
-          toastSuccess("update success");
-          setIsEditing(!isEditing);
-        }
+    if (values.avatar===""){
+      toastError("Avatar is require");
+    }
+    else{
+      UpdateProfileProxy({
+        name: values.name,
+        phone: values.phone,
+        avatar: values.avatar,
       })
-      .catch((err) => {
-        console.log(err);
-        // show toast login fail
-      })
-      .finally(() => {});
+        .then((res) => {
+          if (res.status === ProxyStatusEnum.FAIL) {
+            toastError(res.message ?? "update fail");
+          }
+  
+          if (res.status === ProxyStatusEnum.SUCCESS) {
+            console.log(res.data);
+            dispatch(setUserInfo(res?.data.userInfo));
+            toastSuccess("update success");
+            setIsEditing(!isEditing);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          // show toast login fail
+        })
+        .finally(() => {});
+    }
   };
 
   const handleChangePassword = (values: ChangePasswordFormValuesInterface) => {
@@ -67,6 +71,21 @@ const SidebarUser = () => {
       })
       .finally(() => {});
   }, [dispatch]);
+
+  const padTo2Digits = (num: number) => {
+    return num.toString().padStart(2, '0');
+  }
+
+  const parseStringToDate = (dateSTr) => {
+    const date = new Date(dateSTr);
+    return (
+      [
+        padTo2Digits(date.getDate()),
+        padTo2Digits(date.getMonth() + 1),
+        date.getFullYear(),
+      ].join('/') 
+    );
+  }
 
   return (
     <>
@@ -126,7 +145,7 @@ const SidebarUser = () => {
                         Ngày tham gia:
                       </div>
                       <div className='sidebar-user__item-content'>
-                        {userInfo.createdAt}
+                        {parseStringToDate(userInfo.createdAt)}
                       </div>
                     </li>
                     {/* user item - end */}

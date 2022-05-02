@@ -1,39 +1,39 @@
 .ant-input-affix-wrapper {
   background-color: transparent;
-  color: #fff;
-  padding: 1rem 1.5rem;
+  color: $color-white;
+  padding: 0.5rem 1.0rem;
 }
 
 .ant-input-affix-wrapper.error {
-  border: 1px solid #f00;
-  color: red;
+  border: 1px solid $color-red;
+  color: $color-red;
 }
 
 .ant-input-affix-wrapper.error > .ant-input {
-  color: red;
+  color: $color-red;
 }
 
 .ant-input {
   background-color: transparent;
-  color: #fff;
+  color: $color-white;
   border-radius: 0.5rem;
   border: 1px solid $color-primary-dark;
-  // font-size: 1.8rem;
 }
 
 .input-label {
-  color: #fff;
-  font-size: 1.6rem;
-  text-transform: capitalize;
+  color: $color-white;
   font-size: 1.8rem;
+  text-transform: capitalize;
 }
 .input-label + .ant-input-affix-wrapper {
-  margin-top: 1rem;
+  margin-top: 0.8rem;
 }
 
 .error-message {
-  color: red;
-  font-size: 1.6rem;
+  color: $color-red;
+  font-size: 1.4rem;
+  height: 1.4rem;
+  display: block;
 }
 
 .input-text {

@@ -29,7 +29,11 @@
     border-radius: 0.5rem;
     cursor: pointer;
     border: none;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+    &:hover{
+      background-color: $color-primary-light;
+      color: $color-primary-dark;
+    }
   }
 
   &__an-account {
@@ -41,6 +45,9 @@
     span {
       font-weight: 500;
       margin-left: 0.5rem;
+      &:hover{
+        color: $color-primary-light;
+      }
     }
   }
 }

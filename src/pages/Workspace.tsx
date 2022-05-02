@@ -15,6 +15,8 @@ import CharacterContext from "../context/CharacterContext";
 import { Debug, Physics } from "@react-three/cannon";
 import CallingBar from "../components/UI/CallingBar";
 import Button from "../components/UI/button";
+import { useAppSelector } from "../stores";
+import { volumeSelectors } from "../stores/volume-slice";
 
 const itemGroups = [
   {
@@ -43,6 +45,7 @@ const itemGroups = [
 ];
 
 const WorkspaceCustom = () => {
+  const volume = useAppSelector(volumeSelectors.getVolume);
   const orbitRef = useRef(null);
   const [selectedKey, setSelectedKey] = useState(null);
   const [objectList, setObjectList] = useState([{ key: uuidv4(), code: "Chair" },
@@ -154,6 +157,7 @@ const WorkspaceCustom = () => {
                 scale={[2, 2, 2]}
                 movable={true}
                 orbitRef={orbitRef}
+                volume={volume}
               />
             )}
 

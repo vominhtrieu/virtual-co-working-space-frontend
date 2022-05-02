@@ -47,34 +47,8 @@ export interface GLTFActions extends THREE.AnimationClip {
 // }
 
 export type GLTFResult = GLTF & {
-    nodes: {
-      Cube006: THREE.SkinnedMesh
-      Cube006_1: THREE.SkinnedMesh
-      Cube006_2: THREE.SkinnedMesh
-      Hair_1: THREE.SkinnedMesh
-      Hair_2: THREE.SkinnedMesh
-      Hair_3: THREE.SkinnedMesh
-      Shoe: THREE.SkinnedMesh
-      mixamorigHips: THREE.Bone
-      Ctrl_ArmPole_IK_Left: THREE.Bone
-      Ctrl_Hand_IK_Left: THREE.Bone
-      Ctrl_ArmPole_IK_Right: THREE.Bone
-      Ctrl_Hand_IK_Right: THREE.Bone
-      Ctrl_Foot_IK_Left: THREE.Bone
-      Ctrl_LegPole_IK_Left: THREE.Bone
-      Ctrl_Foot_IK_Right: THREE.Bone
-      Ctrl_LegPole_IK_Right: THREE.Bone
-      Ctrl_Master: THREE.Bone
-    }
-    materials: {
-      Body: THREE.MeshStandardMaterial
-      Head: THREE.MeshStandardMaterial
-      Eye: THREE.MeshStandardMaterial
-      Hair_1: THREE.MeshStandardMaterial
-      Hair_2: THREE.MeshStandardMaterial
-      Hair_3: THREE.MeshStandardMaterial
-      Shoes: THREE.MeshStandardMaterial
-    }
+    nodes: any,
+    materials: any,
     animations: GLTFActions[],
     boundingBox: THREE.Box3,
     meshPosition: number[],

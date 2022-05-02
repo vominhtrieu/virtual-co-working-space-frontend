@@ -18,9 +18,10 @@ import OfficeDetailForm from "../../components/officeDetailForm";
 import Button from "../../components/UI/button";
 import CharacterContext from "../../context/CharacterContext";
 import OfficeDetailProxy from "../../services/proxy/offices/office-detail";
-import { useAppSelector } from "../../stores";
 import { userSelectors } from "../../stores/auth-slice";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
+import { useAppSelector } from "../../stores";
+import { volumeSelectors } from "../../stores/volume-slice";
 
 const itemGroups = [
   {
@@ -54,6 +55,7 @@ export type positionType = {
 };
 
 const WorkspaceCustom = () => {
+  const volume = useAppSelector(volumeSelectors.getVolume);
   const [isOwner, setIsOwner] = useState(false);
   const { open } = useSelector((state: any) => state.sidebar);
   const [isShowDetailForm, setIsShowDetailForm] = useState(false);
@@ -180,7 +182,6 @@ const WorkspaceCustom = () => {
         />
         <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45} />
         <ambientLight />
-
         <Suspense fallback={<Box />}>
           <Physics gravity={[0, 0, 0]}>
             <Debug>
@@ -204,6 +205,7 @@ const WorkspaceCustom = () => {
                   scale={[2, 2, 2]}
                   orbitRef={orbitRef}
                   movable
+                  volume={volume}
                 />
               )}
 

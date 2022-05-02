@@ -1,8 +1,5 @@
-// import ObjectProperties from "../Models/ObjectProperties";
-// import Carousel from "react-multi-carousel";
+import Carousel from "react-multi-carousel";
 import 'react-multi-carousel/lib/styles.css'
-// @ts-ignore
-import Carousel from '@jjunyjjuny/react-carousel'
 import { useState } from 'react'
 import { Row, Col } from 'antd'
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
@@ -43,7 +40,7 @@ export default function BottomMenu({ itemGroups, onItemClick }: any) {
   }
 
   return (
-    <div style={{ position: 'fixed', bottom: 50, width: '100%' }}>
+    <div style={{ position: 'fixed', bottom: 50, width: '100%', pointerEvents: "none", }}>
       <Row>
         <Col span={2} offset={6}>
           <Button
@@ -80,7 +77,7 @@ export default function BottomMenu({ itemGroups, onItemClick }: any) {
       </Row>
 
       <div style={{ marginTop: '1rem' }}>
-          <Carousel itemCountPerPanel={3}>
+          <Carousel responsive={responsive}>
             {itemGroups[position].items &&
               itemGroups[position].items.map((item: any) => {
                 return (

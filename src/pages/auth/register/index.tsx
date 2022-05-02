@@ -1,5 +1,5 @@
 import { Col, Row } from "antd";
-import registerImage from "../../../assets/images/register/register-img.svg";
+import registerImage from "../../../assets/images/register/register.gif";
 import IconLanguages from "../../../components/icon-lang";
 import { RegisterFormValues} from "./type";
 import RegisterForm from "../../../components/register/registerForm";
