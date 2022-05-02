@@ -10,17 +10,57 @@ import DisplayCharacter from "../../components/Models/DisplayCharacter";
 
 const itemGroups = [
     {
-        groupName: "Hair",
+        groupName: "Skin Color",
         items: [
-            {code: "Hair1", url: "./images/Hair1.png"},
-            {code: "Hair2", url: "./images/Hair2.png"},
+            {code: "Yellow", type: "color", hex: "#F2CCB7"},
+            {code: "Black", type: "color", hex: "#D19477"},
+            {code: "White", type: "color", hex: "#FEE3D4"},
         ],
     },
     {
-        groupName: "Eyes",
+        groupName: "Hair Style",
         items: [
-            {code: "Eyes1", url: "./images/Eyes1.png"},
-            {code: "Eyes2", url: "./images/Eyes2.png"},
+            {code: "Hair1", type: "image", url: "./images/Hair1.png"},
+            {code: "Hair2", type: "image", url: "./images/Hair2.png"},
+        ],
+    },
+    {
+        groupName: "Hair Color",
+        items: [
+            {code: "Orange", type: "color", hex: "#F5AA2E"},
+            {code: "White", type: "color", hex: "#FFFFFF"},
+            {code: "Black", type: "color", hex: "#000000"},
+        ],
+    },
+    {
+        groupName: "Eyes Style",
+        items: [
+            {code: "Eyes1", type: "image", url: "./images/Eyes1.png"},
+            {code: "Eyes2", type: "image", url: "./images/Eyes2.png"},
+        ],
+    },
+    {
+        groupName: "Shirt Color",
+        items: [
+            {code: "Orange", type: "color", hex: "#F5AA2E"},
+            {code: "White", type: "color", hex: "#FFFFFF"},
+            {code: "Black", type: "color", hex: "#000000"},
+        ],
+    },
+    {
+        groupName: "Pant Color",
+        items: [
+            {code: "Orange", type: "color", hex: "#F5AA2E"},
+            {code: "White", type: "color", hex: "#FFFFFF"},
+            {code: "Black", type: "color", hex: "#000000"},
+        ],
+    },
+    {
+        groupName: "Shoe Color",
+        items: [
+            {code: "Orange", type: "color", hex: "#F5AA2E"},
+            {code: "White", type: "color", hex: "#FFFFFF"},
+            {code: "Black", type: "color", hex: "#000000"},
         ],
     },
 ];
@@ -34,7 +74,6 @@ const CharacterCustomMobile = () => {
         if (webview && webview.postMessage)
             webview.postMessage("Alo");
     }, []);
-
 
     const handleBottomMenuItemClick = ({code}: any) => {
         switch (code) {
@@ -72,8 +111,8 @@ const CharacterCustomMobile = () => {
                     removeEventListener={undefined}
                     dispatchEvent={undefined}
                     enablePan={false}
-                    minPolarAngle={Math.PI/2}
-                    maxPolarAngle={Math.PI/2}
+                    minPolarAngle={Math.PI / 2}
+                    maxPolarAngle={Math.PI / 2}
                 />
                 <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45}/>
                 <ambientLight/>
@@ -81,7 +120,7 @@ const CharacterCustomMobile = () => {
                     <DisplayCharacter
                         hair={1}
                         eyes={1}
-                        startPosition={[0, -0.5, 0]}
+                        startPosition={[0, -1, 0]}
                         movable={false}
                     />
                 </Suspense>
@@ -100,18 +139,6 @@ const CharacterCustomMobile = () => {
                     justifyContent: "space-between",
                 }}
             >
-                <div
-                    aria-label='topMenu'
-                    style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        margin: "0.5rem 1rem",
-                        alignItems: "center",
-                    }}
-                >
-                    <div/>
-                    <Button onClick={() => navigate("/workspace")}>Save</Button>
-                </div>
                 <BottomMenu itemGroups={itemGroups} onItemClick={handleBottomMenuItemClick}/>
             </div>
         </>
