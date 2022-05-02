@@ -30,7 +30,7 @@ const CreateOfficeProxy = async (
     };
   }
 
-  const officeListRespTransformed = createOfficeTransform(res);
+  const officeListRespTransformed = createOfficeTransform(res?.data);
   return {
     status: ProxyStatusEnum.SUCCESS,
     data: officeListRespTransformed,

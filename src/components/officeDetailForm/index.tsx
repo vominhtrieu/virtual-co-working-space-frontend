@@ -39,7 +39,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
   }, [id]);
 
   const handleEdit = (values: EditOfficeDetailFormValuesInterface) => {
-    UpdateOfficeProxy({ id: id, name: values.name })
+    UpdateOfficeProxy({ id: id, name: values.name, avatarUrl:"" })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
           toastError(res.message ?? "Delete office fail");

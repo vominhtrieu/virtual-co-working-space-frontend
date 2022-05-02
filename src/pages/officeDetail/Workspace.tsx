@@ -290,12 +290,7 @@ const WorkspaceCustom = () => {
             )}
 
             <div aria-label="bottomMenu" style={{ pointerEvents: "auto" }}>
-              {/* <BottomMenu
-                objectList={objectList}
-                setObjectList={setObjectList}
-                itemGroups={itemGroups}
-                onItemClick={handleItemInBottomMenuClick}
-              /> */}
+
               <EditOffice
                 itemGroups={itemGroups}
                 onItemClick={handleItemInBottomMenuClick}

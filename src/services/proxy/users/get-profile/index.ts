@@ -39,7 +39,7 @@ const ProfileProxy = async (): Promise<
     };
   }
 
-  const profileRespTransformed = profileTransform(res);
+  const profileRespTransformed = profileTransform(res?.data);
   return {
     status: ProxyStatusEnum.SUCCESS,
     data: profileRespTransformed,

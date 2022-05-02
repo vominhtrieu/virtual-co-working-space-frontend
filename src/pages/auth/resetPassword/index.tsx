@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { toastError, toastSuccess } from "../../../helpers/toast";
 import ResetProxy from "../../../services/proxy/auth/resetPassword";
 import ResetForm from "../../../components/password/resetForm";
+import forgetImg from "../../../assets/images/forgot/forgot.gif";
 
 function ResetPassword() {
   const params = useParams();
@@ -44,12 +45,17 @@ function ResetPassword() {
     <section className='reset'>
        <IconLanguages />
        <Row justify='space-around'>
-        <Col span={10} offset={2}>
+       <Col span={8}>
+        <div className='reset__img'>
+           <img src={forgetImg} alt='ViWorkSpaceResetImage' />
+         </div>
+       </Col>
+       <Col span={8}>
           <div className='reset__form'>
             <ResetForm handleResetSubmit={handleReset}/>
           </div>
         </Col>
-      </Row>
+     </Row>
     </section>
   );
 }

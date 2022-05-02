@@ -3,7 +3,9 @@ export interface OfficeParamsInterface {
 }
 
 export interface OfficeApiResponseInterface {
-  office: OfficeDetailInterface;
+  data: {
+    office: OfficeDetailInterface;
+  }
   status?: string;
   code?: number;
   message?: string;

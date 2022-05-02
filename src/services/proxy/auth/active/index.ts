@@ -20,10 +20,10 @@ const activeTransform = (
 const ActiveProxy = async (
   params: ActiveProxyParams
 ): Promise<ProxyFuncType<ActiveProxyResponseInterface>> => {
-  console.log(params);
+
   const res = await active(params);
-  console.log(res);
-  if (res?.code) {
+
+  if (res?.code && res?.code !==200) {
     return {
       status: ProxyStatusEnum.FAIL,
       message: res.message,

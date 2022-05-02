@@ -22,9 +22,7 @@ const ForgotProxy = async (
   console.log("Hihi"+params);
 
   const res = await forgot(params);
-  console.log(res);
-  console.log("huhu");
-  if (res?.code) {
+  if (res?.code && res?.code !==200) {
     return {
       status: ProxyStatusEnum.FAIL,
       message: res.message,
