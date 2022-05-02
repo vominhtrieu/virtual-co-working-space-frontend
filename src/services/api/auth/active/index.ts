@@ -7,7 +7,7 @@ export async function active(params: ActiveParamsInterface) {
   const response = await HttpClient.get<ActiveApiResponseInterface>(
     `${URL}/${params}`
     );
-    console.log(  `${URL}/${params}`);
+    console.log(`${URL}/${params}`);
   return response.data;
 }
 
