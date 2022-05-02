@@ -1,35 +1,35 @@
-
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
   Navigate,
   Route,
   Routes,
-} from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import IconLanguages from './components/icon-lang'
-import Sidebar from './components/layouts/sidebar'
-import CharacterContext from './context/CharacterContext'
-import Active from './pages/auth/active'
-import Login from './pages/auth/login'
-import Register from './pages/auth/register'
-import CharacterCustom from './pages/CharacterCustom'
-import NotFound from './pages/notFound'
-import Workspace from './pages/officeDetail/Workspace'
-import './scss/main.scss'
-import { CharacterInterface } from './types/character'
-import ForgotPassword from './pages/auth/forgotPassword'
-import ResetPassword from './pages/auth/resetPassword'
+} from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import IconLanguages from "./components/icon-lang";
+import Sidebar from "./components/layouts/sidebar";
+import CharacterContext from "./context/CharacterContext";
+import Active from "./pages/auth/active";
+import ForgotPassword from "./pages/auth/forgotPassword";
+import Login from "./pages/auth/login";
+import Register from "./pages/auth/register";
+import ResetPassword from "./pages/auth/resetPassword";
+import CharacterCustom from "./pages/CharacterCustom";
+import NotFound from "./pages/notFound";
+import Workspace from "./pages/officeDetail/Workspace";
+import "./scss/main.scss";
+import { useAppSelector } from "./stores";
+import { userSelectors } from "./stores/auth-slice";
+import { CharacterInterface } from "./types/character";
 
 function App() {
   const [character, setCharacter] = useState<CharacterInterface>({
     hairStyle: 1,
     eyeStyle: 1,
-  })
+  });
 
-  const { isAuthenticated } = useSelector((state: any) => state.auth)
+  const isAuthenticated = useAppSelector(userSelectors?.getIsAuthenticated);
 
   return (
     <CharacterContext.Provider
@@ -77,7 +77,7 @@ function App() {
         </Router>
       </div>
     </CharacterContext.Provider>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -95,11 +95,11 @@ const WorkspaceCustom = () => {
     const idx = objectList.findIndex((obj) => obj.key === selectedKey);
     const newObjectList = [...objectList];
     newObjectList.splice(idx, 1);
+    navigate("/");
     setObjectList(newObjectList);
     setSelectedObject(null);
     setSelectedKey(null);
     setObjectActionVisible(false);
-    navigate("/");
   };
 
   const handleObject3dClick = (e: any, key: any) => {
@@ -233,7 +233,6 @@ const WorkspaceCustom = () => {
           justifyContent: "space-between",
         }}
       >
-
         {isCustomizing ? (
           <>
             {objectActionVisible && (
