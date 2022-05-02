@@ -31,8 +31,6 @@ function Register() {
         }
       })
       .catch((err) => {
-        console.log(err);
-        // show toast login fail
       })
       .finally(() => {});
   };

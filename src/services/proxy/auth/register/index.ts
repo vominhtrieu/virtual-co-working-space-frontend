@@ -31,7 +31,7 @@ const RegisterProxy = async (
 ): Promise<ProxyFuncType<RegisterProxyResponseInterface>> => {
   const res = await register(params);
 
-  if (res?.code) {
+  if (res?.code && res?.code !== 200) {
     return {
       status: ProxyStatusEnum.FAIL,
       message: res.message,
@@ -40,7 +40,7 @@ const RegisterProxy = async (
     };
   }
 
-  const registerRespTransformed = registerTransform(res);
+  const registerRespTransformed = registerTransform(res?.data);
   return {
     status: ProxyStatusEnum.SUCCESS,
     data: registerRespTransformed,
