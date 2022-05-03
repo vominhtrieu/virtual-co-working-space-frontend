@@ -1,4 +1,4 @@
-import { UserInterface } from "./../../../../types/user";
+import { UserInterface } from "../../../../types/user";
 
 export interface LoginApiResponseInterface {
   user: UserInterface;

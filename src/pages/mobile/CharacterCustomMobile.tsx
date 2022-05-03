@@ -1,8 +1,6 @@
-import {OrbitControls} from "@react-three/drei";
+import {OrbitControls, Stats} from "@react-three/drei";
 import {Canvas} from "@react-three/fiber";
 import {Suspense, useContext, useEffect} from "react";
-import {useNavigate} from "react-router-dom";
-import Button from "../../components/UI/button";
 import BottomMenu from "../../components/Controls/BottomMenu";
 import Box from "../../components/Models/Box";
 import CharacterContext from "../../context/CharacterContext";
@@ -66,7 +64,6 @@ const itemGroups = [
 ];
 
 const CharacterCustomMobile = () => {
-    const navigate = useNavigate();
     const character = useContext(CharacterContext);
 
     useEffect(() => {
@@ -105,6 +102,7 @@ const CharacterCustomMobile = () => {
                     position: "fixed",
                 }}
             >
+                <Stats />
                 <OrbitControls
                     addEventListener={undefined}
                     hasEventListener={undefined}
