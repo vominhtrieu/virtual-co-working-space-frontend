@@ -13,6 +13,9 @@ import {
   OfficeDetailInterface,
 } from "./types";
 import DeleteOfficeForm from "./deleteOfficeForm";
+import {useAppDispatch, useAppSelector} from "../../stores";
+import {setIsOffice} from "../../stores/office-slice";
+import {officeSelectors} from "../../stores/office-slice";
 
 const OfficeDetailForm = (props: OfficeDetailFormProps) => {
   const [officeDetail, setOfficeDetail] = useState<OfficeDetailInterface>();
@@ -20,6 +23,9 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const isOffice = useAppSelector(officeSelectors.getIsOffice);
+  const dispatch = useAppDispatch();
+
 
   useEffect(() => {
     OfficeDetailProxy({ id: id })
@@ -42,12 +48,13 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
     UpdateOfficeProxy({ id: id, name: values.name, avatarUrl:"" })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Delete office fail");
+          toastError(res.message ?? "Update office fail");
           return;
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          toastSuccess("Delete office success");
+          toastSuccess("Update office success");
+          dispatch(setIsOffice(!isOffice));
           onClose();
           setIsEditing(false);
         }
@@ -61,12 +68,13 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
     DeleteOfficeProxy({ id: id })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Update office fail");
+          toastError(res.message ?? "Delete office fail");
           return;
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          toastSuccess("Update office success");
+          toastSuccess("Delete office success");
+          dispatch(setIsOffice(!isOffice));
           onClose();
           setIsDeleting(false);
         }
@@ -81,14 +89,17 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
   }
 
   const parseStringToDate = (dateSTr) => {
-    const date = new Date(dateSTr);
-    return (
-      [
-        padTo2Digits(date.getDate()),
-        padTo2Digits(date.getMonth() + 1),
-        date.getFullYear(),
-      ].join('/') 
-    );
+    if(dateSTr){
+      const date = new Date(dateSTr);
+      return (
+        [
+          padTo2Digits(date.getDate()),
+          padTo2Digits(date.getMonth() + 1),
+          date.getFullYear(),
+        ].join('/') 
+      );
+    }
+    return "";
   }
 
   const DetailForm = (
@@ -108,7 +119,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
           <div className="office-detail-form__item-title">Thành viên:</div>
           <div className="office-detail-form__item-content">
             <ul>
-              {officeDetail?.officeMembers.map((member, key) => {
+              {officeDetail?.officeMembers && officeDetail?.officeMembers.map((member, key) => {
                 return <li key={key}>{member.member.name}</li>;
               })}
             </ul>
@@ -163,6 +174,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
             setIsEditing(false);
           }}
           onSubmit={handleEdit}
+          officeDetail={officeDetail}
         />
       ) : isDeleting ? (
         <DeleteOfficeForm
