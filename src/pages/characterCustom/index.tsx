@@ -72,6 +72,7 @@ const CharacterCustom = () => {
                 <ambientLight/>
                 <Suspense fallback={<Box/>}>
                     <DisplayCharacter
+                        startPosition={[0,-1,0]}
                         hair={character.hairStyle}
                         eyes={character.eyeStyle}/>
                 </Suspense>

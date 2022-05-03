@@ -8,6 +8,7 @@ import {useGLTF, useAnimations} from '@react-three/drei'
 import {GLTFActions, GLTFResult, useCustomGLTF} from "../../helpers/utilities";
 
 type CharacterProps = JSX.IntrinsicElements['group'] & {
+    startPosition: number[],
     hair: number,
     eyes: number,
 }
@@ -25,7 +26,7 @@ export default function DisplayCharacter(props: CharacterProps) {
     return (
         <>
             <mesh {...props}>
-                <group ref={group} position={[0, -1, 0]} dispose={null}>
+                <group ref={group} position={props.startPosition} dispose={null}>
                     <primitive object={nodes.mixamorigHips}/>
                     <primitive object={nodes.Ctrl_ArmPole_IK_Left}/>
                     <primitive object={nodes.Ctrl_Hand_IK_Left}/>
