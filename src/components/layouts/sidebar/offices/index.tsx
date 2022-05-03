@@ -12,10 +12,10 @@ import Thumbnail from "../../../UI/thumbnail";
 import SidebarBox from "../sidebarBox";
 import CreateOfficeForm from "./createOfficeForm";
 import { CreateOfficeFormValuesInterface } from "./types";
-import socket from "../../../../services/socket/socket"
-import {useAppDispatch} from "../../../../stores";
-import {setIsOffice} from "../../../../stores/office-slice";
-import {officeSelectors} from "../../../../stores/office-slice";
+import socket from "../../../../services/socket/socket";
+import { useAppDispatch } from "../../../../stores";
+import { setIsOffice } from "../../../../stores/office-slice";
+import { officeSelectors } from "../../../../stores/office-slice";
 
 const Offices = () => {
   const [officeList, setOfficeList] = useState<OfficeInterface[]>();
@@ -23,7 +23,6 @@ const Offices = () => {
   const [isCreateOffice, setIsCreateOffice] = useState(false);
   const isOffice = useAppSelector(officeSelectors.getIsOffice);
   const dispatch = useAppDispatch();
-
 
   const userInfo = useAppSelector(userSelectors.getUserInfo);
   const { id: userId } = userInfo;
@@ -51,7 +50,7 @@ const Offices = () => {
     return () => {
       isMounted = false;
     };
-  }, [userId,isOffice]);
+  }, [userId, isOffice, countGetOffices]);
 
   const handleCreateOfficeSubmit = (
     values: CreateOfficeFormValuesInterface
@@ -66,6 +65,7 @@ const Offices = () => {
         if (res.status === ProxyStatusEnum.SUCCESS) {
           setIsCreateOffice(false);
           toastSuccess("Create office success");
+          setCountGetOffices((curr) => curr + 1);
           dispatch(setIsOffice(!isOffice));
           return;
         }
