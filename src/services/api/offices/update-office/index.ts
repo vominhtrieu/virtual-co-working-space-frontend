@@ -11,6 +11,7 @@ export async function updateOffice(params: UpdateOfficeParamsInterface) {
     `${URL}/${params.id}`,
     {
       name: params.name,
+      avatarUrl: params.avatarUrl,
     }
   );
 

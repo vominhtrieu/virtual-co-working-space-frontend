@@ -108,10 +108,8 @@ const CharacterCustom = () => {
 
                     }}
                 >
-                    <Button onClick={() => navigate("/")}>Save</Button>
                     <CharacterCustomForm itemGroups={itemGroups} onItemClick={handleBottomMenuItemClick} />
                 </div>
-                {/* <BottomMenu itemGroups={itemGroups} onItemClick={handleBottomMenuItemClick}/> */}
             </div>
         </>
     );

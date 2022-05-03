@@ -26,6 +26,8 @@ function Login() {
       password: values.password,
     })
       .then((res) => {
+        console.log("login page");
+        console.log(res);
         if (res.status === ProxyStatusEnum.FAIL) {
           setIsLoading(false);
           toastError(res.message ?? 'Login fail')

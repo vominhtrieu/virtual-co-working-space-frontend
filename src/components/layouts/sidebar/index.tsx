@@ -1,13 +1,12 @@
 
 import { useState } from 'react'
 import { BsFillChatFill } from 'react-icons/bs'
-import { FaUserAlt } from 'react-icons/fa'
 import { MdMeetingRoom } from 'react-icons/md'
 import {
   RiLogoutBoxRFill,
   RiSettings4Fill,
-  RiUserSettingsFill,
 } from 'react-icons/ri'
+import {FaBell} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom'
 import { removeAllDataLocal } from '../../../helpers/localStorage'
 import { toastError, toastSuccess } from '../../../helpers/toast'
@@ -23,6 +22,8 @@ import SidebarSettings from './settings'
 import SidebarUser from './userInfo'
 import { Avatar } from 'antd'
 import { UserOutlined } from "@ant-design/icons";
+import SidebarNotification from './notification';
+import { Badge } from 'antd';
 
 
 const Sidebar = () => {
@@ -65,13 +66,21 @@ const Sidebar = () => {
               className={
                 'sidebar__item' + (currSidebar === 'character' ? ' active' : '')
               }
-              onClick={() => {
-                navigate('/character')
-                setSidebarOpen('character')
-                dispatch(setOpen('character'))
-              }}
+              onClick={() =>
+                setSidebarOpen((curr) => {
+                  if (curr === 'notify') {
+                    dispatch(setOpen(''))
+                    return ''
+                  }
+                  dispatch(setOpen('notify'))
+                  return 'notify'
+                })
+              }
             >
-              <RiUserSettingsFill className="sidebar__icon" />
+              <Badge count={2}>
+              <FaBell className="sidebar__icon" />
+
+              </Badge>
             </li>
             <li
               className={
@@ -145,11 +154,14 @@ const Sidebar = () => {
                 })
               }
             >
+              <div className="sidebar__icon">
               {userInfo.avatar !== "" ? (
-                <Avatar size={40} src={userInfo.avatar} />
+                <Avatar src={userInfo.avatar} />
               ) : (
-                <Avatar size={40} icon={<UserOutlined />} />
-              )}            
+                <Avatar icon={<UserOutlined />} />
+              )}     
+              </div>
+                    
             </li>
 
             <li className={'sidebar__item'} onClick={handleLogout}>
@@ -163,6 +175,8 @@ const Sidebar = () => {
       {sidebarOpen === 'user' ? <SidebarUser /> : null}
       {sidebarOpen === 'office' ? <Offices /> : null}
       {sidebarOpen === 'chat' ? <SidebarChat /> : null}
+      {sidebarOpen === 'notify' ? <SidebarNotification /> : null}
+
     </div>
   )
 }

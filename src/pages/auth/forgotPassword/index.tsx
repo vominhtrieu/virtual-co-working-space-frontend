@@ -5,6 +5,7 @@ import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
 import { toastError, toastSuccess } from "../../../helpers/toast";
 import ForgotForm from "../../../components/password/forgotForm";
 import ForgotProxy from "../../../services/proxy/auth/forgotPassword";
+import forgetImg from "../../../assets/images/forgot/forgot.gif";
 
 function ForgotPassword() {
 
@@ -24,14 +25,19 @@ function ForgotPassword() {
       .catch((err) => {
         console.log(err);
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
   return (
     <section className='forgot'>
-       <IconLanguages />
+      <IconLanguages />
       <Row justify='space-around'>
-        <Col span={10} offset={2}>
+        <Col span={8}>
+          <div className='forgot__img'>
+            <img src={forgetImg} alt='ViWorkSpaceResetImage' />
+          </div>
+        </Col>
+        <Col span={8}>
           <div className='forgot__form'>
             <ForgotForm handleForgotSubmit={handleForgot} />
           </div>
