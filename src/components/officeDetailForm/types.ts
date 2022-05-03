@@ -6,12 +6,14 @@ export interface OfficeDetailFormProps {
 
 export interface EditOfficeDetailFormValuesInterface {
   name: string;
+  avatarUrl:string;
 }
 
 export interface OfficeDetailInterface {
   id: number;
   name: string;
   invitationCode: string;
+  avatarUrl:string;
   createdBy: {
     id: number;
     name: string;

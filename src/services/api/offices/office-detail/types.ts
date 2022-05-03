@@ -3,7 +3,9 @@ export interface OfficeParamsInterface {
 }
 
 export interface OfficeApiResponseInterface {
-  office: OfficeDetailInterface;
+  data: {
+    office: OfficeDetailInterface;
+  }
   status?: string;
   code?: number;
   message?: string;
@@ -14,6 +16,7 @@ interface OfficeDetailInterface {
   id: number;
   name: string;
   invitationCode: string;
+  avatarUrl:string;
   createdBy: {
     id: number;
     name: string;

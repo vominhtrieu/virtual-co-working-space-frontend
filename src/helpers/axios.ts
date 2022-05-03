@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getDataLocal } from './localStorage'
+import { getDataLocal, saveDataLocal } from './localStorage'
 
 export const HTTP_HEADER_KEY = {
   CONTENT_TYPE: 'Content-Type',
@@ -25,6 +25,7 @@ const HttpClient = axios.create({
   },
 })
 
+
 HttpClient.interceptors.request.use(
   function (config) {
     const accessToken = getDataLocal('access_token')
@@ -39,5 +40,40 @@ HttpClient.interceptors.request.use(
     return Promise.reject(error)
   },
 )
+
+HttpClient.interceptors.response.use(async (response) => {
+
+  if (response.data.code === 401) {
+    console.log("code");
+    const refreshTokenResponse = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/refreshToken`, null, {
+      headers: { "x-refresh-token": `${getDataLocal("refresh_token")}` }
+    });
+
+    if (!refreshTokenResponse || !refreshTokenResponse.data || refreshTokenResponse.data.code === 401) {
+      return refreshTokenResponse.data;
+    }
+    if (refreshTokenResponse.data.data.accessToken) {
+      const accessToken = refreshTokenResponse.data.data.accessToken;
+      await saveDataLocal("access_token", accessToken);
+      const config = response.config;
+        if (accessToken)
+          config.headers = {
+            ...config.headers,
+            [HTTP_HEADER_KEY.AUTHORIZATION]: 'Bearer ' + accessToken,
+          }
+        return HttpClient(config);
+    }
+  }
+  return response;
+
+}, error => {
+  console.warn('Error status', error.response.status)
+  // return Promise.reject(error)
+  if (error.response) {
+    return error.response.data
+  } else {
+    return Promise.reject(error)
+  }
+})
 
 export default HttpClient

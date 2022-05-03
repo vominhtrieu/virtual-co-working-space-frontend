@@ -14,7 +14,6 @@ import { useAppSelector } from "../../../../../stores";
 import { userSelectors } from "../../../../../stores/auth-slice";
 import { useTranslation } from "react-i18next";
 import ProfileAvatar from "./avatar";
-import { RiPhoneLockLine } from "react-icons/ri";
 
 const EditProfileForm = (props: EditProfileFormProps) => {
   const { t } = useTranslation();

@@ -11,26 +11,23 @@ const profileTransform = (
 ): ProfileProxyResponseInterface => {
   const transform = {
     userInfo: {
-      id: res?.id ?? "",
-      email: res?.email ?? "",
-      name: res?.name ?? "",
-      phone: res?.phone ?? "",
-      avatar: res?.avatar ?? "",
-      provider: res?.provider ?? "",
-      externalId: res?.externalId ?? "",
-      status: res?.status ?? "",
-      createdAt: res?.createdAt ?? "",
+      id: res?.user?.id ?? "",
+      email: res?.user?.email ?? "",
+      name: res?.user?.name ?? "",
+      phone: res?.user?.phone ?? "",
+      avatar: res?.user?.avatar ?? "",
+      provider: res?.user?.provider ?? "",
+      externalId: res?.user?.externalId ?? "",
+      status: res?.user?.status ?? "",
+      createdAt: res?.user?.createdAt ?? "",
     },
   };
   return transform;
 };
 
-const ProfileProxy = async (): Promise<
-  ProxyFuncType<ProfileProxyResponseInterface>
-> => {
+const ProfileProxy = async (): Promise<ProxyFuncType<ProfileProxyResponseInterface>> => {
   const res = await getProfile();
-
-  if (res?.code) {
+  if (res?.code && res?.code!==200) {
     return {
       status: ProxyStatusEnum.FAIL,
       message: res.message,
@@ -39,7 +36,7 @@ const ProfileProxy = async (): Promise<
     };
   }
 
-  const profileRespTransformed = profileTransform(res);
+  const profileRespTransformed = profileTransform(res?.data);
   return {
     status: ProxyStatusEnum.SUCCESS,
     data: profileRespTransformed,

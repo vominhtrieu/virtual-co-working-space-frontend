@@ -6,6 +6,5 @@ const URL = baseUrl + "/users/me/profile";
 
 export async function getProfile() {
   const response = await HttpClient.get<UserApiResponseInterface>(URL);
-
   return response.data;
 }

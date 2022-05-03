@@ -14,7 +14,7 @@ export interface OfficeListProxyResponseInterface {
 
 export interface OfficeListProxyTransformInterface {
   offices: OfficeInterface[];
-  page: string;
-  limit: string;
+  page: number;
+  limit: number;
   total: number;
 }

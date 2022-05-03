@@ -5,7 +5,9 @@ export interface OfficeParamsInterface {
 }
 
 export interface OfficeApiResponseInterface {
-  office: OfficeInterface;
+  data:{
+    office: OfficeInterface;
+  }
   status?: string;
   code?: number;
   message?: string;

@@ -8,9 +8,9 @@ export interface RegisterParamsInterface {
 }
 
 export interface RegisterApiResponseInterface {
-  user: UserInterface;
-  accessToken: string;
-  refreshToken: string;
+  data: {
+    user: UserInterface;
+  }
   status?: string;
   code?: number;
   message?: string;

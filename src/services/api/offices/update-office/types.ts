@@ -1,10 +1,13 @@
 export interface UpdateOfficeParamsInterface {
   id: number;
   name: string;
+  avatarUrl: string;
 }
 
 export interface UpdateOfficeApiResponseInterface {
-  office: UpdateOfficeInterface;
+  data: {
+    office: UpdateOfficeInterface;
+  }
   status?: string;
   code?: number;
   message?: string;

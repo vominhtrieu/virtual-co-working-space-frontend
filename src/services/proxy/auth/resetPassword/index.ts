@@ -21,7 +21,7 @@ const ResetProxy = async (
   params: ResetProxyParams, body: ResetProxyBody
 ): Promise<ProxyFuncType<ResetProxyResponseInterface>> => {
   const res = await reset(params, body);
-  if (res?.code) {
+  if (res?.code && res?.code !==200) {
     return {
       status: ProxyStatusEnum.FAIL,
       message: res.message,

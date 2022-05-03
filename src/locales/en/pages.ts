@@ -20,4 +20,16 @@ export const TranslationEnPages = {
     anAccount: "Already have an account?",
     login: "Login",
   },
+  forgot: {
+    title: "Forgot Password",
+    content: "Enter your email to reset password",
+    email: "Email",
+    login: "Login",
+  },
+  reset: {
+    title: "New Password",
+    password: "Password",
+    confirmPassword: "Confirm Password.",
+    login: "Login",
+  },
 };

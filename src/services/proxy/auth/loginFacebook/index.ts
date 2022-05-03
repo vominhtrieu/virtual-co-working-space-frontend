@@ -32,7 +32,7 @@ const LoginFacebookProxy = async (): Promise<
 > => {
   const res = await loginFacebook();
 
-  if (res?.code) {
+  if (res?.code && res?.code !==200) {
     return {
       status: ProxyStatusEnum.FAIL,
       message: res.message,
@@ -41,7 +41,7 @@ const LoginFacebookProxy = async (): Promise<
     };
   }
 
-  const loginRespTransformed = loginTransform(res);
+  const loginRespTransformed = loginTransform(res.data);
   return {
     status: ProxyStatusEnum.SUCCESS,
     data: loginRespTransformed,

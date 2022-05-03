@@ -6,11 +6,12 @@ export interface OfficeListParamsInterface {
 }
 
 export interface OfficeListApiResponseInterface {
-  offices: OfficeInterface[];
-  page: string;
-  limit: string;
-  total: number;
-
+  data: {
+    offices: OfficeInterface[];
+    page: number;
+    limit: number;
+    total: number;
+  };
   status?: string;
   code?: number;
   message?: string;

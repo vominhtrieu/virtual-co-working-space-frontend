@@ -5,9 +5,11 @@ export interface LoginParamsInterface {
 }
 
 export interface LoginApiResponseInterface {
-  user: UserInterface;
-  accessToken: string;
-  refreshToken: string;
+  data:{
+    user: UserInterface;
+    accessToken: string;
+    refreshToken: string;
+  }
   status?: string;
   code?: number;
   message?: string;
