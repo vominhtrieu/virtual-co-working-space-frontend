@@ -33,6 +33,7 @@ const Offices = () => {
     let isMounted = true;
     GetOfficeListProxy({ page: 1, size: 5 })
       .then((res) => {
+        console.log(res)
         if (!isMounted) return;
 
         if (res.status === ProxyStatusEnum.FAIL) {
@@ -98,9 +99,6 @@ const Offices = () => {
                       title={office.name}
                       key={key}
                       onClick={() => {
-                        socket.emit("office_member:join", {
-                          officeId: office.id,
-                        });
                         navigate(`/office/${office.id}`, {
                           state: {
                             officeId: office.id,

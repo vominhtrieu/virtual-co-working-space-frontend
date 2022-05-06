@@ -22,6 +22,7 @@ import { userSelectors } from "../../stores/auth-slice";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import { useAppSelector } from "../../stores";
 import { volumeSelectors } from "../../stores/volume-slice";
+import InteractionMenu from '../../components/layouts/sidebar/offices/characterInteraction'
 
 const itemGroups = [
   {
@@ -75,6 +76,9 @@ const WorkspaceCustom = () => {
   });
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [showMainMenu, setShowMainMenu] = useState(false);
+  const [showInteractMenu, setShowInteractMenu] = useState(false);
+  const [characterGesture, setCharacterGesture] = useState({ idx: -1});
+  const [characterEmoji, setCharacterEmoji] = useState({ idx: -1})
   const navigate = useNavigate();
   const character = useContext(CharacterContext);
 
@@ -206,6 +210,8 @@ const WorkspaceCustom = () => {
                   orbitRef={orbitRef}
                   movable
                   volume={volume}
+                  currentEmoji={characterEmoji}
+                  currentGesture={characterGesture}
                 />
               )}
 
@@ -235,6 +241,36 @@ const WorkspaceCustom = () => {
           justifyContent: "space-between",
         }}
       >
+        {!isCustomizing && (
+                    <>
+                        <div
+                            aria-label="interactionMenu"
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                margin: '0.5rem 1rem',
+                                alignItems: 'flex-start',
+                                position: 'absolute',
+                                zIndex: '999999',
+                                pointerEvents: 'auto',
+                            }}
+                        >
+                            <Button
+                                onClick={() => setShowInteractMenu((value) => !value)}
+                                type="button"
+                                variant="outlined"
+                                className="menu-custom"
+                            >
+                                <FaList style={{width: '1.5rem', height: '1.5rem'}}/>
+                            </Button>
+                            {showInteractMenu && (
+                                <InteractionMenu 
+                                    onGestureClick={(value: number) => setCharacterGesture({ idx: value})}
+                                    onEmojiClick={(value: number) => setCharacterEmoji({idx: value})} />
+                            )}
+                        </div>
+                    </>
+                )}
         {isCustomizing ? (
           <>
             {objectActionVisible && (

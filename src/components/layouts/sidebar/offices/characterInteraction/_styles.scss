@@ -1,0 +1,93 @@
+.interact-menu {
+    width: 52rem;
+    height: 26rem;
+    border-radius: 1rem;
+    background-color: $color-primary;
+    position: absolute;
+    transform: translate(10%, 0%);
+    z-index: 200;
+    overflow: hidden;
+
+    &__content {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        overflow-y: scroll;
+        max-height: 18rem;
+    }
+
+    &__item {
+        max-width: 10rem;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-left: 1.5rem;
+        background: none;
+
+        &:nth-child(5n+1) {
+            margin-left: 0;
+        }
+
+        &:nth-child(n+6) {
+            margin-top: 1.5rem;
+        }
+    }
+
+    &__item-img {
+        height: 8rem;
+        min-width: 8rem;
+    }
+
+    &__item-text {
+        font-weight: 600;
+    }
+}
+
+.ant-tabs {
+    font-size: 20px;
+    font-weight: 600;
+    color: rgba(255, 255, 255);
+    
+    &-nav-wrap {
+        justify-content: space-around;
+    }
+
+    &-nav-list {
+        width: 100%;
+    }
+
+    &-tab {
+        width: 100%;
+        justify-content: center;
+
+        & + & {
+            margin: 0px;
+        }
+
+        &-active {
+            background-color: #202044;
+        }
+    }
+
+    &-content-holder {
+        padding: 0 1.5rem;
+    }
+}
+
+.ant-btn {
+    padding: 0;
+    border-color: rgba(255, 255, 255, 0);
+    color: rgba(255, 255, 255);
+
+    &:focus {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0);
+        color: rgba(255, 255, 255)
+    }
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0);
+    }
+}

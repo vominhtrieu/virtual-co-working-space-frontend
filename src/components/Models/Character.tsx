@@ -13,7 +13,8 @@ import {
     useCustomGLTF,
 } from "../../helpers/utilities";
 import socket from "../../services/socket/socket";
-import { TextureLoader } from "three/src/loaders/TextureLoader";
+import { matchPath } from "react-router-dom"
+import { ANIMATION_LIST, EMOJI_LIST } from "../../helpers/constants";
 const stepFoot = require("../../assets/audios/step-foot.mp3");
 
 type CharacterProps = JSX.IntrinsicElements["group"] & {
@@ -23,6 +24,12 @@ type CharacterProps = JSX.IntrinsicElements["group"] & {
     startPosition: number[];
     orbitRef?: any;
     volume:number;
+    currentGesture?: {
+        idx: number
+    },
+    currentEmoji?: {
+        idx: number
+    }
 };
 
 type KeyProps = {
@@ -76,14 +83,59 @@ export default function Character(props: CharacterProps) {
     const updatedRotation = useRef<THREE.Euler>(new THREE.Euler());
     const count = useRef(0);
 
-    const colorMap = useLoader(
-        TextureLoader,
-        "https://gamek.mediacdn.vn/133514250583805952/2021/3/3/dts2-16147432809991264652202.jpg"
-    );
+    // const colorMap = useLoader(TextureLoader, '/images/Hair1.png')
+    const loader = new THREE.TextureLoader();
+
+    const match = matchPath({ path: "/office/:id"}, window.location.pathname);
+
+    const getGesture = () => {
+        // switch (props.currentGesture?.idx) {
+        //     case 0:
+        //         return "Wave";
+        //     case 1:
+        //         return "Rumba";
+        
+        //     default:
+        //         return "Idle"
+        // }
+
+        if (props.currentGesture?.idx! > 1) {
+            return ANIMATION_LIST[props.currentGesture?.idx!]
+        } else {
+            return ANIMATION_LIST[0];
+        }
+    }
+
+    const getEmoji = () => {
+        // switch (props.currentEmoji?.idx) {
+        //     case 0:
+        //         return loader.load('/images/Hair1.png')
+        //     case 1:
+        //         return loader.load('/images/Hair2.png')
+        
+        //     default:
+        //         return "https://gamek.mediacdn.vn/133514250583805952/2021/3/3/dts2-16147432809991264652202.jpg"
+        // }
+        console.log(`../../assets/images/${EMOJI_LIST[props.currentEmoji?.idx!]}.png`);
+
+        return loader.load(require(`../../assets/images/emojis/${EMOJI_LIST[props.currentEmoji?.idx!]}.png`))
+    }
+
+    useEffect(() => {
+        if (props.currentGesture && props.currentGesture.idx >= 0) setGesturePlaying(true);
+    }, [props.currentGesture])
+
+    useEffect(() => {
+        if (props.currentEmoji && props.currentEmoji.idx >= 0) setEmojiPlaying(true);
+    }, [props.currentEmoji])
 
     useEffect(() => {       
         socket.emit("office_member:join", {
-            officeId: "24"
+            officeId: match?.params.id
+        })
+
+        socket.on("office_member:online", (message) => {
+            console.log(message)
         })
 
         socket.on("office_member:moved", (message) => {
@@ -99,7 +151,7 @@ export default function Character(props: CharacterProps) {
             console.log("connection error: ", message);
     
         })
-    }, [])
+    }, [match?.params.id])
 
     useEffect(() => {
         api.position.subscribe((v) => {
@@ -107,8 +159,8 @@ export default function Character(props: CharacterProps) {
         });
         api.rotation.subscribe((v) => {
             rotation.current = v;
-        });
-    }, [api.position]);
+        })
+    }, [api.position, api.rotation])
 
     useEffect(() => {
         if (keyPressed.g) {
@@ -284,7 +336,7 @@ export default function Character(props: CharacterProps) {
             }
         } else {
             if (gesturePlaying) {
-                clip = actions.Wave;
+                clip = actions[getGesture()];
             } else {
                 clip = actions.Idle;
             }
@@ -398,8 +450,8 @@ export default function Character(props: CharacterProps) {
         <>
             <mesh ref={ref} {...props}>
                 <group ref={group} position={[0, -1, 0]} dispose={null}>
-                    <sprite position={[0, 2.6, 0]} visible={emojiPlaying}>
-                        <spriteMaterial map={colorMap} />
+                    <sprite position={[0, 2.6, 0]} visible={emojiPlaying} >
+                        <spriteMaterial map={getEmoji()} />
                     </sprite>
                     <primitive object={nodes.mixamorigHips} />
                     <primitive object={nodes.Ctrl_ArmPole_IK_Left} />

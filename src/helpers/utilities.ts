@@ -1,12 +1,13 @@
 import * as THREE from 'three'
 import {useGLTF} from "@react-three/drei";
 import {GLTF} from "three-stdlib/loaders/GLTFLoader";
-import { number } from 'yup';
+import { ANIMATION_LIST } from './constants';
 
 export const formatDate = (date: Date) => {
 }
 
-type ActionName = 'Idle' | 'Rumba' | 'Walking' | 'Wave'
+// type ActionName = 'Idle' | 'Rumba' | 'Walking' | 'Wave'
+type ActionName = typeof ANIMATION_LIST[number]
 
 //type GLTFActions = Record<ActionName, THREE.AnimationAction>
 export interface GLTFActions extends THREE.AnimationClip {
