@@ -95,10 +95,10 @@ export default function Character(props: CharacterProps) {
             console.log(message);
         })
     
-        socket.on("connect_error", message => {
-            console.log("connection error: ", message);
-    
-        })
+        // socket.on("connect_error", message => {
+        //     console.log("connection error: ", message);
+        //
+        // })
     }, [])
 
     useEffect(() => {
@@ -389,9 +389,9 @@ export default function Character(props: CharacterProps) {
         console.log(message);
     });
 
-    socket.on("connect_error", (message) => {
-        console.log("connection error: ", message);
-    });
+    // socket.on("connect_error", (message) => {
+    //     console.log("connection error: ", message);
+    // });
 
 
     return (
