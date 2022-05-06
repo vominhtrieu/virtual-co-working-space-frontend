@@ -4,7 +4,7 @@ import { Canvas } from "@react-three/fiber";
 import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { AiFillSetting, AiOutlineInfoCircle } from "react-icons/ai";
 import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
-import { FaEdit, FaList, FaTrash, FaUserEdit } from "react-icons/fa";
+import { FaEdit, FaList, FaTrash, FaUserEdit, FaRegSmileBeam } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
@@ -23,6 +23,7 @@ import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import { useAppSelector } from "../../stores";
 import { volumeSelectors } from "../../stores/volume-slice";
 import InteractionMenu from '../../components/layouts/sidebar/offices/characterInteraction'
+import CallingBar from "./calling/CallingBar";
 
 const itemGroups = [
   {
@@ -77,8 +78,8 @@ const WorkspaceCustom = () => {
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [showMainMenu, setShowMainMenu] = useState(false);
   const [showInteractMenu, setShowInteractMenu] = useState(false);
-  const [characterGesture, setCharacterGesture] = useState({ idx: -1});
-  const [characterEmoji, setCharacterEmoji] = useState({ idx: -1})
+  const [characterGesture, setCharacterGesture] = useState({ idx: -1 });
+  const [characterEmoji, setCharacterEmoji] = useState({ idx: -1 })
   const navigate = useNavigate();
   const character = useContext(CharacterContext);
 
@@ -159,6 +160,7 @@ const WorkspaceCustom = () => {
 
   return (
     <>
+      <CallingBar />
       <Canvas
         shadows={{ enabled: true, autoUpdate: true }}
         camera={{ position: [0, 5, 5], rotation: [45, 0, 0] }}
@@ -242,35 +244,35 @@ const WorkspaceCustom = () => {
         }}
       >
         {!isCustomizing && (
-                    <>
-                        <div
-                            aria-label="interactionMenu"
-                            style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                margin: '0.5rem 1rem',
-                                alignItems: 'flex-start',
-                                position: 'absolute',
-                                zIndex: '999999',
-                                pointerEvents: 'auto',
-                            }}
-                        >
-                            <Button
-                                onClick={() => setShowInteractMenu((value) => !value)}
-                                type="button"
-                                variant="outlined"
-                                className="menu-custom"
-                            >
-                                <FaList style={{width: '1.5rem', height: '1.5rem'}}/>
-                            </Button>
-                            {showInteractMenu && (
-                                <InteractionMenu 
-                                    onGestureClick={(value: number) => setCharacterGesture({ idx: value})}
-                                    onEmojiClick={(value: number) => setCharacterEmoji({idx: value})} />
-                            )}
-                        </div>
-                    </>
-                )}
+          <>
+            <div
+              aria-label="interactionMenu"
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                margin: '0.5rem 1rem',
+                alignItems: 'flex-start',
+                position: 'absolute',
+                zIndex: '999999',
+                pointerEvents: 'auto',
+              }}
+            >
+              <Button
+                onClick={() => setShowInteractMenu((value) => !value)}
+                type="button"
+                variant="outlined"
+                className="menu-custom"
+              >
+                <FaRegSmileBeam style={{ width: '1.5rem', height: '1.5rem' }} />
+              </Button>
+              {showInteractMenu && (
+                <InteractionMenu
+                  onGestureClick={(value: number) => setCharacterGesture({ idx: value })}
+                  onEmojiClick={(value: number) => setCharacterEmoji({ idx: value })} />
+              )}
+            </div>
+          </>
+        )}
         {isCustomizing ? (
           <>
             {objectActionVisible && (

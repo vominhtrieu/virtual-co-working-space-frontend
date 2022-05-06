@@ -116,9 +116,12 @@ export default function Character(props: CharacterProps) {
         //     default:
         //         return "https://gamek.mediacdn.vn/133514250583805952/2021/3/3/dts2-16147432809991264652202.jpg"
         // }
-        console.log(`../../assets/images/${EMOJI_LIST[props.currentEmoji?.idx!]}.png`);
+        if (props.currentEmoji && props.currentEmoji.idx >= 0) {
+            return loader.load(require(`../../assets/images/emojis/${EMOJI_LIST[props.currentEmoji?.idx!]}.png`))
+        } else {
+            return loader.load();
+        }
 
-        return loader.load(require(`../../assets/images/emojis/${EMOJI_LIST[props.currentEmoji?.idx!]}.png`))
     }
 
     useEffect(() => {
@@ -147,10 +150,10 @@ export default function Character(props: CharacterProps) {
             console.log(message);
         })
     
-        socket.on("connect_error", message => {
-            console.log("connection error: ", message);
-    
-        })
+        // socket.on("connect_error", message => {
+        //     console.log("connection error: ", message);
+        //
+        // })
     }, [match?.params.id])
 
     useEffect(() => {
@@ -441,9 +444,9 @@ export default function Character(props: CharacterProps) {
         console.log(message);
     });
 
-    socket.on("connect_error", (message) => {
-        console.log("connection error: ", message);
-    });
+    // socket.on("connect_error", (message) => {
+    //     console.log("connection error: ", message);
+    // });
 
 
     return (

@@ -45,6 +45,8 @@ const Offices = () => {
         }
       })
       .catch((err) => {
+        console.log(err);
+        
         toastError(err.message ?? "Get offices fail");
       });
 

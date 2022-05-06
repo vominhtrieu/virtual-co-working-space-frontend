@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { getDataLocal, saveDataLocal } from './localStorage'
 
+console.log(process.env.REACT_APP_BASE_URL)
+
 export const HTTP_HEADER_KEY = {
   CONTENT_TYPE: 'Content-Type',
   MODE: 'mode',
