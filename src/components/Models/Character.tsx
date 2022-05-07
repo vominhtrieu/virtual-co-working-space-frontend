@@ -15,7 +15,7 @@ import {
 import socket from "../../services/socket/socket";
 import { matchPath } from "react-router-dom"
 import { ANIMATION_LIST, EMOJI_LIST } from "../../helpers/constants";
-const stepFoot = require("../../assets/audios/step-foot.mp3");
+const stepFoot = require("../../assets/audios/foot-step.mp3");
 
 type CharacterProps = JSX.IntrinsicElements["group"] & {
     hair: number;
