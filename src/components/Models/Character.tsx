@@ -154,6 +154,8 @@ export default function Character(props: CharacterProps) {
         //     console.log("connection error: ", message);
         //
         // })
+
+        console.log(actions);
     }, [match?.params.id])
 
     useEffect(() => {
