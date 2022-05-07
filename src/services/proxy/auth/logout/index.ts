@@ -5,7 +5,7 @@ import { ProxyFuncType } from "./../../../../types/http/proxy/ProxyFuncType";
 const LogoutProxy = async (): Promise<ProxyFuncType> => {
   const res = await logout();
 
-  if (res?.code) {
+  if (res?.code !== 200) {
     return {
       status: ProxyStatusEnum.FAIL,
       message: res.message,

@@ -1,9 +1,9 @@
 import HttpClient from "../../../../helpers/axios";
-import { getDataLocal } from "../../../../helpers/localStorage";
+import { getData } from "../../../../helpers/cookies";
 
 const URL = "/auth/logout";
 
-const refreshToken = getDataLocal("refresh_token");
+const refreshToken = getData("refresh_token");
 
 export async function logout() {
   const response = await HttpClient.get(URL, {

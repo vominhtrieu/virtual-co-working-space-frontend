@@ -1,23 +1,24 @@
 // import React, { useState } from "react";
-import { Col, Row } from 'antd'
-import { useState } from 'react'
-import { Spin } from 'antd'
-import { useNavigate } from 'react-router-dom'
-import loginImage from '../../../assets/images/login/login.gif'
-import LoginForm from '../../../components/login/loginForm'
-import { saveDataLocal } from '../../../helpers/localStorage'
-import { toastError, toastSuccess } from '../../../helpers/toast'
-import LoginProxy from '../../../services/proxy/auth/login'
-import { useAppDispatch } from '../../../stores'
-import { setAuthenticated, setUserInfo } from '../../../stores/auth-slice'
-import { ProxyStatusEnum } from '../../../types/http/proxy/ProxyStatus'
-import { LoginFormValues } from './type'
+import { Col, Row } from "antd";
+import { useState } from "react";
+import { Spin } from "antd";
+import { useNavigate } from "react-router-dom";
+import loginImage from "../../../assets/images/login/login.gif";
+import LoginForm from "../../../components/login/loginForm";
+import { saveDataLocal } from "../../../helpers/localStorage";
+import { toastError, toastSuccess } from "../../../helpers/toast";
+import LoginProxy from "../../../services/proxy/auth/login";
+import { useAppDispatch } from "../../../stores";
+import { setAuthenticated, setUserInfo } from "../../../stores/auth-slice";
+import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
+import { LoginFormValues } from "./type";
+import { saveData } from "../../../helpers/cookies";
 
 function Login() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const handleLogin = (values: LoginFormValues) => {
     setIsLoading(true);
@@ -26,44 +27,40 @@ function Login() {
       password: values.password,
     })
       .then((res) => {
-        console.log("login page");
         console.log(res);
         if (res.status === ProxyStatusEnum.FAIL) {
           setIsLoading(false);
-          toastError(res.message ?? 'Login fail')
-          return
+          toastError(res.message ?? "Login fail");
+          return;
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
           console.log("success");
-          toastSuccess('login success')
-          saveDataLocal('user_id', res.data.userInfo.id)
-          saveDataLocal('user_info', JSON.stringify(res.data.userInfo))
-          saveDataLocal('access_token', res.data.accessToken)
-          saveDataLocal('refresh_token', res.data.refreshToken)
-          dispatch(setUserInfo(res?.data.userInfo))
-          dispatch(setAuthenticated(true))
-          navigate('/')
+          toastSuccess("login success");
+          saveDataLocal("user_id", res.data.userInfo.id);
+          saveDataLocal("user_info", JSON.stringify(res.data.userInfo));
+          saveDataLocal("access_token", res.data.accessToken);
+          saveData("refresh_token", res.data.refreshToken);
+          dispatch(setUserInfo(res?.data.userInfo));
+          dispatch(setAuthenticated(true));
+          navigate("/");
           setIsLoading(false);
-          return
+          return;
         }
       })
       .catch((err) => {
-        toastError(err.message ?? 'Login fail')
+        toastError(err.message ?? "Login fail");
         setIsLoading(false);
       })
-      .finally(() => { })
-
-  }
+      .finally(() => {});
+  };
 
   const FormLogin = () => {
     return (
       <Row justify="space-around">
         <Col span={6}>
           <div className="login__form">
-            <LoginForm
-              handleLoginSubmit={handleLogin}
-            />
+            <LoginForm handleLoginSubmit={handleLogin} />
           </div>
         </Col>
         <Col span={10}>
@@ -73,17 +70,19 @@ function Login() {
         </Col>
       </Row>
     );
-  }
+  };
 
   return (
     <section className="login">
-      {isLoading ?
-        <Spin> 
-          <FormLogin/>
-        </Spin> :<FormLogin/>
-        }
+      {isLoading ? (
+        <Spin>
+          <FormLogin />
+        </Spin>
+      ) : (
+        <FormLogin />
+      )}
     </section>
-  )
+  );
 }
 
-export default Login
+export default Login;
