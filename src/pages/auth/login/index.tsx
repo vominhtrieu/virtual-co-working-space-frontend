@@ -14,28 +14,22 @@ import { ProxyStatusEnum } from '../../../types/http/proxy/ProxyStatus'
 import { LoginFormValues } from './type'
 
 function Login() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate()
 
   const dispatch = useAppDispatch()
 
   const handleLogin = (values: LoginFormValues) => {
-    setIsLoading(true);
     LoginProxy({
       email: values.email,
       password: values.password,
     })
       .then((res) => {
-        console.log("login page");
-        console.log(res);
         if (res.status === ProxyStatusEnum.FAIL) {
-          setIsLoading(false);
           toastError(res.message ?? 'Login fail')
           return
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          console.log("success");
           toastSuccess('login success')
           saveDataLocal('user_id', res.data.userInfo.id)
           saveDataLocal('user_info', JSON.stringify(res.data.userInfo))
@@ -44,20 +38,17 @@ function Login() {
           dispatch(setUserInfo(res?.data.userInfo))
           dispatch(setAuthenticated(true))
           navigate('/')
-          setIsLoading(false);
           return
         }
       })
       .catch((err) => {
         toastError(err.message ?? 'Login fail')
-        setIsLoading(false);
       })
       .finally(() => { })
 
   }
-
-  const FormLogin = () => {
-    return (
+  return (
+    <section className="login">
       <Row justify="space-around">
         <Col span={6}>
           <div className="login__form">
@@ -72,16 +63,6 @@ function Login() {
           </div>
         </Col>
       </Row>
-    );
-  }
-
-  return (
-    <section className="login">
-      {isLoading ?
-        <Spin> 
-          <FormLogin/>
-        </Spin> :<FormLogin/>
-        }
     </section>
   )
 }

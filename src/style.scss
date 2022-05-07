@@ -1,0 +1,21 @@
+.ant-spin-nested-loading {
+    position:static; 
+}
+
+.ant-spin-container::after {
+    background: transparent;
+}
+
+.ant-spin-blur {
+    opacity: 0.9;
+}
+
+.ant-spin-dot-item {
+    background-color: rgb(254, 252, 254);
+}
+
+.ant-spin-nested-loading > div > .ant-spin {
+    opacity: calc(0.5);
+    max-height: 100%;
+  }
+  

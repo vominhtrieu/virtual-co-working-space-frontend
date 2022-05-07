@@ -12,9 +12,8 @@ import {
 import OfficeAvatar from "./avatar";
 
 const EditOfficeForm = (props: EditOfficeDetailFormProps) => {
-  const { onClose, onSubmit,officeDetail } = props;
+  const { onClose, onSubmit, officeDetail } = props;
   const [isAvatar, setIsAvatar] = useState<string>(officeDetail?.avatarUrl);
-
 
   const schema = yup.object().shape({
     name: yup.string().required("Name is required"),
@@ -24,6 +23,7 @@ const EditOfficeForm = (props: EditOfficeDetailFormProps) => {
     {
       defaultValues: {
         name: "",
+        avatarUrl: isAvatar,
       },
       resolver: yupResolver(schema),
     }
@@ -34,19 +34,22 @@ const EditOfficeForm = (props: EditOfficeDetailFormProps) => {
   ) => {
     const formatData: EditOfficeDetailFormFormDataInterface = {
       name: data.name,
-      avatarUrl:"",
+      avatarUrl: isAvatar,
     };
+    console.log(formatData.avatarUrl);
     onSubmit(formatData);
   };
 
   return (
     <form onSubmit={handleSubmit(handleEditProfileSubmit)}>
-      <h1 className='edit-profile__title'>Chỉnh sửa</h1>
+      <h1 className='edit-detail-office__title'>Chỉnh sửa</h1>
 
-      <OfficeAvatar size={120} setIsAvatar={setIsAvatar} isAvatar={isAvatar}/>
+      <div className="edit-detail-office__item-avatar">
+        <OfficeAvatar size={120} setIsAvatar={setIsAvatar} isAvatar={isAvatar} />
+      </div>
 
-      <InputText control={control} name='name' placeholder='Tên' hasLabel defaultValue={officeDetail.name}/>
-      <div className='edit-profile__group-btn'>
+      <InputText control={control} name='name' hasLabel />
+      <div className='edit-detail-office__group-btn'>
         <Button type='submit' variant='primary'>
           Lưu thay đổi
         </Button>

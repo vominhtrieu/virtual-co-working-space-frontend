@@ -100,6 +100,7 @@ const Offices = () => {
                     <Thumbnail
                       title={office.name}
                       key={key}
+                      src={office.avatarUrl}
                       onClick={() => {
                         navigate(`/office/${office.id}`, {
                           state: {

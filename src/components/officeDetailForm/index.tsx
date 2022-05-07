@@ -44,8 +44,10 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
   }, [id]);
 
   const handleEdit = (values: EditOfficeDetailFormValuesInterface) => {
-    UpdateOfficeProxy({ id: id, name: values.name, avatarUrl: "" })
+    UpdateOfficeProxy({ id: id, name: values.name, avatarUrl: values.avatarUrl })
       .then((res) => {
+        console.log(values);
+        console.log(res);
         if (res.status === ProxyStatusEnum.FAIL) {
           toastError(res.message ?? "Update office fail");
           return;

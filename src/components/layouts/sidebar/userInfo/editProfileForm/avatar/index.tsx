@@ -39,7 +39,7 @@ const ProfileAvatar = ({ size, isAvatar, setIsAvatar}: any) => {
                 showUploadList={false}
                 action={`${process.env.REACT_APP_BASE_URL}/uploads/avatar`}
                 onChange={handleAvatarChange}
-                headers={{Authorization: `Bearer ${localStorage.getItem("token")}`}}
+                headers={{Authorization: `Bearer ${localStorage.getItem("access_token")}`}}
                 accept=".png,.jpg,.jpeg"
             >
                 <Button
@@ -54,9 +54,6 @@ const ProfileAvatar = ({ size, isAvatar, setIsAvatar}: any) => {
                 </Button>
             </Upload>
         </ImgCrop>
-    {/* {editable ?
-      
-    } */}
 </Space>
   )
 }

@@ -19,6 +19,7 @@ export interface OfficeInterface {
   id: number;
   name: string;
   invitationCode: string;
+  avatarUrl: string;
   createdBy: OfficeUserInterface;
   createdAt: string;
 }

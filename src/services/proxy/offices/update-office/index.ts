@@ -20,7 +20,7 @@ const UpdateOfficeProxy = async (
   params: UpdateOfficeProxyParamsInterface
 ): Promise<ProxyFuncType<UpdateOfficeProxyResponseInterface>> => {
   const res = await updateOffice(params);
-
+  
   if (res?.code && res?.code!==200) {
     return {
       status: ProxyStatusEnum.FAIL,

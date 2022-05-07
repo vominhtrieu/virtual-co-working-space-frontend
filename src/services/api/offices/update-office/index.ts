@@ -11,9 +11,10 @@ export async function updateOffice(params: UpdateOfficeParamsInterface) {
     `${URL}/${params.id}`,
     {
       name: params.name,
-      avatarUrl: params.avatarUrl,
+      avatar: params.avatarUrl,
     }
   );
-
+  console.log(params.avatarUrl);
+  console.log(response.data);
   return response.data;
 }

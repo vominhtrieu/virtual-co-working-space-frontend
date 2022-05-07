@@ -18,6 +18,7 @@ interface UpdateOfficeInterface {
   id: number;
   name: string;
   invitationCode: string;
+  avatarUrl:string;
   createdBy: {
     id: number;
     name: string;

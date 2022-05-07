@@ -3,14 +3,17 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import authReducer from "./auth-slice/index";
 import sidebarReducer from './sidebar-slice/index'
 import volumeReducer from './volume-slice/index'
-import officeSlice from './office-slice/index';
+import officeReducer from './office-slice/index'
+import loadReducer from './load-slice/index'
+
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
     sidebar: sidebarReducer,
     volume: volumeReducer,
-    office: officeSlice,
+    office: officeReducer,
+    load: loadReducer,
   },
 });
 

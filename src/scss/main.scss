@@ -38,6 +38,7 @@
 @import "../components/officeDetailForm/styles";
 @import "../components/officeDetailForm/deleteOfficeForm/styles";
 @import "../components/officeDetailForm/editOfficeForm/styles";
+@import "../components/officeDetailForm/editOfficeForm/avatar/styles";
 
 @import "../components/characterCustomForm/styles";
 
@@ -53,3 +54,6 @@
 @import "../pages/officeDetail/styles";
 @import "../pages/auth/forgotPassword/styles";
 @import "../pages/auth/resetPassword/styles";
+
+// import app
+@import "../style.scss"

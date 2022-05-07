@@ -5,6 +5,8 @@ import App from "./App";
 import "./helpers/i18n";
 import store from "./stores/index";
 
+import SetupInterceptors from "./helpers/middleware";
+SetupInterceptors(store);
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

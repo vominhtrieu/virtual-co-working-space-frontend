@@ -2,44 +2,55 @@ import { Avatar, Button, message, Space, Spin, Upload } from "antd";
 import { UserOutlined, CameraOutlined } from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
 import { useState } from "react";
+import axios from "axios";
 
 
 const OfficeAvatar = ({ size, isAvatar, setIsAvatar}: any) => {
 
   const [uploadingAvatar, setUploadingAvatar] = useState<boolean>(false);
-  const handleAvatarChange = (info: any) => {
-    console.log(info.file);
-      if (info.file.status === "uploading") {
-          setUploadingAvatar(true);
-          return;
-      }
-      if (info.file.status === "done") {
-          console.log(info.file);
-          setUploadingAvatar(false);
-          setIsAvatar(info.file.response.data.url);
-          return message.success("Your avatar has been changed!");
-      }
-      if (info.file.status === "error") {
-          setUploadingAvatar(false);
-          return message.error("Cannot change avatar, please try again!");
-      }
-  };
 
   return (
     <Space style={{position: "relative"}}>
     {isAvatar!=="" ? (
-        <Avatar size={size > 0 ? size : 80} src={isAvatar} />
+        <Avatar shape="square" size={size > 0 ? size : 80} src={isAvatar} />
     ) : (
-        <Avatar size={size > 0 ? size : 80} icon={<UserOutlined />} />
+        <Avatar shape="square" size={size > 0 ? size : 80} icon={<UserOutlined />} />
     )}
-      <ImgCrop shape="round" zoom modalTitle="Edit your avatar" quality={0.4}>
+      <ImgCrop shape="rect" zoom modalTitle="Update office image" quality={0.4}>
             <Upload
-                name="avatar"
+                name="img"
                 listType="picture"
                 showUploadList={false}
-                action={`${process.env.REACT_APP_BASE_URL}/uploads/avatar`}
-                onChange={handleAvatarChange}
-                headers={{Authorization: `Bearer ${localStorage.getItem("token")}`}}
+                // onChange={handleAvatarChange}
+                customRequest={(options) => {
+                    const { file } = options;
+                    const fmData = new FormData();
+                    const config = {
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+                        'Content-Type': 'multipart/form-data',
+                      },
+                    };
+        
+                    fmData.append('image', file);
+                    try {
+                      axios
+                        .post('https://api.vispace.tech/api/v1/uploads/image', fmData, config)
+                        .then((res) => {
+                            console.log(res);
+                          if (res?.data?.code && res?.data?.code ===200) {
+                              console.log(res?.data?.data?.url);
+                            setIsAvatar(res?.data?.data?.url ?? isAvatar);
+                            message.success('Upload model success!');
+                          } else {
+                            console.log('error', res);
+                            message.error('Upload model failed!');
+                          }
+                        });
+                    } catch (err) {
+                      console.log('Eroor: ', err);
+                    }
+                  }}
                 accept=".png,.jpg,.jpeg"
             >
                 <Button
@@ -54,9 +65,6 @@ const OfficeAvatar = ({ size, isAvatar, setIsAvatar}: any) => {
                 </Button>
             </Upload>
         </ImgCrop>
-    {/* {editable ?
-      
-    } */}
 </Space>
   )
 }
