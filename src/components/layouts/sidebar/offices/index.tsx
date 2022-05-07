@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toastError, toastSuccess } from "../../../../helpers/toast";
 import CreateOfficeProxy from "../../../../services/proxy/offices/create-office";
 import GetOfficeListProxy from "../../../../services/proxy/offices/office-list";
+import JoinByCodeProxy from "../../../../services/proxy/office-invitation/join-invite-code";
 import { useAppSelector } from "../../../../stores";
 import { userSelectors } from "../../../../stores/auth-slice";
 import { ProxyStatusEnum } from "../../../../types/http/proxy/ProxyStatus";
@@ -11,15 +12,19 @@ import Button from "../../../UI/button";
 import Thumbnail from "../../../UI/thumbnail";
 import SidebarBox from "../sidebarBox";
 import CreateOfficeForm from "./createOfficeForm";
-import { CreateOfficeFormValuesInterface } from "./types";
+import JoinOfficeForm from "./join-by-code";
+import { CreateOfficeFormValuesInterface, JoinOfficeFormValuesInterface } from "./types";
 import socket from "../../../../services/socket/socket";
 import { useAppDispatch } from "../../../../stores";
 import { setIsOffice } from "../../../../stores/office-slice";
 import { officeSelectors } from "../../../../stores/office-slice";
+import { Menu, Dropdown, Space } from 'antd';
+import { FaEllipsisV } from "react-icons/fa";
 
 const Offices = () => {
   const [officeList, setOfficeList] = useState<OfficeInterface[]>();
   const [countGetOffices, setCountGetOffices] = useState(0);
+  const [isJoinOffice, setIsJoinOffice] = useState(false);
   const [isCreateOffice, setIsCreateOffice] = useState(false);
   const isOffice = useAppSelector(officeSelectors.getIsOffice);
   const dispatch = useAppDispatch();
@@ -46,7 +51,7 @@ const Offices = () => {
       })
       .catch((err) => {
         console.log(err);
-        
+
         toastError(err.message ?? "Get offices fail");
       });
 
@@ -78,6 +83,31 @@ const Offices = () => {
       });
   };
 
+  const handleJoinOfficeSubmit = (
+    values: JoinOfficeFormValuesInterface
+  ) => {
+    JoinByCodeProxy(values)
+      .then((res) => {
+        console.log(res);
+        if (res.status === ProxyStatusEnum.FAIL) {
+          toastError(res.message ?? "Join office fail");
+          return;
+        }
+
+        if (res.status === ProxyStatusEnum.SUCCESS) {
+          setIsJoinOffice(false);
+          toastSuccess("Join office success");
+          setCountGetOffices((curr) => curr + 1);
+          dispatch(setIsOffice(!isOffice));
+          return;
+        }
+      })
+      .catch((err) => {
+        toastError(err.message ?? "Join office fail");
+      });
+  };
+
+
   return (
     <>
       {isCreateOffice ? (
@@ -88,9 +118,22 @@ const Offices = () => {
           onSubmit={handleCreateOfficeSubmit}
         />
       ) : null}
+
+      {isJoinOffice ? (
+        <JoinOfficeForm
+          onClose={() => {
+            setIsJoinOffice(false);
+          }}
+          onSubmit={handleJoinOfficeSubmit}
+        />
+      ) : null}
+
       <SidebarBox>
         <div className="sidebar-offices">
-          <div className="sidebar-offices__title">Offices</div>
+          <div className="sidebar-offices__title">
+            Offices
+          </div>
+
           <div className="sidebar-offices__container">
             {/* box content - start */}
             <div className="sidebar-offices__group">
@@ -123,7 +166,15 @@ const Offices = () => {
               >
                 Tạo phòng
               </Button>
-              <Button variant="primary">Tham gia phòng</Button>
+              <Button
+                variant="primary"
+                onClick={() => {
+                  console.log("hihi");
+                  setIsJoinOffice(true);
+                }}
+              >
+                Tham gia phòng
+              </Button>
             </div>
           </div>
         </div>
