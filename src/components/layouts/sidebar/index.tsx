@@ -1,15 +1,12 @@
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Badge } from "antd";
 import { useState } from "react";
-import { BsFillChatFill } from "react-icons/bs";
 import { FaBell } from "react-icons/fa";
 import { MdMeetingRoom } from "react-icons/md";
 import { RiLogoutBoxRFill, RiSettings4Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { removeAll } from "../../../helpers/cookies";
 import { removeAllDataLocal } from "../../../helpers/localStorage";
-import { toastError, toastSuccess } from "../../../helpers/toast";
-import LogoutProxy from "../../../services/proxy/auth/logout";
 import { useAppDispatch, useAppSelector } from "../../../stores";
 import {
   setAuthenticated,
@@ -17,7 +14,6 @@ import {
   userSelectors,
 } from "../../../stores/auth-slice";
 import { setOpen, sidebarSelectors } from "../../../stores/sidebar-slice";
-import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
 import SidebarNotification from "./notification";
 import Offices from "./offices";
 import SidebarSettings from "./settings";
@@ -31,26 +27,11 @@ const Sidebar = () => {
   const userInfo = useAppSelector(userSelectors.getUserInfo);
 
   const handleLogout = () => {
-    LogoutProxy()
-      .then((res) => {
-        if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Logout fail");
-          return;
-        }
-
-        if (res.status === ProxyStatusEnum.SUCCESS) {
-          toastSuccess("Logout success");
-          dispatch(setAuthenticated(false));
-          dispatch(setUserInfo({}));
-          removeAllDataLocal();
-          removeAll();
-          navigate("/auth/login");
-          return;
-        }
-      })
-      .catch((err) => {
-        toastError(err.message ?? "Logout fail");
-      });
+    dispatch(setAuthenticated(false));
+    dispatch(setUserInfo({}));
+    removeAllDataLocal();
+    removeAll();
+    navigate("/auth/login");
   };
 
   return (

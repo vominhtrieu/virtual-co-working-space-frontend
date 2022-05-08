@@ -103,6 +103,10 @@
   border-radius: 0.5rem;
   height: 70%;
 
+  &__content {
+    height: 100%;
+  }
+
   &__title {
     font-size: $font-text;
     font-weight: 700;
@@ -111,7 +115,7 @@
   }
 
   &__items {
-    max-height: 35rem;
+    max-height: 90%;
     overflow: auto;
   }
 

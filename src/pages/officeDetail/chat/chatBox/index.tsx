@@ -16,7 +16,7 @@ import {
 
 const ChatBox = (props: ChatBoxPropsInterface) => {
   const [chatList, setChatList] = useState<ChatItemInterface[]>([]);
-  const { submitMessage, countChat } = props;
+  const { submitMessage } = props;
 
   const ref = useRef<any>(null);
 
@@ -56,6 +56,10 @@ const ChatBox = (props: ChatBoxPropsInterface) => {
   }, [userInfo.id]);
 
   useEffect(() => {
+    socket.emit("conversation:join", {
+      conversationId: 3,
+    });
+
     socket.on("message:sent", (value) => {
       console.log(value);
     });
