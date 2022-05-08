@@ -8,12 +8,16 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../components/UI/button";
 import { InvitationInterface } from "./type";
+import { useAppSelector } from "../../../stores";
+import { loadSelectors } from "../../../stores/load-slice";
+import { Spin } from "antd";
 
 function PrivateInvitation() {
   const params = useParams();
   const { token }: any = params;
   const navigate = useNavigate();
   const [invitation, setInvitation] = useState<InvitationInterface>();
+  const isLoading = useAppSelector(loadSelectors.getIsLoad);
 
   useEffect(()=>{
      GetPrivateInvitationProxy({id: token})
@@ -75,7 +79,9 @@ function PrivateInvitation() {
               type='submit'
               variant='primary'
               onClick={handleAcceptPrivate}
+              disabled={isLoading}
             >
+              {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
               Đồng ý
             </Button>
 

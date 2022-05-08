@@ -9,9 +9,14 @@ import {
   JoinOfficeFormInputInterface,
   JoinOfficeFormProps,
 } from "./types";
+import { useAppSelector } from "../../../../../stores";
+import { loadSelectors } from "../../../../../stores/load-slice";
+import { Spin } from "antd";
 
 const JoinOfficeForm = (props: JoinOfficeFormProps) => {
   const { onClose, onSubmit } = props;
+  
+  const isLoading = useAppSelector(loadSelectors.getIsLoad);
 
   const schema = yup.object().shape({
     code: yup.string().required("Code is required"),
@@ -47,7 +52,8 @@ const JoinOfficeForm = (props: JoinOfficeFormProps) => {
         </div>
 
         <div className='join-office-form__group-btn'>
-          <Button type='submit' variant='primary'>
+          <Button type='submit' variant='primary' disabled={isLoading}>
+          {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
             Tham gia
           </Button>
 

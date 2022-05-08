@@ -6,6 +6,9 @@ import PublicInvitationProxy from "../../../services/proxy/office-invitation/get
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../components/UI/button";
+import { useAppSelector } from "../../../stores";
+import { loadSelectors } from "../../../stores/load-slice";
+import { Spin } from "antd";
 import { InvitationInterface } from "./type";
 import JoinByCodeProxy from "../../../services/proxy/office-invitation/join-invite-code";
 
@@ -13,6 +16,7 @@ function PublicInvitation() {
   const params = useParams();
   const { token }: any = params;
   const navigate = useNavigate();
+  const isLoading = useAppSelector(loadSelectors.getIsLoad);
   const [invitation, setInvitation] = useState<InvitationInterface>();
 
   useEffect(()=>{
@@ -70,11 +74,13 @@ function PublicInvitation() {
           <div className="public-invitation__container">
           <p className='public-invitation__title'>Bạn có đồng ý tham gia văn phòng {invitation.invitation.office.name} này không?</p>
           <div className='public-invitation__group-btn'>
-            <Button
+            <Button 
+              disabled={isLoading}
               type='submit'
               variant='primary'
               onClick={handleJoinByCode}
             >
+              {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
               Đồng ý
             </Button>
 

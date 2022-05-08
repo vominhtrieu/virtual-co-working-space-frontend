@@ -2,10 +2,13 @@ import Button from "../../UI/button";
 import {
   OfficeDetailFormProps,
 } from "./types";
+import { useAppSelector } from "../../../stores";
+import { loadSelectors } from "../../../stores/load-slice";
+import { Spin } from "antd";
 
 const DeleteOfficeForm = (props: OfficeDetailFormProps) => {
   const { onClose, handleDelete } = props;
-
+  const isLoading= useAppSelector(loadSelectors.getIsLoad);
 
   return (
     <div>
@@ -15,7 +18,9 @@ const DeleteOfficeForm = (props: OfficeDetailFormProps) => {
         type='submit' 
         variant='primary'
         onClick={handleDelete}
+        disabled={isLoading}
         >
+          {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
          Đồng ý
         </Button>
 

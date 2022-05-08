@@ -12,7 +12,9 @@ import {
 import { useState } from "react";
 import { useAppSelector } from "../../../../../stores";
 import { userSelectors } from "../../../../../stores/auth-slice";
+import { loadSelectors } from "../../../../../stores/load-slice";
 import { useTranslation } from "react-i18next";
+import { Spin } from "antd";
 import ProfileAvatar from "./avatar";
 
 const EditProfileForm = (props: EditProfileFormProps) => {
@@ -23,6 +25,7 @@ const EditProfileForm = (props: EditProfileFormProps) => {
   const userInfo = useAppSelector(userSelectors.getUserInfo);
 
   const [isAvatar, setIsAvatar] = useState<string>(userInfo.avatar);
+  const isLoading = useAppSelector(loadSelectors.getIsLoad)
 
   const schema = yup.object().shape({
     name: yup
@@ -86,7 +89,8 @@ const EditProfileForm = (props: EditProfileFormProps) => {
       </ul>
 
       <div className='edit-profile__group-btn'>
-        <Button type='submit' variant='primary'>
+        <Button type='submit' variant='primary' disabled={isLoading}>
+        {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
           Lưu thay đổi
         </Button>
 

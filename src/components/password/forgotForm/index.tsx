@@ -6,9 +6,13 @@ import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
+import { useAppSelector } from "../../../stores";
+import { loadSelectors } from "../../../stores/load-slice";
+import { Spin } from "antd";
 
 const ForgotForm= ({ handleForgotSubmit }: FormPropsInterface) => {
   const { t } = useTranslation();
+  const isLoading = useAppSelector(loadSelectors.getIsLoad);
 
   const schema = yup.object().shape({
     email: yup
@@ -47,7 +51,8 @@ const ForgotForm= ({ handleForgotSubmit }: FormPropsInterface) => {
           placeholder={t("pages.login.email")}
         />
       </div>
-      <button type='submit' className='forgot-form__btn'>
+      <button type='submit' className='forgot-form__btn' disabled={isLoading}>
+      {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
         Submit
       </button>
 

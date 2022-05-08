@@ -18,8 +18,6 @@ import socket from "../../../../services/socket/socket";
 import { useAppDispatch } from "../../../../stores";
 import { setIsOffice } from "../../../../stores/office-slice";
 import { officeSelectors } from "../../../../stores/office-slice";
-import { Menu, Dropdown, Space } from 'antd';
-import { FaEllipsisV } from "react-icons/fa";
 
 const Offices = () => {
   const [officeList, setOfficeList] = useState<OfficeInterface[]>();
