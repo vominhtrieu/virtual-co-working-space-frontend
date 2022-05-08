@@ -22,6 +22,8 @@ import { CharacterInterface } from './types/character'
 import ForgotPassword from './pages/auth/forgotPassword'
 import ResetPassword from './pages/auth/resetPassword'
 import CharacterCustomMobile from "./pages/mobile/CharacterCustomMobile";
+import PublicInvitation from './pages/office-invitation/get-public-invitation'
+import PrivateInvitation from './pages/office-invitation/get-private-invitation'
 
 function App() {
     const [character, setCharacter] = useState<CharacterInterface>({
@@ -30,7 +32,6 @@ function App() {
     })
 
     const { isAuthenticated } = useSelector((state: any) => state.auth)
-
     return (
         <CharacterContext.Provider
             value={{
@@ -40,46 +41,55 @@ function App() {
                     setCharacter(character),
             }}
         >
-
             <ToastContainer />
-            <IconLanguages />
-            <div className="App">
-                <Router>
-                    {isAuthenticated ? <Sidebar /> : null}
-                    <Routes>
-                        <Route path="/webgl" element={<CharacterCustomMobile />} />
-                        {isAuthenticated ? (
-                            <>
-                                <Route path="/" element={<Navigate to="/character" replace />} />
-                                <Route path="/character" element={<CharacterCustom />} />
-                                <Route path="/office/:id" element={<Workspace />} />
-                                <Route path="/auth/activate/:token" element={<Active />} />
-                                <Route path="*" element={<NotFound />} />
-                            </>
-                        ) : (
-                            <>
-                                <Route path="/auth/forgot" element={<ForgotPassword />} />
-                                <Route path="/auth/login" element={<Login />} />
-                                <Route path="/auth/register" element={<Register />} />
-                                <Route path="/auth/reset/:token" element={<ResetPassword />} />
-                                <Route path="/webgl" element={<CharacterCustomMobile />} />
-                                <Route path="*" element={<NotFound />} />
+                <IconLanguages />
+                <div className="App">
+                    <Router>
+                        {isAuthenticated ? <Sidebar /> : null}
+                        <Routes>
+                            <Route path="/webgl" element={<CharacterCustomMobile />} />
+                            {isAuthenticated ? (
+                                <>
+                                    <Route path="/" element={<Navigate to="/character" replace />} />
+                                    <Route path="/character" element={<CharacterCustom />} />
+                                    <Route path="/office/:id" element={<Workspace />} />
+                                    <Route path="invites/:token" element={<PublicInvitation/>}/>
+                                    <Route path="invites/token/:token" element={<PrivateInvitation/>}/>
+                                    <Route path="/auth/activate/:token" element={<Active />} />
+                                    <Route path="*" element={<NotFound />} />
+                                </>
+                            ) : (
+                                <>
+                                    <Route path="/auth/forgot" element={<ForgotPassword />} />
+                                    <Route path="/auth/login" element={<Login />} />
+                                    <Route path="/auth/register" element={<Register />} />
+                                    <Route path="/auth/reset/:token" element={<ResetPassword />} />
+                                    <Route path="/webgl" element={<CharacterCustomMobile />} />
+                                    <Route path="*" element={<NotFound />} />
 
-                                {/* redirect */}
-                                <Route path="/" element={<Navigate to="/auth/login" replace />} />
-                                <Route
-                                    path="/character"
-                                    element={<Navigate to="/auth/login" replace />}
-                                />
-                                <Route
-                                    path="/office/:id"
-                                    element={<Navigate to="/auth/login" replace />}
-                                />
-                            </>
-                        )}
-                    </Routes>
-                </Router>
-            </div>
+                                    {/* redirect */}
+                                    <Route path="/" element={<Navigate to="/auth/login" replace />} />
+                                    <Route
+                                        path="/character"
+                                        element={<Navigate to="/auth/login" replace />}
+                                    />
+                                    <Route 
+                                        path="invites/:token"  
+                                        element={<Navigate to="/auth/login" replace />}
+                                        />
+                                     <Route 
+                                        path="invites/token/:token" 
+                                        element={<Navigate to="/auth/login" replace />}
+                                        />
+                                    <Route
+                                        path="/office/:id"
+                                        element={<Navigate to="/auth/login" replace />}
+                                    />
+                                </>
+                            )}
+                        </Routes>
+                    </Router>
+                </div>
         </CharacterContext.Provider>
     )
 }

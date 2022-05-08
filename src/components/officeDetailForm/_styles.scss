@@ -24,7 +24,14 @@
 
     &-content {
       flex: 0 0 60%;
+
+      &-url {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+      }
     }
+
   }
 
   &__group-btn {

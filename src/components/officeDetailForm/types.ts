@@ -7,7 +7,14 @@ export interface OfficeDetailFormProps {
 export interface EditOfficeDetailFormValuesInterface {
   name: string;
   avatarUrl:string;
+  description:string;
 }
+
+export interface CreateInvitationFormValuesInterface {
+  email: string;
+  officeId:number;
+}
+
 
 export interface OfficeDetailInterface {
   id: number;

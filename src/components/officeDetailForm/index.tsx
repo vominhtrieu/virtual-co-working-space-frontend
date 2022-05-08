@@ -3,12 +3,15 @@ import { toastError, toastSuccess } from "../../helpers/toast";
 import OfficeDetailProxy from "../../services/proxy/offices/office-detail";
 import UpdateOfficeProxy from "../../services/proxy/offices/update-office";
 import DeleteOfficeProxy from "../../services/proxy/offices/delete-office";
+import CreateByEmailProxy from "../../services/proxy/office-invitation/create-by-email";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import Button from "../UI/button";
 import Popup from "../UI/popup";
 import EditOfficeForm from "./editOfficeForm";
+import CreateInvitationForm from "./create-invite-by-email";
 import {
   EditOfficeDetailFormValuesInterface,
+  CreateInvitationFormValuesInterface,
   OfficeDetailFormProps,
   OfficeDetailInterface,
 } from "./types";
@@ -16,6 +19,9 @@ import DeleteOfficeForm from "./deleteOfficeForm";
 import { useAppDispatch, useAppSelector } from "../../stores";
 import { setIsOffice } from "../../stores/office-slice";
 import { officeSelectors } from "../../stores/office-slice";
+import { FaLink, FaLocationArrow } from "react-icons/fa";
+import { loadSelectors } from "../../stores/load-slice";
+import { Spin } from "antd";
 
 const OfficeDetailForm = (props: OfficeDetailFormProps) => {
   const [officeDetail, setOfficeDetail] = useState<OfficeDetailInterface>();
@@ -23,7 +29,10 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isCreate, setIsCreate] = useState(false);
+
   const isOffice = useAppSelector(officeSelectors.getIsOffice);
+  const isLoading = useAppSelector(loadSelectors.getIsLoad);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -44,7 +53,12 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
   }, [id]);
 
   const handleEdit = (values: EditOfficeDetailFormValuesInterface) => {
-    UpdateOfficeProxy({ id: id, name: values.name, avatarUrl: values.avatarUrl })
+    UpdateOfficeProxy({ 
+      id: id, 
+      name: values.name, 
+      avatar: values.avatarUrl, 
+      description: values.description 
+    })
       .then((res) => {
         console.log(values);
         console.log(res);
@@ -85,6 +99,27 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
       });
   };
 
+  const handleCreateInvitation = (values: CreateInvitationFormValuesInterface) => {
+    CreateByEmailProxy({ email: values.email, officeId: values.officeId })
+      .then((res) => {
+        console.log(res);
+        if (res.status === ProxyStatusEnum.FAIL) {
+          toastError(res.message ?? "Create invitation fail");
+          return;
+        }
+
+        if (res.status === ProxyStatusEnum.SUCCESS) {
+          toastSuccess("Create invitation success");
+          dispatch(setIsOffice(!isOffice));
+          onClose();
+          setIsCreate(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const padTo2Digits = (num: number) => {
     return num.toString().padStart(2, "0");
   };
@@ -101,69 +136,94 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
     return "";
   };
 
+  const copy = async (code) => {
+    await navigator.clipboard.writeText(`${process.env.REACT_APP_BASE_URL}/invites/${code}`);
+    toastSuccess("Copy success");
+  }
+
   const DetailForm = (
-    <div className="office-detail-form">
-      <h1 className="office-detail-form__title">Chi tiết văn phòng</h1>
-      <ul className="office-detail-form__items">
-        {/* user item - start */}
-        <li className="office-detail-form__item">
-          <div className="office-detail-form__item-title">Tên:</div>
-          <div className="office-detail-form__item-content">
-            {officeDetail?.name}
-          </div>
-        </li>
-        {/* user item - end */}
-        {/* user item - start */}
-        <li className="office-detail-form__item">
-          <div className="office-detail-form__item-title">Thành viên:</div>
-          <div className="office-detail-form__item-content">
-            <ul>
-              {officeDetail?.officeMembers &&
-                officeDetail?.officeMembers.map((member, key) => {
-                  return <li key={key}>{member.member.name}</li>;
-                })}
-            </ul>
-          </div>
-        </li>
-        {/* user item - end */}
-        {/* user item - start */}
-        <li className="office-detail-form__item">
-          <div className="office-detail-form__item-title">Mã tham gia:</div>
-          <div className="office-detail-form__item-content">
-            {officeDetail?.invitationCode}
-          </div>
-        </li>
-        {/* user item - end */}
-        {/* user item - start */}
-        <li className="office-detail-form__item">
-          <div className="office-detail-form__item-title">Ngày tạo:</div>
-          <div className="office-detail-form__item-content">
-            {parseStringToDate(officeDetail?.createdAt)}
-          </div>
-        </li>
-        {/* user item - end */}
-      </ul>
-      {isOwner && (
-        <div className="office-detail-form__group-btn">
-          <Button
-            variant="primary"
-            onClick={() => {
-              setIsEditing(true);
-            }}
-          >
-            Chỉnh sửa thông tin
-          </Button>
-          <Button
-            variant="primary"
-            onClick={() => {
-              setIsDeleting(true);
-            }}
-          >
-            Xoá
-          </Button>
+    <>
+    {isLoading?
+    <Spin></Spin>: <div className="office-detail-form">
+    <h1 className="office-detail-form__title">Chi tiết văn phòng</h1>
+    <ul className="office-detail-form__items">
+      {/* user item - start */}
+      <li className="office-detail-form__item">
+        <div className="office-detail-form__item-title">Tên:</div>
+        <div className="office-detail-form__item-content">
+          {officeDetail?.name}
         </div>
-      )}
-    </div>
+      </li>
+      {/* user item - end */}
+      {/* user item - start */}
+      <li className="office-detail-form__item">
+        <div className="office-detail-form__item-title">Thành viên:</div>
+        <div className="office-detail-form__item-content">
+          <ul>
+            {officeDetail?.officeMembers &&
+              officeDetail?.officeMembers.map((member, key) => {
+                return <li key={key}>{member.member.name}</li>;
+              })}
+          </ul>
+        </div>
+      </li>
+      {/* user item - end */}
+      {/* user item - start */}
+      <li className="office-detail-form__item">
+        <div className="office-detail-form__item-title">Mã tham gia:</div>
+        <div className="office-detail-form__item-content-url">
+          {
+            officeDetail ? <>
+              <div>
+                {officeDetail?.invitationCode}
+              </div>
+              <div>
+                <FaLocationArrow 
+                  style={{marginRight:"1rem"}}
+                  onClick={() => {
+                    setIsCreate(true);
+                  }}
+                  />
+                <FaLink onClick={() => copy(officeDetail?.invitationCode)} />
+              </div>
+            </> : null
+          }
+        </div>
+      </li>
+      {/* user item - end */}
+      {/* user item - start */}
+      <li className="office-detail-form__item">
+        <div className="office-detail-form__item-title">Ngày tạo:</div>
+        <div className="office-detail-form__item-content">
+          {parseStringToDate(officeDetail?.createdAt)}
+        </div>
+      </li>
+      {/* user item - end */}
+    </ul>
+    {isOwner && (
+      <div className="office-detail-form__group-btn">
+        <Button
+          variant="primary"
+          onClick={() => {
+            setIsEditing(true);
+          }}
+        >
+          Chỉnh sửa thông tin
+        </Button>
+        <Button
+          variant="primary"
+          onClick={() => {
+            setIsDeleting(true);
+          }}
+        >
+          Xoá
+        </Button>
+      </div>
+    )}
+  </div>
+    }
+    </>
+   
   );
 
   return (
@@ -183,7 +243,15 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
           }}
           handleDelete={handleDelete}
         />
-      ) : (
+      ) :isCreate && officeDetail ? (
+        <CreateInvitationForm
+          onClose={() => {
+            setIsCreate(false);
+          }}
+          handleCreate={handleCreateInvitation}
+          officeDetail={officeDetail}
+        />
+      ): (
         DetailForm
       )}
     </Popup>

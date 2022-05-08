@@ -1,7 +1,8 @@
 export interface UpdateOfficeProxyParamsInterface {
   id: number;
   name: string;
-  avatarUrl: string;
+  avatar: string;
+  description: string;
 }
 export interface UpdateOfficeProxyTransformInterface {
   office: UpdateOfficeInterface;

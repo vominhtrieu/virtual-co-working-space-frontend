@@ -10,10 +10,14 @@ import {
   EditOfficeDetailFormProps,
 } from "./types";
 import OfficeAvatar from "./avatar";
+import { useAppSelector } from "../../../stores";
+import { loadSelectors } from "../../../stores/load-slice";
+import { Spin } from "antd";
 
 const EditOfficeForm = (props: EditOfficeDetailFormProps) => {
   const { onClose, onSubmit, officeDetail } = props;
   const [isAvatar, setIsAvatar] = useState<string>(officeDetail?.avatarUrl);
+  const isLoading = useAppSelector(loadSelectors.getIsLoad);
 
   const schema = yup.object().shape({
     name: yup.string().required("Name is required"),
@@ -24,6 +28,7 @@ const EditOfficeForm = (props: EditOfficeDetailFormProps) => {
       defaultValues: {
         name: "",
         avatarUrl: isAvatar,
+        description: "",
       },
       resolver: yupResolver(schema),
     }
@@ -35,8 +40,8 @@ const EditOfficeForm = (props: EditOfficeDetailFormProps) => {
     const formatData: EditOfficeDetailFormFormDataInterface = {
       name: data.name,
       avatarUrl: isAvatar,
+      description: data.description,
     };
-    console.log(formatData.avatarUrl);
     onSubmit(formatData);
   };
 
@@ -49,8 +54,12 @@ const EditOfficeForm = (props: EditOfficeDetailFormProps) => {
       </div>
 
       <InputText control={control} name='name' hasLabel />
+
+      <InputText control={control} name='description' hasLabel />
+
       <div className='edit-detail-office__group-btn'>
-        <Button type='submit' variant='primary'>
+        <Button type='submit' variant='primary' disabled={isLoading}>
+        {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
           Lưu thay đổi
         </Button>
 

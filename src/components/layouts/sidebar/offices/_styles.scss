@@ -8,14 +8,16 @@
     height: calc(100% - 7rem);
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 1.5rem;
   }
 
   &__title {
     font-size: $font-title;
     font-weight: 700;
     color: $color-white;
-    margin-bottom: 1.5rem;
+
   }
+
 
   &__group {
     flex: 0 0 49%;
@@ -61,5 +63,6 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
+    color: $color-white;
   }
 }

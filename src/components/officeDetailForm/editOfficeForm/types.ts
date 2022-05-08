@@ -9,9 +9,11 @@ export interface EditOfficeDetailFormProps {
 export interface EditOfficeDetailFormInputInterface {
   name: string;
   avatarUrl:string;
+  description: string;
 }
 
 export interface EditOfficeDetailFormFormDataInterface {
   name: string;
   avatarUrl:string;
+  description: string;
 }

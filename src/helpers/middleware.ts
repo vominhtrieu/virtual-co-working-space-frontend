@@ -62,8 +62,6 @@ const SetupInterceptors = (store) => {
         store.dispatch(setIsLoad(false));
         return response;
     }, error => {
-        console.warn('Error status', error.response.status)
-        // return Promise.reject(error)
         if (error.response) {
             store.dispatch(setIsLoad(false));
             return error.response.data
