@@ -12,10 +12,14 @@ import {
 import { Link } from 'react-router-dom'
 import * as yup from 'yup'
 import InputText from '../../UI/form-controls/inputText'
-import { FormPropsInterface, InputInterface } from './types'
+import { FormPropsInterface, InputInterface } from './types';
+import { useAppSelector } from '../../../stores'
+import { loadSelectors } from '../../../stores/load-slice'
+import { Spin } from 'antd'
 
 const LoginForm = (props: FormPropsInterface) => {
-  const { handleLoginSubmit } = props
+  const { handleLoginSubmit } = props;
+  const isLoading = useAppSelector(loadSelectors.getIsLoad);
   const { t } = useTranslation()
 
   const schema = yup.object().shape({
@@ -86,7 +90,8 @@ const LoginForm = (props: FormPropsInterface) => {
         <Link to="/auth/forgot">{t('pages.login.forgotPass')}</Link>
       </div>
 
-      <button type="submit" className="login-form__btn">
+      <button type="submit" className="login-form__btn" disabled={isLoading}>
+      {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
         {t('pages.login.title')}
       </button>
 

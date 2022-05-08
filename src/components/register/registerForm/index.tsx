@@ -6,8 +6,12 @@ import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
+import { useAppSelector } from '../../../stores'
+import { loadSelectors } from '../../../stores/load-slice'
+import { Spin } from 'antd'
 
 const RegisterForm = ({ handleRegisterSubmit }: FormPropsInterface) => {
+  const isLoading = useAppSelector(loadSelectors.getIsLoad);
   const { t } = useTranslation();
 
   const schema = yup.object().shape({
@@ -99,7 +103,8 @@ const RegisterForm = ({ handleRegisterSubmit }: FormPropsInterface) => {
         />
       </div>
 
-      <button type='submit' className='register-form__btn'>
+      <button type='submit' className='register-form__btn' disabled={isLoading}>
+        {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
         {t('pages.register.title')}
       </button>
 

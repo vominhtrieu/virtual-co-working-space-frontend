@@ -6,9 +6,13 @@ import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
+import { useAppSelector } from "../../../stores";
+import { loadSelectors } from "../../../stores/load-slice";
+import { Spin }  from "antd";
 
 const ResetForm = ({ handleResetSubmit }: FormPropsInterface) => {
   const { t } = useTranslation();
+  const isLoading = useAppSelector(loadSelectors.getIsLoad);
 
   const schema = yup.object().shape({
     password: yup
@@ -65,7 +69,8 @@ const ResetForm = ({ handleResetSubmit }: FormPropsInterface) => {
           placeholder=" Confirm Password"
         />
       </div>
-      <button type='submit' className='reset-form__btn'>
+      <button type='submit' className='reset-form__btn' disabled={isLoading}>
+      {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
         Submit
       </button>
 

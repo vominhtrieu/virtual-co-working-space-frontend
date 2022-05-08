@@ -9,9 +9,13 @@ import {
   CreateOfficeFormInputInterface,
   CreateOfficeFormProps,
 } from "./types";
+import { useAppSelector } from "../../../../../stores";
+import { loadSelectors } from "../../../../../stores/load-slice";
+import { Spin } from "antd";
 
 const CreateOfficeForm = (props: CreateOfficeFormProps) => {
   const { onClose, onSubmit } = props;
+  const isLoading = useAppSelector(loadSelectors.getIsLoad);
 
   const schema = yup.object().shape({
     name: yup.string().required("Name is required"),
@@ -29,7 +33,6 @@ const CreateOfficeForm = (props: CreateOfficeFormProps) => {
       name: data.name,
     };
     onSubmit(formatData);
-    onClose();
   };
   return (
     <Popup onClose={onClose}>
@@ -46,7 +49,8 @@ const CreateOfficeForm = (props: CreateOfficeFormProps) => {
         </div>
 
         <div className='create-office-form__group-btn'>
-          <Button type='submit' variant='primary'>
+          <Button type='submit' variant='primary' disabled={isLoading}>
+          {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
             Tạo
           </Button>
 

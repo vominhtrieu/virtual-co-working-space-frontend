@@ -1,6 +1,7 @@
 import React from "react";
 
 export interface ButtonProps {
+  disabled?:boolean;
   children: React.ReactNode;
   className?:string;
   type?: "button" | "submit" | "reset";

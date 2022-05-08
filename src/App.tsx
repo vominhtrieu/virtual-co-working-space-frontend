@@ -22,10 +22,6 @@ import { CharacterInterface } from './types/character'
 import ForgotPassword from './pages/auth/forgotPassword'
 import ResetPassword from './pages/auth/resetPassword'
 import CharacterCustomMobile from "./pages/mobile/CharacterCustomMobile";
-import { useAppSelector } from "./stores";
-import { loadSelectors } from "./stores/load-slice"
-import { Spin } from "antd";
-
 
 function App() {
     const [character, setCharacter] = useState<CharacterInterface>({
@@ -34,7 +30,7 @@ function App() {
     })
 
     const { isAuthenticated } = useSelector((state: any) => state.auth)
-    const isLoad = useAppSelector(loadSelectors.getIsLoad);
+
     return (
         <CharacterContext.Provider
             value={{
@@ -45,47 +41,45 @@ function App() {
             }}
         >
 
-            <Spin spinning={isLoad} size="large">
-                <ToastContainer />
-                <IconLanguages />
-                <div className="App">
-                    <Router>
-                        {isAuthenticated ? <Sidebar /> : null}
-                        <Routes>
-                            <Route path="/webgl" element={<CharacterCustomMobile />} />
-                            {isAuthenticated ? (
-                                <>
-                                    <Route path="/" element={<Navigate to="/character" replace />} />
-                                    <Route path="/character" element={<CharacterCustom />} />
-                                    <Route path="/office/:id" element={<Workspace />} />
-                                    <Route path="/auth/activate/:token" element={<Active />} />
-                                    <Route path="*" element={<NotFound />} />
-                                </>
-                            ) : (
-                                <>
-                                    <Route path="/auth/forgot" element={<ForgotPassword />} />
-                                    <Route path="/auth/login" element={<Login />} />
-                                    <Route path="/auth/register" element={<Register />} />
-                                    <Route path="/auth/reset/:token" element={<ResetPassword />} />
-                                    <Route path="/webgl" element={<CharacterCustomMobile />} />
-                                    <Route path="*" element={<NotFound />} />
+            <ToastContainer />
+            <IconLanguages />
+            <div className="App">
+                <Router>
+                    {isAuthenticated ? <Sidebar /> : null}
+                    <Routes>
+                        <Route path="/webgl" element={<CharacterCustomMobile />} />
+                        {isAuthenticated ? (
+                            <>
+                                <Route path="/" element={<Navigate to="/character" replace />} />
+                                <Route path="/character" element={<CharacterCustom />} />
+                                <Route path="/office/:id" element={<Workspace />} />
+                                <Route path="/auth/activate/:token" element={<Active />} />
+                                <Route path="*" element={<NotFound />} />
+                            </>
+                        ) : (
+                            <>
+                                <Route path="/auth/forgot" element={<ForgotPassword />} />
+                                <Route path="/auth/login" element={<Login />} />
+                                <Route path="/auth/register" element={<Register />} />
+                                <Route path="/auth/reset/:token" element={<ResetPassword />} />
+                                <Route path="/webgl" element={<CharacterCustomMobile />} />
+                                <Route path="*" element={<NotFound />} />
 
-                                    {/* redirect */}
-                                    <Route path="/" element={<Navigate to="/auth/login" replace />} />
-                                    <Route
-                                        path="/character"
-                                        element={<Navigate to="/auth/login" replace />}
-                                    />
-                                    <Route
-                                        path="/office/:id"
-                                        element={<Navigate to="/auth/login" replace />}
-                                    />
-                                </>
-                            )}
-                        </Routes>
-                    </Router>
-                </div>
-            </Spin>
+                                {/* redirect */}
+                                <Route path="/" element={<Navigate to="/auth/login" replace />} />
+                                <Route
+                                    path="/character"
+                                    element={<Navigate to="/auth/login" replace />}
+                                />
+                                <Route
+                                    path="/office/:id"
+                                    element={<Navigate to="/auth/login" replace />}
+                                />
+                            </>
+                        )}
+                    </Routes>
+                </Router>
+            </div>
         </CharacterContext.Provider>
     )
 }
