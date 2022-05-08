@@ -7,3 +7,7 @@ export interface OfficeListInterface {
 export interface CreateOfficeFormValuesInterface {
   name: string;
 }
+
+export interface JoinOfficeFormValuesInterface {
+  id: string;
+}

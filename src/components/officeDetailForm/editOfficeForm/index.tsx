@@ -24,6 +24,7 @@ const EditOfficeForm = (props: EditOfficeDetailFormProps) => {
       defaultValues: {
         name: "",
         avatarUrl: isAvatar,
+        description: "",
       },
       resolver: yupResolver(schema),
     }
@@ -35,8 +36,9 @@ const EditOfficeForm = (props: EditOfficeDetailFormProps) => {
     const formatData: EditOfficeDetailFormFormDataInterface = {
       name: data.name,
       avatarUrl: isAvatar,
+      description: data.description,
     };
-    console.log(formatData.avatarUrl);
+    console.log(data.description);
     onSubmit(formatData);
   };
 
@@ -49,6 +51,9 @@ const EditOfficeForm = (props: EditOfficeDetailFormProps) => {
       </div>
 
       <InputText control={control} name='name' hasLabel />
+
+      <InputText control={control} name='description' hasLabel />
+
       <div className='edit-detail-office__group-btn'>
         <Button type='submit' variant='primary'>
           Lưu thay đổi

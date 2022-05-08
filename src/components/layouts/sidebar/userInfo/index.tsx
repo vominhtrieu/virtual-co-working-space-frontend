@@ -78,13 +78,15 @@ const SidebarUser = () => {
 
   const parseStringToDate = (dateSTr) => {
     const date = new Date(dateSTr);
-    return (
-      [
+    if (dateSTr) {
+      const date = new Date(dateSTr);
+      return [
         padTo2Digits(date.getDate()),
         padTo2Digits(date.getMonth() + 1),
         date.getFullYear(),
-      ].join('/') 
-    );
+      ].join("/");
+    }
+    return "";
   }
 
   return (

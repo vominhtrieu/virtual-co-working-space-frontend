@@ -19,6 +19,8 @@ import ResetPassword from "./pages/auth/resetPassword";
 import CharacterCustom from "./pages/CharacterCustom";
 import CharacterCustomMobile from "./pages/mobile/CharacterCustomMobile";
 import NotFound from "./pages/notFound";
+import PrivateInvitation from "./pages/office-invitation/get-private-invitation";
+import PublicInvitation from "./pages/office-invitation/get-public-invitation";
 import Workspace from "./pages/officeDetail/Workspace";
 import "./scss/main.scss";
 import { CharacterInterface } from "./types/character";
@@ -30,7 +32,6 @@ function App() {
   });
 
   const { isAuthenticated } = useSelector((state: any) => state.auth);
-
   return (
     <CharacterContext.Provider
       value={{
@@ -55,6 +56,11 @@ function App() {
                 />
                 <Route path="/character" element={<CharacterCustom />} />
                 <Route path="/office/:id" element={<Workspace />} />
+                <Route path="invites/:token" element={<PublicInvitation />} />
+                <Route
+                  path="invites/token/:token"
+                  element={<PrivateInvitation />}
+                />
                 <Route path="/auth/activate/:token" element={<Active />} />
                 <Route path="*" element={<NotFound />} />
               </>
@@ -74,6 +80,14 @@ function App() {
                 />
                 <Route
                   path="/character"
+                  element={<Navigate to="/auth/login" replace />}
+                />
+                <Route
+                  path="invites/:token"
+                  element={<Navigate to="/auth/login" replace />}
+                />
+                <Route
+                  path="invites/token/:token"
                   element={<Navigate to="/auth/login" replace />}
                 />
                 <Route

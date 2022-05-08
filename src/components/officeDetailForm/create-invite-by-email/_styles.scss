@@ -1,0 +1,16 @@
+.edit-detail-office {
+  &__item-title {
+    color: $color-white;
+    text-align: center;
+  }
+
+  &__group-btn {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 2rem;
+  }
+  
+  &__item-avatar {
+    margin-bottom: 2rem;
+  }
+}

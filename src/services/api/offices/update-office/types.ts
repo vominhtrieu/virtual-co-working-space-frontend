@@ -1,7 +1,8 @@
 export interface UpdateOfficeParamsInterface {
   id: number;
   name: string;
-  avatarUrl: string;
+  avatar: string;
+  description: string;
 }
 
 export interface UpdateOfficeApiResponseInterface {

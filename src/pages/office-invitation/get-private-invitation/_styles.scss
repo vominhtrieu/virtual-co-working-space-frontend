@@ -1,0 +1,29 @@
+.private-invitation {
+  background-color: $color-primary-dark;
+  height: 100vh;
+  width: 100vW;
+  position: fixed;
+  z-index: 99999;
+
+  &__container {
+    margin: auto;
+    margin-top: 40vh;
+    width: 50vw;
+    height: 20vh;
+    padding: 4rem 2rem;
+    box-shadow: 0 0 2rem 1rem $color-primary-light;
+    border-radius: 1rem solid $color-primary-light;
+  }
+
+  &__title {
+    color: $color-white;
+    font-size: medium;
+  }
+
+  &__group-btn {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 2rem;
+  }
+}
