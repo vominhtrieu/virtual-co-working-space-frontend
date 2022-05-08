@@ -2,21 +2,21 @@ import { useState, useEffect } from "react";
 import IconLanguages from "../../../components/icon-lang";
 import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
 import { toastError, toastSuccess } from "../../../helpers/toast";
-import PublicInvitationProxy from "../../../services/proxy/office-invitation/get-public-invitation";
+import AcceptPrivateInvitation from "../../../services/proxy/office-invitation/accept-private-invitation";
+import GetPrivateInvitationProxy from "../../../services/proxy/office-invitation/get-private-invitation";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../components/UI/button";
 import { InvitationInterface } from "./type";
-import JoinByCodeProxy from "../../../services/proxy/office-invitation/join-invite-code";
 
-function PublicInvitation() {
+function PrivateInvitation() {
   const params = useParams();
   const { token }: any = params;
   const navigate = useNavigate();
   const [invitation, setInvitation] = useState<InvitationInterface>();
 
   useEffect(()=>{
-     PublicInvitationProxy({id: token})
+     GetPrivateInvitationProxy({id: token})
         .then((res) => {
           console.log(res);
           if (res.status === ProxyStatusEnum.FAIL) {
@@ -35,8 +35,8 @@ function PublicInvitation() {
         .finally(() => { });
   },[]);
 
-  const handleJoinByCode = () => {
-    JoinByCodeProxy({
+  const handleAcceptPrivate = () => {
+    AcceptPrivateInvitation({
       id: token,
     })
       .then((res) => {
@@ -68,12 +68,13 @@ function PublicInvitation() {
         <IconLanguages />
         {invitation?
           <div className="public-invitation__container">
-          <p className='public-invitation__title'>Bạn có đồng ý tham gia văn phòng {invitation.invitation.office.name} này không?</p>
+          <p className='public-invitation__title'>{invitation?.invitation?.inviter?.name} mời bạn tham gia văn phòng {invitation?.invitation?.office?.name}. 
+          Bạn có muốn tham gia không?</p>
           <div className='public-invitation__group-btn'>
             <Button
               type='submit'
               variant='primary'
-              onClick={handleJoinByCode}
+              onClick={handleAcceptPrivate}
             >
               Đồng ý
             </Button>
@@ -88,4 +89,4 @@ function PublicInvitation() {
   );
 }
 
-export default PublicInvitation;
+export default PrivateInvitation;

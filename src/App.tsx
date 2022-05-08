@@ -23,6 +23,7 @@ import ForgotPassword from './pages/auth/forgotPassword'
 import ResetPassword from './pages/auth/resetPassword'
 import CharacterCustomMobile from "./pages/mobile/CharacterCustomMobile";
 import PublicInvitation from './pages/office-invitation/get-public-invitation'
+import PrivateInvitation from './pages/office-invitation/get-private-invitation'
 
 function App() {
     const [character, setCharacter] = useState<CharacterInterface>({
@@ -53,6 +54,7 @@ function App() {
                                     <Route path="/character" element={<CharacterCustom />} />
                                     <Route path="/office/:id" element={<Workspace />} />
                                     <Route path="invites/:token" element={<PublicInvitation/>}/>
+                                    <Route path="invites/token/:token" element={<PrivateInvitation/>}/>
                                     <Route path="/auth/activate/:token" element={<Active />} />
                                     <Route path="*" element={<NotFound />} />
                                 </>
@@ -73,6 +75,10 @@ function App() {
                                     />
                                     <Route 
                                         path="invites/:token"  
+                                        element={<Navigate to="/auth/login" replace />}
+                                        />
+                                     <Route 
+                                        path="invites/token/:token" 
                                         element={<Navigate to="/auth/login" replace />}
                                         />
                                     <Route
