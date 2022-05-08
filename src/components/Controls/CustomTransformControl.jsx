@@ -21,12 +21,25 @@ export default function CustomTransformControl({object, orbit, visible}) {
     }, [orbit]);
 
     return (
-        <TransformControls ref={transform} showX={visible} showY={visible} showZ={visible}
+        <TransformControls ref={transform}
+                           showX={visible}
+                           showY={visible}
+                           showZ={visible}
                            enabled={visible}
                            args={[camera, gl.domElement]}
                            onUpdate={(self) => {
-                               if (object && self.uuid !== object.uuid) {
-                                   self.attach(object)
+                               if (!transform.current) {
+                                   return;
+                               }
+
+                               if (object && self.uuid !== object.uuid
+                                   && (!transform.current.object || transform.current.object.uuid !== object.uuid)) {
+                                   if (transform.current.object) {
+                                       transform.current.detach();
+                                   }
+                                   transform.current.attach(object)
+                               } else {
+                                   transform.current.detach();
                                }
                            }}/>
     );

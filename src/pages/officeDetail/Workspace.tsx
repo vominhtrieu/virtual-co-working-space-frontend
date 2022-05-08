@@ -90,7 +90,7 @@ const WorkspaceCustom = () => {
 
     return (
         <>
-            <CallingBar/>
+            {!isCustomizing && <CallingBar/>}
             <OfficeCanvas setObjectionClickPos={setObjectionClickPos}
                           characterGesture={characterGesture}
                           characterEmoji={characterEmoji}
