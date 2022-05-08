@@ -18,7 +18,6 @@ import {
 } from "../../../stores/auth-slice";
 import { setOpen, sidebarSelectors } from "../../../stores/sidebar-slice";
 import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
-import SidebarChat from "./chat";
 import SidebarNotification from "./notification";
 import Offices from "./offices";
 import SidebarSettings from "./settings";
@@ -79,23 +78,6 @@ const Sidebar = () => {
               <Badge count={2}>
                 <FaBell className="sidebar__icon" />
               </Badge>
-            </li>
-            <li
-              className={
-                "sidebar__item" + (currSidebar === "chat" ? " active" : "")
-              }
-              onClick={() =>
-                setSidebarOpen((curr) => {
-                  if (curr === "chat") {
-                    dispatch(setOpen(""));
-                    return "";
-                  }
-                  dispatch(setOpen("chat"));
-                  return "chat";
-                })
-              }
-            >
-              <BsFillChatFill className="sidebar__icon" />
             </li>
             <li
               className={
@@ -171,7 +153,6 @@ const Sidebar = () => {
       {sidebarOpen === "settings" ? <SidebarSettings /> : null}
       {sidebarOpen === "user" ? <SidebarUser /> : null}
       {sidebarOpen === "office" ? <Offices /> : null}
-      {sidebarOpen === "chat" ? <SidebarChat /> : null}
       {sidebarOpen === "notify" ? <SidebarNotification /> : null}
     </div>
   );

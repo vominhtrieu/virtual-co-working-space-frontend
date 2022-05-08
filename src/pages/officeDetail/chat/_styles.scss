@@ -1,6 +1,12 @@
 .sidebar-chat {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: calc(100vh - 80px) !important;
+  width: 400px;
   padding: 2rem;
   height: 100%;
+  background-color: $color-primary;
 
   &__title {
     font-size: $font-title;
@@ -95,7 +101,7 @@
   border: 1px solid $color-primary-dark;
   padding: 2rem;
   border-radius: 0.5rem;
-  height: 45rem;
+  height: 70%;
 
   &__title {
     font-size: $font-text;

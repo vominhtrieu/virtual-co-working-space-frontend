@@ -4,11 +4,13 @@ import { Canvas } from "@react-three/fiber";
 import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { AiFillSetting, AiOutlineInfoCircle } from "react-icons/ai";
 import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
-import { FaEdit, FaList, FaTrash, FaUserEdit, FaRegSmileBeam } from "react-icons/fa";
+import { FaRegSmileBeam, FaTrash } from "react-icons/fa";
+import { IoMdChatbubbles } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import CustomTransformControl from "../../components/Controls/CustomTransformControl";
+import InteractionMenu from "../../components/layouts/sidebar/offices/characterInteraction";
 import EditOffice from "../../components/layouts/sidebar/offices/editOffice";
 import Box from "../../components/Models/Box";
 import Character from "../../components/Models/Character";
@@ -18,12 +20,12 @@ import OfficeDetailForm from "../../components/officeDetailForm";
 import Button from "../../components/UI/button";
 import CharacterContext from "../../context/CharacterContext";
 import OfficeDetailProxy from "../../services/proxy/offices/office-detail";
-import { userSelectors } from "../../stores/auth-slice";
-import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import { useAppSelector } from "../../stores";
+import { userSelectors } from "../../stores/auth-slice";
 import { volumeSelectors } from "../../stores/volume-slice";
-import InteractionMenu from '../../components/layouts/sidebar/offices/characterInteraction'
+import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import CallingBar from "./calling/CallingBar";
+import SidebarChat from "./chat";
 
 const itemGroups = [
   {
@@ -61,6 +63,7 @@ const WorkspaceCustom = () => {
   const [isOwner, setIsOwner] = useState(false);
   const { open } = useSelector((state: any) => state.sidebar);
   const [isShowDetailForm, setIsShowDetailForm] = useState(false);
+  const [isShowChatBox, setIsShowChatBox] = useState(false);
   const orbitRef = useRef(null);
   const [objectList, setObjectList] = useState<
     Array<{
@@ -76,10 +79,9 @@ const WorkspaceCustom = () => {
     y: 0,
   });
   const [isCustomizing, setIsCustomizing] = useState(false);
-  const [showMainMenu, setShowMainMenu] = useState(false);
   const [showInteractMenu, setShowInteractMenu] = useState(false);
   const [characterGesture, setCharacterGesture] = useState({ idx: -1 });
-  const [characterEmoji, setCharacterEmoji] = useState({ idx: -1 })
+  const [characterEmoji, setCharacterEmoji] = useState({ idx: -1 });
   const navigate = useNavigate();
   const character = useContext(CharacterContext);
 
@@ -248,13 +250,13 @@ const WorkspaceCustom = () => {
             <div
               aria-label="interactionMenu"
               style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                margin: '0.5rem 1rem',
-                alignItems: 'flex-start',
-                position: 'absolute',
-                zIndex: '999999',
-                pointerEvents: 'auto',
+                display: "flex",
+                justifyContent: "space-between",
+                margin: "0.5rem 1rem",
+                alignItems: "flex-start",
+                position: "absolute",
+                zIndex: "999999",
+                pointerEvents: "auto",
               }}
             >
               <Button
@@ -263,12 +265,17 @@ const WorkspaceCustom = () => {
                 variant="outlined"
                 className="menu-custom"
               >
-                <FaRegSmileBeam style={{ width: '1.5rem', height: '1.5rem' }} />
+                <FaRegSmileBeam style={{ width: "1.5rem", height: "1.5rem" }} />
               </Button>
               {showInteractMenu && (
                 <InteractionMenu
-                  onGestureClick={(value: number) => setCharacterGesture({ idx: value })}
-                  onEmojiClick={(value: number) => setCharacterEmoji({ idx: value })} />
+                  onGestureClick={(value: number) =>
+                    setCharacterGesture({ idx: value })
+                  }
+                  onEmojiClick={(value: number) =>
+                    setCharacterEmoji({ idx: value })
+                  }
+                />
               )}
             </div>
           </>
@@ -327,7 +334,6 @@ const WorkspaceCustom = () => {
             )}
 
             <div aria-label="bottomMenu" style={{ pointerEvents: "auto" }}>
-
               <EditOffice
                 itemGroups={itemGroups}
                 onItemClick={handleItemInBottomMenuClick}
@@ -349,6 +355,14 @@ const WorkspaceCustom = () => {
           </div>
         ) : null}
         <div className="office-detail__view">
+          <IoMdChatbubbles
+            className="office-detail__edit-icon"
+            onClick={() => {
+              setIsShowChatBox(!isShowChatBox);
+            }}
+          />
+        </div>
+        <div className="office-detail__view">
           <AiOutlineInfoCircle
             className="office-detail__edit-icon"
             onClick={() => {
@@ -367,6 +381,8 @@ const WorkspaceCustom = () => {
           isOwner={isOwner}
         />
       ) : null}
+
+      {isShowChatBox ? <SidebarChat /> : null}
     </>
   );
 };
