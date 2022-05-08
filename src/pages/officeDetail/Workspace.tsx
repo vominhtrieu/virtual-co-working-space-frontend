@@ -17,9 +17,11 @@ export type positionType = {
 };
 
 const WorkspaceCustom = () => {
+  const [conversationId, setConversationId] = useState<number>(0);
   const [isOwner, setIsOwner] = useState(false);
   const { open } = useSelector((state: any) => state.sidebar);
   const [isShowDetailForm, setIsShowDetailForm] = useState(false);
+  const [isShowChatBox, setIsShowChatBox] = useState(false);
   const [objectList, setObjectList] = useState<
     Array<{
       key: string;
@@ -83,6 +85,9 @@ const WorkspaceCustom = () => {
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
           setIsOwner(res?.data?.office?.createdBy?.id === userInfo.id);
+          if (res?.data?.office?.conversations.length > 0) {
+            setConversationId(res?.data?.office?.conversations[0]?.id);
+          }
         }
       })
       .catch((err) => {
@@ -107,6 +112,8 @@ const WorkspaceCustom = () => {
       />
       <OfficeInterface
         open={open}
+        conversationId={conversationId}
+        isShowChatBox={isShowChatBox}
         isCustomizing={isCustomizing}
         objectActionVisible={objectActionVisible}
         handleButtonDeleteClick={handleButtonDeleteClick}
@@ -119,6 +126,7 @@ const WorkspaceCustom = () => {
         setCharacterGesture={setCharacterGesture}
         setIsCustomizing={setIsCustomizing}
         setIsShowDetailForm={setIsShowDetailForm}
+        setIsShowChatBox={setIsShowChatBox}
       />
       {isShowDetailForm ? (
         <OfficeDetailForm

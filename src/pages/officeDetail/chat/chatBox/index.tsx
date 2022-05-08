@@ -16,7 +16,7 @@ import {
 
 const ChatBox = (props: ChatBoxPropsInterface) => {
   const [chatList, setChatList] = useState<ChatItemInterface[]>([]);
-  const { submitMessage } = props;
+  const { submitMessage, conversationId } = props;
 
   const ref = useRef<any>(null);
 
@@ -24,7 +24,7 @@ const ChatBox = (props: ChatBoxPropsInterface) => {
   const userInfo = useAppSelector(userSelectors.getUserInfo);
 
   useEffect(() => {
-    GetMessagesProxy({ id: 3 })
+    GetMessagesProxy({ id: conversationId })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
           return;
@@ -57,12 +57,21 @@ const ChatBox = (props: ChatBoxPropsInterface) => {
 
   useEffect(() => {
     socket.emit("conversation:join", {
-      conversationId: 3,
+      conversationId: conversationId,
     });
 
     socket.on("message:sent", (value) => {
-      console.log(value);
+      const newChatItem = {
+        src: "",
+        alt: "",
+        message: value["content"],
+        isMe: userInfo.id === value["senderId"],
+      };
+
+      setChatList((curr) => [...curr, newChatItem]);
     });
+
+    ref.current.scrollIntoView({ behavior: "smooth" });
 
     return () => {
       socket.off("message:sent");

@@ -1,1 +1,3 @@
-export interface SidebarChatPropsInterface {}
+export interface SidebarChatPropsInterface {
+  conversationId: number;
+}

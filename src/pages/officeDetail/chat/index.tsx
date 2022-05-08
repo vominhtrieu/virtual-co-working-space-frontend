@@ -2,17 +2,17 @@ import { useState } from "react";
 import socket from "../../../services/socket/socket";
 import ChatBox from "./chatBox";
 import ChatList from "./chatList";
+import { SidebarChatPropsInterface } from "./types";
 
-const SidebarChat = () => {
-  const [countChat, setCountChat] = useState(0);
+const SidebarChat = (props: SidebarChatPropsInterface) => {
+  const { conversationId } = props;
   const [isChatListOpen, setIsChatListOpen] = useState(false);
 
   const handleSubmitMessage = (values: string) => {
     socket.emit("message:send", {
-      conversationId: 3,
+      conversationId: conversationId,
       content: values,
     });
-    setCountChat((curr) => curr + 1);
   };
 
   return (
@@ -24,7 +24,10 @@ const SidebarChat = () => {
         onOpen={() => setIsChatListOpen(true)}
         onClose={() => setIsChatListOpen(false)}
       />
-      <ChatBox countChat={countChat} submitMessage={handleSubmitMessage} />
+      <ChatBox
+        conversationId={conversationId}
+        submitMessage={handleSubmitMessage}
+      />
     </div>
   );
 };

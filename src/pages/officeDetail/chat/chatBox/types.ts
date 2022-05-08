@@ -1,5 +1,5 @@
 export interface ChatBoxPropsInterface {
-  countChat: number;
+  conversationId: number;
   submitMessage: (message: string) => void;
 }
 

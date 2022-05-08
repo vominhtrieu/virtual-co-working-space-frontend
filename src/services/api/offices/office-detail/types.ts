@@ -5,7 +5,7 @@ export interface OfficeParamsInterface {
 export interface OfficeApiResponseInterface {
   data: {
     office: OfficeDetailInterface;
-  }
+  };
   status?: string;
   code?: number;
   message?: string;
@@ -16,7 +16,7 @@ interface OfficeDetailInterface {
   id: number;
   name: string;
   invitationCode: string;
-  avatarUrl:string;
+  avatarUrl: string;
   createdBy: {
     id: number;
     name: string;
@@ -25,6 +25,12 @@ interface OfficeDetailInterface {
   officeItems: any[];
   officeMembers: OfficeMembersInterface[];
   createdAt: string;
+  conversations: {
+    id: number;
+    officeId: number;
+    name: string;
+    type: string;
+  }[];
 }
 
 interface OfficeMembersInterface {
