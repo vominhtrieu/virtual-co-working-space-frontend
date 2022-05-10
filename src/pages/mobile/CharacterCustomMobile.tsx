@@ -1,67 +1,11 @@
 import {OrbitControls, Stats} from "@react-three/drei";
 import {Canvas} from "@react-three/fiber";
 import {Suspense, useContext, useEffect} from "react";
-import BottomMenu from "../../components/Controls/BottomMenu";
+import CharacterCustomMobileMenu from "../../components/Controls/CharacterCustomMobileMenu";
 import Box from "../../components/Models/Box";
 import CharacterContext from "../../context/CharacterContext";
 import DisplayCharacter from "../../components/Models/DisplayCharacter";
-
-const itemGroups = [
-    {
-        groupName: "Skin Color",
-        items: [
-            {code: "Yellow", type: "color", hex: "#F2CCB7"},
-            {code: "Black", type: "color", hex: "#D19477"},
-            {code: "White", type: "color", hex: "#FEE3D4"},
-        ],
-    },
-    {
-        groupName: "Hair Style",
-        items: [
-            {code: "Hair1", type: "image", url: "./images/Hair1.png"},
-            {code: "Hair2", type: "image", url: "./images/Hair2.png"},
-        ],
-    },
-    {
-        groupName: "Hair Color",
-        items: [
-            {code: "Orange", type: "color", hex: "#F5AA2E"},
-            {code: "White", type: "color", hex: "#FFFFFF"},
-            {code: "Black", type: "color", hex: "#000000"},
-        ],
-    },
-    {
-        groupName: "Eyes Style",
-        items: [
-            {code: "Eyes1", type: "image", url: "./images/Eyes1.png"},
-            {code: "Eyes2", type: "image", url: "./images/Eyes2.png"},
-        ],
-    },
-    {
-        groupName: "Shirt Color",
-        items: [
-            {code: "Orange", type: "color", hex: "#F5AA2E"},
-            {code: "White", type: "color", hex: "#FFFFFF"},
-            {code: "Black", type: "color", hex: "#000000"},
-        ],
-    },
-    {
-        groupName: "Pant Color",
-        items: [
-            {code: "Orange", type: "color", hex: "#F5AA2E"},
-            {code: "White", type: "color", hex: "#FFFFFF"},
-            {code: "Black", type: "color", hex: "#000000"},
-        ],
-    },
-    {
-        groupName: "Shoe Color",
-        items: [
-            {code: "Orange", type: "color", hex: "#F5AA2E"},
-            {code: "White", type: "color", hex: "#FFFFFF"},
-            {code: "Black", type: "color", hex: "#000000"},
-        ],
-    },
-];
+import {AppearanceGroups} from "../../helpers/constants";
 
 const CharacterCustomMobile = () => {
     const character = useContext(CharacterContext);
@@ -72,19 +16,19 @@ const CharacterCustomMobile = () => {
             webview.postMessage("Alo");
     }, []);
 
-    const handleBottomMenuItemClick = ({code}: any) => {
-        switch (code) {
-            case "Hair1":
-                character.changeCharacter({...character, hairStyle: 1});
+    const handleBottomMenuItemClick = ({groupId, itemIdx}: any) => {
+        switch (groupId) {
+            case 0:
+                character.changeCharacter({...character, skinColor: itemIdx});
                 break;
-            case "Hair2":
-                character.changeCharacter({...character, hairStyle: 2});
+            case 1:
+                character.changeCharacter({...character, hairStyle: itemIdx});
                 break;
-            case "Eyes1":
-                character.changeCharacter({...character, eyeStyle: 1});
+            case 2:
+                character.changeCharacter({...character, hairColor: itemIdx});
                 break;
-            case "Eyes2":
-                character.changeCharacter({...character, eyeStyle: 2});
+            case 3:
+                character.changeCharacter({...character, eyeStyle: itemIdx});
                 break;
             default:
                 break;
@@ -102,7 +46,7 @@ const CharacterCustomMobile = () => {
                     position: "fixed",
                 }}
             >
-                <Stats />
+                <Stats/>
                 <OrbitControls
                     addEventListener={undefined}
                     hasEventListener={undefined}
@@ -116,10 +60,8 @@ const CharacterCustomMobile = () => {
                 <ambientLight/>
                 <Suspense fallback={<Box/>}>
                     <DisplayCharacter
-                        hair={1}
-                        eyes={1}
                         startPosition={[0, -1, 0]}
-                        movable={false}
+                        appearance={character}
                     />
                 </Suspense>
             </Canvas>
@@ -137,7 +79,7 @@ const CharacterCustomMobile = () => {
                     justifyContent: "space-between",
                 }}
             >
-                <BottomMenu itemGroups={itemGroups} onItemClick={handleBottomMenuItemClick}/>
+                <CharacterCustomMobileMenu itemGroups={AppearanceGroups} onItemClick={handleBottomMenuItemClick}/>
             </div>
         </>
     );

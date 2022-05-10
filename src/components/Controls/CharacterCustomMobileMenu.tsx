@@ -23,8 +23,9 @@ const responsive = {
     },
 }
 
-export default function BottomMenu({itemGroups, onItemClick}: any) {
-    const [position, setPosition] = useState(0)
+export default function CharacterCustomMobileMenu({itemGroups, onItemClick}: any) {
+    const [position, setPosition] = useState(0);
+    const [selectedIndexes, setSelectedIndexes] = useState<number[]>(Array<number>(itemGroups.length).fill(0, 0, itemGroups.length));
 
     const handleButtonLeft = () => {
         if (position <= 0) return
@@ -107,14 +108,22 @@ export default function BottomMenu({itemGroups, onItemClick}: any) {
                                             marginLeft: 5,
                                             padding: 0,
                                             background: item.type === "color" ? item.hex : "white",
-                                            borderColor: "#333333",
+                                            borderColor: selectedIndexes[position] === index ? "#0777E8" : "#333333",
                                             borderWidth: 4,
                                             borderRadius: 25,
                                             overflow: "hidden",
                                             position: "relative",
                                         }}
                                         onClick={() => {
-                                            onItemClick(item)
+                                            setSelectedIndexes((indexes: number[]) => {
+                                                let temp = [...indexes];
+                                                temp[position] = index;
+                                                return temp;
+                                            });
+                                            onItemClick({
+                                                groupId: position,
+                                                itemIdx: index,
+                                            });
                                         }}
                                 >
                                     {item.type === "image" && <img
@@ -125,18 +134,6 @@ export default function BottomMenu({itemGroups, onItemClick}: any) {
                                             height: '100%',
                                         }}
                                     />}
-                                    {index === 0 &&
-                                        <div style={{
-                                            position: "absolute", top: 0, left: 0,
-                                            width: 95,
-                                            height: 95,
-                                            background: "#80808033",
-                                            display: "flex",
-                                            justifyContent: "center",
-                                            alignItems: "center"
-                                        }}>
-                                            <FaCheckCircle style={{margin: 0}} size={36}/>
-                                        </div>}
                                 </Button>
                             )
                         })}

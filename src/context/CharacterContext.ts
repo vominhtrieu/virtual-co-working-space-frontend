@@ -1,8 +1,11 @@
 import React from "react";
-import { CharacterInterface } from "../types/character";
+import {CharacterInterface} from "../types/character";
 
 export default React.createContext({
-  hairStyle: 1,
-  eyeStyle: 1,
-  changeCharacter: (character: CharacterInterface) => {},
+    skinColor: 0,
+    hairColor: 0,
+    hairStyle: 0,
+    eyeStyle: 0,
+    changeCharacter: (character: CharacterInterface) => {
+    },
 });

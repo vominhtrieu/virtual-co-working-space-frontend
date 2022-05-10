@@ -6,16 +6,17 @@ import * as THREE from 'three'
 import {useEffect, useRef, useState} from 'react'
 import {useGLTF, useAnimations} from '@react-three/drei'
 import {GLTFActions, GLTFResult, useCustomGLTF} from "../../helpers/utilities";
+import {AppearanceGroups} from "../../helpers/constants";
+import {CharacterInterface} from "../../types/character";
 
 type CharacterProps = JSX.IntrinsicElements['group'] & {
     startPosition: number[],
-    hair: number,
-    eyes: number,
+    appearance: CharacterInterface,
 }
 
 const url = "https://vispace-model.s3.amazonaws.com/Character/Character.gltf";
 
-export default function DisplayCharacter(props: CharacterProps) {
+export default function DisplayCharacter({startPosition, appearance}: CharacterProps) {
     const group = useRef<THREE.Group>()
     const {nodes, materials, animations} = useCustomGLTF(url) as GLTFResult
     const {actions} = useAnimations<GLTFActions>(animations, group);
@@ -23,10 +24,41 @@ export default function DisplayCharacter(props: CharacterProps) {
         actions.Idle?.play();
     }, [actions.Idle]);
 
+    let hair: any = null;
+    switch (appearance.hairStyle) {
+        case 0:
+            hair = (<skinnedMesh
+                geometry={nodes.Hair_1.geometry}
+                material={materials["Hair_1"]}
+                skeleton={nodes.Hair_1.skeleton}
+            />);
+            break;
+        case 1:
+            hair = (<skinnedMesh
+                geometry={nodes.Hair_2.geometry}
+                material={materials["Hair_2"]}
+                skeleton={nodes.Hair_2.skeleton}
+            />);
+            break;
+        case 2:
+            hair = (<skinnedMesh
+                geometry={nodes.Hair_3.geometry}
+                material={materials["Hair_3"]}
+                skeleton={nodes.Hair_3.skeleton}
+            />);
+            break;
+    }
+
+    if (hair && hair.props.material) {
+        console.log(hair.props.material)
+
+        hair.props.material.color.setStyle(AppearanceGroups[2].items[appearance.hairColor].hex);
+    }
+
     return (
         <>
-            <mesh {...props}>
-                <group ref={group} position={props.startPosition} dispose={null}>
+            <mesh>
+                <group ref={group} position={startPosition} dispose={null}>
                     <primitive object={nodes.mixamorigHips}/>
                     <primitive object={nodes.Ctrl_ArmPole_IK_Left}/>
                     <primitive object={nodes.Ctrl_Hand_IK_Left}/>
@@ -51,26 +83,9 @@ export default function DisplayCharacter(props: CharacterProps) {
                                  skeleton={nodes.Character_4.skeleton}/>
                     <skinnedMesh geometry={nodes.Character_5.geometry} material={materials.Pant}
                                  skeleton={nodes.Character_5.skeleton}/>
-                    {/* <skinnedMesh
-                        geometry={nodes.Cube001_2.geometry}
-                        material={props.eyes === 1 ? materials["Eye 1"] : materials["Eye 2"]}
-                        skeleton={nodes.Cube001_2.skeleton}
-                    /> */}
-                    {props.hair === 1 ? (
-                        <skinnedMesh
-                            geometry={nodes.Hair_1.geometry}
-                            material={materials["Hair_1"]}
-                            skeleton={nodes.Hair_1.skeleton}
-                        />
-                    ) : (
-                        <skinnedMesh
-                            geometry={nodes.Hair_2.geometry}
-                            material={materials["Hair_2"]}
-                            skeleton={nodes.Hair_2.skeleton}
-                        />
-                    )}
                     <skinnedMesh geometry={nodes.Shoe.geometry} material={materials.Shoes}
                                  skeleton={nodes.Shoe.skeleton}/>
+                    {hair}
                 </group>
             </mesh>
         </>
