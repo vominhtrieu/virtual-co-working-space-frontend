@@ -8,8 +8,10 @@ import Character from "../Models/Character";
 import CustomTransformControl from "../Controls/CustomTransformControl";
 import { Canvas } from "@react-three/fiber";
 import CharacterContext from "../../context/CharacterContext";
-import { useAppSelector } from "../../stores";
-import { volumeSelectors } from "../../stores/volume-slice";
+import {useAppSelector} from "../../stores";
+import {volumeSelectors} from "../../stores/volume-slice";
+import { Provider } from "react-redux";
+import store from "../../stores";
 
 export default function OfficeCanvas({
   setObjectionClickPos,
@@ -59,57 +61,58 @@ export default function OfficeCanvas({
         left: 0,
       }}
     >
-      <OrbitControls
-        ref={orbitRef}
-        maxZoom={10}
-        maxDistance={15}
-        minDistance={8}
-        minZoom={1}
-        enablePan={isCustomizing}
-        enableZoom={isCustomizing}
-        maxPolarAngle={((90 - 10) / 180) * Math.PI}
-      />
-      <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45} />
-      <ambientLight />
-      <Suspense fallback={<Box />}>
-        <Physics gravity={[0, 0, 0]}>
-          <Debug>
-            <Office castShadow={true} />
-            {objectList.map((object, idx) => (
-              <mesh
-                castShadow={true}
-                key={object.key}
-                position={[0, 0.5, 0]}
-                onClick={(e) => handleObject3dClick(e, object.key)}
-                onPointerMissed={handleObject3dPointerMissed}
-              >
-                {ObjectProperties[object.code]}
-              </mesh>
-            ))}
-            {!isCustomizing && (
-              <Character
-                hair={character.hairStyle}
-                eyes={character.eyeStyle}
-                startPosition={[0, 3, 2]}
-                scale={[2, 2, 2]}
-                orbitRef={orbitRef}
-                movable
-                volume={volume}
-                currentEmoji={characterEmoji}
-                currentGesture={characterGesture}
-              />
-            )}
-
-            {/* <Stats className="stats" /> */}
-
-            <CustomTransformControl
-              object={selectedObject}
-              orbit={orbitRef}
-              visible={objectActionVisible && isCustomizing}
+        <Provider store={store}>
+            <OrbitControls
+                ref={orbitRef}
+                maxZoom={10}
+                maxDistance={15}
+                minDistance={8}
+                minZoom={1}
+                enablePan={isCustomizing}
+                enableZoom={isCustomizing}
+                maxPolarAngle={((90 - 10) / 180) * Math.PI}
             />
-          </Debug>
-        </Physics>
-      </Suspense>
-    </Canvas>
-  );
+            <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45}/>
+            <ambientLight/>
+            <Suspense fallback={<Box/>}>
+                <Physics gravity={[0, 0, 0]}>
+                    <Debug>
+                        <Office castShadow={true}/>
+                        {objectList.map((object, idx) => (
+                            <mesh
+                                castShadow={true}
+                                key={object.key}
+                                position={[0, 0.5, 0]}
+                                onClick={(e) => handleObject3dClick(e, object.key)}
+                                onPointerMissed={handleObject3dPointerMissed}
+                            >
+                                {ObjectProperties[object.code]}
+                            </mesh>
+                        ))}
+                        {!isCustomizing && (
+                            <Character
+                                hair={character.hairStyle}
+                                eyes={character.eyeStyle}
+                                startPosition={[-5, 3, 2]}
+                                scale={[2, 2, 2]}
+                                orbitRef={orbitRef}
+                                movable
+                                volume={volume}
+                                currentEmoji={characterEmoji}
+                                currentGesture={characterGesture}
+                            />
+                        )}
+
+                        {/* <Stats className="stats" /> */}
+
+                        <CustomTransformControl
+                            object={selectedObject}
+                            orbit={orbitRef}
+                            visible={objectActionVisible && isCustomizing}
+                        />
+                    </Debug>
+                </Physics>
+            </Suspense>
+        </Provider>
+    </Canvas>)
 }

@@ -6,15 +6,16 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { Triplet, useCylinder } from "@react-three/cannon";
-import { useThree, useFrame, useLoader } from "@react-three/fiber";
+import { useThree, useFrame } from "@react-three/fiber";
 import {
     GLTFActions,
     GLTFResult,
     useCustomGLTF,
 } from "../../helpers/utilities";
-import socket from "../../services/socket/socket";
 import { matchPath } from "react-router-dom"
 import { ANIMATION_LIST, EMOJI_LIST } from "../../helpers/constants";
+import { socketSelector } from "../../stores/socket-slice";
+import { useAppSelector } from "../../stores";
 const stepFoot = require("../../assets/audios/foot-step.mp3");
 
 type CharacterProps = JSX.IntrinsicElements["group"] & {
@@ -54,6 +55,7 @@ let audio = new Audio(stepFoot);
 const MovingSpeed: number = 6;
 export default function Character(props: CharacterProps) {
     audio.volume = props.volume / 100;
+    const socket = useAppSelector(socketSelector.getSocket);
 
     const group = useRef<THREE.Group>();
     const [ref, api] = useCylinder(() => ({
@@ -83,23 +85,12 @@ export default function Character(props: CharacterProps) {
     const updatedRotation = useRef<THREE.Euler>(new THREE.Euler());
     const count = useRef(0);
 
-    // const colorMap = useLoader(TextureLoader, '/images/Hair1.png')
     const loader = new THREE.TextureLoader();
 
     const match = matchPath({ path: "/office/:id"}, window.location.pathname);
 
     const getGesture = () => {
-        // switch (props.currentGesture?.idx) {
-        //     case 0:
-        //         return "Wave";
-        //     case 1:
-        //         return "Rumba";
-        
-        //     default:
-        //         return "Idle"
-        // }
-
-        if (props.currentGesture?.idx! > 1) {
+        if (props.currentGesture && props.currentGesture.idx > 1) {
             return ANIMATION_LIST[props.currentGesture?.idx!]
         } else {
             return ANIMATION_LIST[0];
@@ -107,15 +98,6 @@ export default function Character(props: CharacterProps) {
     }
 
     const getEmoji = () => {
-        // switch (props.currentEmoji?.idx) {
-        //     case 0:
-        //         return loader.load('/images/Hair1.png')
-        //     case 1:
-        //         return loader.load('/images/Hair2.png')
-        
-        //     default:
-        //         return "https://gamek.mediacdn.vn/133514250583805952/2021/3/3/dts2-16147432809991264652202.jpg"
-        // }
         if (props.currentEmoji && props.currentEmoji.idx >= 0) {
             return loader.load(require(`../../assets/images/emojis/${EMOJI_LIST[props.currentEmoji?.idx!]}.png`))
         } else {
@@ -132,7 +114,12 @@ export default function Character(props: CharacterProps) {
         if (props.currentEmoji && props.currentEmoji.idx >= 0) setEmojiPlaying(true);
     }, [props.currentEmoji])
 
-    useEffect(() => {       
+    useEffect(() => {
+        // if (!socket) {
+        //     dispatch(connect());
+        //     return;
+        // }
+
         socket.emit("office_member:join", {
             officeId: match?.params.id
         })
@@ -149,14 +136,17 @@ export default function Character(props: CharacterProps) {
         socket.on("office_member:error", (message) => {
             console.log(message);
         })
-    
+
         // socket.on("connect_error", message => {
         //     console.log("connection error: ", message);
-        //
+        
         // })
-
-        console.log(actions);
-    }, [match?.params.id])
+        return () => {
+            socket.removeListener("office_member:online")
+            socket.removeListener("office_member:moved")
+            socket.removeListener("office_member:error")
+        }
+    }, [socket, match?.params.id])
 
     useEffect(() => {
         api.position.subscribe((v) => {
@@ -259,7 +249,7 @@ export default function Character(props: CharacterProps) {
             Math.sqrt(
                 Math.pow(position.current[0] - updatedPosition.current[0], 2) +
                 Math.pow(position.current[2] - updatedPosition.current[2], 2)
-            ) > 0.1
+            ) > 0.05
         );
     };
 
@@ -290,7 +280,6 @@ export default function Character(props: CharacterProps) {
             if (gesturePlaying) {
                 setGesturePlaying(false);
             }
-            count.current++;
             clip = actions.Walking;
 
             const yCameraDirection = Math.atan2(
@@ -328,7 +317,7 @@ export default function Character(props: CharacterProps) {
 
             updatedPosition.current = position.current;
 
-            if (count.current >= 10) {
+            if (count.current > 20) {
                 socket.emit("office_member:move", {
                     xRotation: rotation.current[0],
                     yRotation: rotation.current[1],
@@ -337,12 +326,13 @@ export default function Character(props: CharacterProps) {
                     yPosition: position.current[1],
                     zPosition: position.current[2],
                 });
-                count.current = 0;
+                count.current = 0   
             }
+            count.current++;
         } else {
             if (gesturePlaying) {
                 clip = actions[getGesture()];
-            } else {
+            } else if (!shouldUpdate()) {
                 clip = actions.Idle;
             }
             api.velocity.set(0, 0, 0);
@@ -428,28 +418,6 @@ export default function Character(props: CharacterProps) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ref.current, props.startPosition]);
-
-    socket.on("office_member:moved", (message) => {
-        updatedPosition.current = [
-            message.xPosition,
-            message.yPosition,
-            message.zPosition,
-        ];
-        updatedRotation.current = new THREE.Euler(
-            message.xRotation,
-            message.yRotation,
-            message.zRotation
-        );
-    });
-
-    socket.on("office_member:error", (message) => {
-        console.log(message);
-    });
-
-    // socket.on("connect_error", (message) => {
-    //     console.log("connection error: ", message);
-    // });
-
 
     return (
         <>

@@ -5,6 +5,8 @@ import sidebarReducer from './sidebar-slice/index'
 import volumeReducer from './volume-slice/index'
 import officeReducer from './office-slice/index'
 import loadReducer from './load-slice/index'
+import socketReducer from './socket-slice/index'
+import socketMiddleware from "./socket-middleware"
 
 
 const store = configureStore({
@@ -14,7 +16,13 @@ const store = configureStore({
     volume: volumeReducer,
     office: officeReducer,
     load: loadReducer,
+    socket: socketReducer
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: {
+      ignoredPaths: ['socket.socket']
+    }
+  }).concat(socketMiddleware)
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
