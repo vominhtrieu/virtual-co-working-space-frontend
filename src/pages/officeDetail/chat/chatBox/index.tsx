@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { RiSendPlaneFill } from "react-icons/ri";
 import InputText from "../../../../components/UI/form-controls/inputText";
 import GetMessagesProxy from "../../../../services/proxy/conversations/get-messages";
-import socket from "../../../../services/socket/socket";
+// import socket from "../../../../services/socket/socket";
 import { useAppSelector } from "../../../../stores";
 import { userSelectors } from "../../../../stores/auth-slice";
 import { ProxyStatusEnum } from "../../../../types/http/proxy/ProxyStatus";
@@ -13,10 +13,12 @@ import {
   ChatItemInterface,
   InputInterface,
 } from "./types";
+import { socketSelector } from "../../../../stores/socket-slice";
 
 const ChatBox = (props: ChatBoxPropsInterface) => {
   const [chatList, setChatList] = useState<ChatItemInterface[]>([]);
   const { submitMessage, conversationId } = props;
+  const socket = useAppSelector(socketSelector.getSocket);
 
   const ref = useRef<any>(null);
 

@@ -1,14 +1,18 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import Peer from "peerjs";
 import "./_styles.scss";
-import socket from "../../../services/socket/socket";
 import {useParams} from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../stores";
+// import { connect } from "../../../stores/socket-slice";
+import { socketSelector } from "../../../stores/socket-slice";
 
 export default function CallingBar() {
     const videoContainer = useRef<any>();
     const myVideo = useRef<any>();
     const [myStream, setMyStream] = useState<MediaStream | null>(null);
     const params = useParams();
+    const socket = useAppSelector(socketSelector.getSocket);
+    const dispatch = useAppDispatch();
 
     const myPeer = useMemo(() => new Peer(undefined, {
         host: process.env.REACT_APP_PEER_SERVER_HOST + "",
@@ -29,6 +33,12 @@ export default function CallingBar() {
             videoContainer.current.append(videoWrapper);
         }
     }, []);
+
+    // useEffect(() => {
+    //     if (!socket) {
+    //         dispatch(connect());
+    //     }
+    // }, [socket])
 
     useEffect(() => {
         myPeer.on("open", id => {
