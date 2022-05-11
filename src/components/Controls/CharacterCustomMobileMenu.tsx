@@ -1,27 +1,6 @@
 import 'react-multi-carousel/lib/styles.css'
 import {useState} from 'react'
-import {Row, Col} from 'antd'
-import {FaAngleLeft, FaAngleRight, FaCheckCircle} from 'react-icons/fa'
 import Button from '../UI/button'
-
-const responsive = {
-    superLargeDesktop: {
-        breakpoint: {max: 4000, min: 3000},
-        items: 10,
-    },
-    desktop: {
-        breakpoint: {max: 3000, min: 992},
-        items: 5,
-    },
-    tablet: {
-        breakpoint: {max: 992, min: 576},
-        items: 3,
-    },
-    mobile: {
-        breakpoint: {max: 576, min: 0},
-        items: 1,
-    },
-}
 
 export default function CharacterCustomMobileMenu({itemGroups, onItemClick}: any) {
     const [position, setPosition] = useState(0);
@@ -33,7 +12,7 @@ export default function CharacterCustomMobileMenu({itemGroups, onItemClick}: any
     }
 
     const handleButtonRight = () => {
-        if (position >= itemGroups.length - 1) return
+        if (position >= itemGroups.length - 1) return;
         if (position < itemGroups.length - 1) setPosition(position + 1)
     }
 

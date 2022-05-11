@@ -31,6 +31,9 @@ function App() {
         eyeStyle: 0,
         hairColor: 0,
         skinColor: 0,
+        shirtColor: 0,
+        pantColor: 0,
+        shoeColor: 0,
     });
 
     const {isAuthenticated} = useSelector((state: any) => state.auth);
@@ -41,6 +44,9 @@ function App() {
                 eyeStyle: character.eyeStyle,
                 hairColor: character.hairColor,
                 skinColor: character.skinColor,
+                shirtColor: character.shirtColor,
+                pantColor: character.pantColor,
+                shoeColor: character.shoeColor,
                 changeCharacter: (character: CharacterInterface) =>
                     setCharacter(character),
             }}

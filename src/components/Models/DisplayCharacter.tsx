@@ -50,10 +50,15 @@ export default function DisplayCharacter({startPosition, appearance}: CharacterP
     }
 
     if (hair && hair.props.material) {
-        console.log(hair.props.material)
-
         hair.props.material.color.setStyle(AppearanceGroups[2].items[appearance.hairColor].hex);
     }
+
+    materials.Skin.color.setStyle(AppearanceGroups[0].items[appearance.skinColor].hex);
+    materials.Head.color.setStyle(AppearanceGroups[0].items[appearance.skinColor].hex);
+    materials.Eye.color.setStyle(AppearanceGroups[0].items[appearance.skinColor].hex);
+    materials.Body.color.setStyle(AppearanceGroups[4].items[appearance.shirtColor].hex);
+    materials.Pant.color.setStyle(AppearanceGroups[5].items[appearance.pantColor].hex);
+    materials.Shoes.color.setStyle(AppearanceGroups[5].items[appearance.shoeColor].hex);
 
     return (
         <>
@@ -69,10 +74,6 @@ export default function DisplayCharacter({startPosition, appearance}: CharacterP
                     <primitive object={nodes.Ctrl_Foot_IK_Right}/>
                     <primitive object={nodes.Ctrl_LegPole_IK_Right}/>
                     <primitive object={nodes.Ctrl_Master}/>
-                    {/* <skinnedMesh geometry={nodes.Cube001.geometry} material={materials.Body}
-                                 skeleton={nodes.Cube001.skeleton}/>
-                    <skinnedMesh geometry={nodes.Cube001_1.geometry} material={materials.Head}
-                                 skeleton={nodes.Cube001_1.skeleton}/> */}
                     <skinnedMesh geometry={nodes.Character_1.geometry} material={materials.Body}
                                  skeleton={nodes.Character_1.skeleton}/>
                     <skinnedMesh geometry={nodes.Character_2.geometry} material={materials.Skin}

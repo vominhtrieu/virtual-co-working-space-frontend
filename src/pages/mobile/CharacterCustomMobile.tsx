@@ -30,6 +30,15 @@ const CharacterCustomMobile = () => {
             case 3:
                 character.changeCharacter({...character, eyeStyle: itemIdx});
                 break;
+            case 4:
+                character.changeCharacter({...character, shirtColor: itemIdx});
+                break;
+            case 5:
+                character.changeCharacter({...character, pantColor: itemIdx});
+                break;
+            case 6:
+                character.changeCharacter({...character, shoeColor: itemIdx});
+                break;
             default:
                 break;
         }
