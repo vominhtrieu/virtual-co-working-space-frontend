@@ -7,6 +7,7 @@ import SidebarChat from "../../pages/officeDetail/chat";
 import InteractionMenu from "../layouts/sidebar/offices/characterInteraction";
 import EditOffice from "../layouts/sidebar/offices/editOffice";
 import Button from "../UI/button";
+import OfficceCheckInModal from "./office-checkin/OfficeCheckInModal";
 
 const itemGroups = [
   {
@@ -56,6 +57,7 @@ export default function OfficeInterface({
 
   return (
     <>
+      <OfficceCheckInModal open={true} />
       <div
         style={{
           position: "absolute",

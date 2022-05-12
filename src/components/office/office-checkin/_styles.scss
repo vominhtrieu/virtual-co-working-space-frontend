@@ -1,0 +1,42 @@
+.ant-modal {
+
+    &-content {
+        border-radius: 20px;
+    }
+
+    &-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &-footer {
+        text-align: center;
+    }
+}
+
+.modal-title {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.camera-container {
+    width: 50rem;
+    height: 50rem;
+    border-radius: 2rem;
+    overflow: hidden;
+
+    & video {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+}
+
+canvas {
+    display: none;
+}
+
+.btn--submit {
+    width: 20rem;
+}
