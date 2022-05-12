@@ -121,14 +121,23 @@ export default function Character(props: CharacterProps) {
         if (props.currentEmoji && props.currentEmoji.idx >= 0) setEmojiPlaying(true);
     }, [props.currentEmoji])
 
-    useEffect(() => {
-        api.position.subscribe((v) => {
-            position.current = v;
-        });
-        api.rotation.subscribe((v) => {
-            rotation.current = v;
-        })
-    }, [api.position, api.rotation])
+    useThree(({camera}) => {
+            api.position.subscribe((v) => {
+
+                const x = camera.position.x + v[0] - position.current[0];
+                const y = camera.position.y + v[1] - position.current[1];
+                const z = camera.position.z + v[2] - position.current[2];
+                position.current = v;
+
+                orbitRef.current.target = new THREE.Vector3(v[0], v[1], v[2]);
+                camera.position.set(x, y, z);
+                orbitRef.current.update();
+            });
+            api.rotation.subscribe((v) => {
+                rotation.current = v;
+            });
+        }
+    );
 
     useEffect(() => {
         if (keyPressed.g) {
@@ -189,15 +198,6 @@ export default function Character(props: CharacterProps) {
         );
     };
 
-    useEffect(() => {
-        if (!props.movable) {
-            return;
-        }
-        api.position.subscribe((_position: Triplet) => {
-            position.current = _position;
-        });
-    }, [api.position, props.movable]);
-
     useFrame((state, delta) => {
         if (!props.movable) {
             return;
@@ -239,10 +239,6 @@ export default function Character(props: CharacterProps) {
 
             // camera.position.copy(api.position);
             api.quaternion.copy(ref.current.quaternion);
-
-            if (orbitRef.current) {
-                orbitRef.current.target = ref.current.position;
-            }
 
             updatedPosition.current = position.current;
 
@@ -294,14 +290,6 @@ export default function Character(props: CharacterProps) {
             api.quaternion.copy(ref.current.quaternion);
         }
 
-        if (orbitRef.current) {
-            orbitRef.current.target = new THREE.Vector3(
-                position[0],
-                position[1],
-                position[2]
-            );
-        }
-
         if (clip && clip !== currentClip.current) {
             if (currentClip.current) {
                 currentClip.current.fadeOut(0.2);
@@ -329,7 +317,6 @@ export default function Character(props: CharacterProps) {
             setKeyPressed((keyPressed) => ({...keyPressed, [event.key]: false}));
         });
 
-        orbitRef.current.target = ref.current?.position;
     }, [orbitRef, ref, props.movable]);
 
     useEffect(() => {
@@ -349,7 +336,7 @@ export default function Character(props: CharacterProps) {
                 props.startPosition[1],
                 props.startPosition[2]
             );
-            api.rotation.set(0,0,0);
+            api.rotation.set(0, 0, 0);
             updatedPosition.current = ref.current.position;
             updatedRotation.current = ref.current.rotation;
         }

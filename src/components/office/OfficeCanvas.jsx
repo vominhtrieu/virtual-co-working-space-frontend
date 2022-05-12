@@ -65,8 +65,8 @@ export default function OfficeCanvas({
             <OrbitControls
                 ref={orbitRef}
                 maxZoom={10}
-                maxDistance={15}
-                minDistance={8}
+                maxDistance={16}
+                minDistance={16}
                 minZoom={1}
                 enablePan={isCustomizing}
                 enableZoom={isCustomizing}
