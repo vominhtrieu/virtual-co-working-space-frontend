@@ -212,14 +212,15 @@ export default function Character(props: CharacterProps) {
             clip = actions.Walking;
 
             const yCameraDirection = Math.atan2(
-                camera.position.x - ref.current.position.x,
-                camera.position.z - ref.current.position.z
+                camera.position.x - position.current[0],
+                camera.position.z - position.current[1],
             );
             const directionOffset = getDirectionOffset();
             rotateQuaternion.current.setFromAxisAngle(
                 rotateAngle.current,
                 yCameraDirection + directionOffset
             );
+            console.log(rotateQuaternion.current)
             ref.current.quaternion.rotateTowards(
                 rotateQuaternion.current,
                 delta * 10
