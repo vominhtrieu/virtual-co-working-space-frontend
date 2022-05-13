@@ -215,16 +215,11 @@ export default function Character(props: CharacterProps) {
                 camera.position.x - position.current[0],
                 camera.position.z - position.current[1],
             );
+
             const directionOffset = getDirectionOffset();
-            rotateQuaternion.current.setFromAxisAngle(
-                rotateAngle.current,
-                yCameraDirection + directionOffset
-            );
-            console.log(rotateQuaternion.current)
-            ref.current.quaternion.rotateTowards(
-                rotateQuaternion.current,
-                delta * 10
-            );
+
+            api.quaternion.copy(ref.current.quaternion);
+
             camera.getWorldDirection(walkDirection.current);
             walkDirection.current.y = 0;
             walkDirection.current.normalize();
@@ -236,10 +231,19 @@ export default function Character(props: CharacterProps) {
             const moveX = walkDirection.current.x * MovingSpeed;
             const moveZ = walkDirection.current.z * MovingSpeed;
 
+            rotateQuaternion.current.setFromUnitVectors(
+                new THREE.Vector3(0, 0, 1),
+                new THREE.Vector3(moveX, 0, moveZ).normalize()
+            );
+
+            ref.current.quaternion.rotateTowards(
+                rotateQuaternion.current,
+                delta * 10
+            );
+
             api.velocity.set(moveX, 0, moveZ);
 
-            // camera.position.copy(api.position);
-            api.quaternion.copy(ref.current.quaternion);
+            // api.quaternion.copy(ref.current.quaternion);
 
             updatedPosition.current = position.current;
 
