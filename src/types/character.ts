@@ -6,4 +6,5 @@ export interface CharacterInterface {
     shirtColor: number;
     pantColor: number;
     shoeColor: number;
+    moveVector: number[];
 }

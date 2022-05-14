@@ -14,7 +14,7 @@ type CharacterProps = JSX.IntrinsicElements['group'] & {
     appearance: CharacterInterface,
 }
 
-const url = "https://vispace-model.s3.amazonaws.com/Character/Character.gltf";
+const url = "https://virtual-space-models.s3.ap-southeast-1.amazonaws.com/Character/Character.gltf";
 
 export default function DisplayCharacter({startPosition, appearance}: CharacterProps) {
     const group = useRef<THREE.Group>()

@@ -449,6 +449,8 @@ const getMovingVector = (keyPressed) => {
         }
     }
 
+
+
     return vector;
 };
 
