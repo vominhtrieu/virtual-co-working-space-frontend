@@ -18,6 +18,9 @@ import socket from "../../../../services/socket/socket";
 import { useAppDispatch } from "../../../../stores";
 import { setIsOffice } from "../../../../stores/office-slice";
 import { officeSelectors } from "../../../../stores/office-slice";
+import { loadSelectors } from "../../../../stores/load-slice";
+import { Skeleton } from 'antd';
+import SkeletonInput from "antd/lib/skeleton/Input";
 
 const Offices = () => {
   const [officeList, setOfficeList] = useState<OfficeInterface[]>();
@@ -25,7 +28,10 @@ const Offices = () => {
   const [isJoinOffice, setIsJoinOffice] = useState(false);
   const [isCreateOffice, setIsCreateOffice] = useState(false);
   const isOffice = useAppSelector(officeSelectors.getIsOffice);
+  const isLoading = useAppSelector(loadSelectors.getIsLoad);
   const dispatch = useAppDispatch();
+  const arrThumnail: number[] = new Array(0, 1, 2, 3, 4, 5);
+  console.log(isLoading);
 
   const userInfo = useAppSelector(userSelectors.getUserInfo);
   const { id: userId } = userInfo;
@@ -136,22 +142,28 @@ const Offices = () => {
             {/* box content - start */}
             <div className="sidebar-offices__group">
               <div className="sidebar-offices__items">
-                {officeList?.map((office, key) => {
-                  return (
-                    <Thumbnail
-                      title={office.name}
-                      key={key}
-                      src={office.avatarUrl}
-                      onClick={() => {
-                        navigate(`/office/${office.id}`, {
-                          state: {
-                            officeId: office.id,
-                          },
-                        });
-                      }}
-                    />
-                  );
-                })}
+                {isLoading ?
+                  arrThumnail?.map((item) => (
+                    <div className='thumbnail-sketalon'>
+                      <Skeleton.Image className='thumbnail__img' />
+                      <Skeleton paragraph={{ rows: 0, width: 100 }} className='thumbnail__content' />
+                    </div>
+                  )) : officeList?.map((office, key) => {
+                    return (
+                      <Thumbnail
+                        title={office.name}
+                        key={key}
+                        src={office.avatarUrl}
+                        onClick={() => {
+                          navigate(`/office/${office.id}`, {
+                            state: {
+                              officeId: office.id,
+                            },
+                          });
+                        }}
+                      />
+                    );
+                  })}
               </div>
             </div>
             {/* box content - end */}

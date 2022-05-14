@@ -21,7 +21,7 @@ import { setIsOffice } from "../../stores/office-slice";
 import { officeSelectors } from "../../stores/office-slice";
 import { FaLink, FaLocationArrow } from "react-icons/fa";
 import { loadSelectors } from "../../stores/load-slice";
-import { Spin } from "antd";
+import { Skeleton } from "antd";
 
 const OfficeDetailForm = (props: OfficeDetailFormProps) => {
   const [officeDetail, setOfficeDetail] = useState<OfficeDetailInterface>();
@@ -32,8 +32,9 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
   const [isCreate, setIsCreate] = useState(false);
 
   const isOffice = useAppSelector(officeSelectors.getIsOffice);
-  const isLoading = useAppSelector(loadSelectors.getIsLoad);
+ const isLoading = useAppSelector(loadSelectors.getIsLoad);
   const dispatch = useAppDispatch();
+  const arrThumnail: number[] = new Array(0, 1, 2, 3);
 
   useEffect(() => {
     OfficeDetailProxy({ id: id })
@@ -53,11 +54,11 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
   }, [id]);
 
   const handleEdit = (values: EditOfficeDetailFormValuesInterface) => {
-    UpdateOfficeProxy({ 
-      id: id, 
-      name: values.name, 
-      avatar: values.avatarUrl, 
-      description: values.description 
+    UpdateOfficeProxy({
+      id: id,
+      name: values.name,
+      avatar: values.avatarUrl,
+      description: values.description
     })
       .then((res) => {
         console.log(values);
@@ -143,87 +144,101 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
 
   const DetailForm = (
     <>
-    {isLoading?
-    <Spin></Spin>: <div className="office-detail-form">
-    <h1 className="office-detail-form__title">Chi tiết văn phòng</h1>
-    <ul className="office-detail-form__items">
-      {/* user item - start */}
-      <li className="office-detail-form__item">
-        <div className="office-detail-form__item-title">Tên:</div>
-        <div className="office-detail-form__item-content">
-          {officeDetail?.name}
-        </div>
-      </li>
-      {/* user item - end */}
-      {/* user item - start */}
-      <li className="office-detail-form__item">
-        <div className="office-detail-form__item-title">Thành viên:</div>
-        <div className="office-detail-form__item-content">
-          <ul>
-            {officeDetail?.officeMembers &&
-              officeDetail?.officeMembers.map((member, key) => {
-                return <li key={key}>{member.member.name}</li>;
-              })}
-          </ul>
-        </div>
-      </li>
-      {/* user item - end */}
-      {/* user item - start */}
-      <li className="office-detail-form__item">
-        <div className="office-detail-form__item-title">Mã tham gia:</div>
-        <div className="office-detail-form__item-content-url">
-          {
-            officeDetail ? <>
-              <div>
-                {officeDetail?.invitationCode}
-              </div>
-              <div>
-                <FaLocationArrow 
-                  style={{marginRight:"1rem"}}
-                  onClick={() => {
-                    setIsCreate(true);
-                  }}
-                  />
-                <FaLink onClick={() => copy(officeDetail?.invitationCode)} />
-              </div>
-            </> : null
+      {isLoading ?
+        <div className="office-detail-form">
+          <Skeleton.Button className="office-detail-form__title"/>
+
+          {arrThumnail?.map(() => (
+            <li className='office-detail-form__item'>
+              <Skeleton.Button className="office-detail-form__item-title" />
+              <Skeleton.Button className="office-detail-form__item-content" />
+            </li>
+          ))
           }
+          <div className='office-detail-form__group-btn'>
+            <Skeleton.Button />
+            <Skeleton.Button />
+          </div>
+        </div> : <div className="office-detail-form">
+          <h1 className="office-detail-form__title">Chi tiết văn phòng</h1>
+          <ul className="office-detail-form__items">
+            {/* user item - start */}
+            <li className="office-detail-form__item">
+              <div className="office-detail-form__item-title">Tên:</div>
+              <div className="office-detail-form__item-content">
+                {officeDetail?.name}
+              </div>
+            </li>
+            {/* user item - end */}
+            {/* user item - start */}
+            <li className="office-detail-form__item">
+              <div className="office-detail-form__item-title">Thành viên:</div>
+              <div className="office-detail-form__item-content">
+                <ul>
+                  {officeDetail?.officeMembers &&
+                    officeDetail?.officeMembers.map((member, key) => {
+                      return <li key={key}>{member.member.name}</li>;
+                    })}
+                </ul>
+              </div>
+            </li>
+            {/* user item - end */}
+            {/* user item - start */}
+            <li className="office-detail-form__item">
+              <div className="office-detail-form__item-title">Mã tham gia:</div>
+              <div className="office-detail-form__item-content-url">
+                {
+                  officeDetail ? <>
+                    <div>
+                      {officeDetail?.invitationCode}
+                    </div>
+                    <div>
+                      <FaLocationArrow
+                        style={{ marginRight: "1rem" }}
+                        onClick={() => {
+                          setIsCreate(true);
+                        }}
+                      />
+                      <FaLink onClick={() => copy(officeDetail?.invitationCode)} />
+                    </div>
+                  </> : null
+                }
+              </div>
+            </li>
+            {/* user item - end */}
+            {/* user item - start */}
+            <li className="office-detail-form__item">
+              <div className="office-detail-form__item-title">Ngày tạo:</div>
+              <div className="office-detail-form__item-content">
+                {parseStringToDate(officeDetail?.createdAt)}
+              </div>
+            </li>
+            {/* user item - end */}
+          </ul>
+          {isOwner && (
+            <div className="office-detail-form__group-btn">
+              <Button
+                variant="primary"
+                onClick={() => {
+                  setIsEditing(true);
+                }}
+              >
+                Chỉnh sửa thông tin
+              </Button>
+              <Button
+                variant="primary"
+                onClick={() => {
+                  setIsDeleting(true);
+                }}
+              >
+                Xoá
+              </Button>
+            </div>
+          )}
         </div>
-      </li>
-      {/* user item - end */}
-      {/* user item - start */}
-      <li className="office-detail-form__item">
-        <div className="office-detail-form__item-title">Ngày tạo:</div>
-        <div className="office-detail-form__item-content">
-          {parseStringToDate(officeDetail?.createdAt)}
-        </div>
-      </li>
-      {/* user item - end */}
-    </ul>
-    {isOwner && (
-      <div className="office-detail-form__group-btn">
-        <Button
-          variant="primary"
-          onClick={() => {
-            setIsEditing(true);
-          }}
-        >
-          Chỉnh sửa thông tin
-        </Button>
-        <Button
-          variant="primary"
-          onClick={() => {
-            setIsDeleting(true);
-          }}
-        >
-          Xoá
-        </Button>
-      </div>
-    )}
-  </div>
-    }
+      }
     </>
-   
+
   );
 
   return (
@@ -243,7 +258,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
           }}
           handleDelete={handleDelete}
         />
-      ) :isCreate && officeDetail ? (
+      ) : isCreate && officeDetail ? (
         <CreateInvitationForm
           onClose={() => {
             setIsCreate(false);
@@ -251,7 +266,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
           handleCreate={handleCreateInvitation}
           officeDetail={officeDetail}
         />
-      ): (
+      ) : (
         DetailForm
       )}
     </Popup>

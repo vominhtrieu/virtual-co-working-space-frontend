@@ -1,17 +1,20 @@
 import SidebarBox from "../sidebarBox";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NotyList from "./noti-List";
+import { initializeApp } from 'firebase/app';
+import { getMessaging, getToken, Messaging, onMessage } from "firebase/messaging";
+import firebaseConfig from '../../../../helpers/firebase';
+
 
 const SidebarNotification = () => {
   const [isChatListOpen, setIsChatListOpen] = useState(false);
 
-  const handleSubmitMessage = (values) => {
-    console.log(values);
-  };
+ 
+
   return (
     <SidebarBox>
-      <div className='sidebar-chat'>
-        <div className='sidebar-chat__title'>Notification</div>
+      <div className='sidebar-noty'>
+        <div className='sidebar-noty__title'>Notification</div>
         <NotyList
           isOpen={isChatListOpen}
           onToggled={() => setIsChatListOpen(!isChatListOpen)}
