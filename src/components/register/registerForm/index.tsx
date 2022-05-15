@@ -40,6 +40,7 @@ const RegisterForm = ({ handleRegisterSubmit }: FormPropsInterface) => {
       password: "",
       passwordConfirm: "",
     },
+    mode: "onChange",
     resolver: yupResolver(schema),
   });
 
@@ -65,6 +66,7 @@ const RegisterForm = ({ handleRegisterSubmit }: FormPropsInterface) => {
           prefix={<FaUser />}
           size='large'
           placeholder={t('pages.register.email')}
+
         />
       </div>
 

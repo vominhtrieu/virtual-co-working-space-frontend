@@ -1,15 +1,34 @@
 import SidebarBox from "../sidebarBox";
 import { useState, useEffect } from "react";
 import NotyList from "./noti-List";
+import firebaseConfig from "../../../../helpers/firebase"
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, Messaging, onMessage } from "firebase/messaging";
-import firebaseConfig from '../../../../helpers/firebase';
 
 
 const SidebarNotification = () => {
   const [isChatListOpen, setIsChatListOpen] = useState(false);
+  const [notification, setNotification] = useState({title: '', body: ''});
 
- 
+  
+  useEffect(() => {
+    console.log("huhu");
+    initializeApp(firebaseConfig);
+    const messaging:Messaging = getMessaging();
+    getToken(messaging, { vapidKey: 'BFNDwXaHYZ7pjozGhQKcUor5i9OKFuoBaTOI1A54f22N_oWJEo7MOnln1x0yilN2H3FhqeIWMxcLFrkjCXSOV1Y' }).then((currentToken) => {
+        if (currentToken) {
+            console.log(currentToken);
+            console.log(messaging);
+            onMessage(messaging, (payload) => {
+                console.log('Message received. ', payload);
+            });
+        } else {
+            console.log('No registration token available. Request permission to generate one.');
+        }
+    }).catch((err) => {
+        console.log('An error occurred while retrieving token. ', err);
+    });
+},[]);
 
   return (
     <SidebarBox>

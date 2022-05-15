@@ -46,6 +46,7 @@ const LoginForm = (props: FormPropsInterface) => {
       email: '',
       password: '',
     },
+    mode: "onChange",
     resolver: yupResolver(schema),
   })
 
