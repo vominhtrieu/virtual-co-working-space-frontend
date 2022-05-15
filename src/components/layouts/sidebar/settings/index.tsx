@@ -1,5 +1,5 @@
 import { Slider } from "antd";
-import SidebarBox from "../sidebarBox";
+import SidebarBox from "../sidebar-box";
 import ChangeLanguage from "./changeLanguage/changeLanguage";
 import { useAppDispatch,useAppSelector } from "../../../../stores";
 import { setVolume} from "../../../../stores/volume-slice";

@@ -4,10 +4,10 @@ import { Suspense, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button } from "antd";
-import Box from "../components/Models/Box";
+import Box from "../components/models/Box";
 import CharacterContext from "../context/CharacterContext";
-import DisplayCharacter from "../components/Models/DisplayCharacter";
-import CharacterCustomForm from "../components/characterCustomForm";
+import DisplayCharacter from "../components/models/DisplayCharacter";
+import CharacterCustomForm from "../components/character-custom-form";
 
 const itemGroups = [
     {

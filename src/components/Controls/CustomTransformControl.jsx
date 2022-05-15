@@ -1,5 +1,5 @@
-import React, {useRef, useEffect} from "react";
-import {useFrame, useThree, extend} from "@react-three/fiber";
+import {useRef, useEffect} from "react";
+import {useFrame, useThree} from "@react-three/fiber";
 import {TransformControls} from "@react-three/drei";
 
 export default function CustomTransformControl({object, orbit, visible}) {

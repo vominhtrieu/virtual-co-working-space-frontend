@@ -1,17 +1,17 @@
 import {OrbitControls} from "@react-three/drei";
 import {Suspense, useContext, useRef} from "react";
-import Box from "../Models/Box";
+import Box from "../models/Box";
 import {Debug, Physics} from "@react-three/cannon";
-import Office from "../Models/Office";
-import Character from "../Models/Character";
-import CustomTransformControl from "../Controls/CustomTransformControl";
+import Office from "../models/Office";
+import Character from "../models/Character";
+import CustomTransformControl from "../controls/CustomTransformControl";
 import {Canvas} from "@react-three/fiber";
 import CharacterContext from "../../context/CharacterContext";
 import {useAppSelector} from "../../stores";
 import {volumeSelectors} from "../../stores/volume-slice";
 import {Provider} from "react-redux";
 import store from "../../stores";
-import ItemModel from "../Models/ItemModel";
+import ItemModel from "../models/ItemModel";
 
 export default function OfficeCanvas({
                                          setObjectionClickPos,

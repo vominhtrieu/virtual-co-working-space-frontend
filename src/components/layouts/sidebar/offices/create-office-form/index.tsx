@@ -5,56 +5,53 @@ import Button from "../../../../UI/button";
 import InputText from "../../../../UI/form-controls/input-text";
 import Popup from "../../../../UI/popup";
 import {
-  JoinOfficeFormDataInterface,
-  JoinOfficeFormInputInterface,
-  JoinOfficeFormProps,
+  CreateOfficeFormDataInterface,
+  CreateOfficeFormInputInterface,
+  CreateOfficeFormProps,
 } from "./types";
 import { useAppSelector } from "../../../../../stores";
 import { loadSelectors } from "../../../../../stores/load-slice";
 import { Spin } from "antd";
 
-const JoinOfficeForm = (props: JoinOfficeFormProps) => {
+const CreateOfficeForm = (props: CreateOfficeFormProps) => {
   const { onClose, onSubmit } = props;
-  
   const isLoading = useAppSelector(loadSelectors.getIsLoad);
 
   const schema = yup.object().shape({
-    code: yup.string().required("Code is required"),
+    name: yup.string().required("Name is required"),
   });
 
-  const { control, handleSubmit } = useForm<JoinOfficeFormInputInterface>({
+  const { control, handleSubmit } = useForm<CreateOfficeFormInputInterface>({
     defaultValues: {
-      code: "",
+      name: "",
     },
     resolver: yupResolver(schema),
   });
 
-  const handleJoinOfficeSubmit = (data: JoinOfficeFormInputInterface) => {
-    const formatData: JoinOfficeFormDataInterface = {
-      id: data.code,
+  const handleCreateOfficeSubmit = (data: CreateOfficeFormInputInterface) => {
+    const formatData: CreateOfficeFormDataInterface = {
+      name: data.name,
     };
-    console.log(formatData);
     onSubmit(formatData);
-    onClose();
   };
   return (
     <Popup onClose={onClose}>
-      <form onSubmit={handleSubmit(handleJoinOfficeSubmit)}>
-        <h1 className='join-office-form__title'>Tham gia văn phòng</h1>
+      <form onSubmit={handleSubmit(handleCreateOfficeSubmit)}>
+        <h1 className='create-office-form__title'>Tạo văn phòng</h1>
 
-        <div className='join-office-form__input-block'>
+        <div className='create-office-form__input-block'>
           <InputText
             control={control}
-            name='code'
+            name='name'
             hasLabel
-            placeholder='Mã code'
+            placeholder='Tên văn phòng'
           />
         </div>
 
-        <div className='join-office-form__group-btn'>
+        <div className='create-office-form__group-btn'>
           <Button type='submit' variant='primary' disabled={isLoading}>
           {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
-            Tham gia
+            Tạo
           </Button>
 
           <Button type='reset' variant='outlined' onClick={onClose}>
@@ -66,4 +63,4 @@ const JoinOfficeForm = (props: JoinOfficeFormProps) => {
   );
 };
 
-export default JoinOfficeForm;
+export default CreateOfficeForm;

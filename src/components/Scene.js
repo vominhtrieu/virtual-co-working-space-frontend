@@ -1,8 +1,8 @@
 
 import { OrbitControls } from "@react-three/drei";
-import Office from "./Models/Office";
-import Box from "./Models/Box";
-import Chair from "./Models/Chair";
+import Office from "./models/Office";
+import Box from "./models/Box";
+import Chair from "./models/Chair";
 import { Suspense } from "react";
 
 export default function Scene() {

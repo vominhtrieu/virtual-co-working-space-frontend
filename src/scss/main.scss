@@ -16,21 +16,20 @@
 @import "../components/Controls/styles";
 @import "../components/icon-lang/styles";
 @import "../components/layouts/sidebar/styles";
-@import "../components/layouts/sidebar/sidebarBox/styles";
-@import "../components/layouts/sidebar/userInfo/styles";
-@import "../components/layouts/sidebar/userInfo/editProfileForm/styles";
-@import "../components/layouts/sidebar/userInfo/changePassForm/styles";
+@import "../components/layouts/sidebar/sidebar-box/styles";
+@import "../components/layouts/sidebar/user-info/styles";
+@import "../components/layouts/sidebar/user-info/edit-profile-form/styles";
 @import "../components/layouts/sidebar/offices/styles";
-@import "../components/layouts/sidebar/offices/createOfficeForm/styles";
-@import "../components/layouts/sidebar/offices/editOffice/styles";
-@import "../components/layouts/sidebar/offices/characterInteraction/styles";
+@import "../components/layouts/sidebar/offices/create-office-form/styles";
+@import "../components/layouts/sidebar/offices/edit-office/styles";
+@import "../components/layouts/sidebar/offices/character-interaction/styles";
 @import "../components/layouts/sidebar/settings/styles";
-@import "../components/layouts/sidebar/userInfo/editProfileForm/avatar/styles";
+@import "../components/layouts/sidebar/user-info/edit-profile-form/avatar/styles";
 @import "../components/layouts/sidebar/notification/styles";
 @import "../components/layouts/sidebar/offices/join-by-code/styles";
 
-@import "../components/UI/form-controls/inputText/styles";
-@import "../components/UI/form-controls/inputDate/styles";
+@import "../components/UI/form-controls/input-text/styles";
+@import "../components/UI/form-controls/input-date/styles";
 @import "../components/UI/button/styles";
 @import "../components/UI/popup/styles";
 @import "../components/UI/thumbnail/styles";
@@ -38,26 +37,26 @@
 // office folder
 @import "../components/office/office-checkin/styles";
 
-@import "../components/officeDetailForm/styles";
-@import "../components/officeDetailForm/deleteOfficeForm/styles";
-@import "../components/officeDetailForm/editOfficeForm/styles";
-@import "../components/officeDetailForm/editOfficeForm/avatar/styles";
+@import "../components/office-detail-form/styles";
+@import "../components/office-detail-form/delete-office-form/styles";
+@import "../components/office-detail-form/edit-office-form/styles";
+@import "../components/office-detail-form/edit-office-form/avatar/styles";
 
-@import "../components/characterCustomForm/styles";
+@import "../components/character-custom-form/styles";
 
-@import "../components/login/loginForm/styles";
-@import "../components/register/registerForm/styles";
-@import "../components/password/forgotForm/styles";
-@import "../components/password/resetForm/styles";
+@import "../components/login/login-form/styles";
+@import "../components/register/register-form/styles";
+@import "../components/password/forgot-form/styles";
+@import "../components/password/reset-form/styles";
 
 // import pages
 @import "../pages/auth/login/styles";
 @import "../pages/auth/register/styles";
 @import "../pages/home/style";
-@import "../pages/officeDetail/styles";
-@import "../pages/officeDetail/chat/styles";
-@import "../pages/auth/forgotPassword/styles";
-@import "../pages/auth/resetPassword/styles";
+@import "../pages/office-detail/styles";
+@import "../pages/office-detail/chat/styles";
+@import "../pages/auth/forgot-password/styles";
+@import "../pages/auth/reset-password/styles";
 @import "../pages/office-invitation/get-public-invitation/styles";
 
 // import app

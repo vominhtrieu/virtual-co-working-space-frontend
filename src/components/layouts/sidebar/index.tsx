@@ -17,7 +17,7 @@ import { setOpen, sidebarSelectors } from "../../../stores/sidebar-slice";
 import SidebarNotification from "./notification";
 import Offices from "./offices";
 import SidebarSettings from "./settings";
-import SidebarUser from "./userInfo";
+import SidebarUser from "./user-info";
 
 const Sidebar = () => {
   const dispatch = useAppDispatch();

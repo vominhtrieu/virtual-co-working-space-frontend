@@ -2,7 +2,7 @@ import { Col, Row } from "antd";
 import registerImage from "../../../assets/images/register/register.gif";
 import IconLanguages from "../../../components/icon-lang";
 import { RegisterFormValues } from "./type";
-import RegisterForm from "../../../components/register/registerForm";
+import RegisterForm from "../../../components/register/register-form";
 import RegisterProxy from "../../../services/proxy/auth/register";
 import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
 import { useNavigate } from "react-router-dom";

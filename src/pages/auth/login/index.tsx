@@ -3,7 +3,7 @@ import { Col, Row, Spin } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginImage from "../../../assets/images/login/login.gif";
-import LoginForm from "../../../components/login/loginForm";
+import LoginForm from "../../../components/login/login-form";
 import { saveData } from "../../../helpers/cookies";
 import { saveDataLocal } from "../../../helpers/localStorage";
 import { toastError, toastSuccess } from "../../../helpers/toast";

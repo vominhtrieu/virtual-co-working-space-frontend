@@ -1,6 +1,6 @@
-import SidebarBox from "../sidebarBox";
+import SidebarBox from "../sidebar-box";
 import { useState, useEffect } from "react";
-import NotyList from "./noti-List";
+import NotyList from "./noty-list";
 import firebaseConfig from "../../../../helpers/firebase"
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, Messaging, onMessage } from "firebase/messaging";
