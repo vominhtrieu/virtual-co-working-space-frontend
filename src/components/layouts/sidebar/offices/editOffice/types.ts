@@ -1,14 +1,5 @@
+import {Item} from "../../../../../services/api/offices/get-office-item/types";
+
 export interface EditOfficePropsInterface {
-  itemGroups: ItemGroupInterface[]
-  onItemClick: (item: ItemGroupInterface) => void
-}
-
-interface ItemGroupInterface {
-  groupName: string
-  items: ItemsInterface[]
-}
-
-interface ItemsInterface {
-  code: string
-  url: string
+  onItemClick: (item: Item) => void
 }

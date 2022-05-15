@@ -1,10 +1,10 @@
-export interface OfficeItem {
-    id: string;
+export interface Item {
+    id: number;
     name: string;
     modelPath: string;
 }
 
-export interface OfficeItemApiResponseInterface {
+export interface ItemApiResponseInterface {
     data: any;
     status?: string;
     code?: number;

@@ -3,7 +3,6 @@ import {Suspense, useContext, useRef} from "react";
 import Box from "../Models/Box";
 import {Debug, Physics} from "@react-three/cannon";
 import Office from "../Models/Office";
-import ObjectProperties from "../Models/ObjectProperties";
 import Character from "../Models/Character";
 import CustomTransformControl from "../Controls/CustomTransformControl";
 import {Canvas} from "@react-three/fiber";
@@ -12,6 +11,7 @@ import {useAppSelector} from "../../stores";
 import {volumeSelectors} from "../../stores/volume-slice";
 import {Provider} from "react-redux";
 import store from "../../stores";
+import ItemModel from "../Models/ItemModel";
 
 export default function OfficeCanvas({
                                          setObjectionClickPos,
@@ -31,6 +31,7 @@ export default function OfficeCanvas({
 
     const handleObject3dClick = (e, key) => {
         let temp = e.object;
+        console.log(temp)
         while (temp.parent && temp.parent.type !== "Scene") {
             temp = temp.parent;
         }
@@ -79,15 +80,17 @@ export default function OfficeCanvas({
                     <Physics gravity={[0, 0, 0]}>
                         <Debug>
                             <Office castShadow={true}/>
-                            {objectList.map((object, idx) => (
+                            {objectList.map((object) => (
                                 <mesh
                                     castShadow={true}
-                                    key={object.key}
+                                    key={object.id}
                                     position={[0, 0.5, 0]}
                                     onClick={(e) => handleObject3dClick(e, object.key)}
                                     onPointerMissed={handleObject3dPointerMissed}
                                 >
-                                    {ObjectProperties[object.code]}
+                                    <Suspense fallback={null}>
+                                        <ItemModel url={object.modelPath}/>
+                                    </Suspense>
                                 </mesh>
                             ))}
                             {!isCustomizing && (

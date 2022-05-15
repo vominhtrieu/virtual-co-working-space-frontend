@@ -7,33 +7,9 @@ import SidebarChat from "../../pages/officeDetail/chat";
 import InteractionMenu from "../layouts/sidebar/offices/characterInteraction";
 import EditOffice from "../layouts/sidebar/offices/editOffice";
 import Button from "../UI/button";
-import {getOfficeItems} from "../../services/api/offices/office-item";
-
-const itemGroups = [
-    {
-        groupName: "Chair",
-        items: [
-            {code: "SofaChair", url: "/images/SofaChair.png"},
-            {code: "Chair", url: "/images/Chair.png"},
-            {code: "YellowChair", url: "/images/YellowChair.png"},
-        ],
-    },
-    {
-        groupName: "Table",
-        items: [
-            {code: "ModernTable", url: "/images/ModernTable.png"},
-            {code: "CoffeeTable", url: "/images/CoffeeTable.png"},
-        ],
-    },
-    {
-        groupName: "Indoor Tree",
-        items: [{code: "IndoorTree", url: "/images/IndoorTree.png"}],
-    },
-    {
-        groupName: "Keyboard",
-        items: [{code: "Keyboard", url: "/images/Keyboard.png"}],
-    },
-];
+import {getItems} from "../../services/api/offices/get-office-item";
+import {getItemCategories} from "../../services/api/offices/get-office-categories";
+import {ItemCategory} from "../../services/api/offices/get-office-categories/types";
 
 export default function OfficeInterface({
                                             open,
@@ -54,13 +30,6 @@ export default function OfficeInterface({
                                             setIsShowChatBox,
                                         }) {
     const [showInteractMenu, setShowInteractMenu] = useState(false);
-    const [officeItems, setOfficeItems] = useState<any>([]);
-
-    useEffect(() => {
-        getOfficeItems().then((data) => {
-            console.log(data)
-        })
-    }, [])
 
     return (
         <>
@@ -169,7 +138,6 @@ export default function OfficeInterface({
 
                         <div aria-label="bottomMenu" style={{pointerEvents: "auto"}}>
                             <EditOffice
-                                itemGroups={itemGroups}
                                 onItemClick={handleItemInBottomMenuClick}
                             />
                         </div>
