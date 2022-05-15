@@ -15,10 +15,11 @@
     display: flex;
     margin-bottom: 2rem;
     font-size: $font-text;
+    justify-content: space-between;
     color: $color-white;
 
     &-title {
-      flex: 0 0 40%;
+      flex: 0 0 35%;
       font-weight: 600;
     }
 
@@ -27,7 +28,7 @@
 
       &-url {
         display: flex;
-        width: 100%;
+        width: 60%;
         justify-content: space-between;
       }
     }
@@ -40,3 +41,8 @@
     grid-gap: 2rem;
   }
 }
+
+.ant-skeleton-element .ant-skeleton-button {
+  border-radius: 1rem;
+}
+

@@ -13,19 +13,23 @@ import {
   ChangePasswordFormValuesInterface,
   EditProfileFormValuesInterface,
 } from "./types";
+import { loadSelectors } from "../../../../stores/load-slice";
+import { Skeleton } from "antd";
 
 const SidebarUser = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isChangingPass, setIsChangingPass] = useState(false);
   const userInfo = useAppSelector(userSelectors.getUserInfo);
+  const isLoading = useAppSelector(loadSelectors.getIsLoad);
+  const arrThumnail: number[] = new Array(0, 1, 2, 3);
 
   const dispatch = useAppDispatch();
 
   const handleChangeProfile = (values: EditProfileFormValuesInterface) => {
-    if (values.avatar===""){
+    if (values.avatar === "") {
       toastError("Avatar is require");
     }
-    else{
+    else {
       UpdateProfileProxy({
         name: values.name,
         phone: values.phone,
@@ -35,19 +39,17 @@ const SidebarUser = () => {
           if (res.status === ProxyStatusEnum.FAIL) {
             toastError(res.message ?? "update fail");
           }
-  
+
           if (res.status === ProxyStatusEnum.SUCCESS) {
-            console.log(res.data);
             dispatch(setUserInfo(res?.data.userInfo));
             toastSuccess("update success");
             setIsEditing(!isEditing);
           }
         })
         .catch((err) => {
-          console.log(err);
-          // show toast login fail
+          toastError(err.message ?? "update fail");
         })
-        .finally(() => {});
+        .finally(() => { });
     }
   };
 
@@ -69,7 +71,7 @@ const SidebarUser = () => {
       .catch((err) => {
         toastError(err.message ?? "Load data fail!");
       })
-      .finally(() => {});
+      .finally(() => { });
   }, [dispatch]);
 
   const padTo2Digits = (num: number) => {
@@ -77,7 +79,6 @@ const SidebarUser = () => {
   }
 
   const parseStringToDate = (dateSTr) => {
-    const date = new Date(dateSTr);
     if (dateSTr) {
       const date = new Date(dateSTr);
       return [
@@ -114,64 +115,83 @@ const SidebarUser = () => {
                 />
               ) : (
                 <>
-                  <ul className='sidebar-user__items'>
-                    {/* user item - start */}
-                    <li className='sidebar-user__item'>
-                      <div className='sidebar-user__item-title'>Họ và tên:</div>
-                      <div className='sidebar-user__item-content'>
-                        {userInfo.name}
-                      </div>
-                    </li>
-                    {/* user item - end */}
-                    {/* user item - start */}
-                    <li className='sidebar-user__item'>
-                      <div className='sidebar-user__item-title'>Email:</div>
+                  {isLoading ?
+                    <>{arrThumnail?.map(() => (
+                      <li className='sidebar-user__item'>
+                        {/* <div className='sidebar-user__item-title'>Email:</div>
                       <div className='sidebar-user__item-content'>
                         {userInfo.email}
+                      </div> */}
+                        <Skeleton.Button className="sidebar-user__item-title" />
+                        <Skeleton.Button className="sidebar-user__item-content" />
+                      </li>
+                    ))
+                    }
+                      <div className='sidebar-user__group-btn'>
+                      <Skeleton.Button />
+                      <Skeleton.Button />
                       </div>
-                    </li>
-                    {/* user item - end */}
-                    {/* user item - start */}
-                    <li className='sidebar-user__item'>
-                      <div className='sidebar-user__item-title'>
-                        Số điện thoại:
-                      </div>
-                      <div className='sidebar-user__item-content'>
-                        {userInfo.phone}
-                      </div>
-                    </li>
-                    {/* user item - end */}
-                    {/* user item - start */}
-                    <li className='sidebar-user__item'>
-                      <div className='sidebar-user__item-title'>
-                        Ngày tham gia:
-                      </div>
-                      <div className='sidebar-user__item-content'>
-                        {parseStringToDate(userInfo.createdAt)}
-                      </div>
-                    </li>
-                    {/* user item - end */}
-                  </ul>
+                    </> : <>
+                      <ul className='sidebar-user__items'>
+                        {/* user item - start */}
+                        <li className='sidebar-user__item'>
+                          <div className='sidebar-user__item-title'>Họ và tên:</div>
+                          <div className='sidebar-user__item-content'>
+                            {userInfo.name}
+                          </div>
+                        </li>
+                        {/* user item - end */}
+                        {/* user item - start */}
+                        <li className='sidebar-user__item'>
+                          <div className='sidebar-user__item-title'>Email:</div>
+                          <div className='sidebar-user__item-content'>
+                            {userInfo.email}
+                          </div>
+                        </li>
+                        {/* user item - end */}
+                        {/* user item - start */}
+                        <li className='sidebar-user__item'>
+                          <div className='sidebar-user__item-title'>
+                            Số điện thoại:
+                          </div>
+                          <div className='sidebar-user__item-content'>
+                            {userInfo.phone}
+                          </div>
+                        </li>
+                        {/* user item - end */}
+                        {/* user item - start */}
+                        <li className='sidebar-user__item'>
+                          <div className='sidebar-user__item-title'>
+                            Ngày tham gia:
+                          </div>
+                          <div className='sidebar-user__item-content'>
+                            {parseStringToDate(userInfo.createdAt)}
+                          </div>
+                        </li>
+                        {/* user item - end */}
+                      </ul>
+                      <div className='sidebar-user__group-btn'>
+                        <Button
+                          variant='primary'
+                          onClick={() => {
+                            setIsEditing(true);
+                          }}
+                        >
+                          Chỉnh sửa thông tin
+                        </Button>
 
-                  <div className='sidebar-user__group-btn'>
-                    <Button
-                      variant='primary'
-                      onClick={() => {
-                        setIsEditing(true);
-                      }}
-                    >
-                      Chỉnh sửa thông tin
-                    </Button>
+                        <Button
+                          variant='primary'
+                          onClick={() => {
+                            setIsChangingPass(true);
+                          }}
+                        >
+                          Đổi mật khẩu
+                        </Button>
+                      </div>
+                    </>
+                  }
 
-                    <Button
-                      variant='primary'
-                      onClick={() => {
-                        setIsChangingPass(true);
-                      }}
-                    >
-                      Đổi mật khẩu
-                    </Button>
-                  </div>
                 </>
               )}
             </div>
