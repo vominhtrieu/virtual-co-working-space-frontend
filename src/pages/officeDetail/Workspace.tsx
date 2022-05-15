@@ -16,7 +16,7 @@ export type positionType = {
   y: number;
 };
 
-const WorkspaceCustom = () => {
+const Workspace = () => {
   const [conversationId, setConversationId] = useState<number>(0);
   const [isOwner, setIsOwner] = useState(false);
   const { open } = useSelector((state: any) => state.sidebar);
@@ -141,4 +141,4 @@ const WorkspaceCustom = () => {
   );
 };
 
-export default WorkspaceCustom;
+export default Workspace;

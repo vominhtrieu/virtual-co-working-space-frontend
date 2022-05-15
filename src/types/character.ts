@@ -3,4 +3,8 @@ export interface CharacterInterface {
     hairColor: number;
     hairStyle: number;
     eyeStyle: number;
+    shirtColor: number;
+    pantColor: number;
+    shoeColor: number;
+    moveVector: number[];
 }

@@ -1,15 +1,37 @@
-import { Modal } from "antd";
+import { Modal, Upload } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import { toastError, toastSuccess } from "../../../helpers/toast";
+import IsCheckinProxy from "../../../services/proxy/checkin/checkin-today";
+import CreateCheckinProxy from "../../../services/proxy/checkin/create-checkin";
+import UploadProofProxy from "../../../services/proxy/checkin/upload-proof";
+import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
 import Button from "../../UI/button"
 
-export default function OfficceCheckInModal ({open}) {
+export default function OfficceCheckInModal () {
     const myVideo = useRef<any>(null);
     const photoRef = useRef<HTMLCanvasElement>(null);
     const [myStream, setMyStream] = useState<MediaStream | null>(null);
+    const [open, setOpen] = useState<boolean>(false);
     const params = useParams();
+    const photoData = useRef<any>(null);
 
     useEffect(() => {
+        IsCheckinProxy({ officeId: +params.id! }).then((res) => {
+            console.log(res);
+            if (res.status === ProxyStatusEnum.FAIL) {
+                toastError(res.message ?? "Find check-in fail");
+            }
+
+            if (res.status === ProxyStatusEnum.SUCCESS) {
+                const data = res.data
+                if (Object.keys(data).length === 0 && data.constructor === Object) {
+                    setOpen(true);
+                }
+            }
+        })
+
+
         navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
             setMyStream(stream);
             if (myVideo.current) {
@@ -29,9 +51,41 @@ export default function OfficceCheckInModal ({open}) {
             const context = photoRef.current?.getContext('2d');
             context?.drawImage(myVideo.current, 0, 0, width, height);
     
-            const data = photoRef.current.toDataURL('image/jpeg');
-            console.log(data);
+            context?.canvas.toBlob((blob) => {
+                const formData = new FormData();
+                if (blob) {
+                    formData.append("image", blob);
+                }
+
+                UploadProofProxy({ formData }).then((res) => {
+                    if (res.status === ProxyStatusEnum.FAIL) {
+                        toastError(res.message ?? "Upload photo failed")
+                    }
+    
+                    if (res.status === ProxyStatusEnum.SUCCESS) {
+                        if (res.data.url) {
+                            CreateCheckinProxy({officeId: +params.id!, proof: res.data.url}).then((res) => {
+                                if (res.status === ProxyStatusEnum.FAIL) {
+                                    toastError(res.message ?? "Check in fail");
+                                }
+
+                                if (res.status === ProxyStatusEnum.SUCCESS) {
+                                    toastSuccess("Check in successfully");
+                                    setOpen(false);
+                                }
+                            })
+                        }
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                    toastError("Check in failed! Try again");
+                });
+            })
         }
+    }
+
+    const handlePhotoChange = (info: any) => {
+        console.log(info.file)
     }
 
     const footer = [

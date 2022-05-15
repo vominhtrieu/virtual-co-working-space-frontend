@@ -24,6 +24,7 @@ import PublicInvitation from "./pages/office-invitation/get-public-invitation";
 import Workspace from "./pages/officeDetail/Workspace";
 import "./scss/main.scss";
 import {CharacterInterface} from "./types/character";
+import WorkspaceMobile from "./pages/mobile/WorkspaceMobile";
 
 function App() {
     const [character, setCharacter] = useState<CharacterInterface>({
@@ -31,6 +32,10 @@ function App() {
         eyeStyle: 0,
         hairColor: 0,
         skinColor: 0,
+        shirtColor: 0,
+        pantColor: 0,
+        shoeColor: 0,
+        moveVector: [0, 0, 0],
     });
 
     const {isAuthenticated} = useSelector((state: any) => state.auth);
@@ -41,6 +46,10 @@ function App() {
                 eyeStyle: character.eyeStyle,
                 hairColor: character.hairColor,
                 skinColor: character.skinColor,
+                shirtColor: character.shirtColor,
+                pantColor: character.pantColor,
+                shoeColor: character.shoeColor,
+                moveVector: [0, 0, 0],
                 changeCharacter: (character: CharacterInterface) =>
                     setCharacter(character),
             }}
@@ -66,6 +75,7 @@ function App() {
                                     element={<PrivateInvitation/>}
                                 />
                                 <Route path="/auth/activate/:token" element={<Active/>}/>
+                                <Route path="/webgl/office/:officeId" element={<WorkspaceMobile/>}/>
                                 <Route path="*" element={<NotFound/>}/>
                             </>
                         ) : (

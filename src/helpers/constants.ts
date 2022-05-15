@@ -36,17 +36,17 @@ export const AppearanceGroups:any[] = [
     {
         groupName: "Shirt Color",
         items: [
-            {code: "Orange", type: "color", hex: "#F5AA2E"},
             {code: "White", type: "color", hex: "#FFFFFF"},
             {code: "Black", type: "color", hex: "#000000"},
+            {code: "Orange", type: "color", hex: "#F5AA2E"},
         ],
     },
     {
         groupName: "Pant Color",
         items: [
+            {code: "Black", type: "color", hex: "#000000"},
             {code: "Orange", type: "color", hex: "#F5AA2E"},
             {code: "White", type: "color", hex: "#FFFFFF"},
-            {code: "Black", type: "color", hex: "#000000"},
         ],
     },
     {
