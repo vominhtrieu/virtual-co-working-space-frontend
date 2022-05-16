@@ -74,7 +74,6 @@ const WorkspaceCustom = () => {
 
                     const w = window as any;
                     w.moveVector = [x, 0, y];
-                    console.log(w.moveVector);
                 }} stop={() => {
                     const w = window as any;
                     w.moveVector = [0, 0, 0];

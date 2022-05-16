@@ -1,4 +1,4 @@
-import {OrbitControls} from "@react-three/drei";
+import {OrbitControls, Stats} from "@react-three/drei";
 import {Suspense, useContext, useRef} from "react";
 import Box from "../models/Box";
 import {Debug, Physics} from "@react-three/cannon";
@@ -76,6 +76,7 @@ export default function OfficeCanvas({
                 />
                 <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45}/>
                 <ambientLight/>
+                <Stats />
                 <Suspense fallback={<Box/>}>
                     <Physics gravity={[0, 0, 0]}>
                         <Debug>
