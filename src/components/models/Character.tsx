@@ -250,7 +250,7 @@ export default function Character(props: CharacterProps) {
 
         //update from remote position
         if (shouldUpdate()) {
-            clip = actions.Walking;
+            clip = actions.Walking; 
 
             const newDirection = new THREE.Vector3(
                 updatedPosition.current[0] - position.current[0],
