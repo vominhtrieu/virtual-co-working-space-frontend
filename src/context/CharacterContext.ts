@@ -9,7 +9,6 @@ export default React.createContext({
     shirtColor: 0,
     pantColor: 0,
     shoeColor: 0,
-    moveVector: [0, 0, 0],
 
     changeCharacter: (character: CharacterInterface) => {
     },

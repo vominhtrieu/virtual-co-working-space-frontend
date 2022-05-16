@@ -35,7 +35,6 @@ function App() {
         shirtColor: 0,
         pantColor: 0,
         shoeColor: 0,
-        moveVector: [0, 0, 0],
     });
 
     const {isAuthenticated} = useSelector((state: any) => state.auth);
@@ -49,7 +48,6 @@ function App() {
                 shirtColor: character.shirtColor,
                 pantColor: character.pantColor,
                 shoeColor: character.shoeColor,
-                moveVector: [0, 0, 0],
                 changeCharacter: (character: CharacterInterface) =>
                     setCharacter(character),
             }}

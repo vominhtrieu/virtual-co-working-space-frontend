@@ -68,13 +68,16 @@ const WorkspaceCustom = () => {
                 setSelectedObject={setSelectedObject}
             />
             <div style={{position: "absolute", bottom: 30, width: "100vw", display: "flex", justifyContent: "center"}}>
-                <Joystick size={150} move={event => {
-                    if (!event) {
-                        return;
-                    }
-                    characterCtx.changeCharacter({
-                        ...characterCtx
-                    });
+                <Joystick size={150} move={({x, y}) => {
+                    x = x ? x / 75 : 0;
+                    y = y ? y / 75 : 0;
+
+                    const w = window as any;
+                    w.moveVector = [x, 0, y];
+                    console.log(w.moveVector);
+                }} stop={() => {
+                    const w = window as any;
+                    w.moveVector = [0, 0, 0];
                 }} baseColor="gray" stickColor="white"/>
             </div>
         </>
