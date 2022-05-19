@@ -2,9 +2,10 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import Peer from "peerjs";
 import "./_styles.scss";
 import {useParams} from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../stores";
+import {useAppDispatch, useAppSelector} from "../../../stores";
 // import { connect } from "../../../stores/socket-slice";
-import { socketSelector } from "../../../stores/socket-slice";
+import {socketSelector} from "../../../stores/socket-slice";
+import {FaCamera, FaMicrophone} from "react-icons/fa";
 
 export default function CallingBar() {
     const videoContainer = useRef<any>();
@@ -12,7 +13,8 @@ export default function CallingBar() {
     const [myStream, setMyStream] = useState<MediaStream | null>(null);
     const params = useParams();
     const socket = useAppSelector(socketSelector.getSocket);
-    const dispatch = useAppDispatch();
+    const [cameraEnabled, setCameraEnabled] = useState(true);
+    const [microphoneEnabled, setMicrophoneEnabled] = useState(true);
 
     const myPeer = useMemo(() => new Peer(undefined, {
         host: process.env.REACT_APP_PEER_SERVER_HOST + "",
@@ -41,6 +43,7 @@ export default function CallingBar() {
     // }, [socket])
 
     useEffect(() => {
+        console.log("lolo1");
         myPeer.on("open", id => {
             socket.emit("calling:join", {
                 officeId: params.id,
@@ -75,6 +78,7 @@ export default function CallingBar() {
         if (!myStream || !myPeer) {
             return;
         }
+        console.log("lolo2");
         const streamMap = {};
         socket.on("calling:join", ({userId, peerId}) => {
             setTimeout(() => {
@@ -102,6 +106,24 @@ export default function CallingBar() {
         <div ref={videoContainer} className="calling-bar-container">
             {myStream && <div className="video-container">
                 <video ref={myVideo} autoPlay muted/>
+                <div className="video-button-container">
+                    <button className={`video-button ${cameraEnabled ? "active" : ""}`} onClick={() => {
+                        const vidTrack = myStream?.getVideoTracks();
+                        vidTrack.forEach(track => track.enabled = !cameraEnabled);
+                        setCameraEnabled(!cameraEnabled);
+                    }
+                    }>
+                        <FaCamera fontSize={20}/>
+                    </button>
+                    <button className={`video-button ${microphoneEnabled ? "active" : ""}`} onClick={() => {
+                        const vidTrack = myStream?.getAudioTracks();
+                        vidTrack.forEach(track => track.enabled = !microphoneEnabled);
+                        setMicrophoneEnabled(!microphoneEnabled);
+                    }
+                    }>
+                        <FaMicrophone fontSize={20}/>
+                    </button>
+                </div>
             </div>}
         </div>
     )
