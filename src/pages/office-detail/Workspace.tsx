@@ -11,6 +11,7 @@ import {userSelectors} from "../../stores/auth-slice";
 import {ProxyStatusEnum} from "../../types/http/proxy/ProxyStatus";
 import CallingBar from "./calling/CallingBar";
 import {Item} from "../../services/api/offices/get-office-item/types";
+import { socketSelector } from "../../stores/socket-slice";
 
 export type positionType = {
     x: number;
@@ -43,6 +44,8 @@ const Workspace = () => {
 
     const userInfo = useAppSelector(userSelectors.getUserInfo);
 
+    const socket = useAppSelector(socketSelector.getSocket);
+
     const handleButtonRotateLeftClick = () => {
         selectedObject.rotation.y += Math.PI / 2;
     };
@@ -55,18 +58,52 @@ const Workspace = () => {
         const idx = objectList.findIndex((obj) => obj.id === selectedKey);
         const newObjectList = [...objectList];
         newObjectList.splice(idx, 1);
-        navigate("/");
+        // navigate("/");
         setObjectList(newObjectList);
         setSelectedObject(null);
         setSelectedKey(null);
         setObjectActionVisible(false);
     };
 
+    useEffect(() => {
+        socket.on("office_item:created", (message) => {
+            console.log(message);
+            setObjectList((objectList) => [
+                ...objectList,
+                message.item
+            ])
+        })
+
+        console.log(socket);
+
+        return () => {
+            socket.removeListener("office_item:created");
+        }
+    }, [socket]);
+
+    useEffect(() => {
+        console.log("join office");
+        socket.emit("office_member:join", {
+            officeId: officeId
+        })
+    }, [officeId]);
+
     const handleItemInBottomMenuClick = (item: Item) => {
         setObjectList((objectList) => [
             ...objectList,
             item,
         ]);
+
+        socket.emit("office_item:create", {
+            itemId: item.id,
+            officeId: officeId,
+            xPosition: 0,
+            yPosition: 1,
+            zPosition: 0,
+            xRotation: 0,
+            yRotation: 0,
+            zRotation: 0,
+        })
     };
 
     useEffect(() => {

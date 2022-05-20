@@ -14,7 +14,6 @@ import SidebarBox from "../sidebar-box";
 import CreateOfficeForm from "./create-office-form";
 import JoinOfficeForm from "./join-by-code";
 import { CreateOfficeFormValuesInterface, JoinOfficeFormValuesInterface } from "./types";
-import socket from "../../../../services/socket/socket";
 import { useAppDispatch } from "../../../../stores";
 import { setIsOffice } from "../../../../stores/office-slice";
 import { officeSelectors } from "../../../../stores/office-slice";
@@ -31,7 +30,6 @@ const Offices = () => {
   const isLoading = useAppSelector(loadSelectors.getIsLoad);
   const dispatch = useAppDispatch();
   const arrThumnail: number[] = new Array(0, 1, 2, 3, 4, 5);
-  console.log(isLoading);
 
   const userInfo = useAppSelector(userSelectors.getUserInfo);
   const { id: userId } = userInfo;
