@@ -17,7 +17,6 @@ function Active() {
     ActiveProxy(token)
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          console.log(res.message);
           toastError(res.message ?? "Active user fail");
           return;
         }

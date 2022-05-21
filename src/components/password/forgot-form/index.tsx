@@ -28,7 +28,6 @@ const ForgotForm= ({ handleForgotSubmit }: FormPropsInterface) => {
   });
 
   const onForgotSubmit = (values: InputInterface) => {
-    console.log(values["email"]);
     const formValues = {
       email: values["email"],
     };

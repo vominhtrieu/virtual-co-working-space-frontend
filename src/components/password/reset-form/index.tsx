@@ -42,7 +42,6 @@ const ResetForm = ({ handleResetSubmit }: FormPropsInterface) => {
       confirmPassword: values["confirmPassword"],
     };
 
-    console.log(formValues);
     handleResetSubmit(formValues);
   };
 
