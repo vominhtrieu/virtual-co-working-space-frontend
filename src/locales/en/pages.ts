@@ -16,7 +16,7 @@ export const TranslationEnPages = {
     name: "Fullname",
     email: "Email",
     password: "Password",
-    confirmPassword: "Confirm Password.",
+    confirmPassword: "Password Confirmation",
     anAccount: "Already have an account?",
     login: "Login",
   },
@@ -29,7 +29,7 @@ export const TranslationEnPages = {
   reset: {
     title: "New Password",
     password: "Password",
-    confirmPassword: "Confirm Password.",
+    confirmPassword: "Password Confirmation",
     login: "Login",
   },
 };

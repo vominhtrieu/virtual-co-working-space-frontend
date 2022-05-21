@@ -138,7 +138,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
   };
 
   const copy = async (code) => {
-    await navigator.clipboard.writeText(`${process.env.REACT_APP_BASE_URL}/invites/${code}`);
+    await navigator.clipboard.writeText(`${window.location.host}/invites/${code}`);
     toastSuccess("Copy success");
   }
 

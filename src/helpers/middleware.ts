@@ -2,6 +2,7 @@ import HttpClient from "./axios";
 import axios from "axios";
 import { setIsLoad } from "../stores/load-slice";
 import { getDataLocal, saveDataLocal } from './localStorage'
+import { saveData, getData } from "./cookies";
 
 export const HTTP_HEADER_KEY = {
     CONTENT_TYPE: 'Content-Type',
@@ -40,7 +41,7 @@ const SetupInterceptors = (store) => {
         if (response.data.code === 401) {
             console.log("code");
             const refreshTokenResponse = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/refreshToken`, null, {
-                headers: { "x-refresh-token": `${getDataLocal("refresh_token")}` }
+                headers: { "x-refresh-token": `${getData("refresh_token")}` }
             });
 
             if (!refreshTokenResponse || !refreshTokenResponse.data || refreshTokenResponse.data.code === 401) {
