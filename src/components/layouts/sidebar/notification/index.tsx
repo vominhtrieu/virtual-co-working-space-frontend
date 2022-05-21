@@ -12,13 +12,11 @@ const SidebarNotification = () => {
 
   
   useEffect(() => {
-    console.log("huhu");
     initializeApp(firebaseConfig);
     const messaging:Messaging = getMessaging();
     getToken(messaging, { vapidKey: 'BFNDwXaHYZ7pjozGhQKcUor5i9OKFuoBaTOI1A54f22N_oWJEo7MOnln1x0yilN2H3FhqeIWMxcLFrkjCXSOV1Y' }).then((currentToken) => {
         if (currentToken) {
             console.log(currentToken);
-            console.log(messaging);
             onMessage(messaging, (payload) => {
                 console.log('Message received. ', payload);
             });

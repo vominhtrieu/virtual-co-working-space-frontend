@@ -19,13 +19,18 @@ const JoinOfficeForm = (props: JoinOfficeFormProps) => {
   const isLoading = useAppSelector(loadSelectors.getIsLoad);
 
   const schema = yup.object().shape({
-    code: yup.string().required("Code is required"),
+    code: yup
+    .string()
+    .required("Code is required")
+    .matches(/^[A-Za-z0-9]*$/,("Code only contain character and number"))
+    .test('len', "Code must be 6 character", val => val?.length === 6)
   });
 
   const { control, handleSubmit } = useForm<JoinOfficeFormInputInterface>({
     defaultValues: {
       code: "",
     },
+    mode: "onChange",
     resolver: yupResolver(schema),
   });
 
@@ -33,7 +38,6 @@ const JoinOfficeForm = (props: JoinOfficeFormProps) => {
     const formatData: JoinOfficeFormDataInterface = {
       id: data.code,
     };
-    console.log(formatData);
     onSubmit(formatData);
     onClose();
   };

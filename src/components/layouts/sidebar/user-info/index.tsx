@@ -54,13 +54,11 @@ const SidebarUser = () => {
   };
 
   const handleChangePassword = (values: ChangePasswordFormValuesInterface) => {
-    console.log(values);
   };
 
   useEffect(() => {
     ProfileProxy()
       .then((res) => {
-        console.log(res);
         if (res.status === ProxyStatusEnum.FAIL) {
           toastError(res.message ?? "Load data fail!");
         }

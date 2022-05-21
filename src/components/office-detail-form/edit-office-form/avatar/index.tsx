@@ -37,18 +37,14 @@ const OfficeAvatar = ({ size, isAvatar, setIsAvatar}: any) => {
                       axios
                         .post('https://api.vispace.tech/api/v1/uploads/image', fmData, config)
                         .then((res) => {
-                            console.log(res);
                           if (res?.data?.code && res?.data?.code ===200) {
-                              console.log(res?.data?.data?.url);
                             setIsAvatar(res?.data?.data?.url ?? isAvatar);
                             message.success('Upload model success!');
                           } else {
-                            console.log('error', res);
                             message.error('Upload model failed!');
                           }
                         });
                     } catch (err) {
-                      console.log('Eroor: ', err);
                     }
                   }}
                 accept=".png,.jpg,.jpeg"

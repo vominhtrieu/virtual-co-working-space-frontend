@@ -32,7 +32,6 @@ function Login() {
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          console.log("success");
           toastSuccess("login success");
           saveDataLocal("user_id", res.data.userInfo.id);
           saveDataLocal("user_info", JSON.stringify(res.data.userInfo));

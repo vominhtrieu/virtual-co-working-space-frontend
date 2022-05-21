@@ -31,7 +31,6 @@ const Offices = () => {
   const isLoading = useAppSelector(loadSelectors.getIsLoad);
   const dispatch = useAppDispatch();
   const arrThumnail: number[] = new Array(0, 1, 2, 3, 4, 5);
-  console.log(isLoading);
 
   const userInfo = useAppSelector(userSelectors.getUserInfo);
   const { id: userId } = userInfo;
@@ -42,7 +41,6 @@ const Offices = () => {
     let isMounted = true;
     GetOfficeListProxy({ page: 1, size: 5 })
       .then((res) => {
-        console.log(res)
         if (!isMounted) return;
 
         if (res.status === ProxyStatusEnum.FAIL) {
@@ -54,7 +52,6 @@ const Offices = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
 
         toastError(err.message ?? "Get offices fail");
       });
@@ -179,7 +176,6 @@ const Offices = () => {
               <Button
                 variant="primary"
                 onClick={() => {
-                  console.log("hihi");
                   setIsJoinOffice(true);
                 }}
               >
