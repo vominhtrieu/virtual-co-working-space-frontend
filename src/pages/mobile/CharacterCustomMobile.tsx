@@ -10,40 +10,6 @@ import {AppearanceGroups} from "../../helpers/constants";
 const CharacterCustomMobile = () => {
     const character = useContext(CharacterContext);
 
-    useEffect(() => {
-        const webview = (window as any).ReactNativeWebView;
-        if (webview && webview.postMessage)
-            webview.postMessage("Alo");
-    }, []);
-
-    const handleBottomMenuItemClick = ({groupId, itemIdx}: any) => {
-        switch (groupId) {
-            case 0:
-                character.changeCharacter({...character, skinColor: itemIdx});
-                break;
-            case 1:
-                character.changeCharacter({...character, hairStyle: itemIdx});
-                break;
-            case 2:
-                character.changeCharacter({...character, hairColor: itemIdx});
-                break;
-            case 3:
-                character.changeCharacter({...character, eyeStyle: itemIdx});
-                break;
-            case 4:
-                character.changeCharacter({...character, shirtColor: itemIdx});
-                break;
-            case 5:
-                character.changeCharacter({...character, pantColor: itemIdx});
-                break;
-            case 6:
-                character.changeCharacter({...character, shoeColor: itemIdx});
-                break;
-            default:
-                break;
-        }
-    };
-
     return (
         <>
             <Canvas
@@ -88,7 +54,7 @@ const CharacterCustomMobile = () => {
                     justifyContent: "space-between",
                 }}
             >
-                <CharacterCustomMobileMenu itemGroups={AppearanceGroups} onItemClick={handleBottomMenuItemClick}/>
+                <CharacterCustomMobileMenu itemGroups={AppearanceGroups} onItemClick={character.changeAppearance}/>
             </div>
         </>
     );

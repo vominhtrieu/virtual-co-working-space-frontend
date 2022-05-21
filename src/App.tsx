@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {
     BrowserRouter as Router,
@@ -23,8 +23,10 @@ import PrivateInvitation from "./pages/office-invitation/get-private-invitation"
 import PublicInvitation from "./pages/office-invitation/get-public-invitation";
 import Workspace from "./pages/office-detail/Workspace";
 import "./scss/main.scss";
-import {CharacterInterface} from "./types/character";
+import {CharacterAppearance} from "./types/character";
 import WorkspaceMobile from "./pages/mobile/WorkspaceMobile";
+import {updateAppearance} from "./services/api/users/update-appearance";
+import {getAppearance} from "./services/api/users/get-appearance";
 
 function AuthenticatedDesktopRoutes() {
     const location = useLocation();
@@ -99,7 +101,7 @@ function CommonRoutes() {
 }
 
 function App() {
-    const [character, setCharacter] = useState<CharacterInterface>({
+    const [character, setCharacter] = useState<CharacterAppearance>({
         hairStyle: 0,
         eyeStyle: 0,
         hairColor: 0,
@@ -109,7 +111,48 @@ function App() {
         shoeColor: 0,
     });
 
+    const changeAppearance = useCallback((groupId: number, itemIdx: number) => {
+        let newData: CharacterAppearance;
+
+        switch (groupId) {
+            case 0:
+                newData = {...character, skinColor: itemIdx};
+                break;
+            case 1:
+                newData = {...character, hairStyle: itemIdx};
+                break;
+            case 2:
+                newData = {...character, hairColor: itemIdx};
+                break;
+            case 3:
+                newData = {...character, eyeStyle: itemIdx};
+                break;
+            case 4:
+                newData = {...character, shirtColor: itemIdx};
+                break;
+            case 5:
+                newData = {...character, pantColor: itemIdx};
+                break;
+            case 6:
+                newData = {...character, shoeColor: itemIdx};
+                break;
+            default:
+                newData = {...character};
+                break;
+        }
+        updateAppearance(newData)
+        setCharacter(newData);
+    }, [character]);
+
     const {isAuthenticated} = useSelector((state: any) => state.auth);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            getAppearance().then((data) => {
+                setCharacter(data);
+            })
+        }
+    }, [isAuthenticated])
     return (
         <CharacterContext.Provider
             value={{
@@ -120,8 +163,8 @@ function App() {
                 shirtColor: character.shirtColor,
                 pantColor: character.pantColor,
                 shoeColor: character.shoeColor,
-                changeCharacter: (character: CharacterInterface) =>
-                    setCharacter(character),
+                changeCharacter: setCharacter,
+                changeAppearance: changeAppearance,
             }}
         >
             <ToastContainer/>

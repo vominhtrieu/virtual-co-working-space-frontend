@@ -96,8 +96,7 @@ export default function OfficeCanvas({
                             ))}
                             {!isCustomizing && (
                                 <Character
-                                    hair={character.hairStyle}
-                                    eyes={character.eyeStyle}
+                                    appearance={character}
                                     startPosition={[-5, 3, 2]}
                                     scale={[2, 2, 2]}
                                     orbitRef={orbitRef}

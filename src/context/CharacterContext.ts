@@ -1,5 +1,5 @@
 import React from "react";
-import {CharacterInterface} from "../types/character";
+import {CharacterAppearance} from "../types/character";
 
 export default React.createContext({
     skinColor: 0,
@@ -10,6 +10,8 @@ export default React.createContext({
     pantColor: 0,
     shoeColor: 0,
 
-    changeCharacter: (character: CharacterInterface) => {
+    changeCharacter: (character: CharacterAppearance) => {
+    },
+    changeAppearance: (groupId: number, itemIdx: number) => {
     },
 });

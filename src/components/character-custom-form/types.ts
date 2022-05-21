@@ -1,6 +1,6 @@
 export interface CharacterCustomFormInterface {
   itemGroups: ItemGroupInterface[]
-  onItemClick: (item: ItemGroupInterface) => void
+  onItemClick: (groupId, itemIdx) => void
 }
 
 interface ItemGroupInterface {

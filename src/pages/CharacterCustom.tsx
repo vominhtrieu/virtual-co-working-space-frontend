@@ -29,26 +29,6 @@ const itemGroups = [
 const CharacterCustom = () => {
     const { open } = useSelector((state: any) => state.sidebar);
     const character = useContext(CharacterContext);
-    const navigate = useNavigate();
-
-    const handleBottomMenuItemClick = ({ code }: any) => {
-        switch (code) {
-            case "Hair1":
-                character.changeCharacter({ ...character, hairStyle: 1 });
-                break;
-            case "Hair2":
-                character.changeCharacter({ ...character, hairStyle: 2 });
-                break;
-            case "Eyes1":
-                character.changeCharacter({ ...character, eyeStyle: 1 });
-                break;
-            case "Eyes2":
-                character.changeCharacter({ ...character, eyeStyle: 2 });
-                break;
-            default:
-                break;
-        }
-    };
 
     return (
         <>
@@ -107,7 +87,7 @@ const CharacterCustom = () => {
 
                     }}
                 >
-                    <CharacterCustomForm itemGroups={itemGroups} onItemClick={handleBottomMenuItemClick} />
+                    <CharacterCustomForm itemGroups={itemGroups} onItemClick={character.changeAppearance} />
                 </div>
             </div>
         </>

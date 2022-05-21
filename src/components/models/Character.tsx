@@ -13,17 +13,15 @@ import {
     useCustomGLTF,
 } from "../../helpers/utilities";
 import {matchPath} from "react-router-dom"
-import {ANIMATION_LIST, EMOJI_LIST} from "../../helpers/constants";
+import {ANIMATION_LIST, AppearanceGroups, EMOJI_LIST} from "../../helpers/constants";
 import {socketSelector} from "../../stores/socket-slice";
 import {useAppSelector} from "../../stores";
-import {match} from "assert";
-import CharacterContext from "../../context/CharacterContext";
+import {CharacterAppearance} from "../../types/character";
 
 const stepFoot = require("../../assets/audios/foot-step.mp3");
 
 type CharacterProps = JSX.IntrinsicElements["group"] & {
-    hair: number;
-    eyes: number;
+    appearance: CharacterAppearance,
     movable: boolean;
     startPosition: number[];
     orbitRef?: any;
@@ -54,13 +52,12 @@ type KeyProps = {
 };
 
 let audio = new Audio(stepFoot);
-
 const MovingSpeed: number = 6;
+const url = "https://virtual-space-models.s3.ap-southeast-1.amazonaws.com/Character/Character.gltf";
+
 export default function Character(props: CharacterProps) {
     audio.volume = props.volume / 100
-    const characterCtx = useContext(CharacterContext);
     const socket = useAppSelector(socketSelector.getSocket);
-
     const group = useRef<THREE.Group>();
     const [ref, api] = useCylinder(() => ({
         args: [1, 1, 4, 8],
@@ -73,9 +70,7 @@ export default function Character(props: CharacterProps) {
     const rotateQuaternion = useRef(new THREE.Quaternion());
     const walkDirection = useRef(new THREE.Vector3());
     const currentClip = useRef<THREE.AnimationClip>(null);
-    const {nodes, materials, animations} = useCustomGLTF(
-        "/models/Character.glb"
-    ) as GLTFResult;
+    const {nodes, materials, animations} = useCustomGLTF(url) as GLTFResult;
     const {actions, mixer} = useAnimations<GLTFActions>(animations, group);
 
     const {orbitRef} = props;
@@ -330,6 +325,43 @@ export default function Character(props: CharacterProps) {
 
     useSocketEvent(socket, match, updatedPosition, updatedRotation);
 
+    const appearance = props.appearance;
+    let hair: any = null;
+    switch (appearance.hairStyle) {
+        case 0:
+            hair = (<skinnedMesh
+                geometry={nodes.Hair_1.geometry}
+                material={materials["Hair_1"]}
+                skeleton={nodes.Hair_1.skeleton}
+            />);
+            break;
+        case 1:
+            hair = (<skinnedMesh
+                geometry={nodes.Hair_2.geometry}
+                material={materials["Hair_2"]}
+                skeleton={nodes.Hair_2.skeleton}
+            />);
+            break;
+        case 2:
+            hair = (<skinnedMesh
+                geometry={nodes.Hair_3.geometry}
+                material={materials["Hair_3"]}
+                skeleton={nodes.Hair_3.skeleton}
+            />);
+            break;
+    }
+
+    if (hair && hair.props.material) {
+        hair.props.material.color.setStyle(AppearanceGroups[2].items[appearance.hairColor].hex);
+    }
+
+    materials.Skin.color.setStyle(AppearanceGroups[0].items[appearance.skinColor].hex);
+    materials.Head.color.setStyle(AppearanceGroups[0].items[appearance.skinColor].hex);
+    materials.Eye.color.setStyle(AppearanceGroups[0].items[appearance.skinColor].hex);
+    materials.Body.color.setStyle(AppearanceGroups[4].items[appearance.shirtColor].hex);
+    materials.Pant.color.setStyle(AppearanceGroups[5].items[appearance.pantColor].hex);
+    materials.Shoes.color.setStyle(AppearanceGroups[6].items[appearance.shoeColor].hex);
+
     return (
         <>
             <mesh ref={ref} {...props}>
@@ -347,48 +379,19 @@ export default function Character(props: CharacterProps) {
                     <primitive object={nodes.Ctrl_Foot_IK_Right}/>
                     <primitive object={nodes.Ctrl_LegPole_IK_Right}/>
                     <primitive object={nodes.Ctrl_Master}/>
-                    {/* <skinnedMesh geometry={nodes.Cube001.geometry} material={materials.Body}
-                                 skeleton={nodes.Cube001.skeleton}/>
-                    <skinnedMesh geometry={nodes.Cube001_1.geometry} material={materials.Head}
-                                 skeleton={nodes.Cube001_1.skeleton}/> */}
-                    <skinnedMesh
-                        geometry={nodes.Cube006.geometry}
-                        material={materials.Body}
-                        skeleton={nodes.Cube006.skeleton}
-                    />
-                    <skinnedMesh
-                        geometry={nodes.Cube006_1.geometry}
-                        material={materials.Head}
-                        skeleton={nodes.Cube006_1.skeleton}
-                    />
-                    <skinnedMesh
-                        geometry={nodes.Cube006_2.geometry}
-                        material={materials.Eye}
-                        skeleton={nodes.Cube006_2.skeleton}
-                    />
-                    {/* <skinnedMesh
-                        geometry={nodes.Cube001_2.geometry}
-                        material={props.eyes === 1 ? materials["Eye 1"] : materials["Eye 2"]}
-                        skeleton={nodes.Cube001_2.skeleton}
-                    /> */}
-                    {props.hair === 1 ? (
-                        <skinnedMesh
-                            geometry={nodes.Hair_1.geometry}
-                            material={materials["Hair_1"]}
-                            skeleton={nodes.Hair_1.skeleton}
-                        />
-                    ) : (
-                        <skinnedMesh
-                            geometry={nodes.Hair_2.geometry}
-                            material={materials["Hair_2"]}
-                            skeleton={nodes.Hair_2.skeleton}
-                        />
-                    )}
-                    <skinnedMesh
-                        geometry={nodes.Shoe.geometry}
-                        material={materials.Shoes}
-                        skeleton={nodes.Shoe.skeleton}
-                    />
+                    <skinnedMesh geometry={nodes.Character_1.geometry} material={materials.Body}
+                                 skeleton={nodes.Character_1.skeleton}/>
+                    <skinnedMesh geometry={nodes.Character_2.geometry} material={materials.Skin}
+                                 skeleton={nodes.Character_2.skeleton}/>
+                    <skinnedMesh geometry={nodes.Character_3.geometry} material={materials.Head}
+                                 skeleton={nodes.Character_3.skeleton}/>
+                    <skinnedMesh geometry={nodes.Character_4.geometry} material={materials.Eye}
+                                 skeleton={nodes.Character_4.skeleton}/>
+                    <skinnedMesh geometry={nodes.Character_5.geometry} material={materials.Pant}
+                                 skeleton={nodes.Character_5.skeleton}/>
+                    <skinnedMesh geometry={nodes.Shoe.geometry} material={materials.Shoes}
+                                 skeleton={nodes.Shoe.skeleton}/>
+                    {hair}
                 </group>
             </mesh>
         </>
