@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { toastError, toastSuccess } from "../../../../helpers/toast";
 import ProfileProxy from "../../../../services/proxy/users/get-profile";
 import UpdateProfileProxy from "../../../../services/proxy/users/update-user";
+import ChangePasswordProxy from "../../../../services/proxy/users/change-password";
 import { useAppDispatch, useAppSelector } from "../../../../stores";
 import { setUserInfo, userSelectors } from "../../../../stores/auth-slice";
 import { ProxyStatusEnum } from "../../../../types/http/proxy/ProxyStatus";
@@ -54,6 +55,21 @@ const SidebarUser = () => {
   };
 
   const handleChangePassword = (values: ChangePasswordFormValuesInterface) => {
+    ChangePasswordProxy(values)
+    .then((res) => {
+      if (res.status === ProxyStatusEnum.FAIL) {
+        toastError(res.message ?? "Change password fail!");
+      }
+
+      if (res.status === ProxyStatusEnum.SUCCESS) {
+        setIsChangingPass(false);
+        toastSuccess("Password changed successfully.");
+      }
+    })
+    .catch((err) => {
+      toastError(err.message ?? "Change password fail!");
+    })
+    .finally(() => { });
   };
 
   useEffect(() => {

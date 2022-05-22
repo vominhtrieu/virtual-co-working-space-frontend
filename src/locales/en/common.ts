@@ -10,7 +10,7 @@ export const TranslationEnCommon = {
     email: "{{field}} must be a valid email address",
     confirmPassword: "Password's not match.",
     oneUppercase: "{{field}} must be at least 1 uppercase",
-    oneLowecase: "{{field}} must be at least 1 lowercase",
+    oneLowercase: "{{field}} must be at least 1 lowercase",
     oneNumber: "{{field}} must be at least 1 number",
     oneSpecial: "{{field}} must be at least 1 special",
     password: "Must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",

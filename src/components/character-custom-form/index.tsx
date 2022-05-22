@@ -4,6 +4,27 @@ import { IoMdArrowDropdown } from 'react-icons/io'
 import Button from '../UI/button'
 import { CharacterCustomFormInterface } from './types'
 
+const itemGroups = [
+  {
+      groupName: "Hair",
+      items: [
+          { code: "Hair1", url: "./images/Hair1.png" },
+          { code: "Hair2", url: "./images/Hair2.png" },
+          { code: "Hair3", url: "./images/Hair2.png" },
+          { code: "Hair4", url: "./images/Hair2.png" },
+          { code: "Hair5", url: "./images/Hair2.png" },
+      ],
+  },
+  {
+      groupName: "Eyes",
+      items: [
+          { code: "Eyes1", url: "./images/Eyes1.png" },
+          { code: "Eyes2", url: "./images/Eyes2.png" },
+      ],
+  },
+];
+
+
 const CharacterCustomForm = (props: CharacterCustomFormInterface) => {
   const [itemGroupSelected, setItemGroupSelected] = useState(0)
   const { itemGroups, onItemClick } = props
