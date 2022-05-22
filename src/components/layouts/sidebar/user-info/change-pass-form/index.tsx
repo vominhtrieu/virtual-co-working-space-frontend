@@ -7,29 +7,46 @@ import {
   ChangePasswordInputInterface,
 } from "./types";
 import * as yup from "yup";
+import { useTranslation } from "react-i18next";
 import InputText from "../../../../UI/form-controls/input-text";
 import Button from "../../../../UI/button";
 
 const ChangePasswordForm = (props: ChangePasswordFormProps) => {
   const { onClose, onSubmit } = props;
+  const { t } = useTranslation();
 
   const schema = yup.object().shape({
-    password: yup.string().required("Password is required"),
-    confirmPassword: yup.string().required("Confirm password is required"),
+    oldPassword: yup
+      .string()
+      .required(t("default.error.required", { field: t("pages.register.password") })),
+    newPassword: yup
+      .string()
+      .required(t("default.error.required", { field: t("pages.register.password") }))
+      .matches(/^(?=.*[a-z])/, t("default.error.oneLowercase", { field: t("pages.register.password") }))
+      .matches(/^(?=.*[A-Z])/, t("default.error.oneUppercase", { field: t("pages.register.password") }))
+      .matches(/^(?=.*[0-9])/, t("default.error.oneNumber", { field: t("pages.register.password") }))
+      .matches(/^(?=.*[!@#\$%\^&\*~])/, t("default.error.oneSpecial", { field: t("pages.register.password") }))
+      .min(8, t("default.error.minLength", { field: t("pages.register.password"), min: 8 })),
+    confirmPassword: yup
+      .string()
+      .required(t("default.error.required", { field: t("pages.register.confirmPassword") }))
+      .oneOf([yup.ref("newPassword")], t("default.error.confirmPassword", { field: t("pages.register.confirmPassword") }))
   });
 
   const { control, handleSubmit } = useForm<ChangePasswordInputInterface>({
     defaultValues: {
-      password: "",
+      oldPassword: "",
+      newPassword: "",
       confirmPassword: "",
     },
+    mode: "onChange",
     resolver: yupResolver(schema),
   });
 
   const handleChangePasswordSubmit = (data: ChangePasswordInputInterface) => {
     const formatData: ChangePasswordFormDataInterface = {
-      password: data.password,
-      confirmPassword: data.confirmPassword,
+      oldPassword: data.oldPassword,
+      newPassword: data.newPassword,
     };
     onSubmit(formatData);
   };
@@ -37,33 +54,45 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
   return (
     <Popup onClose={onClose}>
       <form onSubmit={handleSubmit(handleChangePasswordSubmit)}>
-        <h1 className='change-pass-form__title'>Thay đổi mật khẩu</h1>
+        <h1 className='change-pass-form__title'>Change Password</h1>
 
         <div className='change-pass-form__input-block'>
           <InputText
             control={control}
-            name='password'
+            type='password'
+            name='oldPassword'
             hasLabel
-            placeholder='Mật khẩu mới'
+            placeholder='Current Password'
           />
         </div>
 
         <div className='change-pass-form__input-block'>
           <InputText
             control={control}
+            type='password'
+            name='newPassword'
+            hasLabel
+            placeholder='New Password'
+          />
+        </div>
+
+        <div className='change-pass-form__input-block'>
+          <InputText
+            control={control}
+            type='password'
             name='confirmPassword'
             hasLabel
-            placeholder='Nhập lại mật khẩu mới'
+            placeholder='Password Confirmation'
           />
         </div>
 
         <div className='change-pass-form__group-btn'>
           <Button type='submit' variant='primary'>
-            Thay đổi
+            Submit
           </Button>
 
           <Button type='reset' variant='outlined' onClick={onClose}>
-            Huỷ
+            Cancel
           </Button>
         </div>
       </form>

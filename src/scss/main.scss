@@ -25,6 +25,7 @@
 @import "../components/layouts/sidebar/offices/character-interaction/styles";
 @import "../components/layouts/sidebar/settings/styles";
 @import "../components/layouts/sidebar/user-info/edit-profile-form/avatar/styles";
+@import "../components/layouts/sidebar/user-info/change-pass-form/styles";
 @import "../components/layouts/sidebar/notification/styles";
 @import "../components/layouts/sidebar/offices/join-by-code/styles";
 @import "../components/layouts/navbar/styles";
@@ -48,7 +49,8 @@
 @import "../components/office-detail-form/edit-office-form/styles";
 @import "../components/office-detail-form/edit-office-form/avatar/styles";
 
-@import "../components/character-custom-form/styles";
+// @import "../components/character-custom-form/styles";
+@import "../components/character-form/styles";
 
 @import "../components/login/login-form/styles";
 @import "../components/register/register-form/styles";

@@ -49,7 +49,6 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
         }
       })
       .catch((err) => {
-        console.log(err);
       });
   }, [id]);
 
@@ -61,8 +60,6 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
       description: values.description
     })
       .then((res) => {
-        console.log(values);
-        console.log(res);
         if (res.status === ProxyStatusEnum.FAIL) {
           toastError(res.message ?? "Update office fail");
           return;
@@ -76,7 +73,6 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
         }
       })
       .catch((err) => {
-        console.log(err);
       });
   };
 
@@ -96,14 +92,12 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
         }
       })
       .catch((err) => {
-        console.log(err);
       });
   };
 
   const handleCreateInvitation = (values: CreateInvitationFormValuesInterface) => {
     CreateByEmailProxy({ email: values.email, officeId: values.officeId })
       .then((res) => {
-        console.log(res);
         if (res.status === ProxyStatusEnum.FAIL) {
           toastError(res.message ?? "Create invitation fail");
           return;
@@ -117,7 +111,6 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
         }
       })
       .catch((err) => {
-        console.log(err);
       });
   };
 
@@ -138,7 +131,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
   };
 
   const copy = async (code) => {
-    await navigator.clipboard.writeText(`${process.env.REACT_APP_BASE_URL}/invites/${code}`);
+    await navigator.clipboard.writeText(`${window.location.host}/invites/${code}`);
     toastSuccess("Copy success");
   }
 

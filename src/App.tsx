@@ -17,6 +17,7 @@ import Register from "./pages/auth/register";
 import ResetPassword from "./pages/auth/reset-password";
 import CharacterCustom from "./pages/CharacterCustom";
 import Lobby from "./pages/lobby";
+import CharacterForm from "./components/character-form";
 import CharacterCustomMobile from "./pages/mobile/CharacterCustomMobile";
 import WorkspaceMobile from "./pages/mobile/WorkspaceMobile";
 import NotFound from "./pages/not-found";

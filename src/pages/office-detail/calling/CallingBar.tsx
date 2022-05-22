@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../stores";
 // import { connect } from "../../../stores/socket-slice";
 import { socketSelector } from "../../../stores/socket-slice";
+import { FaCamera, FaMicrophone } from "react-icons/fa";
 
 export default function CallingBar() {
   const videoContainer = useRef<any>();
@@ -18,7 +19,8 @@ export default function CallingBar() {
   const [myStream, setMyStream] = useState<MediaStream | null>(null);
   const params = useParams();
   const socket = useAppSelector(socketSelector.getSocket);
-  const dispatch = useAppDispatch();
+  const [cameraEnabled, setCameraEnabled] = useState(true);
+  const [microphoneEnabled, setMicrophoneEnabled] = useState(true);
 
   const myPeer = useMemo(
     () =>
@@ -118,6 +120,30 @@ export default function CallingBar() {
       {myStream && (
         <div className="video-container">
           <video ref={myVideo} autoPlay muted />
+          <div className="video-button-container">
+            <button
+              className={`video-button ${cameraEnabled ? "active" : ""}`}
+              onClick={() => {
+                const vidTrack = myStream?.getVideoTracks();
+                vidTrack.forEach((track) => (track.enabled = !cameraEnabled));
+                setCameraEnabled(!cameraEnabled);
+              }}
+            >
+              <FaCamera fontSize={20} />
+            </button>
+            <button
+              className={`video-button ${microphoneEnabled ? "active" : ""}`}
+              onClick={() => {
+                const vidTrack = myStream?.getAudioTracks();
+                vidTrack.forEach(
+                  (track) => (track.enabled = !microphoneEnabled)
+                );
+                setMicrophoneEnabled(!microphoneEnabled);
+              }}
+            >
+              <FaMicrophone fontSize={20} />
+            </button>
+          </div>
         </div>
       )}
     </div>

@@ -18,7 +18,6 @@ const SidebarSettings = () => {
   }, [])
 
   const handleChangeVolume = (e) => {
-    console.log(e);
     saveDataLocal("volume",e);
     dispatch(setVolume(Number.parseInt(e)));
   };

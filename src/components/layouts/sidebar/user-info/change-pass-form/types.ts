@@ -4,11 +4,12 @@ export interface ChangePasswordFormProps {
 }
 
 export interface ChangePasswordInputInterface {
-  password: string;
+  oldPassword: string;
+  newPassword: string;
   confirmPassword: string;
 }
 
 export interface ChangePasswordFormDataInterface {
-  password: string;
-  confirmPassword: string;
+  oldPassword: string;
+  newPassword: string;
 }

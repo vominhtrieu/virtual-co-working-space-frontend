@@ -18,7 +18,11 @@ const ResetForm = ({ handleResetSubmit }: FormPropsInterface) => {
     password: yup
       .string()
       .required(t("default.error.required", { field: t("pages.register.password") }))
-      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*~])(?=.{8,})/, t("default.error.password", { field: t("pages.register.password") })),
+      .matches(/^(?=.*[a-z])/, t("default.error.oneLowercase", { field: t("pages.register.password") }))
+      .matches(/^(?=.*[A-Z])/, t("default.error.oneUppercase", { field: t("pages.register.password") }))
+      .matches(/^(?=.*[0-9])/, t("default.error.oneNumber", { field: t("pages.register.password") }))
+      .matches(/^(?=.*[!@#\$%\^&\*~])/, t("default.error.oneSpecial", { field: t("pages.register.password") }))
+      .min(8, t("default.error.minLength", { field: t("pages.register.password"), min: 8 })),
     confirmPassword: yup
       .string()
       .required(t("default.error.required", { field: t("pages.register.confirmPassword") }))
@@ -38,7 +42,6 @@ const ResetForm = ({ handleResetSubmit }: FormPropsInterface) => {
       confirmPassword: values["confirmPassword"],
     };
 
-    console.log(formValues);
     handleResetSubmit(formValues);
   };
 
