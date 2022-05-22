@@ -13,7 +13,7 @@ import Thumbnail from "../../../UI/thumbnail";
 import SidebarBox from "../sidebar-box";
 import CreateOfficeForm from "./create-office-form";
 import JoinOfficeForm from "./join-by-code";
-import { CreateOfficeFormValuesInterface, JoinOfficeFormValuesInterface } from "./types";
+import { CreateOfficeFormValuesInterface, JoinOfficeFormValuesInterface } from "../../../../pages/lobby/types";
 import socket from "../../../../services/socket/socket";
 import { useAppDispatch } from "../../../../stores";
 import { setIsOffice } from "../../../../stores/office-slice";

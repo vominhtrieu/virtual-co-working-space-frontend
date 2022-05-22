@@ -1,0 +1,31 @@
+import { FaWrench } from "react-icons/fa";
+import { MemberItemProps } from "./types";
+
+const MemberItem = (props: MemberItemProps) => {
+  const { avatarUrl, userName, role, userId, isOnline } = props;
+  return (
+    <div className="member-item">
+      <div className="member-item__user-box">
+        <div className="member-item__avatar">
+          <img
+            className="member-item__image"
+            src={avatarUrl ?? "https://via.placeholder.com/150"}
+            alt="avatar"
+          />
+          <span className={`member-item__online ${isOnline ? "onl" : "off"}`} />
+        </div>
+
+        <div className="member-item__user">
+          <div className="member-item__name">{userName}</div>
+          <div className="member-item__role">{role}</div>
+        </div>
+      </div>
+
+      <div className="member-item__action">
+        <FaWrench className="member-item__setting" />
+      </div>
+    </div>
+  );
+};
+
+export default MemberItem;
