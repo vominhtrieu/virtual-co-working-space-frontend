@@ -12,6 +12,7 @@ import {volumeSelectors} from "../../stores/volume-slice";
 import {Provider} from "react-redux";
 import store from "../../stores";
 import ItemModel from "../models/ItemModel";
+import { socketSelector } from "../../stores/socket-slice";
 
 export default function OfficeCanvas({
                                          setObjectionClickPos,
@@ -24,17 +25,22 @@ export default function OfficeCanvas({
                                          objectList,
                                          objectActionVisible,
                                          selectedObject,
+                                         selectedKey,
+                                         handleObject3dDragged,
+                                         handleObject3dRotated
                                      }) {
     const orbitRef = useRef(null);
     const character = useContext(CharacterContext);
     const volume = useAppSelector(volumeSelectors.getVolume);
+    const socket = useAppSelector(socketSelector.getSocket);
 
     const handleObject3dClick = (e, key) => {
         let temp = e.object;
-        console.log(temp)
         while (temp.parent && temp.parent.type !== "Scene") {
             temp = temp.parent;
         }
+
+        console.log(key)
 
         setSelectedObject(temp);
         setSelectedKey(key);
@@ -85,12 +91,13 @@ export default function OfficeCanvas({
                                 <mesh
                                     castShadow={true}
                                     key={object.id}
-                                    position={[0, 0.5, 0]}
-                                    onClick={(e) => handleObject3dClick(e, object.key)}
+                                    position={[object.transform.xPosition, object.transform.yPosition, object.transform.zPosition]}
+                                    rotation={[object.transform.xRotation, object.transform.yRotation, object.transform.zRotation]}
+                                    onClick={(e) => handleObject3dClick(e, object.id)}
                                     onPointerMissed={handleObject3dPointerMissed}
                                 >
                                     <Suspense fallback={null}>
-                                        <ItemModel url={object.modelPath}/>
+                                        <ItemModel url={object.item.modelPath}/>
                                     </Suspense>
                                 </mesh>
                             ))}
@@ -112,8 +119,10 @@ export default function OfficeCanvas({
 
                             <CustomTransformControl
                                 object={selectedObject}
+                                objectKey={selectedKey}
                                 orbit={orbitRef}
                                 visible={objectActionVisible && isCustomizing}
+                                handleObject3dDragged={handleObject3dDragged}
                             />
                         </Debug>
                     </Physics>
