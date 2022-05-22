@@ -1,6 +1,7 @@
 import {useGLTF} from "@react-three/drei";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import * as THREE from "three";
+import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils"
 
 interface ItemModelProps {
     url: string,
@@ -37,5 +38,7 @@ export default function ItemModel({url, itemId}: ItemModelProps) {
         console.log("load model of id = ", itemId);
     }, [itemId])
 
-    return <primitive object={obj.scene}/>
+    const clone = useMemo(() => SkeletonUtils.clone(obj.scene), [obj.scene])
+
+    return <primitive object={clone}/>
 }
