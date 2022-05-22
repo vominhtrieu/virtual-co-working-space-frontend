@@ -97,7 +97,7 @@ export default function OfficeCanvas({
                                     onPointerMissed={handleObject3dPointerMissed}
                                 >
                                     <Suspense fallback={null}>
-                                        <ItemModel url={object.item.modelPath}/>
+                                        <ItemModel url={object.item.modelPath} itemId={object.id} />
                                     </Suspense>
                                 </mesh>
                             ))}

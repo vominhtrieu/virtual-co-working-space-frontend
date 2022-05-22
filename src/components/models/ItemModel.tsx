@@ -1,11 +1,13 @@
 import {useGLTF} from "@react-three/drei";
+import { useEffect } from "react";
 import * as THREE from "three";
 
 interface ItemModelProps {
-    url: string
+    url: string,
+    itemId: number
 }
 
-export default function ItemModel({url}: ItemModelProps) {
+export default function ItemModel({url, itemId}: ItemModelProps) {
     const obj: any = useGLTF(url);
 
     const colors = new Uint8Array(2);
@@ -30,6 +32,10 @@ export default function ItemModel({url}: ItemModelProps) {
             obj.materials[key] = material;
         }
     }
+
+    useEffect(() => {
+        console.log("load model of id = ", itemId);
+    }, [itemId])
 
     return <primitive object={obj.scene}/>
 }

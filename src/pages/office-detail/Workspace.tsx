@@ -1,7 +1,6 @@
 import {useCallback, useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {useLocation, useNavigate} from "react-router-dom";
-import {v4 as uuidv4} from "uuid";
 import OfficeCanvas from "../../components/office/OfficeCanvas";
 import OfficeInterface from "../../components/office/OfficeInterface";
 import OfficeDetailForm from "../../components/office-detail-form";
@@ -12,9 +11,7 @@ import {ProxyStatusEnum} from "../../types/http/proxy/ProxyStatus";
 import CallingBar from "./calling/CallingBar";
 import {Item} from "../../services/api/offices/get-office-item/types";
 import { socketSelector } from "../../stores/socket-slice";
-import { getOfficeItems } from "../../services/api/offices/officce-item";
 import { OfficeItem } from "../../services/api/offices/officce-item/types";
-import { message } from "antd";
 
 export type positionType = {
     x: number;
@@ -92,8 +89,7 @@ const Workspace = () => {
         const newObjectList = [...objectList];
         newObjectList.splice(idx, 1);
         // navigate("/");
-        setObjectList(newObjectList);
-        console.log("After delete: ", newObjectList)
+        setObjectList([...newObjectList]);
         setSelectedObject(null);
         setSelectedKey(null);
         setObjectActionVisible(false);
@@ -103,14 +99,13 @@ const Workspace = () => {
     useEffect(() => {
         socket.on("office_item:created", (message) => {
             console.log(message);
-            // setObjectList((objectList) => [
-            //     ...objectList,
-            //     message.item
-            // ])
+            setObjectList((objectList) => [
+                ...objectList,
+                message
+            ])
         })
 
         socket.on("office_item:moved", (message) => {
-            console.log("Moved: ", message);
             const {id, transform} = message
             const idx = objectList.findIndex((obj) => obj.id === id);
             const newObjectList = [...objectList];
@@ -123,14 +118,14 @@ const Workspace = () => {
                 yRotation: transform.yRotation,
                 zRotation: transform.zRotation
             }
-            setObjectList(newObjectList);
+            setObjectList([...newObjectList]);
         })
 
         socket.on("office_item:deleted", (message) => {
             const idx = objectList.findIndex((obj) => obj.id === message);
             const newObjectList = [...objectList];
             newObjectList.splice(idx, 1);
-            setObjectList(newObjectList);
+            setObjectList([...newObjectList]);
         })
 
         return () => {
@@ -140,23 +135,22 @@ const Workspace = () => {
     }, [socket, objectList]);
 
     useEffect(() => {
-        console.log("join office");
+        console.log("join office ", officeId);
         socket.emit("office_member:join", {
             officeId: officeId
         })
     }, [officeId, socket]);
 
-    const handleItemInBottomMenuClick = (item: OfficeItem) => {
+    const handleItemInBottomMenuClick = (item: Item) => {
         // setObjectList((objectList) => [
         //     ...objectList,
         //     item,
         // ]);
-
         socket.emit("office_item:create", {
             itemId: item.id,
             officeId: officeId,
             xPosition: 0,
-            yPosition: 0.5,
+            yPosition: 1,
             zPosition: 0,
             xRotation: 0,
             yRotation: 0,
