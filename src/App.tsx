@@ -65,7 +65,6 @@ function UnauthenticatedRoutes() {
         <Route path="/auth/login" element={<Login/>}/>
         <Route path="/auth/register" element={<Register/>}/>
         <Route path="/auth/reset/:token" element={<ResetPassword/>}/>
-        <Route path="/webgl" element={<CharacterCustomMobile/>}/>
         <Route path="*" element={<NotFound/>}/>
 
         {/* redirect */}

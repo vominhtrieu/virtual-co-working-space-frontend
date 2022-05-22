@@ -43,7 +43,6 @@ export default function CallingBar() {
     // }, [socket])
 
     useEffect(() => {
-        console.log("lolo1");
         myPeer.on("open", id => {
             socket.emit("calling:join", {
                 officeId: params.id,
@@ -78,7 +77,6 @@ export default function CallingBar() {
         if (!myStream || !myPeer) {
             return;
         }
-        console.log("lolo2");
         const streamMap = {};
         socket.on("calling:join", ({userId, peerId}) => {
             setTimeout(() => {

@@ -1,7 +1,7 @@
 import React from "react";
 import {CharacterAppearance} from "../types/character";
 
-export default React.createContext({
+export const DefaultAppearance = {
     skinColor: 0,
     hairColor: 0,
     hairStyle: 0,
@@ -14,4 +14,8 @@ export default React.createContext({
     },
     changeAppearance: (groupId: number, itemIdx: number) => {
     },
+};
+
+export default React.createContext({
+    ...DefaultAppearance
 });
