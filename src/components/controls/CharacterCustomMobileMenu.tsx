@@ -99,10 +99,7 @@ export default function CharacterCustomMobileMenu({itemGroups, onItemClick}: any
                                                 temp[position] = index;
                                                 return temp;
                                             });
-                                            onItemClick({
-                                                groupId: position,
-                                                itemIdx: index,
-                                            });
+                                            onItemClick(position, index);
                                         }}
                                 >
                                     {item.type === "image" && <img
