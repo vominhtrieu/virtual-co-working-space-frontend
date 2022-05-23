@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import CharacterForm from "../../components/character-form";
+import InteractionMenu from "../../components/layouts/sidebar/offices/character-interaction";
 import OfficeDetailForm from "../../components/office-detail-form";
+import ChatBox from "../../components/office/chat-box";
+import ChatList from "../../components/office/chat-list";
 import MemberList from "../../components/office/member-list";
 import OfficeCanvas from "../../components/office/OfficeCanvas";
 import OfficeInterface from "../../components/office/OfficeInterface";
@@ -9,6 +13,7 @@ import { Item } from "../../services/api/offices/get-office-item/types";
 import OfficeDetailProxy from "../../services/proxy/offices/office-detail";
 import { useAppSelector } from "../../stores";
 import { userSelectors } from "../../stores/auth-slice";
+import { socketSelector } from "../../stores/socket-slice";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import CallingBar from "./calling/CallingBar";
 
@@ -35,8 +40,17 @@ const Workspace = () => {
   const [characterGesture, setCharacterGesture] = useState({ idx: -1 });
   const [characterEmoji, setCharacterEmoji] = useState({ idx: -1 });
   const [action, setAction] = useState<
-    "action" | "character" | "config" | "member" | "setting" | ""
+    | "action"
+    | "character"
+    | "config"
+    | "member"
+    | "chatList"
+    | "chatBox"
+    | "setting"
+    | ""
   >("");
+
+  const socket = useAppSelector(socketSelector.getSocket);
 
   const navigate = useNavigate();
 
@@ -88,14 +102,36 @@ const Workspace = () => {
       });
   }, [officeId, userInfo.id]);
 
+  const handleSelectConversation = (conversationId: number) => {
+    setConversationId(conversationId);
+    setAction("chatBox");
+  };
+
+  const handleSubmitMessage = (values: string) => {
+    socket.emit("message:send", {
+      conversationId: conversationId,
+      content: values,
+    });
+  };
+
   return (
     <>
-      {(action === "" || action === "member") && <CallingBar />}
+      {(action === "" ||
+        action === "member" ||
+        action.includes("chat") ||
+        action === "action") && <CallingBar />}
       <OfficeCanvas
         setObjectionClickPos={setObjectionClickPos}
         characterGesture={characterGesture}
         characterEmoji={characterEmoji}
-        isCustomizing={action !== ""}
+        isCustomizing={
+          !(
+            action === "" ||
+            action === "member" ||
+            action.includes("chat") ||
+            action === "action"
+          )
+        }
         objectActionVisible={objectActionVisible}
         objectList={objectList}
         selectedObject={selectedObject}
@@ -133,8 +169,38 @@ const Workspace = () => {
         />
       ) : null}
 
+      {action === "chatList" && (
+        <ChatList
+          onClose={() => setAction("")}
+          id={+officeId}
+          onSelectConversation={handleSelectConversation}
+        />
+      )}
+
+      {action === "chatBox" && (
+        <ChatBox
+          conversationId={conversationId}
+          onBack={() => setAction("chatList")}
+          onClose={() => setAction("")}
+          submitMessage={handleSubmitMessage}
+        />
+      )}
+
       {action === "member" && (
         <MemberList onClose={() => setAction("")} id={+officeId} />
+      )}
+
+      {action === "character" && (
+        <CharacterForm onClose={() => setAction("")} />
+      )}
+
+      {action === "action" && (
+        <InteractionMenu
+          onGestureClick={(value: number) =>
+            setCharacterGesture({ idx: value })
+          }
+          onEmojiClick={(value: number) => setCharacterEmoji({ idx: value })}
+        />
       )}
     </>
   );

@@ -1,18 +1,25 @@
 import {
   FaCog,
+  FaComments,
+  FaDoorOpen,
   FaGrin,
   FaTools,
   FaTshirt,
   FaUserFriends,
 } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { OfficeBarPropsInterface } from "./types";
 
 const OfficeBar = (props: OfficeBarPropsInterface) => {
   const { action, setAction, isOwner } = props;
 
+  const navigate = useNavigate();
+
   return (
     <nav className="office-bar">
-      <div className="office-bar__name">Phòng IT</div>
+      <div className="office-bar__name" onClick={() => navigate("/lobby")}>
+        <FaDoorOpen /> Phòng IT
+      </div>
 
       <div className="office-bar__right-content">
         <div
@@ -47,6 +54,17 @@ const OfficeBar = (props: OfficeBarPropsInterface) => {
           }}
         >
           <FaTools className="office-bar__icon" />
+        </div>
+        <div
+          className={`office-bar__icon-btn + ${
+            action.includes("chat") ? "active" : ""
+          }`}
+          onClick={() => {
+            if (action.includes("chat")) return setAction("");
+            setAction("chatList");
+          }}
+        >
+          <FaComments className="office-bar__icon" />
         </div>
         <div
           className={`office-bar__icon-btn + ${

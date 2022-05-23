@@ -19,6 +19,17 @@
     background-color: #fff;
     padding: 0.5rem 1.5rem;
     border-radius: 1rem;
+    display: grid;
+    grid-template-columns: max-content max-content;
+    gap: 1rem;
+    place-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: $color-secondary-light;
+      color: #fff;
+    }
   }
 
   &__right-content {

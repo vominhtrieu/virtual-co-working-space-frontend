@@ -1,17 +1,17 @@
-import { Dropdown, Menu } from 'antd'
-import { useState } from 'react'
-import { IoMdArrowDropdown } from 'react-icons/io'
-import Button from '../UI/button'
-import { CharacterCustomFormInterface } from './types'
-import { FaTimes, FaSave } from 'react-icons/fa'
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Dropdown, Menu } from "antd";
+import { Suspense, useContext, useState } from "react";
+import { FaSave, FaTimes } from "react-icons/fa";
+import { IoMdArrowDropdown } from "react-icons/io";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Box from "../../components/models/Box";
-import CharacterContext from '../../context/CharacterContext'
 import DisplayCharacter from "../../components/models/DisplayCharacter";
+import CharacterContext from "../../context/CharacterContext";
+import Button from "../UI/button";
+import NewButton from "../UI/new-button";
+import { CharacterFormProps } from "./types";
 
 const itemGroups = [
   {
@@ -34,9 +34,10 @@ const itemGroups = [
   },
 ];
 
+const CharacterForm = (props: CharacterFormProps) => {
+  const [itemGroupSelected, setItemGroupSelected] = useState(0);
 
-const CharacterForm = () => {
-  const [itemGroupSelected, setItemGroupSelected] = useState(0)
+  const { onClose } = props;
 
   const { open } = useSelector((state: any) => state.sidebar);
   const character = useContext(CharacterContext);
@@ -72,16 +73,16 @@ const CharacterForm = () => {
           >
             {item.groupName}
           </Menu.Item>
-        )
+        );
       })}
     </Menu>
-  )
+  );
 
   return (
     <div className="character-custom">
-      <div className='character-custom__header'>
-        <h1 className="character-custom__title">Character Custom</h1>
-        <button className="character-custom__btn-close">
+      <div className="character-custom__header">
+        <h1 className="character-custom__title">Chỉnh sửa nhân vật</h1>
+        <button className="character-custom__btn-close" onClick={onClose}>
           <FaTimes />
         </button>
       </div>
@@ -107,7 +108,11 @@ const CharacterForm = () => {
               minPolarAngle={Math.PI / 2}
               maxPolarAngle={Math.PI / 2}
             />
-            <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45} />
+            <directionalLight
+              shadow={true}
+              position={[0, 10, 10]}
+              rotateX={45}
+            />
             <ambientLight />
             <Suspense fallback={<Box />}>
               <DisplayCharacter
@@ -125,7 +130,7 @@ const CharacterForm = () => {
               {itemGroups[itemGroupSelected].groupName} <IoMdArrowDropdown />
             </div>
           </Dropdown>
-          <div className='character-custom__content'>
+          <div className="character-custom__content">
             <div className="character-custom__list">
               <div className="character-custom__item-list">
                 {itemGroups[itemGroupSelected].items &&
@@ -134,7 +139,7 @@ const CharacterForm = () => {
                       <Button
                         className="character-custom__btn-select"
                         onClick={() => {
-                          handleBottomMenuItemClick(item)
+                          handleBottomMenuItemClick(item);
                         }}
                       >
                         <img
@@ -143,32 +148,31 @@ const CharacterForm = () => {
                           className="character-custom__item-img"
                         />
                       </Button>
-                    )
+                    );
                   })}
               </div>
             </div>
-            <div className='character-custom__btn-group'>
-              <Button type='reset' variant='outlined'>
-                <span className='character-custom__btn-icon'>
-                  <FaTimes />
-                  <span>Cancel</span>
-                </span>
-              </Button>
-              <Button type='submit' variant='primary'>
-                <span className='character-custom__btn-icon'>
-                  <FaSave />
-                  <span>Submit</span>
-                </span>
-
-              </Button>
+            <div className="character-custom__btn-group">
+              <NewButton
+                type="reset"
+                variant="secondary"
+                onClick={onClose}
+                content="Huỷ"
+                icon={<FaTimes />}
+              />
+              <NewButton
+                type="submit"
+                variant="primary"
+                content="Lưu"
+                icon={<FaSave />}
+              />
               {/* onClick={onClose} */}
             </div>
           </div>
-
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default CharacterForm;

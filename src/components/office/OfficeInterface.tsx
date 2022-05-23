@@ -48,41 +48,6 @@ export default function OfficeInterface({
           justifyContent: "space-between",
         }}
       >
-        {!isCustomizing && (
-          <>
-            <div
-              aria-label="interactionMenu"
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                margin: "0.5rem 1rem",
-                alignItems: "flex-start",
-                position: "absolute",
-                zIndex: "999999",
-                pointerEvents: "auto",
-              }}
-            >
-              <Button
-                onClick={() => setShowInteractMenu((value) => !value)}
-                type="button"
-                variant="outlined"
-                className="menu-custom"
-              >
-                <FaRegSmileBeam style={{ width: "1.5rem", height: "1.5rem" }} />
-              </Button>
-              {showInteractMenu && (
-                <InteractionMenu
-                  onGestureClick={(value: number) =>
-                    setCharacterGesture({ idx: value })
-                  }
-                  onEmojiClick={(value: number) =>
-                    setCharacterEmoji({ idx: value })
-                  }
-                />
-              )}
-            </div>
-          </>
-        )}
         {isCustomizing ? (
           <>
             {objectActionVisible && (

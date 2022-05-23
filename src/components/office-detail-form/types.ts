@@ -6,21 +6,20 @@ export interface OfficeDetailFormProps {
 
 export interface EditOfficeDetailFormValuesInterface {
   name: string;
-  avatarUrl:string;
-  description:string;
+  avatarUrl: string;
+  description: string;
 }
 
 export interface CreateInvitationFormValuesInterface {
   email: string;
-  officeId:number;
+  officeId: number;
 }
-
 
 export interface OfficeDetailInterface {
   id: number;
   name: string;
   invitationCode: string;
-  avatarUrl:string;
+  avatarUrl: string;
   createdBy: {
     id: number;
     name: string;
@@ -29,6 +28,12 @@ export interface OfficeDetailInterface {
   officeItems: any[];
   officeMembers: OfficeMembersInterface[];
   createdAt: string;
+  conversations: {
+    id: number;
+    officeId: number;
+    name: string;
+    type: string;
+  }[];
 }
 
 interface OfficeMembersInterface {

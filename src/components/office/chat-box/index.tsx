@@ -1,23 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { RiSendPlaneFill } from "react-icons/ri";
-import InputText from "../../../../components/UI/form-controls/input-text";
-import GetMessagesProxy from "../../../../services/proxy/conversations/get-messages";
-// import socket from "../../../../services/socket/socket";
-import { useAppSelector } from "../../../../stores";
-import { userSelectors } from "../../../../stores/auth-slice";
-import { ProxyStatusEnum } from "../../../../types/http/proxy/ProxyStatus";
-import ChatBoxItem from "../../../../components/office/chat-box/chat-box-item";
-import {
-  ChatBoxPropsInterface,
-  ChatItemInterface,
-  InputInterface,
-} from "./types";
-import { socketSelector } from "../../../../stores/socket-slice";
+import { FaGrin, FaPaperPlane } from "react-icons/fa";
+import { ChatItemInterface } from "../../../pages/office-detail/chat/chat-box/types";
+import GetMessagesProxy from "../../../services/proxy/conversations/get-messages";
+import { useAppSelector } from "../../../stores";
+import { userSelectors } from "../../../stores/auth-slice";
+import { socketSelector } from "../../../stores/socket-slice";
+import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
+import RightBar from "../../layouts/rightbar";
+import InputText from "../../UI/form-controls/input-text";
+import ChatBoxItem from "./chat-box-item";
+import { ChatBoxProps } from "./types";
 
-const ChatBox = (props: ChatBoxPropsInterface) => {
+const ChatBox = (props: ChatBoxProps) => {
+  const { onClose, onBack, conversationId, submitMessage } = props;
+
   const [chatList, setChatList] = useState<ChatItemInterface[]>([]);
-  const { submitMessage, conversationId } = props;
   const socket = useAppSelector(socketSelector.getSocket);
 
   const ref = useRef<any>(null);
@@ -55,7 +53,7 @@ const ChatBox = (props: ChatBoxPropsInterface) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [userInfo.id]);
+  }, [userInfo.id, conversationId]);
 
   useEffect(() => {
     socket.emit("conversation:join", {
@@ -78,9 +76,9 @@ const ChatBox = (props: ChatBoxPropsInterface) => {
     return () => {
       socket.off("message:sent");
     };
-  }, []);
+  }, [conversationId, socket, userInfo.id]);
 
-  const { control, handleSubmit, setValue } = useForm<InputInterface>({
+  const { control, handleSubmit, setValue } = useForm({
     defaultValues: {
       message: "",
     },
@@ -95,34 +93,37 @@ const ChatBox = (props: ChatBoxPropsInterface) => {
   };
 
   return (
-    <>
-      <div className={"chat-box"}>
-        <div className="chat-box__title">Nguyen Van A</div>
-
-        <div className="chat-box__content">
-          <ul className="chat-box__items">
-            {chatList.map((item, index) => {
-              return (
-                <li className="chat-box__item" key={index}>
-                  <ChatBoxItem
-                    message={item.message}
-                    alt={item.alt}
-                    name={item.alt}
-                    isMe={item.isMe}
-                  />
-                </li>
-              );
-            })}
-            <div ref={ref} />
-          </ul>
-        </div>
+    <RightBar onClose={onClose} onBack={onBack} isBack>
+      <div className="chat-box">
+        <ul className="chat-box__list">
+          {chatList.map((item, index) => {
+            return (
+              <li className="chat-box__item" key={index}>
+                <ChatBoxItem
+                  message={item.message}
+                  alt={item.alt}
+                  name={item.alt}
+                  isMe={item.isMe}
+                />
+              </li>
+            );
+          })}
+          <div ref={ref} />
+        </ul>
       </div>
       <form className="chat-box__form" onSubmit={handleSubmit(handleSendMess)}>
+        <FaGrin className="chat-box__icon-emoji" />
         <InputText
           size="large"
           name="message"
           control={control}
-          placeholder="Write a message ..."
+          placeholder="Nhập tin nhắn"
+          style={{
+            outline: "none",
+            border: "none",
+            borderRadius: "0",
+            borderBottom: "1px solid #fff",
+          }}
         />
         <button
           style={{
@@ -131,10 +132,10 @@ const ChatBox = (props: ChatBoxPropsInterface) => {
             border: "none",
           }}
         >
-          <RiSendPlaneFill className="chat-box__icon-send" />
+          <FaPaperPlane className="chat-box__icon-send" />
         </button>
       </form>
-    </>
+    </RightBar>
   );
 };
 
