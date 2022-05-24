@@ -26,7 +26,7 @@ export default function OfficeCanvas({
   selectedObject,
 }) {
   const orbitRef = useRef(null);
-  const character = useContext(CharacterContext);
+  const appearance = useContext(CharacterContext);
   const volume = useAppSelector(volumeSelectors.getVolume);
 
   const handleObject3dClick = (e, key) => {
@@ -96,8 +96,7 @@ export default function OfficeCanvas({
               ))}
               {!isCustomizing && (
                 <Character
-                  hair={character.hairStyle}
-                  eyes={character.eyeStyle}
+                  appearance={appearance}
                   startPosition={[-5, 3, 2]}
                   scale={[2, 2, 2]}
                   orbitRef={orbitRef}
@@ -105,6 +104,7 @@ export default function OfficeCanvas({
                   volume={volume}
                   currentEmoji={characterEmoji}
                   currentGesture={characterGesture}
+                  
                 />
               )}
 
