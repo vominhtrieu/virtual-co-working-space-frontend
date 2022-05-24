@@ -23,7 +23,7 @@ const Lobby = () => {
     let isMounted = true;
     GetOfficeListProxy({ page: 1, size: 5 })
       .then((res) => {
-        console.log(res);
+        console.log("Get offices: ", res);
         if (!isMounted) return;
 
         if (res.status === ProxyStatusEnum.FAIL) {
