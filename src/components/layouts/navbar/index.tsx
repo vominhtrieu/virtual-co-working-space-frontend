@@ -1,8 +1,10 @@
 import { FaDoorClosed, FaPlus } from "react-icons/fa";
 import NewButton from "../../UI/new-button";
 import LogoVSpace from "../../../assets/images/VSpaceLogo.svg";
+import UserPopup from "../user-popup";
 
 const Navbar = () => {
+
   return (
     <nav className="navbar">
       <div className="navbar__logo">
@@ -21,17 +23,7 @@ const Navbar = () => {
           />
         </div>
 
-        <div className="navbar__user">
-          <img
-            src="https://vcdn-giaitri.vnecdn.net/2022/04/28/Avatar-2-James-Cameron-5081-1651112580.jpg"
-            alt=""
-            className="navbar__avatar"
-          />
-
-          <div className="navbar__user-info">
-            <span className="navbar__user-name">Võ Minh Triều</span>
-          </div>
-        </div>
+        <UserPopup/>
       </div>
     </nav>
   );
