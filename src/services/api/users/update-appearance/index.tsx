@@ -1,11 +1,11 @@
-import {UpdateAppearanceApiResponse, CharacterAppearanceItem} from "./types";
+import {UpdateAppearanceApiResponse, CharacterInterfaceItem} from "./types";
 import HttpClient from "../../../../helpers/axios";
-import {CharacterAppearance} from "../../../../types/character";
+import {CharacterInterface} from "../../../../types/character";
 
 const URL = "/appearances";
 
-export async function updateAppearance(body: CharacterAppearance) {
-    const data: CharacterAppearanceItem[] = [];
+export async function updateAppearance(body: CharacterInterface) {
+    const data: CharacterInterfaceItem[] = [];
 
     for (const key in body) {
         if (typeof body[key] === "number") {

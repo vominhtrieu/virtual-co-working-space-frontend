@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
@@ -17,6 +17,7 @@ import Register from "./pages/auth/register";
 import ResetPassword from "./pages/auth/reset-password";
 import CharacterCustom from "./pages/CharacterCustom";
 import Lobby from "./pages/lobby";
+import CharacterForm from "./components/character-form";
 import CharacterCustomMobile from "./pages/mobile/CharacterCustomMobile";
 import WorkspaceMobile from "./pages/mobile/WorkspaceMobile";
 import NotFound from "./pages/not-found";
@@ -24,9 +25,7 @@ import Workspace from "./pages/office-detail/Workspace";
 import PrivateInvitation from "./pages/office-invitation/get-private-invitation";
 import PublicInvitation from "./pages/office-invitation/get-public-invitation";
 import "./scss/main.scss";
-import { getAppearance } from "./services/api/users/get-appearance";
-import { updateAppearance } from "./services/api/users/update-appearance";
-import { CharacterAppearance } from "./types/character";
+import { CharacterInterface } from "./types/character";
 
 function AuthenticatedDesktopRoutes() {
   return (
@@ -60,6 +59,7 @@ function UnauthenticatedRoutes() {
       <Route path="/auth/login" element={<Login />} />
       <Route path="/auth/register" element={<Register />} />
       <Route path="/auth/reset/:token" element={<ResetPassword />} />
+      <Route path="/webgl" element={<CharacterCustomMobile />} />
       <Route path="*" element={<NotFound />} />
 
       {/* redirect */}
@@ -93,7 +93,7 @@ function CommonRoutes() {
 }
 
 function App() {
-  const [character, setCharacter] = useState<CharacterAppearance>({
+  const [character, setCharacter] = useState<CharacterInterface>({
     hairStyle: 0,
     eyeStyle: 0,
     hairColor: 0,
@@ -103,51 +103,7 @@ function App() {
     shoeColor: 0,
   });
 
-  const changeAppearance = useCallback(
-    (groupId: number, itemIdx: number) => {
-      let newData: CharacterAppearance;
-
-      switch (groupId) {
-        case 0:
-          newData = { ...character, skinColor: itemIdx };
-          break;
-        case 1:
-          newData = { ...character, hairStyle: itemIdx };
-          break;
-        case 2:
-          newData = { ...character, hairColor: itemIdx };
-          break;
-        case 3:
-          newData = { ...character, eyeStyle: itemIdx };
-          break;
-        case 4:
-          newData = { ...character, shirtColor: itemIdx };
-          break;
-        case 5:
-          newData = { ...character, pantColor: itemIdx };
-          break;
-        case 6:
-          newData = { ...character, shoeColor: itemIdx };
-          break;
-        default:
-          newData = { ...character };
-          break;
-      }
-      updateAppearance(newData);
-      setCharacter(newData);
-    },
-    [character]
-  );
-
   const { isAuthenticated } = useSelector((state: any) => state.auth);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      getAppearance().then((data) => {
-        setCharacter(data);
-      });
-    }
-  }, [isAuthenticated]);
   return (
     <CharacterContext.Provider
       value={{
@@ -158,12 +114,12 @@ function App() {
         shirtColor: character.shirtColor,
         pantColor: character.pantColor,
         shoeColor: character.shoeColor,
-        changeCharacter: setCharacter,
-        changeAppearance: changeAppearance,
+        changeCharacter: (character: CharacterInterface) =>
+          setCharacter(character),
+        changeAppearance: () => {},
       }}
     >
       <ToastContainer />
-      <IconLanguages />
       <div className="App">
         <Router>
           {isAuthenticated ? (
@@ -174,7 +130,6 @@ function App() {
           ) : (
             <UnauthenticatedRoutes />
           )}
-          <CommonRoutes />
         </Router>
       </div>
     </CharacterContext.Provider>

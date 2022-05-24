@@ -1,4 +1,4 @@
-export interface CharacterAppearanceItem {
+export interface CharacterInterfaceItem {
     key: string;
     value: number;
 }
