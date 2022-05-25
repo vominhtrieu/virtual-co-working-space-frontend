@@ -201,6 +201,18 @@ const Workspace = () => {
     console.log("Object list: ", objectList);
   }, [objectList]);
 
+  const handleSelectConversation = (conversationId: number) => {
+    setConversationId(conversationId);
+    setAction("chatBox");
+  };
+
+  const handleSubmitMessage = (values: string) => {
+    socket.emit("message:send", {
+      conversationId: conversationId,
+      content: values,
+    });
+  };
+
   return (
     <>
       {!isCustomizing && <CallingBar />}
