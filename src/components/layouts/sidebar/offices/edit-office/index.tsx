@@ -23,7 +23,9 @@ const EditOffice = ({onItemClick}: EditOfficePropsInterface) => {
 
     useEffect(() => {
         if (selectedCategory)
-            getItems(selectedCategory.id).then((data: any) => setItems(data.data.items));
+            getItems(selectedCategory.id).then((data: any) => {
+                setItems(data.data.items)
+            });
     }, [selectedCategory]);
 
     const menu = itemCategories.length > 0 ? (

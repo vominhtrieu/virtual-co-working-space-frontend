@@ -14,13 +14,11 @@ import SidebarBox from "../sidebar-box";
 import CreateOfficeForm from "./create-office-form";
 import JoinOfficeForm from "./join-by-code";
 import { CreateOfficeFormValuesInterface, JoinOfficeFormValuesInterface } from "../../../../pages/lobby/types";
-import socket from "../../../../services/socket/socket";
 import { useAppDispatch } from "../../../../stores";
 import { setIsOffice } from "../../../../stores/office-slice";
 import { officeSelectors } from "../../../../stores/office-slice";
 import { loadSelectors } from "../../../../stores/load-slice";
 import { Skeleton } from 'antd';
-import SkeletonInput from "antd/lib/skeleton/Input";
 
 const Offices = () => {
   const [officeList, setOfficeList] = useState<OfficeInterface[]>();

@@ -438,9 +438,9 @@ const useSocketEvent = (socket, match, updatedPosition, updatedRotation) => {
     //     return;
     // }
 
-    socket.emit("office_member:join", {
-      officeId: match?.params.id,
-    });
+    // socket.emit("office_member:join", {
+    //     officeId: match?.params.id
+    // })
 
     socket.on("office_member:online", (message) => {
       console.log(message);

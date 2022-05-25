@@ -3,7 +3,6 @@ export interface Item {
     name: string;
     modelPath: string;
 }
-
 export interface ItemApiResponseInterface {
     data: any;
     status?: string;
