@@ -31,6 +31,32 @@
     }
   }
 
+  &--ok {
+    width: 100%;
+    background-color: $color-primary-dark;
+    color: $color-white;
+    outline: none;
+    border: 1px solid $color-primary-dark;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: $color-secondary-light;
+    }
+  }
+
+  &--cancel {
+    background-color: $color-white;
+    color:$color-primary-dark;
+    outline: none;
+    border: 1px solid $color-primary-dark;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: $color-secondary-light;
+      color: $color-white;
+    }
+  }
+
   &--menu-custom {
     border-radius: 1rem;
     color: $color-pure-black;

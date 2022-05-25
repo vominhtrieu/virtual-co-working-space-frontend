@@ -29,6 +29,8 @@
 @import "../components/layouts/sidebar/notification/styles";
 @import "../components/layouts/sidebar/offices/join-by-code/styles";
 @import "../components/layouts/navbar/styles";
+@import "../components/layouts/navbar/create-office-form/styles";
+@import "../components/layouts/navbar/join-by-code/styles";
 @import "../components/layouts/rightbar/styles";
 @import "../components/layouts/user-popup/styles";
 
@@ -71,6 +73,9 @@
 @import "../pages/auth/reset-password/styles";
 @import "../pages/office-invitation/get-public-invitation/styles";
 @import "../pages/lobby/styles";
+@import "../pages/profile/styles";
+@import "../pages/profile/change-pass-form/styles";
+@import "../pages/profile/edit-profile-form/styles";
 
 // import app
 @import "../style.scss";

@@ -17,6 +17,7 @@ import Register from "./pages/auth/register";
 import ResetPassword from "./pages/auth/reset-password";
 import CharacterCustom from "./pages/CharacterCustom";
 import Lobby from "./pages/lobby";
+import Profile from "./pages/profile";
 import CharacterCustomMobile from "./pages/mobile/CharacterCustomMobile";
 import WorkspaceMobile from "./pages/mobile/WorkspaceMobile";
 import NotFound from "./pages/not-found";
@@ -35,6 +36,7 @@ function AuthenticatedDesktopRoutes() {
         <Route path="/" element={<Navigate to="/lobby" replace />} />
         <Route path="/character" element={<CharacterCustom />} />
         <Route path="/lobby" element={<Lobby />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/office/:id" element={<Workspace />} />
         <Route path="invites/:token" element={<PublicInvitation />} />
         <Route path="invites/token/:token" element={<PrivateInvitation />} />
