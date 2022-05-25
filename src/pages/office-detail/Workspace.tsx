@@ -234,7 +234,7 @@ const Workspace = () => {
         open={open}
         conversationId={conversationId}
         isShowChatBox={isShowChatBox}
-        isCustomizing={isCustomizing}
+        isCustomizing={action === "config"}
         objectActionVisible={objectActionVisible}
         handleButtonDeleteClick={handleButtonDeleteClick}
         handleButtonRotateLeftClick={handleButtonRotateLeftClick}
@@ -247,8 +247,8 @@ const Workspace = () => {
         setIsCustomizing={setIsCustomizing}
         setIsShowDetailForm={setIsShowDetailForm}
         setIsShowChatBox={setIsShowChatBox}
-        action={action}
         setAction={setAction}
+        action={action}
       />
       {isShowDetailForm ? (
         <OfficeDetailForm
