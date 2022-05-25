@@ -12,6 +12,7 @@ import { volumeSelectors } from "../../stores/volume-slice";
 import { Provider } from "react-redux";
 import store from "../../stores";
 import ItemModel from "../models/ItemModel";
+import { socketSelector } from "../../stores/socket-slice";
 
 export default function OfficeCanvas({
   setObjectionClickPos,
@@ -24,6 +25,8 @@ export default function OfficeCanvas({
   objectList,
   objectActionVisible,
   selectedObject,
+  selectedKey,
+  handleObject3dDragged,
 }) {
   const orbitRef = useRef(null);
   const appearance = useContext(CharacterContext);
@@ -31,10 +34,11 @@ export default function OfficeCanvas({
 
   const handleObject3dClick = (e, key) => {
     let temp = e.object;
-    console.log(temp);
     while (temp.parent && temp.parent.type !== "Scene") {
       temp = temp.parent;
     }
+
+    console.log(key)
 
     setSelectedObject(temp);
     setSelectedKey(key);
@@ -90,7 +94,7 @@ export default function OfficeCanvas({
                   onPointerMissed={handleObject3dPointerMissed}
                 >
                   <Suspense fallback={null}>
-                    <ItemModel url={object.modelPath} />
+                    <ItemModel url={object.item.modelPath} />
                   </Suspense>
                 </mesh>
               ))}
@@ -104,7 +108,7 @@ export default function OfficeCanvas({
                   volume={volume}
                   currentEmoji={characterEmoji}
                   currentGesture={characterGesture}
-                  
+
                 />
               )}
 
@@ -112,13 +116,14 @@ export default function OfficeCanvas({
 
               <CustomTransformControl
                 object={selectedObject}
+                objectKey={selectedKey}
                 orbit={orbitRef}
                 visible={objectActionVisible && isCustomizing}
+                handleObject3dDragged={handleObject3dDragged}
               />
             </Debug>
           </Physics>
         </Suspense>
       </Provider>
-    </Canvas>
-  );
+    </Canvas>)
 }
