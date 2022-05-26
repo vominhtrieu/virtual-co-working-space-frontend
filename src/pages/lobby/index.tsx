@@ -96,7 +96,7 @@ const Lobby = () => {
             return (
               <Thumbnail
                 key={office.id}
-                title={office.name}
+                office={office}
                 alt={office.avatarUrl}
                 src={office.avatarUrl}
                 onClick={() => {

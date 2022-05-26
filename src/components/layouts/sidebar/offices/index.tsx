@@ -148,7 +148,7 @@ const Offices = () => {
                   )) : officeList?.map((office, key) => {
                     return (
                       <Thumbnail
-                        title={office.name}
+                        office={office}
                         key={key}
                         src={office.avatarUrl}
                         onClick={() => {

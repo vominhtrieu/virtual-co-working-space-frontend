@@ -181,19 +181,19 @@ const Profile = () => {
                             {/* user item - end */}
                         </ul>
                         <div className='lobby__profile-user-group-btn'>
-                        <Button type='submit' className="ok"  onClick={() => {
-                                    setIsEditing(true);
-                                }}>
-            {/* {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null} */}
-            Change Profile
-          </Button>
-          <Button type='submit' className="ok"  onClick={() => {
-                                    setIsChangingPass(true);
-                                }}>
-            {/* {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null} */}
-            Change Password
-          </Button>
-                          
+                            <Button type='submit' variant="primary" onClick={() => {
+                                setIsEditing(true);
+                            }}>
+                                {/* {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null} */}
+                                Change Profile
+                            </Button>
+                            <Button type='submit' variant="primary" onClick={() => {
+                                setIsChangingPass(true);
+                            }}>
+                                {/* {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null} */}
+                                Change Password
+                            </Button>
+
                         </div>
                     </div>
                 </div>
