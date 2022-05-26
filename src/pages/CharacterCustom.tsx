@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { Button } from "antd";
 import Box from "../components/models/Box";
 import CharacterContext from "../context/CharacterContext";
-import DisplayCharacter from "../components/models/DisplayCharacter";
+import DisplayCharacter from "../components/models/character/DisplayCharacter";
 import CharacterCustomForm from "../components/character-custom-form";
 import CharacterForm from "../components/character-form";
 

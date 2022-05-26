@@ -17,6 +17,7 @@ import { socketSelector } from "../../stores/socket-slice";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import CallingBar from "./calling/CallingBar";
 import { OfficeItem } from "../../services/api/offices/officce-item/types";
+import { OfficeMembersInterface } from "../../services/api/offices/office-detail/types";
 
 export type positionType = {
   x: number;
@@ -24,33 +25,34 @@ export type positionType = {
 };
 
 const Workspace = () => {
-  const [conversationId, setConversationId] = useState<number>(0);
-  const [isOwner, setIsOwner] = useState(false);
-  const { open } = useSelector((state: any) => state.sidebar);
-  const [isShowDetailForm, setIsShowDetailForm] = useState(false);
-  const [isShowChatBox, setIsShowChatBox] = useState(false);
-  const [objectList, setObjectList] = useState<OfficeItem[]>([]);
-  const [selectedKey, setSelectedKey] = useState(null);
-  const [selectedObject, setSelectedObject] = useState<any>(null);
-  const [objectActionVisible, setObjectActionVisible] = useState(false);
-  const [object3dClickPos, setObjectionClickPos] = useState<positionType>({
-    x: 0,
-    y: 0,
-  });
-  const [isCustomizing, setIsCustomizing] = useState(false);
-  const [characterGesture, setCharacterGesture] = useState({ idx: -1 });
-  const [characterEmoji, setCharacterEmoji] = useState({ idx: -1 });
+    const [conversationId, setConversationId] = useState<number>(0);
+    const [isOwner, setIsOwner] = useState(false);
+    const {open} = useSelector((state: any) => state.sidebar);
+    const [isShowDetailForm, setIsShowDetailForm] = useState(false);
+    const [isShowChatBox, setIsShowChatBox] = useState(false);
+    const [objectList, setObjectList] = useState<OfficeItem[]>([]);
+    const [selectedKey, setSelectedKey] = useState(null);
+    const [selectedObject, setSelectedObject] = useState<any>(null);
+    const [objectActionVisible, setObjectActionVisible] = useState(false);
+    const [object3dClickPos, setObjectionClickPos] = useState<positionType>({
+        x: 0,
+        y: 0,
+    });
+    const [isCustomizing, setIsCustomizing] = useState(false);
+    const [characterGesture, setCharacterGesture] = useState({idx: -1});
+    const [characterEmoji, setCharacterEmoji] = useState({idx: -1});
+    const [onlineMembers, setOnlineMembers] = useState<OfficeMembersInterface[]>([]);
 
-  const [action, setAction] = useState<
-    | "action"
-    | "character"
-    | "config"
-    | "member"
-    | "chatList"
-    | "chatBox"
-    | "setting"
-    | ""
-  >("");
+    const [action, setAction] = useState<
+      | "action"
+      | "character"
+      | "config"
+      | "member"
+      | "chatList"
+      | "chatBox"
+      | "setting"
+      | ""
+    >("");
 
   const navigate = useNavigate();
 
@@ -117,6 +119,10 @@ const Workspace = () => {
   };
 
   useEffect(() => {
+    socket.on("office_member:online", (message) => {
+      console.log("Online", message)
+    })
+
     socket.on("office_item:created", (message) => {
       console.log(message);
       setObjectList((objectList) => [...objectList, message]);
@@ -176,126 +182,85 @@ const Workspace = () => {
     });
   };
 
-  useEffect(() => {
-    OfficeDetailProxy({ id: officeId })
-      .then((res) => {
-        if (res.status === ProxyStatusEnum.FAIL) {
-          return;
-        }
+    useEffect(() => {
+        OfficeDetailProxy({id: officeId})
+            .then((res) => {
+                if (res.status === ProxyStatusEnum.FAIL) {
+                    return;
+                }
 
-        if (res.status === ProxyStatusEnum.SUCCESS) {
-          setIsOwner(res?.data?.office?.createdBy?.id === userInfo.id);
-          if (res?.data?.office?.conversations.length > 0) {
-            setConversationId(res?.data?.office?.conversations[0]?.id);
-          }
-          if (res?.data?.office?.officeItems.length > 0) {
-            setObjectList(res.data.office.officeItems);
-          }
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [officeId, userInfo.id]);
+                if (res.status === ProxyStatusEnum.SUCCESS) {
+                    setIsOwner(res?.data?.office?.createdBy?.id === userInfo.id);
+                    if (res?.data?.office?.conversations.length > 0) {
+                        setConversationId(res?.data?.office?.conversations[0]?.id);
+                    }
+                    if (res?.data?.office?.officeItems.length > 0) {
+                        setObjectList(res.data.office.officeItems);
+                    }
+                    if (res?.data?.office?.officeMembers.length > 0) {
+                        console.log(res.data.office.officeMembers)
+                        setOnlineMembers(res.data.office.officeMembers.filter((member) => member.onlineStatus === "online"));
+                    }
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, [officeId, userInfo.id]);
 
-  useEffect(() => {
-    console.log("Object list: ", objectList);
-  }, [objectList]);
+    useEffect(() => {
+      console.log(onlineMembers);
+    }, [onlineMembers])
 
-  const handleSelectConversation = (conversationId: number) => {
-    setConversationId(conversationId);
-    setAction("chatBox");
-  };
-
-  const handleSubmitMessage = (values: string) => {
-    socket.emit("message:send", {
-      conversationId: conversationId,
-      content: values,
-    });
-  };
-
-  return (
-    <>
-      {!isCustomizing && <CallingBar />}
-      <OfficeCanvas
-        setObjectionClickPos={setObjectionClickPos}
-        characterGesture={characterGesture}
-        characterEmoji={characterEmoji}
-        isCustomizing={action === "config"}
-        objectActionVisible={objectActionVisible}
-        objectList={objectList}
-        selectedObject={selectedObject}
-        selectedKey={selectedKey}
-        setObjectActionVisible={setObjectActionVisible}
-        setSelectedKey={setSelectedKey}
-        setSelectedObject={setSelectedObject}
-        handleObject3dDragged={handleObject3dDragged}
-      />
-      <OfficeInterface
-        open={open}
-        conversationId={conversationId}
-        isShowChatBox={isShowChatBox}
-        isCustomizing={action === "config"}
-        objectActionVisible={objectActionVisible}
-        handleButtonDeleteClick={handleButtonDeleteClick}
-        handleButtonRotateLeftClick={handleButtonRotateLeftClick}
-        handleButtonRotateRightClick={handleButtonRotateRightClick}
-        handleItemInBottomMenuClick={handleItemInBottomMenuClick}
-        object3dClickPos={object3dClickPos}
-        isOwner={isOwner}
-        setCharacterEmoji={setCharacterEmoji}
-        setCharacterGesture={setCharacterGesture}
-        setIsCustomizing={setIsCustomizing}
-        setIsShowDetailForm={setIsShowDetailForm}
-        setIsShowChatBox={setIsShowChatBox}
-        setAction={setAction}
-        action={action}
-      />
-      {isShowDetailForm ? (
-        <OfficeDetailForm
-          onClose={() => {
-            setIsShowDetailForm(false);
-          }}
-          id={officeId}
-          isOwner={isOwner}
-        />
-      ) : null}
-
-      {action === "chatList" && (
-        <ChatList
-          onClose={() => setAction("")}
-          id={+officeId}
-          onSelectConversation={handleSelectConversation}
-        />
-      )}
-
-      {action === "chatBox" && (
-        <ChatBox
-          conversationId={conversationId}
-          onBack={() => setAction("chatList")}
-          onClose={() => setAction("")}
-          submitMessage={handleSubmitMessage}
-        />
-      )}
-
-      {action === "member" && (
-        <MemberList onClose={() => setAction("")} id={+officeId} />
-      )}
-
-      {action === "character" && (
-        <CharacterForm onClose={() => setAction("")} />
-      )}
-
-      {action === "action" && (
-        <InteractionMenu
-          onGestureClick={(value: number) =>
-            setCharacterGesture({ idx: value })
-          }
-          onEmojiClick={(value: number) => setCharacterEmoji({ idx: value })}
-        />
-      )}
-    </>
-  );
+    return (
+        <>
+            {!isCustomizing && <CallingBar/>}
+            <OfficeCanvas
+                setObjectionClickPos={setObjectionClickPos}
+                characterGesture={characterGesture}
+                characterEmoji={characterEmoji}
+                isCustomizing={action === "config"}
+                objectActionVisible={objectActionVisible}
+                objectList={objectList}
+                onlineMembers={onlineMembers}
+                selectedObject={selectedObject}
+                selectedKey={selectedKey}
+                setObjectActionVisible={setObjectActionVisible}
+                setSelectedKey={setSelectedKey}
+                setSelectedObject={setSelectedObject}
+                handleObject3dDragged={handleObject3dDragged}
+            />
+            <OfficeInterface
+                open={open}
+                conversationId={conversationId}
+                isShowChatBox={isShowChatBox}
+                isCustomizing={action === "config"}
+                objectActionVisible={objectActionVisible}
+                handleButtonDeleteClick={handleButtonDeleteClick}
+                handleButtonRotateLeftClick={handleButtonRotateLeftClick}
+                handleButtonRotateRightClick={handleButtonRotateRightClick}
+                handleItemInBottomMenuClick={handleItemInBottomMenuClick}
+                object3dClickPos={object3dClickPos}
+                isOwner={isOwner}
+                setCharacterEmoji={setCharacterEmoji}
+                setCharacterGesture={setCharacterGesture}
+                setIsCustomizing={setIsCustomizing}
+                setIsShowDetailForm={setIsShowDetailForm}
+                setIsShowChatBox={setIsShowChatBox}
+                action={action}
+                setAction={setAction}
+            />
+            {isShowDetailForm ? (
+                <OfficeDetailForm
+                    onClose={() => {
+                        setIsShowDetailForm(false);
+                    }}
+                    id={officeId}
+                    isOwner={isOwner}
+                />
+            ) : null}
+        </>
+    );
 };
 
 export default Workspace;
