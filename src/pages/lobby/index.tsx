@@ -100,7 +100,11 @@ const Lobby = () => {
                 alt={office.avatarUrl}
                 src={office.avatarUrl}
                 onClick={() => {
-                  navigate(`/office/${office.id}`);
+                  navigate(`/office/${office.id}`, {
+                    state: {
+                      officeId: office.id,
+                    },
+                  });
                 }}
               />
             );

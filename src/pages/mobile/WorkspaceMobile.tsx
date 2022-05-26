@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useState, useCallback} from "react";
 import {useLocation, useParams} from "react-router-dom";
 import OfficeCanvas from "../../components/office/OfficeCanvas";
 import OfficeDetailProxy from "../../services/proxy/offices/office-detail";
@@ -6,6 +6,7 @@ import {useAppSelector} from "../../stores";
 import {userSelectors} from "../../stores/auth-slice";
 import {Joystick} from 'react-joystick-component';
 import CharacterContext from "../../context/CharacterContext";
+import { socketSelector } from "../../stores/socket-slice";
 
 export type positionType = {
     x: number;
@@ -33,6 +34,7 @@ const WorkspaceCustom = () => {
 
     const officeId = params.officeId;
     const userInfo = useAppSelector(userSelectors.getUserInfo);
+    const socket = useAppSelector(socketSelector.getSocket);
     //
     // useEffect(() => {
     //     OfficeDetailProxy({id: officeId})
@@ -52,6 +54,33 @@ const WorkspaceCustom = () => {
     //             console.log(err);
     //         });
     // }, [officeId, userInfo.id]);
+    const handleObject3dDragged = useCallback((position, rotation) => {
+        socket.emit("office_item:move", {
+            id: selectedKey,
+            transform: {
+                xRotation: rotation.x,
+                yRotation: rotation.y,
+                zRotation: rotation.z,
+                xPosition: position.x,
+                yPosition: position.y,
+                zPosition: position.z
+            }
+        })
+    }, [selectedKey, socket]);
+    
+    const handleObject3dRotated = useCallback((position, rotation) => {
+        socket.emit("office_item:move", {
+            id: selectedKey,
+            transform: {
+                xRotation: rotation.x,
+                yRotation: rotation.y,
+                zRotation: rotation.z,
+                xPosition: position.x,
+                yPosition: position.y,
+                zPosition: position.z
+            }
+        })
+    }, [socket, selectedKey])
 
     return (
         <>
@@ -63,9 +92,11 @@ const WorkspaceCustom = () => {
                 objectActionVisible={objectActionVisible}
                 objectList={objectList}
                 selectedObject={selectedObject}
+                selectedKey={selectedKey}
                 setObjectActionVisible={setObjectActionVisible}
                 setSelectedKey={setSelectedKey}
                 setSelectedObject={setSelectedObject}
+                handleObject3dDragged={handleObject3dDragged}
             />
             <div style={{position: "absolute", bottom: 30, width: "100vw", display: "flex", justifyContent: "center"}}>
                 <Joystick size={150} move={({x, y}) => {

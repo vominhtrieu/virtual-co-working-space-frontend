@@ -1,4 +1,4 @@
-export interface CharacterAppearanceResponse {
+export interface CharacterInterfaceResponse {
     data: {
         appearances: {
             key: string,
