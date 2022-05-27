@@ -1,7 +1,6 @@
 .thumbnail {
   width: 100%;
   height: 100%;
-  padding: 1rem;
   background-color: #fff;
   box-shadow: 0 0 2rem 0.5rem $color-gray-3;
   border-radius: 0.5rem;
@@ -27,6 +26,7 @@
   &__content {
     flex: 0 0 45%;
     color: $color-gray-3;
+    padding: 1rem;
 
     &-header {
       display: flex;
@@ -36,8 +36,9 @@
     }
 
     &-title {
-      font-size: 1.5rem;
+      font-size: 2rem;
       font-weight: 600;
+      line-height: 1.1;
     }
 
     &-count {

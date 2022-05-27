@@ -2,13 +2,11 @@ import { Input } from "antd";
 import { useController } from "react-hook-form";
 import { InputTextProps } from "./types";
 
-const InputText = ({ name, control, hasLabel, ...rest }: InputTextProps) => {
+const InputText = ({ name, control, hasLabel, label, ...rest }: InputTextProps) => {
   const {
     field,
     fieldState: { error },
   } = useController({ name: name, control: control });
-
-  const label = rest.placeholder ? rest.placeholder : name;
 
   return (
     <div className='input-text'>

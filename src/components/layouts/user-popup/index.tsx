@@ -1,40 +1,66 @@
 import { FaDoorClosed, FaPlus } from "react-icons/fa";
 import { Dropdown } from "antd";
-
 import { Menu } from 'antd';
 import MenuDivider from "antd/lib/menu/MenuDivider";
+import { useNavigate } from "react-router-dom";
+import { userSelectors } from "../../../stores/auth-slice";
+import { UserOutlined } from "@ant-design/icons";
+import { removeAll } from "../../../helpers/cookies";
+import { removeAllDataLocal } from "../../../helpers/localStorage";
+import { useAppDispatch, useAppSelector } from "../../../stores";
+import {
+  setAuthenticated,
+  setUserInfo,
+} from "../../../stores/auth-slice";
+import CharacterForm from "../../character-form";
+import { useState } from "react";
+
+
 
 const UserPopup = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const userInfo = useAppSelector(userSelectors.getUserInfo);
+  const [isCharacter, setIsCharacter] = useState(false);
+
+  const handleLogout = () => {
+    dispatch(setAuthenticated(false));
+    dispatch(setUserInfo({}));
+    removeAllDataLocal();
+    removeAll();
+    navigate("/auth/login");
+  };
+
+  const handleClickProfile = () => {
+    navigate('/profile');
+  }
 
   const menu = (
     <Menu className="navbar__dropdown-menu">
-      <Menu.Item className="navbar__dropdown-item">
-        <div className="navbar__dropdown-content-top">
-          <div className="navbar__dropdown-item-title">
-            <p>Vo Minh Trieu</p>
-            <p>nlpthuy137@gmail.com</p>
-          </div>
-          <div className="navbar__dropdown-item-icon">
-            <FaDoorClosed />
-          </div>
-        </div>
-      </Menu.Item>
-      <MenuDivider />
-      <Menu.Item className="navbar__dropdown-item">
+      <Menu.Item className="navbar__dropdown-item" onClick={handleClickProfile}>
         <div className="navbar__dropdown-content-bottom">
           <div className="navbar__dropdown-item-icon">
             <FaDoorClosed />
           </div>
-          <p>Chỉnh sửa nhân vật</p>
+          <p>Your account</p>
+        </div>
+      </Menu.Item>
+      <Menu.Item className="navbar__dropdown-item" onClick={() => setIsCharacter(true)}>
+        <div className="navbar__dropdown-content-bottom">
+          <div className="navbar__dropdown-item-icon">
+            <FaDoorClosed />
+          </div>
+          <p>Edit character</p>
         </div>
 
       </Menu.Item>
-      <Menu.Item className="navbar__dropdown-item">
+      <MenuDivider />
+      <Menu.Item className="navbar__dropdown-item" onClick={handleLogout}>
         <div className="navbar__dropdown-content-bottom">
           <div className="navbar__dropdown-item-icon">
             <FaDoorClosed />
           </div>
-          <p>Đăng xuất</p>
+          <p>Logout</p>
         </div>
 
       </Menu.Item>
@@ -42,18 +68,28 @@ const UserPopup = () => {
   );
 
   return (
-    <Dropdown overlay={menu} placement="bottomRight">
-      <div className="navbar__user">
-        <img
-          src="https://vcdn-giaitri.vnecdn.net/2022/04/28/Avatar-2-James-Cameron-5081-1651112580.jpg"
-          alt=""
-          className="navbar__avatar"
-        />
-        <div className="navbar__user-info">
-          <span className="navbar__user-name">Võ Minh Triều</span>
+    <>
+      {isCharacter && (
+        <CharacterForm onClose={() => setIsCharacter(false)} />
+      )}
+      <Dropdown overlay={menu} placement="bottomRight">
+        <div className="navbar__user">
+          {userInfo.avatar == "" ?
+            <div className="navbar__avatar">
+              <UserOutlined />
+            </div> : <img
+              src={userInfo.avatar}
+              alt=""
+              className="navbar__avatar"
+            />
+          }
+          <div className="navbar__user-info">
+            <span className="navbar__user-name">{userInfo.name}</span>
+          </div>
         </div>
-      </div>
-    </Dropdown>
+      </Dropdown>
+    </>
+
   );
 };
 
