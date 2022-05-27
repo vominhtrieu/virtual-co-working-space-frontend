@@ -102,10 +102,11 @@ export default function OfficeCanvas({
                   </Suspense>
                 </mesh>
               ))}
-              {!isCustomizing && onlineMembers.map((member, idx) =>
-                member.member.id == userInfo.id ? <Character
+              {!isCustomizing && onlineMembers.map((member) =>
+                member.member.id === userInfo.id ? <Character
+                  key={member.id}
                   appearance={appearance}
-                  startPosition={[-5, 3, 2]}
+                  startPosition={[member.transform.position.x, 3, member.transform.position.z]}
                   scale={[2, 2, 2]}
                   orbitRef={orbitRef}
                   movable
@@ -113,14 +114,16 @@ export default function OfficeCanvas({
                   currentEmoji={characterEmoji}
                   currentGesture={characterGesture}
                 /> : <MemberCharacter
+                  key={member.id}
                   appearance={appearance}
-                  startPosition={[-8, 3, 8]}
+                  startPosition={[member.transform.position.x, 3, member.transform.position.z]}
                   scale={[2, 2, 2]}
                   orbitRef={orbitRef}
                   movable
                   volume={volume}
                   currentEmoji={characterEmoji}
                   currentGesture={characterGesture}
+                  memberId={member.member.id}
                 />
               )}
 

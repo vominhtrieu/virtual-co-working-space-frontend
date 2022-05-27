@@ -14,6 +14,7 @@ export default function OfficeInterface({
   isShowChatBox,
   isCustomizing,
   setIsCustomizing,
+  isShowInteraction,
   setCharacterGesture,
   setCharacterEmoji,
   objectActionVisible,
@@ -28,7 +29,17 @@ export default function OfficeInterface({
   setAction,
   action,
 }) {
-  const [showInteractMenu, setShowInteractMenu] = useState(false);
+
+
+  const handleEmojiClick = (emojiIdx: number) => {
+    setCharacterEmoji({idx: emojiIdx});
+    // emit some shit
+  }
+
+  const handleGestureClick = (gestureIdx: number) => {
+    setCharacterGesture({idx: gestureIdx});
+    // emit some shit
+  }
 
   return (
     <>
@@ -107,6 +118,8 @@ export default function OfficeInterface({
           </>
         ) : null}
       </div>
+
+      {isShowInteraction && <InteractionMenu onGestureClick={handleGestureClick} onEmojiClick={handleEmojiClick} /> }
 
       {isShowChatBox && <SidebarChat conversationId={conversationId} />}
 

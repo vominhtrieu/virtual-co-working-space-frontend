@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import CharacterForm from "../../components/character-form";
-import InteractionMenu from "../../components/layouts/sidebar/offices/character-interaction";
 import OfficeDetailForm from "../../components/office-detail-form";
 import ChatBox from "../../components/office/chat-box";
 import ChatList from "../../components/office/chat-list";
@@ -119,15 +118,26 @@ const Workspace = () => {
   };
 
   useEffect(() => {
-    socket.on("office_member:online", (message) => {
-      console.log("Online", message)
-    })
-
     socket.on("office_item:created", (message) => {
-      console.log(message);
       setObjectList((objectList) => [...objectList, message]);
     });
 
+    socket.on("office_item:deleted", (message) => {
+      const idx = objectList.findIndex((obj) => obj.id === message);
+      const newObjectList = [...objectList];
+      newObjectList.splice(idx, 1);
+      setObjectList([...newObjectList]);
+    });
+
+    return () => {
+      socket.removeListener("office_item:online")
+      socket.removeListener("office_item:created");
+
+      socket.removeListener("office_item:deleted");
+    };
+  }, [socket, objectList]);
+
+  useEffect(() => {
     socket.on("office_item:moved", (message) => {
       const { id, transform } = message;
       const idx = objectList.findIndex((obj) => obj.id === id);
@@ -141,22 +151,13 @@ const Workspace = () => {
         yRotation: transform.yRotation,
         zRotation: transform.zRotation,
       };
-      console.log(newObjectList)
-      setObjectList([...newObjectList]);
-    });
-
-    socket.on("office_item:deleted", (message) => {
-      const idx = objectList.findIndex((obj) => obj.id === message);
-      const newObjectList = [...objectList];
-      newObjectList.splice(idx, 1);
       setObjectList([...newObjectList]);
     });
 
     return () => {
-      socket.removeListener("office_item:created");
       socket.removeListener("office_item:moved");
-    };
-  }, [socket, objectList]);
+    }
+  }, [socket, objectList])
 
   useEffect(() => {
     console.log("join office ", officeId);
@@ -164,6 +165,21 @@ const Workspace = () => {
       officeId: officeId,
     });
   }, [officeId, socket]);
+
+  useEffect(() => {
+    socket.on("office_member:online", (message) => {
+      const newMember: OfficeMembersInterface = message as OfficeMembersInterface;
+      console.log(onlineMembers)
+      if (onlineMembers.findIndex((member) => member.id === newMember.id) < 0) {
+        newMember.onlineStatus = "online"
+        setOnlineMembers([...onlineMembers, newMember])
+      }
+    })
+
+    return () => {
+      socket.removeListener("office_member:online");
+    }
+  }, [socket, onlineMembers])
 
   const handleItemInBottomMenuClick = (item: Item) => {
     // setObjectList((objectList) => [
@@ -199,7 +215,7 @@ const Workspace = () => {
                     }
                     if (res?.data?.office?.officeMembers.length > 0) {
                         console.log(res.data.office.officeMembers)
-                        setOnlineMembers(res.data.office.officeMembers.filter((member) => member.onlineStatus === "online"));
+                        setOnlineMembers(res.data.office.officeMembers.filter((member) => member.onlineStatus === "online" || member.member.id === userInfo.id));
                     }
                 }
             })
@@ -249,6 +265,7 @@ const Workspace = () => {
                 setIsShowChatBox={setIsShowChatBox}
                 action={action}
                 setAction={setAction}
+                isShowInteraction={action === "action"}
             />
             {isShowDetailForm ? (
                 <OfficeDetailForm

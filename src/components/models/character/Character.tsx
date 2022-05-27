@@ -90,9 +90,7 @@ export default function Character(props: CharacterProps) {
   const [emojiPlaying, setEmojiPlaying] = useState<boolean>(false);
 
   const position = useRef([0, 0, 0]);
-  const updatedPosition = useRef(props.startPosition);
   const rotation = useRef([0, 0, 0]);
-  const updatedRotation = useRef<THREE.Euler>(new THREE.Euler());
   const count = useRef(0);
 
   const loader = new THREE.TextureLoader();
@@ -187,15 +185,6 @@ export default function Character(props: CharacterProps) {
     return result;
   };
 
-  const shouldUpdate = () => {
-    return (
-      Math.sqrt(
-        Math.pow(position.current[0] - updatedPosition.current[0], 2) +
-          Math.pow(position.current[2] - updatedPosition.current[2], 2)
-      ) > 0.05
-    );
-  };
-
   useFrame((state, delta) => {
     if (!props.movable) {
       return;
@@ -237,8 +226,6 @@ export default function Character(props: CharacterProps) {
 
       // api.quaternion.copy(ref.current.quaternion);
 
-      updatedPosition.current = position.current;
-
       if (count.current > 20) {
         socket.emit("office_member:move", {
           xRotation: rotation.current[0],
@@ -255,37 +242,10 @@ export default function Character(props: CharacterProps) {
     } else {
       if (gesturePlaying) {
         clip = actions[getGesture()];
-      } else if (!shouldUpdate()) {
+      } else {
         clip = actions.Idle;
       }
       api.velocity.set(0, 0, 0);
-    }
-
-    //update from remote position
-    if (shouldUpdate()) {
-      clip = actions.Walking;
-
-      const newDirection = new THREE.Vector3(
-        updatedPosition.current[0] - position.current[0],
-        0,
-        updatedPosition.current[2] - position.current[2]
-      );
-
-      rotateQuaternion.current.setFromEuler(updatedRotation.current);
-
-      ref.current.quaternion.rotateTowards(
-        rotateQuaternion.current,
-        delta * 10
-      );
-
-      walkDirection.current = newDirection;
-      walkDirection.current.y = 0;
-      walkDirection.current.normalize();
-      const moveX = walkDirection.current.x * MovingSpeed;
-      const moveZ = walkDirection.current.z * MovingSpeed;
-
-      api.velocity.set(moveX, 0, moveZ);
-      api.quaternion.copy(ref.current.quaternion);
     }
 
     if (clip && clip !== currentClip.current) {
@@ -329,13 +289,11 @@ export default function Character(props: CharacterProps) {
         props.startPosition[2]
       );
       api.rotation.set(0, 0, 0);
-      updatedPosition.current = ref.current.position;
-      updatedRotation.current = ref.current.rotation;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match?.params.id]);
 
-  useSocketEvent(socket, match, updatedPosition, updatedRotation);
+  // useSocketEvent(socket, match, updatedPosition, updatedRotation);
 
   return (
     <>
@@ -441,37 +399,5 @@ const getMovingVector = (keyPressed) => {
 
   return vector;
 };
-
-const useSocketEvent = (socket, match, updatedPosition, updatedRotation) => {
-    useEffect(() => {
-        // if (!socket) {
-        //     dispatch(connect());
-        //     return;
-        // }
-
-        // socket.emit("office_member:join", {
-        //     officeId: match?.params.id
-        // })
-
-        socket.on("office_member:moved", (message) => {
-            updatedPosition.current = [message.xPosition, message.yPosition, message.zPosition];
-            updatedRotation.current = new THREE.Euler(message.xRotation, message.yRotation, message.zRotation);
-        })
-
-        socket.on("office_member:error", (message) => {
-            console.log(message);
-        })
-
-        // socket.on("connect_error", message => {
-        //     console.log("connection error: ", message);
-
-        // })
-        return () => {
-            socket.removeListener("office_member:online")
-            socket.removeListener("office_member:moved")
-            socket.removeListener("office_member:error")
-        }
-    }, [socket, match?.params.id])
-}
 
 useGLTF.preload("/Character.glb");
