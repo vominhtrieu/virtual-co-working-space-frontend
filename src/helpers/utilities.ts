@@ -79,35 +79,5 @@ export function useCustomGLTF(path: string): GLTFResult {
             result.materials[key] = material;
         }
     }
-
-    let boundingBox = {
-        min: {x: Infinity, y:Infinity, z:Infinity},
-        max: {x: -Infinity, y:-Infinity, z:-Infinity},
-    }
-
-    for (let key in result.nodes) {
-        let node = result.nodes[key];
-
-        if (node.type !== "Mesh") {
-            continue;
-        }
-        boundingBox.min.x = Math.min(boundingBox.min.x, node.geometry.boundingBox.min.x);
-        boundingBox.min.y = Math.min(boundingBox.min.y, node.geometry.boundingBox.min.y);
-        boundingBox.min.z = Math.min(boundingBox.min.z, node.geometry.boundingBox.min.z);
-        boundingBox.max.x = Math.max(boundingBox.max.x, node.geometry.boundingBox.max.x);
-        boundingBox.max.y = Math.max(boundingBox.max.y, node.geometry.boundingBox.max.y);
-        boundingBox.max.z = Math.max(boundingBox.max.z, node.geometry.boundingBox.max.z);
-    }
-    const diff = 0 - boundingBox.min.y;
-    boundingBox.min.y += diff;
-    boundingBox.max.y += diff;
-
-    result.boundingBox = boundingBox;
-
-    result.meshPosition = [
-        -boundingBox.max.x + boundingBox.min.x,
-        (-boundingBox.max.y + boundingBox.min.y) / 2,
-        -boundingBox.max.z + boundingBox.min.z
-    ];
     return result;
 }
