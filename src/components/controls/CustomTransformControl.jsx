@@ -3,6 +3,7 @@ import {useFrame, useThree} from "@react-three/fiber";
 import {TransformControls} from "@react-three/drei";
 
 export default function CustomTransformControl({object, orbit, visible, handleObject3dDragged}) {
+    console.log(visible)
     const transform = useRef();
     const {camera, gl} = useThree();
 
