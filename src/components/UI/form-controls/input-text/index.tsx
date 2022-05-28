@@ -4,7 +4,15 @@ import { useController } from "react-hook-form";
 import { InputTextProps } from "./types";
 
 const InputText = (
-  { name, control, hasLabel, onFocus, label, ...rest }: InputTextProps,
+  {
+    name,
+    control,
+    hasLabel,
+    onFocus,
+    label,
+    changeCursorPosition,
+    ...rest
+  }: InputTextProps,
   ref
 ) => {
   const {
@@ -23,10 +31,16 @@ const InputText = (
         className={error ? "error" : ""}
         autoComplete="off"
         ref={ref ?? field.ref}
-        onBlur={field.onBlur}
+        onBlur={(e) => {
+          changeCursorPosition && changeCursorPosition(e.target.selectionStart);
+          field.onBlur();
+        }}
         value={field.value}
         id={name}
-        onChange={(e) => field.onChange(e.target.value)}
+        onChange={(e) => {
+          changeCursorPosition && changeCursorPosition(e.target.selectionStart);
+          field.onChange(e.target.value);
+        }}
         {...rest}
         onFocus={onFocus}
       />

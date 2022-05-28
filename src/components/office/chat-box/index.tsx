@@ -15,7 +15,7 @@ import { ChatBoxProps, ChatItemInterface } from "./types";
 const ChatBox = (props: ChatBoxProps) => {
   const { onClose, onBack, conversationId, submitMessage } = props;
   const [isShowEmojiBox, setIsShowEmojiBox] = useState(false);
-
+  const [cursor, setCursor] = useState(0);
   const [chatList, setChatList] = useState<ChatItemInterface[]>([]);
   const socket = useAppSelector(socketSelector.getSocket);
 
@@ -161,8 +161,16 @@ const ChatBox = (props: ChatBoxProps) => {
     };
   }, []);
 
+  const handleChangeCursor = (value) => {
+    setCursor(value);
+  };
+
   const handleEmojiClick = (emoji) => {
-    setValue("message", `${watchMessage}${emoji}`);
+    // insert emoji
+    const preMess = watchMessage.slice(0, cursor);
+    const postMess = watchMessage.slice(cursor);
+    const newMess = preMess + emoji + postMess;
+    setValue("message", newMess);
   };
 
   return (
@@ -223,6 +231,7 @@ const ChatBox = (props: ChatBoxProps) => {
             color: "#fff",
           }}
           ref={inputRef}
+          changeCursorPosition={handleChangeCursor}
         />
         <button
           style={{

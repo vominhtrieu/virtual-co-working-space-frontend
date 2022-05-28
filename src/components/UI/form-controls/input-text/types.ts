@@ -7,4 +7,5 @@ export interface InputTextProps extends InputProps {
   ref?: any;
   onFocus?: (e: any) => void;
   label?: string;
+  changeCursorPosition?: (e: any) => void;
 }
