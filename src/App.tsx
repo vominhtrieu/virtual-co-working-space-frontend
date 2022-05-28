@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
@@ -8,7 +8,6 @@ import {
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import IconLanguages from "./components/icon-lang";
 import CharacterContext from "./context/CharacterContext";
 import Active from "./pages/auth/active";
 import ForgotPassword from "./pages/auth/forgot-password";
@@ -17,7 +16,6 @@ import Register from "./pages/auth/register";
 import ResetPassword from "./pages/auth/reset-password";
 import CharacterCustom from "./pages/CharacterCustom";
 import Lobby from "./pages/lobby";
-import CharacterForm from "./components/character-form";
 import CharacterCustomMobile from "./pages/mobile/CharacterCustomMobile";
 import WorkspaceMobile from "./pages/mobile/WorkspaceMobile";
 import NotFound from "./pages/not-found";

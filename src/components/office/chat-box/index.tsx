@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { FaGrin, FaPaperPlane } from "react-icons/fa";
+import { useCaretPosition } from "react-use-caret-position";
 import { ChatItemInterface } from "../../../pages/office-detail/chat/chat-box/types";
 import GetMessagesProxy from "../../../services/proxy/conversations/get-messages";
 import { useAppSelector } from "../../../stores";
@@ -10,15 +11,19 @@ import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
 import RightBar from "../../layouts/rightbar";
 import InputText from "../../UI/form-controls/input-text";
 import ChatBoxItem from "./chat-box-item";
+import { emojiList } from "./emoji";
 import { ChatBoxProps } from "./types";
 
 const ChatBox = (props: ChatBoxProps) => {
   const { onClose, onBack, conversationId, submitMessage } = props;
+  const [isShowEmojiBox, setIsShowEmojiBox] = useState(false);
 
   const [chatList, setChatList] = useState<ChatItemInterface[]>([]);
   const socket = useAppSelector(socketSelector.getSocket);
 
-  const ref = useRef<any>(null);
+  const scrollRef = useRef<any>(null);
+  const emojiBoxRef = useRef<any>(null);
+  const inputRef = useRef<any>(null);
 
   // get userID
   const userInfo = useAppSelector(userSelectors.getUserInfo);
@@ -40,13 +45,15 @@ const ChatBox = (props: ChatBoxProps) => {
                 alt: mess?.sender.name,
                 message: mess?.content,
                 isMe: userInfo.id === mess?.sender.id,
+                id: mess?.id,
+                conversationId: mess?.conversationId,
               };
             });
 
           setChatList(chatListTransform.reverse());
 
-          if (ref !== null && ref.current !== null) {
-            ref.current.scrollIntoView({ behavior: "smooth" });
+          if (scrollRef !== null && scrollRef.current !== null) {
+            scrollRef.current.scrollIntoView({ behavior: "smooth" });
           }
         }
       })
@@ -59,24 +66,56 @@ const ChatBox = (props: ChatBoxProps) => {
     socket.emit("conversation:join", {
       conversationId: conversationId,
     });
+  }, [conversationId, socket]);
 
+  useEffect(() => {
     socket.on("message:sent", (value) => {
       const newChatItem = {
         src: "",
         alt: "",
         message: value["content"],
         isMe: userInfo.id === value["senderId"],
+        id: value["id"],
+        conversationId: value["conversationId"],
       };
 
       setChatList((curr) => [...curr, newChatItem]);
     });
 
-    ref.current.scrollIntoView({ behavior: "smooth" });
+    scrollRef.current.scrollIntoView({ behavior: "smooth" });
 
     return () => {
       socket.off("message:sent");
     };
   }, [conversationId, socket, userInfo.id]);
+
+  useEffect(() => {
+    socket.on("message:deleted", (value) => {
+      // remove message from chat list
+      setChatList((curr) => curr.filter((item) => item.id !== value));
+    });
+
+    scrollRef.current.scrollIntoView({ behavior: "smooth" });
+
+    return () => {
+      socket.off("message:deleted");
+    };
+  }, [conversationId, socket, userInfo.id]);
+  
+
+  useEffect(() => {
+    socket.on("message:revoked", (value) => {
+      console.log("revoke", value);
+      // remove message from chat list
+      setChatList((curr) => curr.filter((item) => item.id !== value));
+    });
+
+    scrollRef.current.scrollIntoView({ behavior: "smooth" });
+
+    return () => {
+      socket.off("message:deleted");
+    };
+  }, [conversationId, socket]);
 
   const { control, handleSubmit, setValue } = useForm({
     defaultValues: {
@@ -87,9 +126,33 @@ const ChatBox = (props: ChatBoxProps) => {
   const handleSendMess = (values) => {
     submitMessage(values.message);
     setValue("message", "");
-    if (ref !== null && ref.current !== null) {
-      ref.current.scrollIntoView({ behavior: "smooth" });
+    setIsShowEmojiBox(false);
+    if (scrollRef !== null && scrollRef.current !== null) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const watchMessage = useWatch({
+    control,
+    name: "message",
+  });
+
+  useEffect(() => {
+    // check unfocus
+    const handleClickOutside = (event: any) => {
+      if (emojiBoxRef.current && !emojiBoxRef.current.contains(event.target)) {
+        setIsShowEmojiBox(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleEmojiClick = (emoji) => {
+    setValue("message", `${watchMessage}${emoji}`);
   };
 
   return (
@@ -104,15 +167,39 @@ const ChatBox = (props: ChatBoxProps) => {
                   alt={item.alt}
                   name={item.alt}
                   isMe={item.isMe}
+                  id={item.id}
+                  conversationId={item.conversationId}
                 />
               </li>
             );
           })}
-          <div ref={ref} />
+          <div ref={scrollRef} />
         </ul>
       </div>
       <form className="chat-box__form" onSubmit={handleSubmit(handleSendMess)}>
-        <FaGrin className="chat-box__icon-emoji" />
+        <>
+          {isShowEmojiBox && (
+            <div className="chat-box__emoji-table" ref={emojiBoxRef}>
+              {emojiList.map((emoji, index) => {
+                return (
+                  <span
+                    key={index}
+                    className="chat-box__emoji-item"
+                    onClick={() => {
+                      handleEmojiClick(emoji.content);
+                    }}
+                  >
+                    {emoji.content}
+                  </span>
+                );
+              })}
+            </div>
+          )}
+          <FaGrin
+            className="chat-box__icon-emoji"
+            onClick={() => setIsShowEmojiBox((curr) => !curr)}
+          />
+        </>
         <InputText
           size="large"
           name="message"
@@ -124,6 +211,7 @@ const ChatBox = (props: ChatBoxProps) => {
             borderRadius: "0",
             borderBottom: "1px solid #fff",
           }}
+          ref={inputRef}
         />
         <button
           style={{

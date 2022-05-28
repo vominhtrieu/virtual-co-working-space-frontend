@@ -41,7 +41,7 @@ a {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 1rem;
+  width: 0.5rem;
 }
 
 /* Track */
@@ -52,7 +52,7 @@ a {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: $color-primary-dark;
+  background: $color-secondary-light;
   border-radius: 1rem;
 }
 

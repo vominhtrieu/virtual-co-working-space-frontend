@@ -13415,6 +13415,11 @@
   dependencies:
     "clsx" "^1.1.1"
 
+"react-use-caret-position@^1.0.3":
+  "integrity" "sha512-qTp8Z0+jCZSPOyiB4OTMl/edC9MBAGBlgS/5nabDbpHLGXa/YU4A6v0Tjf65gpEiJeSVYHH8O2Cbgq0l/VeoWg=="
+  "resolved" "https://registry.npmjs.org/react-use-caret-position/-/react-use-caret-position-1.0.3.tgz"
+  "version" "1.0.3"
+
 "react-use-measure@^2.1.1":
   "integrity" "sha512-nocZhN26cproIiIduswYpV5y5lQpSQS1y/4KuvUCjSKmw7ZWIS/+g3aFnX3WdBkyuGUtTLif3UTqnLLhbDoQig=="
   "resolved" "https://registry.npmjs.org/react-use-measure/-/react-use-measure-2.1.1.tgz"

@@ -42,6 +42,8 @@ const ChatBox = (props: ChatBoxPropsInterface) => {
                 alt: mess?.sender.name,
                 message: mess?.content,
                 isMe: userInfo.id === mess?.sender.id,
+                id: mess?.id,
+                conversationId: mess?.conversationId,
               };
             });
 
@@ -68,6 +70,8 @@ const ChatBox = (props: ChatBoxPropsInterface) => {
         alt: "",
         message: value["content"],
         isMe: userInfo.id === value["senderId"],
+        id: value["id"],
+        conversationId: value["conversationId"],
       };
 
       setChatList((curr) => [...curr, newChatItem]);
@@ -109,6 +113,8 @@ const ChatBox = (props: ChatBoxPropsInterface) => {
                     alt={item.alt}
                     name={item.alt}
                     isMe={item.isMe}
+                    id={item.id}
+                    conversationId={item.conversationId}
                   />
                 </li>
               );

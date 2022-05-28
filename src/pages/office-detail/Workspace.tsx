@@ -52,8 +52,6 @@ const Workspace = () => {
     | ""
   >("");
 
-  const navigate = useNavigate();
-
   const location = useLocation();
 
   const locationState: any = location.state;
@@ -212,6 +210,14 @@ const Workspace = () => {
       content: values,
     });
   };
+
+  useEffect(() => {
+    if (action !== "chatBox") {
+      socket.emit("conversation:leave", {
+        conversationId: conversationId,
+      });
+    }
+  }, [conversationId, socket, action]);
 
   return (
     <>

@@ -12,4 +12,6 @@ export interface ChatItemInterface {
   alt: string;
   message: string;
   isMe: boolean;
+  id: number;
+  conversationId: number;
 }
