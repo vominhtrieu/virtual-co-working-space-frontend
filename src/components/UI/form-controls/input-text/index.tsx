@@ -30,11 +30,7 @@ const InputText = (
         {...rest}
         onFocus={onFocus}
       />
-      {error ? (
-        <p className="error-message">{error.message}</p>
-      ) : (
-        <p className="error-message"></p>
-      )}
+      {error && <p className="error-message">{error.message}</p>}
     </div>
   );
 };

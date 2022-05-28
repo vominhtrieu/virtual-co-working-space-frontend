@@ -4,3 +4,12 @@ export interface ChatBoxProps {
   conversationId: number;
   submitMessage: (message: string) => void;
 }
+
+export interface ChatItemInterface {
+  src: string;
+  alt: string;
+  message: string;
+  isMe: boolean;
+  id: number;
+  conversationId: number;
+}

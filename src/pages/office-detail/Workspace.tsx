@@ -133,7 +133,7 @@ const Workspace = () => {
         yRotation: transform.yRotation,
         zRotation: transform.zRotation,
       };
-      console.log(newObjectList)
+      console.log(newObjectList);
       setObjectList([...newObjectList]);
     });
 

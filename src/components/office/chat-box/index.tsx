@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { FaGrin, FaPaperPlane } from "react-icons/fa";
-import { useCaretPosition } from "react-use-caret-position";
-import { ChatItemInterface } from "../../../pages/office-detail/chat/chat-box/types";
 import GetMessagesProxy from "../../../services/proxy/conversations/get-messages";
 import { useAppSelector } from "../../../stores";
 import { userSelectors } from "../../../stores/auth-slice";
@@ -12,7 +10,7 @@ import RightBar from "../../layouts/rightbar";
 import InputText from "../../UI/form-controls/input-text";
 import ChatBoxItem from "./chat-box-item";
 import { emojiList } from "./emoji";
-import { ChatBoxProps } from "./types";
+import { ChatBoxProps, ChatItemInterface } from "./types";
 
 const ChatBox = (props: ChatBoxProps) => {
   const { onClose, onBack, conversationId, submitMessage } = props;
@@ -43,7 +41,10 @@ const ChatBox = (props: ChatBoxProps) => {
                   mess?.sender?.avatar ??
                   "https://s199.imacdn.com/tt24/2020/03/06/c13c137597da081f_f4278fdff371f2b7_93155158347150251.jpg",
                 alt: mess?.sender.name,
-                message: mess?.content,
+                message:
+                  mess.status === "revoked"
+                    ? "Tin nhắn đã bị thu hồi"
+                    : mess?.content,
                 isMe: userInfo.id === mess?.sender.id,
                 id: mess?.id,
                 conversationId: mess?.conversationId,
@@ -101,13 +102,22 @@ const ChatBox = (props: ChatBoxProps) => {
       socket.off("message:deleted");
     };
   }, [conversationId, socket, userInfo.id]);
-  
 
   useEffect(() => {
     socket.on("message:revoked", (value) => {
-      console.log("revoke", value);
-      // remove message from chat list
-      setChatList((curr) => curr.filter((item) => item.id !== value));
+      // replace message from chat list
+      setChatList((curr) =>
+        curr.map((item) => {
+          if (item.id === value["messageId"]) {
+            return {
+              ...item,
+              message: "Tin nhắn đã bị thu hồi",
+            };
+          }
+
+          return item;
+        })
+      );
     });
 
     scrollRef.current.scrollIntoView({ behavior: "smooth" });
@@ -210,6 +220,7 @@ const ChatBox = (props: ChatBoxProps) => {
             border: "none",
             borderRadius: "0",
             borderBottom: "1px solid #fff",
+            color: "#fff",
           }}
           ref={inputRef}
         />
