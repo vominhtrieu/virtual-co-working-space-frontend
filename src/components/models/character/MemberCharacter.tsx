@@ -87,6 +87,8 @@ export default function MemberCharacter(props: MemberCharacterProps) {
 
   const match = matchPath({ path: "/office/:id" }, window.location.pathname);
 
+  const timeoutId = useRef<NodeJS.Timeout>();
+
   const getGesture = (gestureIdx: number) => {
     if (gestureIdx > 1) {
       return ANIMATION_LIST[gestureIdx];
@@ -115,6 +117,12 @@ export default function MemberCharacter(props: MemberCharacterProps) {
   useEffect(() => {
     if (currentEmoji.idx >= 0)
       setEmojiPlaying(true);
+      if (timeoutId.current) {
+        clearTimeout(timeoutId.current);
+      }
+      timeoutId.current = setTimeout(() => {
+        setEmojiPlaying(false);
+      }, 2000);
   }, [currentEmoji]);
 
   useThree(() => {
@@ -127,12 +135,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
   });
 
   useEffect(() => {
-    console.log("reset time out")
-    if (emojiPlaying) {
-      setTimeout(() => {
-        setEmojiPlaying(false);
-      }, 2000);
-    }
+
   }, [emojiPlaying]);
 
   const shouldUpdate = () => {

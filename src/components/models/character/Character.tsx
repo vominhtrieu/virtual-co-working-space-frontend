@@ -16,7 +16,6 @@ import { matchPath } from "react-router-dom";
 import { ANIMATION_LIST, EMOJI_LIST } from "../../../helpers/constants";
 import { socketSelector } from "../../../stores/socket-slice";
 import { useAppSelector } from "../../../stores";
-import { match } from "assert";
 import CharacterContext from "../../../context/CharacterContext";
 
 const stepFoot = require("../../../assets/audios/foot-step.mp3");
@@ -79,9 +78,6 @@ export default function Character(props: CharacterProps) {
   const rotateQuaternion = useRef(new THREE.Quaternion());
   const walkDirection = useRef(new THREE.Vector3());
   const currentClip = useRef<THREE.AnimationClip>(null);
-  // const { nodes, materials, animations } = useCustomGLTF(
-  //   "/models/Character.glb"
-  // ) as GLTFResult;
   const { actions, mixer } = useAnimations<GLTFActions>(animations, group);
 
   const { orbitRef } = props;
@@ -97,9 +93,11 @@ export default function Character(props: CharacterProps) {
 
   const match = matchPath({ path: "/office/:id" }, window.location.pathname);
 
+  const timeoutId = useRef<NodeJS.Timeout>();
+
   useEffect(() => {
     console.log("you");
-}, [])
+  }, [])
 
   const getGesture = () => {
     if (props.currentGesture && props.currentGesture.idx > 1) {
@@ -127,8 +125,15 @@ export default function Character(props: CharacterProps) {
   }, [props.currentGesture]);
 
   useEffect(() => {
-    if (props.currentEmoji && props.currentEmoji.idx >= 0)
+    if (props.currentEmoji && props.currentEmoji.idx >= 0) {
       setEmojiPlaying(true);
+      if (timeoutId.current) {
+        clearTimeout(timeoutId.current);
+      }
+      timeoutId.current = setTimeout(() => {
+        setEmojiPlaying(false);
+      }, 2000);
+    }
   }, [props.currentEmoji]);
 
   useThree(({ camera }) => {
@@ -146,18 +151,6 @@ export default function Character(props: CharacterProps) {
       rotation.current = v;
     });
   });
-
-  useEffect(() => {
-    if (keyPressed.g) {
-      setGesturePlaying(true);
-    }
-  }, [keyPressed.g]);
-
-  useEffect(() => {
-    if (keyPressed.e) {
-      setEmojiPlaying(true);
-    }
-  }, [keyPressed.e]);
 
   useEffect(() => {
     if (emojiPlaying) {
