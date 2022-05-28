@@ -15,14 +15,14 @@
 
 .ant-input {
   background-color: transparent;
-  color: $color-white;
+  color: $color-primary-dark;
   border-radius: 0.5rem;
-  border: 1px solid $color-primary-dark;
+  border: 1px solid $color-secondary-light;
 }
 
 .input-label {
-  color: $color-white;
-  font-size: 1.8rem;
+  color: $color-primary-dark;
+  font-size: 1.4rem;
   text-transform: capitalize;
 }
 .input-label + .ant-input-affix-wrapper {

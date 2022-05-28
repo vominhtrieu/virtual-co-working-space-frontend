@@ -4,15 +4,13 @@ import { useController } from "react-hook-form";
 import { InputTextProps } from "./types";
 
 const InputText = (
-  { name, control, hasLabel, onFocus, ...rest }: InputTextProps,
+  { name, control, hasLabel, onFocus, label, ...rest }: InputTextProps,
   ref
 ) => {
   const {
     field,
     fieldState: { error },
   } = useController({ name: name, control: control });
-
-  const label = rest.placeholder ? rest.placeholder : name;
 
   return (
     <div className="input-text">

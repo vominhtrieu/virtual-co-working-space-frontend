@@ -133,6 +133,7 @@ const Workspace = () => {
         yRotation: transform.yRotation,
         zRotation: transform.zRotation,
       };
+      console.log(newObjectList)
       setObjectList([...newObjectList]);
     });
 
@@ -226,7 +227,7 @@ const Workspace = () => {
         setObjectionClickPos={setObjectionClickPos}
         characterGesture={characterGesture}
         characterEmoji={characterEmoji}
-        isCustomizing={isCustomizing}
+        isCustomizing={action === "config"}
         objectActionVisible={objectActionVisible}
         objectList={objectList}
         selectedObject={selectedObject}

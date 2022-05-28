@@ -89,12 +89,13 @@ export default function OfficeCanvas({
                 <mesh
                   castShadow={true}
                   key={object.id}
-                  position={[0, 0.5, 0]}
-                  onClick={(e) => handleObject3dClick(e, object.key)}
+                  position={[object.transform.xPosition, object.transform.yPosition, object.transform.zPosition]}
+                  rotation={[object.transform.xRotation, object.transform.yRotation, object.transform.zRotation]}
+                  onClick={(e) => handleObject3dClick(e, object.id)}
                   onPointerMissed={handleObject3dPointerMissed}
                 >
                   <Suspense fallback={null}>
-                    <ItemModel url={object.item.modelPath} />
+                    <ItemModel url={object.item.modelPath} itemId={object.id} />
                   </Suspense>
                 </mesh>
               ))}

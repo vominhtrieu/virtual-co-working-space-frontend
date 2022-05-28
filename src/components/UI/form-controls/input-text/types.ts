@@ -6,4 +6,5 @@ export interface InputTextProps extends InputProps {
   hasLabel?: boolean;
   ref?: any;
   onFocus?: (e: any) => void;
+  label?: string;
 }

@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { RiSendPlaneFill } from "react-icons/ri";
 import InputText from "../../../../components/UI/form-controls/input-text";
 import GetMessagesProxy from "../../../../services/proxy/conversations/get-messages";
-// import socket from "../../../../services/socket/socket";
 import { useAppSelector } from "../../../../stores";
 import { userSelectors } from "../../../../stores/auth-slice";
 import { ProxyStatusEnum } from "../../../../types/http/proxy/ProxyStatus";
@@ -46,6 +45,8 @@ const ChatBox = (props: ChatBoxPropsInterface) => {
                 conversationId: mess?.conversationId,
               };
             });
+
+          console.log(res.data);
 
           setChatList(chatListTransform.reverse());
 
