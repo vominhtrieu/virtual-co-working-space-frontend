@@ -2,6 +2,8 @@ import { useState } from "react";
 import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
 import { FaRegSmileBeam, FaTrash } from "react-icons/fa";
 import SidebarChat from "../../pages/office-detail/chat";
+import { useAppSelector } from "../../stores";
+import { socketSelector } from "../../stores/socket-slice";
 import InteractionMenu from "../layouts/sidebar/offices/character-interaction";
 import EditOffice from "../layouts/sidebar/offices/edit-office";
 import Button from "../UI/button";
@@ -29,16 +31,23 @@ export default function OfficeInterface({
   setAction,
   action,
 }) {
+  const socket = useAppSelector(socketSelector.getSocket);
 
 
   const handleEmojiClick = (emojiIdx: number) => {
     setCharacterEmoji({idx: emojiIdx});
-    // emit some shit
+
+    socket.emit("emoji", {
+      emojiId: emojiIdx
+    })
   }
 
   const handleGestureClick = (gestureIdx: number) => {
     setCharacterGesture({idx: gestureIdx});
-    // emit some shit
+    
+    socket.emit("gesture", {
+      gestureId: gestureIdx
+    })
   }
 
   return (

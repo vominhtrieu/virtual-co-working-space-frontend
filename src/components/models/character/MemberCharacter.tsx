@@ -16,7 +16,6 @@ import { matchPath } from "react-router-dom";
 import { ANIMATION_LIST, EMOJI_LIST } from "../../../helpers/constants";
 import { socketSelector } from "../../../stores/socket-slice";
 import { useAppSelector } from "../../../stores";
-import CharacterContext from "../../../context/CharacterContext";
 
 const stepFoot = require("../../../assets/audios/foot-step.mp3");
 
@@ -27,12 +26,6 @@ type MemberCharacterProps = JSX.IntrinsicElements["group"] & {
   startPosition: number[];
   orbitRef?: any;
   volume: number;
-  currentGesture?: {
-    idx: number;
-  };
-  currentEmoji?: {
-    idx: number;
-  };
   memberId: number;
 };
 
@@ -82,6 +75,8 @@ export default function MemberCharacter(props: MemberCharacterProps) {
 
   const [gesturePlaying, setGesturePlaying] = useState<boolean>(false);
   const [emojiPlaying, setEmojiPlaying] = useState<boolean>(false);
+  const [currentEmoji, setCurrentEmoji] = useState({idx: -1});
+  const [currentGesture, setCurrentGesture] = useState({idx: -1});
 
   const position = useRef([0, 0, 0]);
   const updatedPosition = useRef(props.startPosition);
@@ -92,19 +87,19 @@ export default function MemberCharacter(props: MemberCharacterProps) {
 
   const match = matchPath({ path: "/office/:id" }, window.location.pathname);
 
-  const getGesture = () => {
-    if (props.currentGesture && props.currentGesture.idx > 1) {
-      return ANIMATION_LIST[props.currentGesture?.idx!];
+  const getGesture = (gestureIdx: number) => {
+    if (gestureIdx > 1) {
+      return ANIMATION_LIST[gestureIdx];
     } else {
       return ANIMATION_LIST[0];
     }
   };
 
-  const getEmoji = () => {
-    if (props.currentEmoji && props.currentEmoji.idx >= 0) {
+  const getEmoji = (emojiIndex: number) => {
+    if (emojiIndex >= 0) {
       return loader.load(
         require(`../../../assets/images/emojis/${
-          EMOJI_LIST[props.currentEmoji?.idx!]
+          EMOJI_LIST[emojiIndex]
         }.png`)
       );
     } else {
@@ -113,16 +108,16 @@ export default function MemberCharacter(props: MemberCharacterProps) {
   };
 
   useEffect(() => {
-    if (props.currentGesture && props.currentGesture.idx >= 0)
+    if (currentGesture.idx > 1)
       setGesturePlaying(true);
-  }, [props.currentGesture]);
+  }, [currentGesture]);
 
   useEffect(() => {
-    if (props.currentEmoji && props.currentEmoji.idx >= 0)
+    if (currentEmoji.idx >= 0)
       setEmojiPlaying(true);
-  }, [props.currentEmoji]);
+  }, [currentEmoji]);
 
-  useThree(({ camera }) => {
+  useThree(() => {
     api.position.subscribe((v) => {
       position.current = v;
     });
@@ -132,6 +127,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
   });
 
   useEffect(() => {
+    console.log("reset time out")
     if (emojiPlaying) {
       setTimeout(() => {
         setEmojiPlaying(false);
@@ -185,7 +181,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
       api.quaternion.copy(ref.current.quaternion);
     } else {
         if (gesturePlaying) {
-          clip = actions[getGesture()];
+          clip = actions[getGesture(currentGesture.idx)];
         } else {
           clip = actions.Idle;
         }
@@ -223,14 +219,14 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match?.params.id]);
 
-  useSocketEvent(socket, match, updatedPosition, updatedRotation, props.memberId);
+  useSocketEvent(socket, props.memberId, updatedPosition, updatedRotation, setCurrentEmoji, setCurrentGesture);
 
   return (
     <>
       <mesh ref={ref} {...props}>
         <group ref={group} position={[0, -1, 0]} dispose={null}>
           <sprite position={[0, 2.6, 0]} visible={emojiPlaying}>
-            <spriteMaterial map={getEmoji()} />
+            <spriteMaterial map={getEmoji(currentEmoji.idx)} />
           </sprite>
           <primitive object={nodes.mixamorigHips} />
           <primitive object={nodes.Ctrl_ArmPole_IK_Left} />
@@ -290,7 +286,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
   );
 }
 
-const useSocketEvent = (socket, match, updatedPosition, updatedRotation, memberId) => {
+const useSocketEvent = (socket, memberId, updatedPosition, updatedRotation, setEmoji, setGesture) => {
     useEffect(() => {
         socket.on("office_member:moved", (message) => {
             if (message.memberId === memberId) {
@@ -302,11 +298,25 @@ const useSocketEvent = (socket, match, updatedPosition, updatedRotation, memberI
         socket.on("office_member:error", (message) => {
             console.log(message);
         })
+
+        socket.on("emoji", (message) => {
+          if (memberId === message.userId) {
+            setEmoji({idx: message.emojiId})
+          }
+        })
+
+        socket.on("gesture", (message) => {
+          if (memberId === message.userId) {
+            setGesture({idx: message.gestureId})
+          }
+        })
         return () => {
             socket.removeListener("office_member:moved")
             socket.removeListener("office_member:error")
+            socket.removeListener("emoji")
+            socket.removeListener("gesture")
         }
-    }, [socket, match?.params.id])
+    }, [socket])
 }
 
 useGLTF.preload("/Character.glb");
