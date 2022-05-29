@@ -23,7 +23,6 @@ const Lobby = () => {
     let isMounted = true;
     GetOfficeListProxy({ page: 1, size: 5 })
       .then((res) => {
-        console.log("Get offices: ", res);
         if (!isMounted) return;
 
         if (res.status === ProxyStatusEnum.FAIL) {
@@ -45,47 +44,6 @@ const Lobby = () => {
     };
   }, [countGetOffices]);
 
-  const handleCreateOfficeSubmit = (
-    values: CreateOfficeFormValuesInterface
-  ) => {
-    CreateOfficeProxy(values)
-      .then((res) => {
-        if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Create office fail");
-          return;
-        }
-
-        if (res.status === ProxyStatusEnum.SUCCESS) {
-          toastSuccess("Create office success");
-          setCountGetOffices((curr) => curr + 1);
-          return;
-        }
-      })
-      .catch((err) => {
-        toastError(err.message ?? "Create office fail");
-      });
-  };
-
-  const handleJoinOfficeSubmit = (values: JoinOfficeFormValuesInterface) => {
-    JoinByCodeProxy(values)
-      .then((res) => {
-        console.log(res);
-        if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Join office fail");
-          return;
-        }
-
-        if (res.status === ProxyStatusEnum.SUCCESS) {
-          toastSuccess("Join office success");
-          setCountGetOffices((curr) => curr + 1);
-          return;
-        }
-      })
-      .catch((err) => {
-        toastError(err.message ?? "Join office fail");
-      });
-  };
-
   return (
     <section className="lobby">
       <Navbar />
@@ -100,11 +58,7 @@ const Lobby = () => {
                 alt={office.avatarUrl}
                 src={office.avatarUrl}
                 onClick={() => {
-                  navigate(`/office/${office.id}`, {
-                    state: {
-                      officeId: office.id,
-                    },
-                  });
+                  navigate(`/office/${office.id}`);
                 }}
               />
             );

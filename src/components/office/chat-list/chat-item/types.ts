@@ -5,5 +5,4 @@ export interface ChatItemProps {
   conversationId: number;
   isOnline?: boolean;
   onSelectConversation: (id: number) => void;
-  
 }

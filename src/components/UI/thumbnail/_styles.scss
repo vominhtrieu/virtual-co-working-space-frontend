@@ -5,7 +5,6 @@
   box-shadow: 0 0 2rem 0.5rem $color-gray-3;
   border-radius: 0.5rem;
   transition: all 0.3s ease;
-  cursor: pointer;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -21,6 +20,7 @@
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
     overflow: hidden;
+    cursor: pointer;
   }
 
   &__content {
@@ -39,6 +39,7 @@
       font-size: 2rem;
       font-weight: 600;
       line-height: 1.1;
+      cursor: pointer;
     }
 
     &-count {

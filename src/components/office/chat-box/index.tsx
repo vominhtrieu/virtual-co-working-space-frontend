@@ -13,7 +13,8 @@ import { emojiList } from "./emoji";
 import { ChatBoxProps, ChatItemInterface } from "./types";
 
 const ChatBox = (props: ChatBoxProps) => {
-  const { onClose, onBack, conversationId, submitMessage } = props;
+  const { onClose, onBack, conversationId, submitMessage, officeDetail } =
+    props;
   const [isShowEmojiBox, setIsShowEmojiBox] = useState(false);
   const [cursor, setCursor] = useState(0);
   const [chatList, setChatList] = useState<ChatItemInterface[]>([]);
@@ -38,16 +39,38 @@ const ChatBox = (props: ChatBoxProps) => {
             res?.data?.messages?.messages.map((mess) => {
               return {
                 src:
-                  mess?.sender?.avatar ??
+                  officeDetail.officeMembers.find((sender) => {
+                    return sender.id === mess.senderId;
+                  })?.member.avatar ??
                   "https://s199.imacdn.com/tt24/2020/03/06/c13c137597da081f_f4278fdff371f2b7_93155158347150251.jpg",
-                alt: mess?.sender.name,
+                alt:
+                  officeDetail.officeMembers.find((sender) => {
+                    return sender.id === mess.senderId;
+                  })?.member.name ?? "Tên người dùng",
                 message:
                   mess.status === "revoked"
                     ? "Tin nhắn đã bị thu hồi"
                     : mess?.content,
-                isMe: userInfo.id === mess?.sender.id,
+                isMe: userInfo.id === mess?.senderId,
                 id: mess?.id,
                 conversationId: mess?.conversationId,
+                reader: mess?.readers
+                  ? mess?.readers.map((r) => {
+                      return {
+                        id: r.readerId,
+                        name:
+                          officeDetail.officeMembers.find(
+                            (m) => m.id === r.readerId
+                          )?.member.name ?? "Tên",
+
+                        avatar:
+                          officeDetail.officeMembers.find(
+                            (m) => m.id === r.readerId
+                          )?.member.avatar ??
+                          "https://s199.imacdn.com/tt24/2020/03/06/c13c137597da081f_f4278fdff371f2b7_93155158347150251.jpg",
+                      };
+                    })
+                  : [],
               };
             });
 
@@ -61,7 +84,7 @@ const ChatBox = (props: ChatBoxProps) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [userInfo.id, conversationId]);
+  }, [userInfo.id, conversationId, officeDetail.officeMembers]);
 
   useEffect(() => {
     socket.emit("conversation:join", {
@@ -69,15 +92,17 @@ const ChatBox = (props: ChatBoxProps) => {
     });
   }, [conversationId, socket]);
 
+  console.log(chatList);
+
   useEffect(() => {
     socket.on("message:sent", (value) => {
       const newChatItem = {
         src: "",
         alt: "",
         message: value["content"],
-        isMe: userInfo.id === value["senderId"],
+        isMe: true,
         id: value["id"],
-        conversationId: value["conversationId"],
+        conversationId: conversationId,
       };
 
       setChatList((curr) => [...curr, newChatItem]);
@@ -187,6 +212,7 @@ const ChatBox = (props: ChatBoxProps) => {
                   isMe={item.isMe}
                   id={item.id}
                   conversationId={item.conversationId}
+                  reader={item.reader}
                 />
               </li>
             );
@@ -227,7 +253,7 @@ const ChatBox = (props: ChatBoxProps) => {
             outline: "none",
             border: "none",
             borderRadius: "0",
-            borderBottom: "1px solid #fff",
+            borderBottom: "1px solid rgb(255, 255, 255, 0.3)",
             color: "#fff",
           }}
           ref={inputRef}

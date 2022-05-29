@@ -10,7 +10,7 @@ import {
 const activeTransform = (
   res: ActiveProxyTransformInterface
 ): ActiveProxyResponseInterface => {
-  console.log(res);
+  
   const transform = {
     msg: res?.msg??"",
   };

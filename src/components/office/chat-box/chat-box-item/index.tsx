@@ -8,7 +8,7 @@ const srcTemp = "https://ss-images.saostar.vn/2020/01/03/6750639/page1.jpg";
 
 const ChatBoxItem = (props: ChatBoxItemPropsInterface) => {
   const [isOpenAction, setIsOpenAction] = useState(false);
-  const { src, alt, message, isMe, conversationId, id } = props;
+  const { src, alt, message, isMe, conversationId, id, reader } = props;
   const actionRef = useRef<HTMLDivElement>(null);
 
   const socket = useAppSelector(socketSelector.getSocket);
@@ -26,6 +26,17 @@ const ChatBoxItem = (props: ChatBoxItemPropsInterface) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    console.log("ChatBoxItem: useEffect", reader);
+    socket.on("message:read", (value) => {
+      console.log(value);
+    });
+
+    return () => {
+      socket.off("message:read");
+    };
+  }, [socket, reader]);
 
   // handle delete message
   const handleDeleteMessage = () => {

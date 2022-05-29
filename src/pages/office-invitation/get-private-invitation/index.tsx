@@ -22,7 +22,7 @@ function PrivateInvitation() {
   useEffect(()=>{
      GetPrivateInvitationProxy({id: token})
         .then((res) => {
-          console.log(res);
+          
           if (res.status === ProxyStatusEnum.FAIL) {
             toastError(res?.message??"Invitation fail");
             navigate("/");
@@ -44,7 +44,7 @@ function PrivateInvitation() {
       id: token,
     })
       .then((res) => {
-        console.log(res);
+        
         if (res.status === ProxyStatusEnum.FAIL) {
           toastError(res?.message??"Join office fail");
           navigate("/");

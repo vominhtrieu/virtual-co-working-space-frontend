@@ -13,29 +13,27 @@ const getMessagesTransform = (
 ): GetMessagesProxyResponseInterface => {
   const transform = {
     messages: {
-      messages: res?.messages?.messages.map((message) => {
+      messages: res?.messages.map((message) => {
         return {
           id: message?.id ?? 0,
           conversationId: message?.conversationId ?? 0,
           content: message?.content ?? "",
           type: message?.type ?? "",
           sentAt: message?.sentAt ?? "",
-          sender: {
-            id: message?.sender?.id ?? 0,
-            name: message?.sender?.name ?? "",
-            avatar: message?.sender?.avatar ?? "",
-          },
-          reader: {
-            readerId: message?.reader?.readerId ?? 0,
-            messageId: message?.reader?.messageId ?? 0,
-            readAt: message?.reader?.readAt ?? "",
-          },
+          senderId: message?.senderId ?? 0,
+          readers: message?.readers?.map((reader) => {
+            return {
+              readerId: reader?.readerId ?? 0,
+              messageId: reader?.messageId ?? 0,
+              readAt: reader?.readAt ?? "",
+            };
+          }),
           status: message?.status ?? "",
         };
       }),
       pagination: {
-        count: res?.messages?.pagination?.count ?? 0,
-        nextCursor: res?.messages?.pagination?.nextCursor ?? 0,
+        count: res?.pagination?.count ?? 0,
+        nextCursor: res?.pagination?.nextCursor ?? 0,
       },
     },
   };

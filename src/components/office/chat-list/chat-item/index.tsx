@@ -1,3 +1,5 @@
+import { useAppSelector } from "../../../../stores";
+import { socketSelector } from "../../../../stores/socket-slice";
 import { ChatItemProps } from "./types";
 
 const ChatItem = (props: ChatItemProps) => {
@@ -9,10 +11,20 @@ const ChatItem = (props: ChatItemProps) => {
     conversationId,
     isOnline,
   } = props;
+
+  const socket = useAppSelector(socketSelector.getSocket);
+
+  const handleMaskAsMessage = (conversationId: number) => {
+    socket.emit("message:maskAsRead", {
+      conversationId: conversationId,
+    });
+  };
+
   return (
     <div
       className="chat-item"
       onClick={() => {
+        handleMaskAsMessage(conversationId);
         onSelectConversation(conversationId);
       }}
     >
