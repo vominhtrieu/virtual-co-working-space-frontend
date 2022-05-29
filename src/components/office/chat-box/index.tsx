@@ -100,7 +100,7 @@ const ChatBox = (props: ChatBoxProps) => {
         src: "",
         alt: "",
         message: value["content"],
-        isMe: true,
+        isMe: userInfo.id === value["senderId"],
         id: value["id"],
         conversationId: conversationId,
       };
