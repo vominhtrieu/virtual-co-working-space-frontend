@@ -109,7 +109,6 @@ const Workspace = () => {
     const idx = objectList.findIndex((obj) => obj.id === selectedKey);
     const newObjectList = [...objectList];
     newObjectList.splice(idx, 1);
-    // navigate("/");
     setObjectList([...newObjectList]);
     setSelectedObject(null);
     setSelectedKey(null);

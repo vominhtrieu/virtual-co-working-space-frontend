@@ -52,9 +52,11 @@ const Thumbnail = (props: ThumbnailPropsInterface) => {
           </span>
           <div className="thumbnail__content-count">
             <span className="thumbnail__content-active" />
-            <span className="thumbnail__content-num">
-              {online}/{memberTotal}
-            </span>
+            {memberTotal > 0 && (
+              <span className="thumbnail__content-num">
+                {online}/{memberTotal}
+              </span>
+            )}
           </div>
         </div>
         {/* header - end */}
