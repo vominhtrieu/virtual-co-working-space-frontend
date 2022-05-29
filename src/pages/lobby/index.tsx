@@ -2,16 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/layouts/navbar";
 import Thumbnail from "../../components/UI/thumbnail";
-import { toastError, toastSuccess } from "../../helpers/toast";
-import JoinByCodeProxy from "../../services/proxy/office-invitation/join-invite-code";
-import CreateOfficeProxy from "../../services/proxy/offices/create-office";
+import { toastError } from "../../helpers/toast";
 import GetOfficeListProxy from "../../services/proxy/offices/office-list";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import { OfficeInterface } from "../../types/office";
-import {
-  CreateOfficeFormValuesInterface,
-  JoinOfficeFormValuesInterface,
-} from "./types";
 
 const Lobby = () => {
   const [officeList, setOfficeList] = useState<OfficeInterface[]>();
@@ -46,7 +40,7 @@ const Lobby = () => {
 
   return (
     <section className="lobby">
-      <Navbar />
+      <Navbar onInsertOffice={() => setCountGetOffices((curr) => curr++)} />
 
       <div className="lobby__main">
         <div className="lobby__office-list">
