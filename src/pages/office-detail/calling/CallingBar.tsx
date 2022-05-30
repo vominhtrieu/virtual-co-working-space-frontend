@@ -50,10 +50,8 @@ export default function CallingBar() {
   );
 
   // useEffect(() => {
-  //     if (!socket) {
-  //         dispatch(connect());
-  //     }
-  // }, [socket])
+  //     console.log(myVideo.current)
+  // }, [myVideo.current])
 
   useEffect(() => {
     myPeer.on("open", (id) => {

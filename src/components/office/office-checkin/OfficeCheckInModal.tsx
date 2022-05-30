@@ -1,43 +1,48 @@
-import { Modal, Upload } from "antd";
+import { Modal, Spin } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toastError, toastSuccess } from "../../../helpers/toast";
 import IsCheckinProxy from "../../../services/proxy/checkin/checkin-today";
 import CreateCheckinProxy from "../../../services/proxy/checkin/create-checkin";
 import UploadProofProxy from "../../../services/proxy/checkin/upload-proof";
+import { useAppDispatch, useAppSelector } from "../../../stores";
+import { loadSelectors, setIsLoad } from "../../../stores/load-slice";
 import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
 import Button from "../../UI/button"
 
 export default function OfficceCheckInModal () {
-    const myVideo = useRef<any>(null);
+    const myVideo = useRef<HTMLVideoElement>(document.createElement('video'));
     const photoRef = useRef<HTMLCanvasElement>(null);
     const [myStream, setMyStream] = useState<MediaStream | null>(null);
     const [open, setOpen] = useState<boolean>(false);
     const params = useParams();
-    const photoData = useRef<any>(null);
+
+    const isLoading = useAppSelector(loadSelectors.getIsLoad);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
+        dispatch(setIsLoad(true));
         // IsCheckinProxy({ officeId: +params.id! }).then((res) => {
-        //     console.log(res);
         //     if (res.status === ProxyStatusEnum.FAIL) {
         //         toastError(res.message ?? "Find check-in fail");
         //     }
 
         //     if (res.status === ProxyStatusEnum.SUCCESS) {
-        //         const data = res.data
+        //         const data = res.data;
         //         if (Object.keys(data).length === 0 && data.constructor === Object) {
         //             setOpen(true);
+
+        //             navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+        //                 setMyStream(stream);
+        //                 if (myVideo.current) {
+        //                     myVideo.current.srcObject = stream;
+        //                 }
+        //             })
         //         }
         //     }
+
+        //     dispatch(setIsLoad(false));
         // })
-
-
-        navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-            setMyStream(stream);
-            if (myVideo.current) {
-                myVideo.current.srcObject = stream;
-            }
-        })
     }, [params.id])
 
     const onSubmitClick = () => {
@@ -85,16 +90,16 @@ export default function OfficceCheckInModal () {
     }
 
     const footer = [
-        <Button className="submit" variant="primary" onClick={onSubmitClick}>Check In</Button>
+        <Button className="submit" variant="primary" onClick={onSubmitClick}>{isLoading ? <Spin /> : "Check In"}</Button>
     ]
 
     return (
-        <Modal visible={open} title="" footer={footer}>
+        <Modal visible={open} title="" footer={footer} closable={false}>
             <p className="modal-title">Check in before entering the office</p>
             {myStream && <>
                 <p>Smile &#128521;</p>
                 <div className="camera-container">
-                    <video className="camera-video" ref={myVideo} muted autoPlay />
+                    <video className="camera-video" ref={myVideo} autoPlay muted />
                 </div>
             </>}
             {!myStream && <p>Please open camera to complete your check-in</p>}

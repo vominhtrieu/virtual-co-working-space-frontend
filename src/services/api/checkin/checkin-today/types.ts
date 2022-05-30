@@ -6,7 +6,7 @@ export interface IsCheckinTodayResponseInterface {
     data: {
         userId: number, 
         officeId: number,
-        checkinDate: Date
+        checkInDate: Date
     }
     status?: string;
     code?: number;
