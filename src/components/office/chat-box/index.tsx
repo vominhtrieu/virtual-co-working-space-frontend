@@ -87,24 +87,26 @@ const ChatBox = (props: ChatBoxProps) => {
   }, [userInfo.id, conversationId, officeDetail.officeMembers]);
 
   useEffect(() => {
+    console.log("join");
     socket.emit("conversation:join", {
       conversationId: conversationId,
     });
   }, [conversationId, socket]);
 
   useEffect(() => {
+    console.log("sent");
     socket.on("message:sent", (value) => {
       console.log(value);
-      // const newChatItem = {
-      //   src: "",
-      //   alt: "",
-      //   message: value["content"],
-      //   isMe: userInfo.id === value["senderId"],
-      //   id: value["id"],
-      //   conversationId: conversationId,
-      // };
+      const newChatItem = {
+        src: "",
+        alt: "",
+        message: value["content"],
+        isMe: userInfo.id === value["senderId"],
+        id: value["id"],
+        conversationId: conversationId,
+      };
 
-      // setChatList((curr) => [...curr, newChatItem]);
+      setChatList((curr) => [...curr, newChatItem]);
     });
 
     scrollRef.current.scrollIntoView({ behavior: "smooth" });

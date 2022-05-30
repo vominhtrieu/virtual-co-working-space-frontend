@@ -207,7 +207,7 @@ const Workspace = () => {
     socket.emit("message:send", {
       conversationId: conversationId,
       content: values,
-      // uuid: uuidv4(),
+      tempId: uuidv4(),
     });
   };
 
