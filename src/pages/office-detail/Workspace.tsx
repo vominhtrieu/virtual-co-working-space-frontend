@@ -19,6 +19,7 @@ import { socketSelector } from "../../stores/socket-slice";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import { OfficeDetailInterface } from "../../types/office";
 import CallingBar from "./calling/CallingBar";
+import { v4 as uuidv4 } from "uuid";
 
 export type positionType = {
   x: number;
@@ -53,6 +54,7 @@ const Workspace = () => {
     | "chatList"
     | "chatBox"
     | "setting"
+    | "detail"
     | ""
   >("");
 
@@ -205,6 +207,7 @@ const Workspace = () => {
     socket.emit("message:send", {
       conversationId: conversationId,
       content: values,
+      // uuid: uuidv4(),
     });
   };
 
@@ -270,15 +273,15 @@ const Workspace = () => {
         setAction={setAction}
         action={action}
       />
-      {isShowDetailForm ? (
+      {action === "detail" && (
         <OfficeDetailForm
           onClose={() => {
-            setIsShowDetailForm(false);
+            setAction("");
           }}
           id={officeId}
           isOwner={isOwner}
         />
-      ) : null}
+      )}
 
       {action === "chatList" && (
         <ChatList

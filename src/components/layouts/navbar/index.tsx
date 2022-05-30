@@ -43,7 +43,7 @@ const Navbar = (props: NavbarProps) => {
         if (res.status === ProxyStatusEnum.SUCCESS) {
           setIsCreateOffice(false);
           toastSuccess("Create office success");
-          onInsertOffice();
+          onInsertOffice && onInsertOffice();
           dispatch(setIsOffice(!isOffice));
           return;
         }
@@ -64,7 +64,7 @@ const Navbar = (props: NavbarProps) => {
         if (res.status === ProxyStatusEnum.SUCCESS) {
           setIsJoinOffice(false);
           toastSuccess("Join office success");
-          onInsertOffice();
+          onInsertOffice && onInsertOffice();
           dispatch(setIsOffice(!isOffice));
           return;
         }

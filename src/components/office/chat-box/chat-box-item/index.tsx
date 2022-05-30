@@ -28,7 +28,6 @@ const ChatBoxItem = (props: ChatBoxItemPropsInterface) => {
   }, []);
 
   useEffect(() => {
-    console.log("ChatBoxItem: useEffect", reader);
     socket.on("message:read", (value) => {
       console.log(value);
     });

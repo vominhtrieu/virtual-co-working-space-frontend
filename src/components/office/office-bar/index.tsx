@@ -3,6 +3,7 @@ import {
   FaComments,
   FaDoorOpen,
   FaGrin,
+  FaInfoCircle,
   FaTools,
   FaTshirt,
   FaUserFriends,
@@ -33,6 +34,7 @@ const OfficeBar = (props: OfficeBarPropsInterface) => {
         >
           <FaGrin className="office-bar__icon" />
         </div>
+
         <div
           className={`office-bar__icon-btn + ${
             action === "character" ? "active" : ""
@@ -77,19 +79,30 @@ const OfficeBar = (props: OfficeBarPropsInterface) => {
         >
           <FaUserFriends className="office-bar__icon" />
         </div>
-        {isOwner && (
-          <div
-            className={`office-bar__icon-btn + ${
-              action === "setting" ? "active" : ""
-            }`}
-            onClick={() => {
-              if (action === "setting") return setAction("");
-              setAction("setting");
-            }}
-          >
-            <FaCog className="office-bar__icon" />
-          </div>
-        )}
+
+        <div
+          className={`office-bar__icon-btn + ${
+            action === "detail" ? "active" : ""
+          }`}
+          onClick={() => {
+            if (action === "detail") return setAction("");
+            setAction("detail");
+          }}
+        >
+          <FaInfoCircle className="office-bar__icon" />
+        </div>
+
+        <div
+          className={`office-bar__icon-btn + ${
+            action === "setting" ? "active" : ""
+          }`}
+          onClick={() => {
+            if (action === "setting") return setAction("");
+            setAction("setting");
+          }}
+        >
+          <FaCog className="office-bar__icon" />
+        </div>
       </div>
     </nav>
   );
