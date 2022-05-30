@@ -1,6 +1,7 @@
-import { useState } from "react";
 import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
 import { FaTrash } from "react-icons/fa";
+import { useAppSelector } from "../../stores";
+import { socketSelector } from "../../stores/socket-slice";
 import EditOffice from "../layouts/sidebar/offices/edit-office";
 import Button from "../UI/button";
 import OfficeBar from "./office-bar";
@@ -26,7 +27,7 @@ export default function OfficeInterface({
   setAction,
   action,
 }) {
-  const [showInteractMenu, setShowInteractMenu] = useState(false);
+  const socket = useAppSelector(socketSelector.getSocket);
 
   return (
     <>

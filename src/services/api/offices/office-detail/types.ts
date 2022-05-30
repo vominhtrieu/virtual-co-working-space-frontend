@@ -33,7 +33,7 @@ interface OfficeDetailInterface {
   }[];
 }
 
-interface OfficeMembersInterface {
+export interface OfficeMembersInterface {
   id: number;
   officeId: number;
   member: {
