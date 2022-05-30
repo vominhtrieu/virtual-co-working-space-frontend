@@ -2,7 +2,7 @@ import { FaArrowLeft, FaTimes } from "react-icons/fa";
 import { RightBarProps } from "./types";
 
 const RightBar = (props: RightBarProps) => {
-  const { isBack, children, onClose, onBack } = props;
+  const { isBack, children, onClose, onBack, title } = props;
   return (
     <section className="right-bar">
       <div className="right-bar__header">
@@ -17,7 +17,7 @@ const RightBar = (props: RightBarProps) => {
               }}
             />
           )}
-          <div className="right-bar__header-title">Danh sách</div>
+          <div className="right-bar__header-title">{title ?? "Danh sách"}</div>
         </div>
         <FaTimes className="right-bar__close" onClick={onClose} />
       </div>

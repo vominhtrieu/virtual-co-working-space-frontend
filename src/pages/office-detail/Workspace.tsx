@@ -184,12 +184,6 @@ const Workspace = () => {
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
           setIsOwner(res?.data?.office?.createdBy?.id === userInfo.id);
-          if (res?.data?.office?.conversations.length > 0) {
-            setConversationId(res?.data?.office?.conversations[0]?.id);
-          }
-          if (res?.data?.office?.officeItems.length > 0) {
-            setObjectList(res.data.office.officeItems);
-          }
         }
       })
       .catch((err) => {

@@ -3,4 +3,5 @@ export interface RightBarProps {
   children: React.ReactNode;
   onClose: () => void;
   onBack?: () => void;
+  title?: string;
 }

@@ -14,8 +14,14 @@ import { ChatBoxProps, ChatItemInterface } from "./types";
 import { v4 as uuidv4 } from "uuid";
 
 const ChatBox = (props: ChatBoxProps) => {
-  const { onClose, onBack, conversationId, submitMessage, officeDetail } =
-    props;
+  const {
+    onClose,
+    onBack,
+    conversationId,
+    submitMessage,
+    conversationName,
+    officeDetail,
+  } = props;
   const [isShowEmojiBox, setIsShowEmojiBox] = useState(false);
   const [cursor, setCursor] = useState(0);
   const [chatList, setChatList] = useState<ChatItemInterface[]>([]);
@@ -216,7 +222,7 @@ const ChatBox = (props: ChatBoxProps) => {
   };
 
   return (
-    <RightBar onClose={onClose} onBack={onBack} isBack>
+    <RightBar onClose={onClose} onBack={onBack} isBack title={conversationName}>
       <div className="chat-box">
         <ul className="chat-box__list">
           {chatList.map((item, index) => {

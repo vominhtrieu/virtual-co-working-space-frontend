@@ -4,6 +4,7 @@ export interface ChatBoxProps {
   onClose: () => void;
   onBack: () => void;
   conversationId: number;
+  conversationName?: string;
   submitMessage: (message: string, tempId: string) => void;
   officeDetail: OfficeDetailInterface;
 }
