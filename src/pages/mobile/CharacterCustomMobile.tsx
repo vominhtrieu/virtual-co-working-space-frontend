@@ -4,7 +4,7 @@ import { Suspense, useContext, useEffect } from "react";
 import CharacterCustomMobileMenu from "../../components/controls/CharacterCustomMobileMenu";
 import Box from "../../components/models/Box";
 import CharacterContext from "../../context/CharacterContext";
-import DisplayCharacter from "../../components/models/DisplayCharacter";
+import DisplayCharacter from "../../components/models/character/DisplayCharacter";
 import { AppearanceGroups } from "../../helpers/constants";
 
 const CharacterCustomMobile = () => {

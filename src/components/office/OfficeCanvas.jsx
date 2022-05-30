@@ -3,7 +3,8 @@ import { Suspense, useContext, useRef } from "react";
 import Box from "../models/Box";
 import { Debug, Physics } from "@react-three/cannon";
 import Office from "../models/Office";
-import Character from "../models/Character";
+import Character from "../models/character/Character";
+import MemberCharacter from "../models/character/MemberCharacter";
 import CustomTransformControl from "../controls/CustomTransformControl";
 import { Canvas } from "@react-three/fiber";
 import CharacterContext from "../../context/CharacterContext";
@@ -12,7 +13,7 @@ import { volumeSelectors } from "../../stores/volume-slice";
 import { Provider } from "react-redux";
 import store from "../../stores";
 import ItemModel from "../models/ItemModel";
-import { socketSelector } from "../../stores/socket-slice";
+import { userSelectors } from "../../stores/auth-slice";
 
 export default function OfficeCanvas({
   setObjectionClickPos,
@@ -26,11 +27,13 @@ export default function OfficeCanvas({
   objectActionVisible,
   selectedObject,
   selectedKey,
+  onlineMembers,
   handleObject3dDragged,
 }) {
   const orbitRef = useRef(null);
   const appearance = useContext(CharacterContext);
   const volume = useAppSelector(volumeSelectors.getVolume);
+  const userInfo = useAppSelector(userSelectors.getUserInfo);
 
   const handleObject3dClick = (e, key) => {
     let temp = e.object;
@@ -99,17 +102,28 @@ export default function OfficeCanvas({
                   </Suspense>
                 </mesh>
               ))}
-              {!isCustomizing && (
-                <Character
+              {!isCustomizing && onlineMembers.map((member) =>
+                member.member.id === userInfo.id ? <Character
+                  key={member.id}
                   appearance={appearance}
-                  startPosition={[-5, 3, 2]}
+                  startPosition={[member.transform.position.x, 3, member.transform.position.z]}
                   scale={[2, 2, 2]}
                   orbitRef={orbitRef}
                   movable
                   volume={volume}
                   currentEmoji={characterEmoji}
                   currentGesture={characterGesture}
-
+                /> : <MemberCharacter
+                  key={member.id}
+                  appearance={appearance}
+                  startPosition={[member.transform.position.x, 3, member.transform.position.z]}
+                  scale={[2, 2, 2]}
+                  orbitRef={orbitRef}
+                  movable
+                  volume={volume}
+                  currentEmoji={characterEmoji}
+                  currentGesture={characterGesture}
+                  memberId={member.member.id}
                 />
               )}
 

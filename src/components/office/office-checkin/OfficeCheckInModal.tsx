@@ -17,19 +17,19 @@ export default function OfficceCheckInModal () {
     const photoData = useRef<any>(null);
 
     useEffect(() => {
-        IsCheckinProxy({ officeId: +params.id! }).then((res) => {
-            
-            if (res.status === ProxyStatusEnum.FAIL) {
-                toastError(res.message ?? "Find check-in fail");
-            }
+        // IsCheckinProxy({ officeId: +params.id! }).then((res) => {
+        //     console.log(res);
+        //     if (res.status === ProxyStatusEnum.FAIL) {
+        //         toastError(res.message ?? "Find check-in fail");
+        //     }
 
-            if (res.status === ProxyStatusEnum.SUCCESS) {
-                const data = res.data
-                if (Object.keys(data).length === 0 && data.constructor === Object) {
-                    setOpen(true);
-                }
-            }
-        })
+        //     if (res.status === ProxyStatusEnum.SUCCESS) {
+        //         const data = res.data
+        //         if (Object.keys(data).length === 0 && data.constructor === Object) {
+        //             setOpen(true);
+        //         }
+        //     }
+        // })
 
 
         navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
@@ -82,10 +82,6 @@ export default function OfficceCheckInModal () {
                 });
             })
         }
-    }
-
-    const handlePhotoChange = (info: any) => {
-        console.log(info.file)
     }
 
     const footer = [
