@@ -5,13 +5,20 @@ const srcTemp = "https://ss-images.saostar.vn/2020/01/03/6750639/page1.jpg";
 
 const Thumbnail = (props: ThumbnailPropsInterface) => {
   const { src, alt, office, onClick } = props;
+
+  const formatTitle = (title: any) => {
+    // if (title.length > 50) 
+    //   return title.substring(0, 50) + "...";
+    return title;
+  }
+
   return (
     <div className="thumbnail" onClick={onClick}>
       <img src={src ?? srcTemp} alt={alt} className="thumbnail__img" />
       <div className="thumbnail__content">
         {/* header - start */}
         <div className="thumbnail__content-header">
-          <span className="thumbnail__content-title">{office?.name}</span>
+          <p className="thumbnail__content-title">{formatTitle(office?.name)}</p>
           <div className="thumbnail__content-count">
             <span className="thumbnail__content-active" />
             <span className="thumbnail__content-num">5/20</span>

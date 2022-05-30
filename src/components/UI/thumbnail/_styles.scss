@@ -33,12 +33,18 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 0.5rem;
+      line-height: 2.5rem;
+      width: inherit;
     }
 
     &-title {
       font-size: 2rem;
       font-weight: 600;
-      line-height: 1.1;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 70%;
     }
 
     &-count {
