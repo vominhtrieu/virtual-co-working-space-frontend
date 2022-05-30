@@ -92,20 +92,19 @@ const ChatBox = (props: ChatBoxProps) => {
     });
   }, [conversationId, socket]);
 
-  console.log(chatList);
-
   useEffect(() => {
     socket.on("message:sent", (value) => {
-      const newChatItem = {
-        src: "",
-        alt: "",
-        message: value["content"],
-        isMe: userInfo.id === value["senderId"],
-        id: value["id"],
-        conversationId: conversationId,
-      };
+      console.log(value);
+      // const newChatItem = {
+      //   src: "",
+      //   alt: "",
+      //   message: value["content"],
+      //   isMe: userInfo.id === value["senderId"],
+      //   id: value["id"],
+      //   conversationId: conversationId,
+      // };
 
-      setChatList((curr) => [...curr, newChatItem]);
+      // setChatList((curr) => [...curr, newChatItem]);
     });
 
     scrollRef.current.scrollIntoView({ behavior: "smooth" });
