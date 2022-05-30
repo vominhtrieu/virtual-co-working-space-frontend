@@ -19,7 +19,6 @@ import { socketSelector } from "../../stores/socket-slice";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import { OfficeDetailInterface } from "../../types/office";
 import CallingBar from "./calling/CallingBar";
-import { v4 as uuidv4 } from "uuid";
 
 export type positionType = {
   x: number;
@@ -203,11 +202,11 @@ const Workspace = () => {
     setAction("chatBox");
   };
 
-  const handleSubmitMessage = (values: string) => {
+  const handleSubmitMessage = (values: string, tempId: string) => {
     socket.emit("message:send", {
       conversationId: conversationId,
       content: values,
-      tempId: uuidv4(),
+      tempId: tempId,
     });
   };
 

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FaCheckDouble, FaTrashAlt, FaUndo } from "react-icons/fa";
 import { useAppSelector } from "../../../../stores";
+import { userSelectors } from "../../../../stores/auth-slice";
 import { socketSelector } from "../../../../stores/socket-slice";
 import { ChatBoxItemPropsInterface } from "./types";
 
@@ -8,10 +9,13 @@ const srcTemp = "https://ss-images.saostar.vn/2020/01/03/6750639/page1.jpg";
 
 const ChatBoxItem = (props: ChatBoxItemPropsInterface) => {
   const [isOpenAction, setIsOpenAction] = useState(false);
-  const { src, alt, message, isMe, conversationId, id, reader } = props;
+  const { src, alt, message, isMe, conversationId, senderId, id, reader } =
+    props;
   const actionRef = useRef<HTMLDivElement>(null);
 
   const socket = useAppSelector(socketSelector.getSocket);
+
+  const userInfo = useAppSelector(userSelectors.getUserInfo);
 
   useEffect(() => {
     // check unfocus
@@ -59,26 +63,27 @@ const ChatBoxItem = (props: ChatBoxItemPropsInterface) => {
       <div
         className="chat-box-item__message"
         onClick={() => {
-          if (isMe) setIsOpenAction((curr) => !curr);
-        }}
-        onBlur={() => {
-          if (isMe) setIsOpenAction(false);
+          setIsOpenAction((curr) => !curr);
         }}
       >
         {isOpenAction && (
           <div className="chat-box-item__action" ref={actionRef}>
             <ul className="chat-box-item__action-list">
-              <li className="chat-box-item__action-item">
-                <FaCheckDouble />
-                Đã xem
-              </li>
-              <li
-                className="chat-box-item__action-item"
-                onClick={handleRevokedMessage}
-              >
-                <FaUndo />
-                Thu hồi
-              </li>
+              {senderId === userInfo.id && (
+                <>
+                  <li className="chat-box-item__action-item">
+                    <FaCheckDouble />
+                    Đã xem
+                  </li>
+                  <li
+                    className="chat-box-item__action-item"
+                    onClick={handleRevokedMessage}
+                  >
+                    <FaUndo />
+                    Thu hồi
+                  </li>
+                </>
+              )}
               <li
                 className="chat-box-item__action-item"
                 onClick={handleDeleteMessage}
@@ -89,9 +94,7 @@ const ChatBoxItem = (props: ChatBoxItemPropsInterface) => {
             </ul>
           </div>
         )}
-        <span>
-          {message ?? "sadgasasdgasdgasdgehas ă gwe vgaeg he ae hah eah gset"}
-        </span>
+        <span>{message ?? "Không có nội dung"}</span>
       </div>
     </div>
   );

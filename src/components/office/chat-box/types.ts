@@ -4,7 +4,7 @@ export interface ChatBoxProps {
   onClose: () => void;
   onBack: () => void;
   conversationId: number;
-  submitMessage: (message: string) => void;
+  submitMessage: (message: string, tempId: string) => void;
   officeDetail: OfficeDetailInterface;
 }
 
@@ -14,7 +14,9 @@ export interface ChatItemInterface {
   message: string;
   isMe: boolean;
   id: number;
+  tempId?: string;
   conversationId: number;
+  senderId: number;
   reader?: {
     id: number;
     name: string;

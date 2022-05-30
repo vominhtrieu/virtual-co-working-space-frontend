@@ -11,6 +11,7 @@ import InputText from "../../UI/form-controls/input-text";
 import ChatBoxItem from "./chat-box-item";
 import { emojiList } from "./emoji";
 import { ChatBoxProps, ChatItemInterface } from "./types";
+import { v4 as uuidv4 } from "uuid";
 
 const ChatBox = (props: ChatBoxProps) => {
   const { onClose, onBack, conversationId, submitMessage, officeDetail } =
@@ -24,7 +25,6 @@ const ChatBox = (props: ChatBoxProps) => {
   const emojiBoxRef = useRef<any>(null);
   const inputRef = useRef<any>(null);
 
-  // get userID
   const userInfo = useAppSelector(userSelectors.getUserInfo);
 
   useEffect(() => {
@@ -54,6 +54,7 @@ const ChatBox = (props: ChatBoxProps) => {
                 isMe: userInfo.id === mess?.senderId,
                 id: mess?.id,
                 conversationId: mess?.conversationId,
+                senderId: mess?.senderId,
                 reader: mess?.readers
                   ? mess?.readers.map((r) => {
                       return {
@@ -87,26 +88,25 @@ const ChatBox = (props: ChatBoxProps) => {
   }, [userInfo.id, conversationId, officeDetail.officeMembers]);
 
   useEffect(() => {
-    console.log("join");
     socket.emit("conversation:join", {
       conversationId: conversationId,
     });
   }, [conversationId, socket]);
 
   useEffect(() => {
-    console.log("sent");
     socket.on("message:sent", (value) => {
-      console.log(value);
-      const newChatItem = {
-        src: "",
-        alt: "",
-        message: value["content"],
-        isMe: userInfo.id === value["senderId"],
-        id: value["id"],
-        conversationId: conversationId,
-      };
-
-      setChatList((curr) => [...curr, newChatItem]);
+      setChatList((curr) => {
+        const newList = curr.map((item) => {
+          if (item.tempId === value["tempId"]) {
+            return {
+              ...item,
+              id: value["id"],
+            };
+          }
+          return item;
+        });
+        return newList;
+      });
     });
 
     scrollRef.current.scrollIntoView({ behavior: "smooth" });
@@ -114,7 +114,7 @@ const ChatBox = (props: ChatBoxProps) => {
     return () => {
       socket.off("message:sent");
     };
-  }, [conversationId, socket, userInfo.id]);
+  }, [conversationId, socket, userInfo.id, chatList]);
 
   useEffect(() => {
     socket.on("message:deleted", (value) => {
@@ -160,7 +160,23 @@ const ChatBox = (props: ChatBoxProps) => {
   });
 
   const handleSendMess = (values) => {
-    submitMessage(values.message);
+    if (values.message.trim() === "") return;
+
+    const tempId = uuidv4();
+    submitMessage(values.message, tempId);
+
+    const newChatItem = {
+      src: "",
+      alt: "",
+      message: values.message,
+      isMe: true,
+      senderId: userInfo.id,
+      id: -1,
+      tempId: tempId,
+      conversationId: conversationId,
+    };
+    setChatList((curr) => [...curr, newChatItem]);
+
     setValue("message", "");
     setIsShowEmojiBox(false);
     if (scrollRef !== null && scrollRef.current !== null) {
@@ -212,6 +228,7 @@ const ChatBox = (props: ChatBoxProps) => {
                   name={item.alt}
                   isMe={item.isMe}
                   id={item.id}
+                  senderId={item.senderId}
                   conversationId={item.conversationId}
                   reader={item.reader}
                 />

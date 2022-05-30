@@ -53,5 +53,7 @@
     background-color: $color-secondary-dark;
     height: calc(100vh - 12rem);
     padding: 1rem 2rem;
+    display: flex;
+    flex-direction: column;
   }
 }

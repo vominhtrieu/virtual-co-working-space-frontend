@@ -1,6 +1,7 @@
 .chat-box {
   border-radius: 0.5rem;
   height: 85%;
+  flex-grow: 1;
 
   &__list {
     max-height: 100%;
@@ -81,11 +82,12 @@
   &__action {
     position: absolute;
     min-width: 12rem;
-    bottom: 4rem;
-    right: 3rem;
+    top: 0;
+    right: 0;
     background-color: #fff;
     border-radius: 0.5rem;
     padding: 0.5rem 1rem;
+    z-index: 1000;
 
     &-item {
       padding: 0.5rem 1rem;
