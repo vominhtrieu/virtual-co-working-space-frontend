@@ -22,7 +22,7 @@ const PublicInvitationProxy = async (
   params: ParamsInterface
 ): Promise<ProxyFuncType<ProxyResponseInterface>> => {
   const res = await getPublicInvitation(params);
-  console.log(res);
+  
   
   if (res?.code && res?.code!==200) {
     return {

@@ -87,7 +87,7 @@ const Offices = () => {
   ) => {
     JoinByCodeProxy(values)
       .then((res) => {
-        console.log(res);
+        
         if (res.status === ProxyStatusEnum.FAIL) {
           toastError(res.message ?? "Join office fail");
           return;

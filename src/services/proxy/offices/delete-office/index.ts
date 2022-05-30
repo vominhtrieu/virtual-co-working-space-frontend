@@ -23,7 +23,7 @@ const DeleteOfficeProxy = async (
   params: DeleteOfficeProxyParamsInterface
 ): Promise<ProxyFuncType<DeleteOfficeApiResponseInterface>> => {
   const res = await deleteOffice(params);
-  console.log(res);
+  
   if (res?.code && res?.code !== 200) {
     return {
       status: ProxyStatusEnum.FAIL,

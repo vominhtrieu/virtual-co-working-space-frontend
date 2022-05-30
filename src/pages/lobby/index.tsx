@@ -2,16 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/layouts/navbar";
 import Thumbnail from "../../components/UI/thumbnail";
-import { toastError, toastSuccess } from "../../helpers/toast";
-import JoinByCodeProxy from "../../services/proxy/office-invitation/join-invite-code";
-import CreateOfficeProxy from "../../services/proxy/offices/create-office";
+import { toastError } from "../../helpers/toast";
 import GetOfficeListProxy from "../../services/proxy/offices/office-list";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import { OfficeInterface } from "../../types/office";
-import {
-  CreateOfficeFormValuesInterface,
-  JoinOfficeFormValuesInterface,
-} from "./types";
 
 const Lobby = () => {
   const [officeList, setOfficeList] = useState<OfficeInterface[]>();
@@ -23,7 +17,6 @@ const Lobby = () => {
     let isMounted = true;
     GetOfficeListProxy({ page: 1, size: 5 })
       .then((res) => {
-        console.log("Get offices: ", res);
         if (!isMounted) return;
 
         if (res.status === ProxyStatusEnum.FAIL) {
@@ -45,50 +38,9 @@ const Lobby = () => {
     };
   }, [countGetOffices]);
 
-  const handleCreateOfficeSubmit = (
-    values: CreateOfficeFormValuesInterface
-  ) => {
-    CreateOfficeProxy(values)
-      .then((res) => {
-        if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Create office fail");
-          return;
-        }
-
-        if (res.status === ProxyStatusEnum.SUCCESS) {
-          toastSuccess("Create office success");
-          setCountGetOffices((curr) => curr + 1);
-          return;
-        }
-      })
-      .catch((err) => {
-        toastError(err.message ?? "Create office fail");
-      });
-  };
-
-  const handleJoinOfficeSubmit = (values: JoinOfficeFormValuesInterface) => {
-    JoinByCodeProxy(values)
-      .then((res) => {
-        console.log(res);
-        if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Join office fail");
-          return;
-        }
-
-        if (res.status === ProxyStatusEnum.SUCCESS) {
-          toastSuccess("Join office success");
-          setCountGetOffices((curr) => curr + 1);
-          return;
-        }
-      })
-      .catch((err) => {
-        toastError(err.message ?? "Join office fail");
-      });
-  };
-
   return (
     <section className="lobby">
-      <Navbar />
+      <Navbar onInsertOffice={() => setCountGetOffices((curr) => curr++)} />
 
       <div className="lobby__main">
         <div className="lobby__office-list">
@@ -100,11 +52,7 @@ const Lobby = () => {
                 alt={office.avatarUrl}
                 src={office.avatarUrl}
                 onClick={() => {
-                  navigate(`/office/${office.id}`, {
-                    state: {
-                      officeId: office.id,
-                    },
-                  });
+                  navigate(`/office/${office.id}`);
                 }}
               />
             );

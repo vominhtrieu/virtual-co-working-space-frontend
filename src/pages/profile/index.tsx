@@ -125,7 +125,7 @@ const Profile = () => {
                 />
             ) : null}
 
-            <Navbar />
+            {/* <Navbar /> */}
             <div className="lobby__profile">
                 <div className="lobby__profile-container">
                     <div className="lobby__profile-title">

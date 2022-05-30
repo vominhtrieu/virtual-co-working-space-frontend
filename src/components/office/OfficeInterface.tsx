@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
 import { FaRegSmileBeam, FaTrash } from "react-icons/fa";
-import SidebarChat from "../../pages/office-detail/chat";
 import InteractionMenu from "../layouts/sidebar/offices/character-interaction";
 import EditOffice from "../layouts/sidebar/offices/edit-office";
 import Button from "../UI/button";
@@ -107,8 +106,6 @@ export default function OfficeInterface({
           </>
         ) : null}
       </div>
-
-      {isShowChatBox && <SidebarChat conversationId={conversationId} />}
 
       <OfficeBar isOwner={isOwner} action={action} setAction={setAction} />
 

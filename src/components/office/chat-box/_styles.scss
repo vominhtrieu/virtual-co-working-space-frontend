@@ -1,6 +1,4 @@
 .chat-box {
-  border: 1px solid $color-primary-dark;
-  padding: 2rem;
   border-radius: 0.5rem;
   height: 85%;
 
@@ -15,12 +13,13 @@
   }
 
   &__form {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 2rem;
     background-color: $color-secondary-dark-1;
-    padding: 0 1rem;
+    padding: 1rem 2rem;
     border-radius: 0.5rem;
   }
 
@@ -35,6 +34,22 @@
     color: #fff;
     font-size: 2.5rem;
     margin-right: 1rem;
+    cursor: pointer;
+  }
+
+  &__emoji-table {
+    position: absolute;
+    bottom: 6rem;
+    left: -1rem;
+    width: 30rem;
+    height: 20rem;
+    background-color: $color-secondary-dark-1;
+    border-radius: 0.5rem;
+    padding: 1rem;
+  }
+
+  &__emoji-item {
+    font-size: 2.5rem;
     cursor: pointer;
   }
 }
@@ -54,12 +69,39 @@
   }
 
   &__message {
+    position: relative;
     background-color: $color-secondary;
     border-radius: 0.5rem;
     padding: 1rem;
     color: #fff;
     max-width: 20rem;
     font-size: $font-text-small;
+  }
+
+  &__action {
+    position: absolute;
+    min-width: 12rem;
+    bottom: 4rem;
+    right: 3rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+
+    &-item {
+      padding: 0.5rem 1rem;
+      display: grid;
+      grid-template-columns: 2rem 1fr;
+      place-items: baseline;
+      color: #333;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: $color-secondary-light;
+        color: #fff;
+        border-radius: 0.5rem;
+      }
+    }
   }
 }
 
@@ -73,5 +115,6 @@
   .chat-box-item__message {
     background-color: $color-secondary-light;
     color: $color-white;
+    max-width: 20rem;
   }
 }

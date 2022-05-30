@@ -30,7 +30,7 @@ const RegisterProxy = async (
   params: RegisterProxyParams
 ): Promise<ProxyFuncType<RegisterProxyResponseInterface>> => {
   const res = await register(params);
-  console.log(res);
+  
 
   if (res?.code && res?.code !== 200) {
     return {

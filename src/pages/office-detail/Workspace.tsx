@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import CharacterForm from "../../components/character-form";
 import InteractionMenu from "../../components/layouts/sidebar/offices/character-interaction";
 import OfficeDetailForm from "../../components/office-detail-form";
@@ -9,14 +9,16 @@ import ChatList from "../../components/office/chat-list";
 import MemberList from "../../components/office/member-list";
 import OfficeCanvas from "../../components/office/OfficeCanvas";
 import OfficeInterface from "../../components/office/OfficeInterface";
+import { toastError } from "../../helpers/toast";
 import { Item } from "../../services/api/offices/get-office-item/types";
+import { OfficeItem } from "../../services/api/offices/officce-item/types";
 import OfficeDetailProxy from "../../services/proxy/offices/office-detail";
 import { useAppSelector } from "../../stores";
 import { userSelectors } from "../../stores/auth-slice";
 import { socketSelector } from "../../stores/socket-slice";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
+import { OfficeDetailInterface } from "../../types/office";
 import CallingBar from "./calling/CallingBar";
-import { OfficeItem } from "../../services/api/offices/officce-item/types";
 
 export type positionType = {
   x: number;
@@ -41,6 +43,8 @@ const Workspace = () => {
   const [characterGesture, setCharacterGesture] = useState({ idx: -1 });
   const [characterEmoji, setCharacterEmoji] = useState({ idx: -1 });
 
+  const [officeDetail, setOfficeDetail] = useState<OfficeDetailInterface>();
+
   const [action, setAction] = useState<
     | "action"
     | "character"
@@ -52,12 +56,9 @@ const Workspace = () => {
     | ""
   >("");
 
-  const navigate = useNavigate();
-
   const location = useLocation();
 
-  const locationState: any = location.state;
-  const officeId = locationState["officeId"];
+  const officeId = +location.pathname.split("/")[2];
 
   const userInfo = useAppSelector(userSelectors.getUserInfo);
 
@@ -108,7 +109,6 @@ const Workspace = () => {
     const idx = objectList.findIndex((obj) => obj.id === selectedKey);
     const newObjectList = [...objectList];
     newObjectList.splice(idx, 1);
-    // navigate("/");
     setObjectList([...newObjectList]);
     setSelectedObject(null);
     setSelectedKey(null);
@@ -118,7 +118,6 @@ const Workspace = () => {
 
   useEffect(() => {
     socket.on("office_item:created", (message) => {
-      console.log(message);
       setObjectList((objectList) => [...objectList, message]);
     });
 
@@ -135,7 +134,7 @@ const Workspace = () => {
         yRotation: transform.yRotation,
         zRotation: transform.zRotation,
       };
-      console.log(newObjectList)
+      console.log(newObjectList);
       setObjectList([...newObjectList]);
     });
 
@@ -153,7 +152,6 @@ const Workspace = () => {
   }, [socket, objectList]);
 
   useEffect(() => {
-    console.log("join office ", officeId);
     socket.emit("office_member:join", {
       officeId: officeId,
     });
@@ -198,10 +196,6 @@ const Workspace = () => {
       });
   }, [officeId, userInfo.id]);
 
-  useEffect(() => {
-    console.log("Object list: ", objectList);
-  }, [objectList]);
-
   const handleSelectConversation = (conversationId: number) => {
     setConversationId(conversationId);
     setAction("chatBox");
@@ -213,6 +207,31 @@ const Workspace = () => {
       content: values,
     });
   };
+
+  useEffect(() => {
+    if (action !== "chatBox") {
+      socket.emit("conversation:leave", {
+        conversationId: conversationId,
+      });
+    }
+  }, [conversationId, socket, action]);
+
+  useEffect(() => {
+    OfficeDetailProxy({ id: officeId })
+      .then((res) => {
+        if (res.status === ProxyStatusEnum.FAIL) {
+          toastError(res.message ?? "Get offices detail fail");
+          return;
+        }
+
+        if (res.status === ProxyStatusEnum.SUCCESS) {
+          setOfficeDetail(res.data.office ?? {});
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [officeId]);
 
   return (
     <>
@@ -275,11 +294,15 @@ const Workspace = () => {
           onBack={() => setAction("chatList")}
           onClose={() => setAction("")}
           submitMessage={handleSubmitMessage}
+          officeDetail={officeDetail!}
         />
       )}
 
       {action === "member" && (
-        <MemberList onClose={() => setAction("")} id={+officeId} />
+        <MemberList
+          onClose={() => setAction("")}
+          officeDetail={officeDetail!}
+        />
       )}
 
       {action === "character" && (

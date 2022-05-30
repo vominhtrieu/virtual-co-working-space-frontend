@@ -8,7 +8,7 @@ const JoinByCodeProxy =async (
 ): Promise<ProxyFuncType>  => {
   const res = await joinByCode(params);
   console.log("join by code");
-  console.log(res);
+  
   if (res?.code && res?.code !==200) {
     return {
       status: ProxyStatusEnum.FAIL,

@@ -1,4 +1,6 @@
+import { OfficeDetailInterface } from "../../../types/office";
+
 export interface MemberListProps {
-    onClose: () => void;
-    id: number
+  onClose: () => void;
+  officeDetail: OfficeDetailInterface;
 }

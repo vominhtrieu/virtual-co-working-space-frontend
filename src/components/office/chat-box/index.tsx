@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { FaGrin, FaPaperPlane } from "react-icons/fa";
-import { ChatItemInterface } from "../../../pages/office-detail/chat/chat-box/types";
 import GetMessagesProxy from "../../../services/proxy/conversations/get-messages";
 import { useAppSelector } from "../../../stores";
 import { userSelectors } from "../../../stores/auth-slice";
@@ -10,15 +9,20 @@ import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
 import RightBar from "../../layouts/rightbar";
 import InputText from "../../UI/form-controls/input-text";
 import ChatBoxItem from "./chat-box-item";
-import { ChatBoxProps } from "./types";
+import { emojiList } from "./emoji";
+import { ChatBoxProps, ChatItemInterface } from "./types";
 
 const ChatBox = (props: ChatBoxProps) => {
-  const { onClose, onBack, conversationId, submitMessage } = props;
-
+  const { onClose, onBack, conversationId, submitMessage, officeDetail } =
+    props;
+  const [isShowEmojiBox, setIsShowEmojiBox] = useState(false);
+  const [cursor, setCursor] = useState(0);
   const [chatList, setChatList] = useState<ChatItemInterface[]>([]);
   const socket = useAppSelector(socketSelector.getSocket);
 
-  const ref = useRef<any>(null);
+  const scrollRef = useRef<any>(null);
+  const emojiBoxRef = useRef<any>(null);
+  const inputRef = useRef<any>(null);
 
   // get userID
   const userInfo = useAppSelector(userSelectors.getUserInfo);
@@ -35,48 +39,118 @@ const ChatBox = (props: ChatBoxProps) => {
             res?.data?.messages?.messages.map((mess) => {
               return {
                 src:
-                  mess?.sender?.avatar ??
+                  officeDetail.officeMembers.find((sender) => {
+                    return sender.id === mess.senderId;
+                  })?.member.avatar ??
                   "https://s199.imacdn.com/tt24/2020/03/06/c13c137597da081f_f4278fdff371f2b7_93155158347150251.jpg",
-                alt: mess?.sender.name,
-                message: mess?.content,
-                isMe: userInfo.id === mess?.sender.id,
+                alt:
+                  officeDetail.officeMembers.find((sender) => {
+                    return sender.id === mess.senderId;
+                  })?.member.name ?? "Tên người dùng",
+                message:
+                  mess.status === "revoked"
+                    ? "Tin nhắn đã bị thu hồi"
+                    : mess?.content,
+                isMe: userInfo.id === mess?.senderId,
+                id: mess?.id,
+                conversationId: mess?.conversationId,
+                reader: mess?.readers
+                  ? mess?.readers.map((r) => {
+                      return {
+                        id: r.readerId,
+                        name:
+                          officeDetail.officeMembers.find(
+                            (m) => m.id === r.readerId
+                          )?.member.name ?? "Tên",
+
+                        avatar:
+                          officeDetail.officeMembers.find(
+                            (m) => m.id === r.readerId
+                          )?.member.avatar ??
+                          "https://s199.imacdn.com/tt24/2020/03/06/c13c137597da081f_f4278fdff371f2b7_93155158347150251.jpg",
+                      };
+                    })
+                  : [],
               };
             });
 
           setChatList(chatListTransform.reverse());
 
-          if (ref !== null && ref.current !== null) {
-            ref.current.scrollIntoView({ behavior: "smooth" });
+          if (scrollRef !== null && scrollRef.current !== null) {
+            scrollRef.current.scrollIntoView({ behavior: "smooth" });
           }
         }
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [userInfo.id, conversationId]);
+  }, [userInfo.id, conversationId, officeDetail.officeMembers]);
 
   useEffect(() => {
     socket.emit("conversation:join", {
       conversationId: conversationId,
     });
+  }, [conversationId, socket]);
 
+  console.log(chatList);
+
+  useEffect(() => {
     socket.on("message:sent", (value) => {
       const newChatItem = {
         src: "",
         alt: "",
         message: value["content"],
         isMe: userInfo.id === value["senderId"],
+        id: value["id"],
+        conversationId: conversationId,
       };
 
       setChatList((curr) => [...curr, newChatItem]);
     });
 
-    ref.current.scrollIntoView({ behavior: "smooth" });
+    scrollRef.current.scrollIntoView({ behavior: "smooth" });
 
     return () => {
       socket.off("message:sent");
     };
   }, [conversationId, socket, userInfo.id]);
+
+  useEffect(() => {
+    socket.on("message:deleted", (value) => {
+      // remove message from chat list
+      setChatList((curr) => curr.filter((item) => item.id !== value));
+    });
+
+    scrollRef.current.scrollIntoView({ behavior: "smooth" });
+
+    return () => {
+      socket.off("message:deleted");
+    };
+  }, [conversationId, socket, userInfo.id]);
+
+  useEffect(() => {
+    socket.on("message:revoked", (value) => {
+      // replace message from chat list
+      setChatList((curr) =>
+        curr.map((item) => {
+          if (item.id === value["messageId"]) {
+            return {
+              ...item,
+              message: "Tin nhắn đã bị thu hồi",
+            };
+          }
+
+          return item;
+        })
+      );
+    });
+
+    scrollRef.current.scrollIntoView({ behavior: "smooth" });
+
+    return () => {
+      socket.off("message:deleted");
+    };
+  }, [conversationId, socket]);
 
   const { control, handleSubmit, setValue } = useForm({
     defaultValues: {
@@ -87,9 +161,41 @@ const ChatBox = (props: ChatBoxProps) => {
   const handleSendMess = (values) => {
     submitMessage(values.message);
     setValue("message", "");
-    if (ref !== null && ref.current !== null) {
-      ref.current.scrollIntoView({ behavior: "smooth" });
+    setIsShowEmojiBox(false);
+    if (scrollRef !== null && scrollRef.current !== null) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const watchMessage = useWatch({
+    control,
+    name: "message",
+  });
+
+  useEffect(() => {
+    // check unfocus
+    const handleClickOutside = (event: any) => {
+      if (emojiBoxRef.current && !emojiBoxRef.current.contains(event.target)) {
+        setIsShowEmojiBox(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleChangeCursor = (value) => {
+    setCursor(value);
+  };
+
+  const handleEmojiClick = (emoji) => {
+    // insert emoji
+    const preMess = watchMessage.slice(0, cursor);
+    const postMess = watchMessage.slice(cursor);
+    const newMess = preMess + emoji + postMess;
+    setValue("message", newMess);
   };
 
   return (
@@ -104,15 +210,40 @@ const ChatBox = (props: ChatBoxProps) => {
                   alt={item.alt}
                   name={item.alt}
                   isMe={item.isMe}
+                  id={item.id}
+                  conversationId={item.conversationId}
+                  reader={item.reader}
                 />
               </li>
             );
           })}
-          <div ref={ref} />
+          <div ref={scrollRef} />
         </ul>
       </div>
       <form className="chat-box__form" onSubmit={handleSubmit(handleSendMess)}>
-        <FaGrin className="chat-box__icon-emoji" />
+        <>
+          {isShowEmojiBox && (
+            <div className="chat-box__emoji-table" ref={emojiBoxRef}>
+              {emojiList.map((emoji, index) => {
+                return (
+                  <span
+                    key={index}
+                    className="chat-box__emoji-item"
+                    onClick={() => {
+                      handleEmojiClick(emoji.content);
+                    }}
+                  >
+                    {emoji.content}
+                  </span>
+                );
+              })}
+            </div>
+          )}
+          <FaGrin
+            className="chat-box__icon-emoji"
+            onClick={() => setIsShowEmojiBox((curr) => !curr)}
+          />
+        </>
         <InputText
           size="large"
           name="message"
@@ -122,8 +253,11 @@ const ChatBox = (props: ChatBoxProps) => {
             outline: "none",
             border: "none",
             borderRadius: "0",
-            borderBottom: "1px solid #fff",
+            borderBottom: "1px solid rgb(255, 255, 255, 0.3)",
+            color: "#fff",
           }}
+          ref={inputRef}
+          changeCursorPosition={handleChangeCursor}
         />
         <button
           style={{

@@ -7,7 +7,7 @@ const AcceptPrivateInvitation =async (
   params: ParamsInterface
 ): Promise<ProxyFuncType>  => {
   const res = await accepPrivateInvitation(params);
-  console.log(res);
+  
   if (res?.code && res?.code !==200) {
     return {
       status: ProxyStatusEnum.FAIL,

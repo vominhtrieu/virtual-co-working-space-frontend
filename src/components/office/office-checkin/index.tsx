@@ -18,7 +18,7 @@ export default function OfficceCheckInModal () {
 
     useEffect(() => {
         IsCheckinProxy({ officeId: +params.id! }).then((res) => {
-            console.log(res);
+            
             if (res.status === ProxyStatusEnum.FAIL) {
                 toastError(res.message ?? "Find check-in fail");
             }
