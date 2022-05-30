@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
-import { FaRegSmileBeam, FaTrash } from "react-icons/fa";
-import InteractionMenu from "../layouts/sidebar/offices/character-interaction";
+import { FaTrash } from "react-icons/fa";
 import EditOffice from "../layouts/sidebar/offices/edit-office";
 import Button from "../UI/button";
 import OfficeBar from "./office-bar";
