@@ -24,6 +24,7 @@ type MemberCharacterProps = JSX.IntrinsicElements["group"] & {
   eyes: number;
   movable: boolean;
   startPosition: number[];
+  startRotation: number[];
   orbitRef?: any;
   volume: number;
   memberId: number;
@@ -209,15 +210,21 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         props.startPosition[1],
         props.startPosition[2]
       );
-      ref.current.rotation.set(0, 0, 0);
+      ref.current.rotation.set(
+        props.startRotation[0],
+        props.startRotation[1],
+        props.startRotation[2]
+      );
       api.position.set(
         props.startPosition[0],
         props.startPosition[1],
         props.startPosition[2]
       );
-      api.rotation.set(0, 0, 0);
-      updatedPosition.current = ref.current.position;
-      updatedRotation.current = ref.current.rotation;
+      api.rotation.set(
+        props.startRotation[0],
+        props.startRotation[1],
+        props.startRotation[2]
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match?.params.id]);

@@ -106,7 +106,8 @@ export default function OfficeCanvas({
                 member.member.id === userInfo.id ? <Character
                   key={member.id}
                   appearance={appearance}
-                  startPosition={[member.transform.position.x, 3, member.transform.position.z]}
+                  startPosition={[member.transform.position.x, 2.5, member.transform.position.z]}
+                  startRotation={[member.transform.rotation.x, member.transform.rotation.y, member.transform.rotation.z]}
                   scale={[2, 2, 2]}
                   orbitRef={orbitRef}
                   movable
@@ -116,7 +117,8 @@ export default function OfficeCanvas({
                 /> : <MemberCharacter
                   key={member.id}
                   appearance={appearance}
-                  startPosition={[member.transform.position.x, 3, member.transform.position.z]}
+                  startPosition={[member.transform.position.x, 2.5, member.transform.position.z]}
+                  startRotation={[member.transform.rotation.x, member.transform.rotation.y, member.transform.rotation.z]}
                   scale={[2, 2, 2]}
                   orbitRef={orbitRef}
                   movable
