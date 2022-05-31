@@ -6,7 +6,14 @@ import ProfileProxy from "../../services/proxy/users/get-profile";
 import UpdateProfileProxy from "../../services/proxy/users/update-user";
 import ChangePasswordProxy from "../../services/proxy/users/change-password";
 import { useAppDispatch, useAppSelector } from "../../stores";
-import { setUserInfo, userSelectors } from "../../stores/auth-slice";
+import { removeAll } from "../../helpers/cookies";
+import { removeAllDataLocal } from "../../helpers/localStorage";
+import {
+  setAuthenticated,
+  setUserInfo,
+  userSelectors,
+} from "../../stores/auth-slice";
+// import { setUserInfo, userSelectors } from "../../stores/auth-slice";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import NewButton from "../../components/UI/new-button";
 import Button from "../../components/UI/button";
@@ -25,6 +32,14 @@ const Profile = () => {
     // const isLoading = useAppSelector(loadSelectors.getIsLoad);
 
     const navigate = useNavigate();
+
+    const handleLogout = () => {
+        dispatch(setAuthenticated(false));
+        dispatch(setUserInfo({}));
+        removeAllDataLocal();
+        removeAll();
+        navigate("/auth/login");
+      };
 
     const padTo2Digits = (num: number) => {
         return num.toString().padStart(2, '0');
@@ -73,6 +88,7 @@ const Profile = () => {
     const handleChangePassword = (values: ChangePasswordFormValuesInterface) => {
         ChangePasswordProxy(values)
             .then((res) => {
+                console.log(res)
                 if (res.status === ProxyStatusEnum.FAIL) {
                     toastError(res.message ?? "Change password fail!");
                 }
@@ -80,6 +96,8 @@ const Profile = () => {
                 if (res.status === ProxyStatusEnum.SUCCESS) {
                     setIsChangingPass(false);
                     toastSuccess("Password changed successfully.");
+                    handleLogout();
+                    navigate("/auth/login");
                 }
             })
             .catch((err) => {

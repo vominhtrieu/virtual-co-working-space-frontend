@@ -52,7 +52,7 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
   };
 
   return (
-    <Popup onClose={onClose}>
+    <Popup onClose={onClose} title="Change Password">
       <form onSubmit={handleSubmit(handleChangePasswordSubmit)}>
         <h1 className='change-pass-form__title'>Change Password</h1>
 

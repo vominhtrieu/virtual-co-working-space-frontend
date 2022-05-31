@@ -1,8 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import Button from "../../../UI/button";
-import InputText from "../../../UI/form-controls/input-text";
+import InputWhite from "../../../UI/form-controls/input-white";
 import Popup from "../../../UI/popup";
 import {
   JoinOfficeFormDataInterface,
@@ -42,28 +41,16 @@ const JoinOfficeForm = (props: JoinOfficeFormProps) => {
     onClose();
   };
   return (
-    <Popup onClose={onClose}>
-      <form onSubmit={handleSubmit(handleJoinOfficeSubmit)}>
-        <h1 className='join-office-form__title'>Join Office</h1>
-
+    <Popup onClose={onClose} title="Join Office" type="white" onSubmit={handleSubmit(handleJoinOfficeSubmit)}>
+      <form>
         <div className='join-office-form__input-block'>
-          <InputText
+          <InputWhite
             control={control}
             name='code'
             hasLabel
             label="Code"
             placeholder='Enter the code...'
           />
-        </div>
-
-        <div className='join-office-form__group-btn'>
-          <Button type='reset' className="cancel" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button type='submit' className="ok" disabled={isLoading}>
-            {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
-            Submit
-          </Button>
         </div>
       </form>
     </Popup>

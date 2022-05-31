@@ -70,7 +70,7 @@ const RegisterForm = ({ handleRegisterSubmit }: FormPropsInterface) => {
           prefix={<FaUser />}
           size='large'
           placeholder={t('pages.register.email')}
-
+          label={t('pages.register.email')}
         />
       </div>
 
@@ -82,6 +82,7 @@ const RegisterForm = ({ handleRegisterSubmit }: FormPropsInterface) => {
           prefix={<FaEnvelope />}
           size='large'
           placeholder={t('pages.register.name')}
+          label={t('pages.register.name')}
         />
       </div>
 
@@ -94,6 +95,7 @@ const RegisterForm = ({ handleRegisterSubmit }: FormPropsInterface) => {
           prefix={<FaKey />}
           size='large'
           placeholder={t('pages.register.password')}
+          label={t('pages.register.password')}
         />
       </div>
 
@@ -106,6 +108,7 @@ const RegisterForm = ({ handleRegisterSubmit }: FormPropsInterface) => {
           prefix={<FaKey />}
           size='large'
           placeholder={t('pages.register.confirmPassword')}
+          label={t('pages.register.confirmPassword')}
         />
       </div>
 

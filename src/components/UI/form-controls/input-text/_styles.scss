@@ -15,14 +15,21 @@
 
 .ant-input {
   background-color: transparent;
-  color: $color-primary-dark;
+  color: $color-white;
   border-radius: 0.5rem;
-  border: 1px solid $color-secondary-light;
+  border: none;
+  border-bottom: 1px solid $color-secondary-light;
+
+  &:focus{
+    border: none;
+    box-shadow: 0 0 0 1px #8fa8c3;
+    border-bottom: 1px solid $color-secondary-dark;
+  }
 }
 
 .input-label {
-  color: $color-primary-dark;
-  font-size: 1.4rem;
+  color: $color-white;
+  font-size: 1.6rem;
   text-transform: capitalize;
 }
 .input-label + .ant-input-affix-wrapper {
@@ -32,7 +39,7 @@
 .error-message {
   color: $color-red;
   font-size: 1.4rem;
-  height: 1.6rem;
+  height: 1.8rem;
   display: block;
 }
 
@@ -40,4 +47,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+.ant-input-lg {
+  padding: 6.5px 11px;
+  font-size: 1.5rem;
 }

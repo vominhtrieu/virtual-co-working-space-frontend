@@ -14,5 +14,5 @@ interface ItemsInterface {
 }
 
 export interface CharacterFormProps {
-  onClose?: () => void;
+  onClose: () => void;
 }

@@ -56,6 +56,7 @@ const Navbar = (props: NavbarProps) => {
   const handleJoinOfficeSubmit = (values: JoinOfficeFormValuesInterface) => {
     JoinByCodeProxy(values)
       .then((res) => {
+        console.log(res)
         if (res.status === ProxyStatusEnum.FAIL) {
           toastError(res.message ?? "Join office fail");
           return;
@@ -96,7 +97,7 @@ const Navbar = (props: NavbarProps) => {
 
       <nav className="navbar">
         <div className="navbar__logo" onClick={() => navigate("/lobby")}>
-          <img src={LogoVSpace} alt="" className="navbar__logo-img" />
+          <img src={LogoVSpace} alt="" className="navbar__logo-img"/>
         </div>
         <div className="navbar__right-content">
           <div className="navbar__button">

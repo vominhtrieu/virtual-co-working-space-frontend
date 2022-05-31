@@ -16,6 +16,7 @@ import { loadSelectors } from "../../../stores/load-slice";
 import { useTranslation } from "react-i18next";
 import { Spin } from "antd";
 import ProfileAvatar from "./avatar";
+import InputWhite from "../../../components/UI/form-controls/input-white";
 
 const EditProfileForm = (props: EditProfileFormProps) => {
   const { t } = useTranslation();
@@ -66,8 +67,8 @@ const EditProfileForm = (props: EditProfileFormProps) => {
   };
 
   return (
-    <Popup onClose={onClose}>
-      <form onSubmit={handleSubmit(handleEditProfileSubmit)}>
+    <Popup onClose={onClose} title="Change Profile" type="white" onSubmit={handleSubmit(handleEditProfileSubmit)}>
+      <form>
         <ul className='edit-profile__items'>
           {/* user item - start */}
           <li className='edit-profile__item-avatar'>
@@ -96,19 +97,6 @@ const EditProfileForm = (props: EditProfileFormProps) => {
             />
           </div>
         </ul>
-
-        <div className='edit-profile__group-btn'>
-
-
-          <Button type='reset' className="cancel" onClick={onClose}>
-            Cancel
-          </Button>
-
-          <Button type='submit' className="ok" disabled={isLoading}>
-            {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
-            Submit
-          </Button>
-        </div>
       </form>
     </Popup>
   );

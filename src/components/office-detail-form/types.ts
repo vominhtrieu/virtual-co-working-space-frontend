@@ -20,6 +20,7 @@ export interface OfficeDetailInterface {
   name: string;
   invitationCode: string;
   avatarUrl: string;
+  description: string;
   createdBy: {
     id: number;
     name: string;

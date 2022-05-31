@@ -48,14 +48,13 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
       oldPassword: data.oldPassword,
       newPassword: data.newPassword,
     };
+    console.log(formatData);
     onSubmit(formatData);
   };
 
   return (
-    <Popup onClose={onClose}>
-      <form onSubmit={handleSubmit(handleChangePasswordSubmit)}>
-        <h1 className='change-pass-form__title'>Change Password</h1>
-
+    <Popup onClose={onClose} title="Change Password" type="white"onSubmit={handleSubmit(handleChangePasswordSubmit)}>
+      <form>
         <div className='change-pass-form__input-block'>
           <InputText
             control={control}
@@ -87,18 +86,6 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
             label="Password Confirmation"
             placeholder='Enter password confirmation'
           />
-        </div>
-
-        <div className='change-pass-form__group-btn'>
-          
-          <Button type='reset' className="cancel" onClick={onClose}>
-            Cancel
-          </Button>
-
-          <Button type='submit' className="ok">
-            Submit
-          </Button>
-
         </div>
       </form>
     </Popup>

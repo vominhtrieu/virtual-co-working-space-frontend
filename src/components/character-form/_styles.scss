@@ -1,14 +1,4 @@
 .character-custom {
-  width: 60vw;
-  height: 60vh;
-  border-radius: 1rem;
-  background-color: #141E61;
-  position: fixed;
-  top: 50%;
-  left: 20%;
-  transform: translateY(-50%);
-  z-index: 200;
-
   &__title {
     font-size: 2rem;
     font-weight: 700;
@@ -37,12 +27,10 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 0rem;
-    height: 70vh;
 
     &-left {
-      padding: 6rem;
       border-right: 2px solid #0F044C;
-      height: 52vh;
+      height: 100%;
     }
 
     &-right {
@@ -58,16 +46,6 @@
     bottom: 10px;
     right: 10px;
   }
-
-  &__content {
-    display: flex;
-    flex-direction: column;
-    height: 65%;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem
-  }
-
   &__btn-icon {
     display: flex;
     justify-content: space-around;

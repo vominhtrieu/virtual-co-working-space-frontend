@@ -11,6 +11,7 @@ import DisplayCharacter from "../../components/models/DisplayCharacter";
 import CharacterContext from "../../context/CharacterContext";
 import Button from "../UI/button";
 import NewButton from "../UI/new-button";
+import Popup from "../UI/popup";
 import { CharacterFormProps } from "./types";
 
 const itemGroups = [
@@ -35,6 +36,7 @@ const itemGroups = [
 ];
 
 const CharacterForm = (props: CharacterFormProps) => {
+  
   const [itemGroupSelected, setItemGroupSelected] = useState(0);
 
   const { onClose } = props;
@@ -79,20 +81,14 @@ const CharacterForm = (props: CharacterFormProps) => {
   );
 
   return (
-    <div className="character-custom">
-      <div className="character-custom__header">
-        <h1 className="character-custom__title">Chỉnh sửa nhân vật</h1>
-        <button className="character-custom__btn-close" onClick={onClose}>
-          <FaTimes />
-        </button>
-      </div>
+    <Popup onClose={onClose} title="Chỉnh sửa nhân vật" type="dark">
       <div className="character-custom__container">
         <div className="character-custom__container-left">
           <Canvas
             shadows={{ enabled: true, autoUpdate: true }}
             camera={{ position: [0, 2, 5], zoom: 2.2 }}
             style={{
-              height: "75%",
+              height: "100%",
               background: "transparent",
               position: "fixed",
               left: 0,
@@ -152,26 +148,10 @@ const CharacterForm = (props: CharacterFormProps) => {
                   })}
               </div>
             </div>
-            <div className="character-custom__btn-group">
-              <NewButton
-                type="reset"
-                variant="secondary"
-                onClick={onClose}
-                content="Huỷ"
-                icon={<FaTimes />}
-              />
-              <NewButton
-                type="submit"
-                variant="primary"
-                content="Lưu"
-                icon={<FaSave />}
-              />
-              {/* onClick={onClose} */}
-            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Popup>
   );
 };
 

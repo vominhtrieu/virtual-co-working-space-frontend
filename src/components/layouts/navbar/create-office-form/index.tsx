@@ -1,8 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import Button from "../../../UI/button";
-import InputText from "../../../UI/form-controls/input-text";
+import InputWhite from "../../../UI/form-controls/input-white";
 import Popup from "../../../UI/popup";
 import {
   CreateOfficeFormDataInterface,
@@ -35,29 +34,16 @@ const CreateOfficeForm = (props: CreateOfficeFormProps) => {
     onSubmit(formatData);
   };
   return (
-    <Popup onClose={onClose}>
-      <form onSubmit={handleSubmit(handleCreateOfficeSubmit)}>
-        <h1 className='create-office-form__title'>Create office</h1>
-
+    <Popup onClose={onClose} title="Create office" type="white" onSubmit={handleSubmit(handleCreateOfficeSubmit)}>
+      <form>
         <div className='create-office-form__input-block'>
-          <InputText
+          <InputWhite
             control={control}
             name='name'
             label='Name'
             hasLabel
             placeholder='Enter the office name...'
           />
-        </div>
-
-        <div className='create-office-form__group-btn'>
-          
-        <Button type='reset' className="cancel" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button type='submit' className="ok" disabled={isLoading}>
-          {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
-            Submit
-          </Button>
         </div>
       </form>
     </Popup>

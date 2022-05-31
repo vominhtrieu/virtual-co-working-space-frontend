@@ -1,5 +1,5 @@
 import { UserOutlined } from "@ant-design/icons";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, Avatar } from "antd";
 import MenuDivider from "antd/lib/menu/MenuDivider";
 import { useState } from "react";
 import { FaDoorClosed } from "react-icons/fa";
@@ -71,9 +71,7 @@ const UserPopup = () => {
       <Dropdown overlay={menu} placement="bottomRight">
         <div className="navbar__user">
           {userInfo.avatar === "" ? (
-            <div className="navbar__avatar">
-              <UserOutlined />
-            </div>
+              <Avatar size={25} icon={<UserOutlined />} />
           ) : (
             <img src={userInfo.avatar} alt="" className="navbar__avatar" />
           )}

@@ -22,8 +22,9 @@ const ForgotForm= ({ handleForgotSubmit }: FormPropsInterface) => {
   });
   const { control, handleSubmit } = useForm<InputInterface>({
     defaultValues: {
-      email: "",
+      email: ""
     },
+    mode: "onChange",
     resolver: yupResolver(schema),
   });
 
@@ -48,6 +49,7 @@ const ForgotForm= ({ handleForgotSubmit }: FormPropsInterface) => {
           prefix={<FaKey />}
           size='large'
           placeholder={t("pages.login.email")}
+          label={t("pages.login.email")}
         />
       </div>
       <button type='submit' className='forgot-form__btn' disabled={isLoading}>

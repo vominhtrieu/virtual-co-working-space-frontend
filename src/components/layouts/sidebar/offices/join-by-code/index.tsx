@@ -42,7 +42,7 @@ const JoinOfficeForm = (props: JoinOfficeFormProps) => {
     onClose();
   };
   return (
-    <Popup onClose={onClose}>
+    <Popup onClose={onClose} title="Tham gia văn phòng">
       <form onSubmit={handleSubmit(handleJoinOfficeSubmit)}>
         <h1 className='join-office-form__title'>Tham gia văn phòng</h1>
 
