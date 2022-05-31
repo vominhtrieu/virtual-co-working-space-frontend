@@ -28,7 +28,7 @@ const InputText = (
         </label>
       ) : null}
       <Input
-        className={error ? "error" : ""}
+        className={error ? "error" : "text"}
         autoComplete="off"
         ref={ref ?? field.ref}
         onBlur={(e) => {

@@ -1,41 +1,3 @@
-.ant-input-affix-wrapper {
-  background-color: transparent;
-  color: $color-white;
-  padding: 0.5rem 1.0rem;
-}
-
-.ant-input-affix-wrapper.error {
-  border: 1px solid $color-red;
-  color: $color-red;
-}
-
-.ant-input-affix-wrapper.error > .ant-input {
-  color: $color-red;
-}
-
-.ant-input {
-  background-color: transparent;
-  color: $color-white;
-  border-radius: 0.5rem;
-  border: none;
-  border-bottom: 1px solid $color-secondary-light;
-
-  &:focus{
-    border: none;
-    box-shadow: 0 0 0 1px #8fa8c3;
-    border-bottom: 1px solid $color-secondary-dark;
-  }
-}
-
-.input-label {
-  color: $color-white;
-  font-size: 1.6rem;
-  text-transform: capitalize;
-}
-.input-label + .ant-input-affix-wrapper {
-  margin-top: 0.8rem;
-}
-
 .error-message {
   color: $color-red;
   font-size: 1.4rem;
@@ -47,8 +9,46 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-}
-.ant-input-lg {
-  padding: 6.5px 11px;
-  font-size: 1.5rem;
+  .input-label {
+    color: $color-white;
+    font-size: 1.6rem;
+    text-transform: capitalize;
+  }
+  .ant-input-affix-wrapper {
+    background-color: transparent;
+    color: $color-white;
+    padding: 0.5rem 1.0rem;
+  }
+  
+  .ant-input-affix-wrapper.error {
+    border: 1px solid $color-red;
+    color: $color-red;
+  }
+  
+  .ant-input-affix-wrapper.error > .ant-input {
+    color: $color-red;
+  }
+  
+  .ant-input {
+    background-color: transparent;
+    color: $color-white;
+    border-radius: 0.5rem;
+    border: none;
+    border-bottom: 1px solid $color-secondary-light;
+  
+    &:focus{
+      border: none;
+      box-shadow: 0 0 0 1px #8fa8c3;
+      border-bottom: 1px solid $color-white;
+    }
+  }
+  
+  .ant-input-lg {
+    padding: 6.5px 11px;
+    font-size: 1.5rem;
+  }
+  
+  .input-label + .ant-input-affix-wrapper {
+    margin-top: 0.8rem;
+  }  
 }

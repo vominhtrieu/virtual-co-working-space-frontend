@@ -47,19 +47,24 @@ const EditOfficeForm = (props: EditOfficeDetailFormProps) => {
 
   return (
     <form onSubmit={handleSubmit(handleEditProfileSubmit)}>
-      <h1 className='edit-detail-office__title'>Chỉnh sửa</h1>
-
       <div className="edit-detail-office__item-avatar">
         <OfficeAvatar size={120} setIsAvatar={setIsAvatar} isAvatar={isAvatar} />
       </div>
 
-      <InputText control={control} name='name' hasLabel />
+      <div className="edit-detail-office__item-input">
+        <InputText control={control} name='name' hasLabel label="Name" />
 
-      <InputText control={control} name='description' hasLabel />
+      </div>
+
+      <div className="edit-detail-office__item-input">
+        <InputText control={control} name='description' hasLabel label="Description" />
+
+      </div>
+
 
       <div className='edit-detail-office__group-btn'>
         <Button type='submit' variant='primary' disabled={isLoading}>
-        {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
+          {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
           Lưu thay đổi
         </Button>
 
