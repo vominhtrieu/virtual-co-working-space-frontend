@@ -7,7 +7,7 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Box from "../../components/models/Box";
-import DisplayCharacter from "../../components/models/DisplayCharacter";
+import DisplayCharacter from "../../components/models/character/DisplayCharacter";
 import CharacterContext from "../../context/CharacterContext";
 import Button from "../UI/button";
 import NewButton from "../UI/new-button";

@@ -7,6 +7,7 @@ import {userSelectors} from "../../stores/auth-slice";
 import {Joystick} from 'react-joystick-component';
 import CharacterContext from "../../context/CharacterContext";
 import { socketSelector } from "../../stores/socket-slice";
+import { OfficeMembersInterface } from "../../services/api/offices/office-detail/types";
 
 export type positionType = {
     x: number;
@@ -28,6 +29,7 @@ const WorkspaceCustom = () => {
     const [isCustomizing, setIsCustomizing] = useState(false);
     const [characterGesture, setCharacterGesture] = useState({idx: -1});
     const [characterEmoji, setCharacterEmoji] = useState({idx: -1});
+    const [onlineMembers, setOnlineMembers] = useState<OfficeMembersInterface[]>([]);
     const characterCtx = useContext(CharacterContext);
 
     const params = useParams();
@@ -91,6 +93,7 @@ const WorkspaceCustom = () => {
                 isCustomizing={isCustomizing}
                 objectActionVisible={objectActionVisible}
                 objectList={objectList}
+                onlineMembers={onlineMembers}
                 selectedObject={selectedObject}
                 selectedKey={selectedKey}
                 setObjectActionVisible={setObjectActionVisible}

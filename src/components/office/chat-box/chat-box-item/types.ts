@@ -5,6 +5,7 @@ export interface ChatBoxItemPropsInterface {
   message?: string;
   isMe?: boolean;
   id: number;
+  senderId: number;
   conversationId: number;
   reader?: {
     id: number;

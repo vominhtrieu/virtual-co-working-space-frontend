@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { OfficeBarPropsInterface } from "./types";
 
 const OfficeBar = (props: OfficeBarPropsInterface) => {
-  const { action, setAction, isOwner } = props;
+  const { action, setAction } = props;
 
   const navigate = useNavigate();
 

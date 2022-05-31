@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import CharacterForm from "../../components/character-form";
-import InteractionMenu from "../../components/layouts/sidebar/offices/character-interaction";
 import OfficeDetailForm from "../../components/office-detail-form";
 import ChatBox from "../../components/office/chat-box";
 import ChatList from "../../components/office/chat-list";
@@ -11,7 +10,6 @@ import OfficeCanvas from "../../components/office/OfficeCanvas";
 import OfficeInterface from "../../components/office/OfficeInterface";
 import { toastError } from "../../helpers/toast";
 import { Item } from "../../services/api/offices/get-office-item/types";
-import { OfficeItem } from "../../services/api/offices/officce-item/types";
 import OfficeDetailProxy from "../../services/proxy/offices/office-detail";
 import { useAppSelector } from "../../stores";
 import { userSelectors } from "../../stores/auth-slice";
@@ -19,6 +17,9 @@ import { socketSelector } from "../../stores/socket-slice";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import { OfficeDetailInterface } from "../../types/office";
 import CallingBar from "./calling/CallingBar";
+import { OfficeItem } from "../../services/api/offices/officce-item/types";
+import { OfficeMembersInterface } from "../../services/api/offices/office-detail/types";
+import InteractionMenu from "../../components/layouts/sidebar/offices/character-interaction";
 import { v4 as uuidv4 } from "uuid";
 
 export type positionType = {
@@ -27,22 +28,23 @@ export type positionType = {
 };
 
 const Workspace = () => {
-  const [conversationId, setConversationId] = useState<number>(0);
-  const [isOwner, setIsOwner] = useState(false);
-  const { open } = useSelector((state: any) => state.sidebar);
-  const [isShowDetailForm, setIsShowDetailForm] = useState(false);
-  const [isShowChatBox, setIsShowChatBox] = useState(false);
-  const [objectList, setObjectList] = useState<OfficeItem[]>([]);
-  const [selectedKey, setSelectedKey] = useState(null);
-  const [selectedObject, setSelectedObject] = useState<any>(null);
-  const [objectActionVisible, setObjectActionVisible] = useState(false);
-  const [object3dClickPos, setObjectionClickPos] = useState<positionType>({
-    x: 0,
-    y: 0,
-  });
-  const [isCustomizing, setIsCustomizing] = useState(false);
-  const [characterGesture, setCharacterGesture] = useState({ idx: -1 });
-  const [characterEmoji, setCharacterEmoji] = useState({ idx: -1 });
+    const [conversationId, setConversationId] = useState<number>(0);
+    const [isOwner, setIsOwner] = useState(false);
+    const {open} = useSelector((state: any) => state.sidebar);
+    const [isShowDetailForm, setIsShowDetailForm] = useState(false);
+    const [isShowChatBox, setIsShowChatBox] = useState(false);
+    const [objectList, setObjectList] = useState<OfficeItem[]>([]);
+    const [selectedKey, setSelectedKey] = useState(null);
+    const [selectedObject, setSelectedObject] = useState<any>(null);
+    const [objectActionVisible, setObjectActionVisible] = useState(false);
+    const [object3dClickPos, setObjectionClickPos] = useState<positionType>({
+        x: 0,
+        y: 0,
+    });
+    const [isCustomizing, setIsCustomizing] = useState(false);
+    const [characterGesture, setCharacterGesture] = useState({idx: -1});
+    const [characterEmoji, setCharacterEmoji] = useState({idx: -1});
+    const [onlineMembers, setOnlineMembers] = useState<OfficeMembersInterface[]>([]);
 
   const [officeDetail, setOfficeDetail] = useState<OfficeDetailInterface>();
 
@@ -118,11 +120,42 @@ const Workspace = () => {
     socket.emit("office_item:delete", selectedKey);
   };
 
+  
+  useEffect(() => {
+    socket.on("office_member:online", (message) => {
+      const newMember: OfficeMembersInterface = message as OfficeMembersInterface;
+      console.log(onlineMembers)
+      if (onlineMembers.findIndex((member) => member.id === newMember.id) < 0) {
+        newMember.onlineStatus = "online"
+        setOnlineMembers([...onlineMembers, newMember])
+      }
+    })
+
+    return () => {
+      socket.removeListener("office_member:online");
+    }
+  }, [socket, onlineMembers])
+
   useEffect(() => {
     socket.on("office_item:created", (message) => {
       setObjectList((objectList) => [...objectList, message]);
     });
 
+    socket.on("office_item:deleted", (message) => {
+      const idx = objectList.findIndex((obj) => obj.id === message);
+      const newObjectList = [...objectList];
+      newObjectList.splice(idx, 1);
+      setObjectList([...newObjectList]);
+    });
+
+    return () => {
+      socket.removeListener("office_item:online")
+      socket.removeListener("office_item:created");
+      socket.removeListener("office_item:deleted");
+    };
+  }, [socket, objectList]);
+
+  useEffect(() => {
     socket.on("office_item:moved", (message) => {
       const { id, transform } = message;
       const idx = objectList.findIndex((obj) => obj.id === id);
@@ -136,22 +169,13 @@ const Workspace = () => {
         yRotation: transform.yRotation,
         zRotation: transform.zRotation,
       };
-      console.log(newObjectList);
-      setObjectList([...newObjectList]);
-    });
-
-    socket.on("office_item:deleted", (message) => {
-      const idx = objectList.findIndex((obj) => obj.id === message);
-      const newObjectList = [...objectList];
-      newObjectList.splice(idx, 1);
       setObjectList([...newObjectList]);
     });
 
     return () => {
-      socket.removeListener("office_item:created");
       socket.removeListener("office_item:moved");
-    };
-  }, [socket, objectList]);
+    }
+  }, [socket, objectList])
 
   useEffect(() => {
     socket.emit("office_member:join", {
@@ -160,10 +184,6 @@ const Workspace = () => {
   }, [officeId, socket]);
 
   const handleItemInBottomMenuClick = (item: Item) => {
-    // setObjectList((objectList) => [
-    //     ...objectList,
-    //     item,
-    // ]);
     socket.emit("office_item:create", {
       itemId: item.id,
       officeId: officeId,
@@ -176,39 +196,33 @@ const Workspace = () => {
     });
   };
 
-  useEffect(() => {
-    OfficeDetailProxy({ id: officeId })
-      .then((res) => {
-        if (res.status === ProxyStatusEnum.FAIL) {
-          return;
-        }
-
-        if (res.status === ProxyStatusEnum.SUCCESS) {
-          setIsOwner(res?.data?.office?.createdBy?.id === userInfo.id);
-          if (res?.data?.office?.conversations.length > 0) {
-            setConversationId(res?.data?.office?.conversations[0]?.id);
-          }
-          if (res?.data?.office?.officeItems.length > 0) {
-            setObjectList(res.data.office.officeItems);
-          }
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [officeId, userInfo.id]);
-
   const handleSelectConversation = (conversationId: number) => {
     setConversationId(conversationId);
     setAction("chatBox");
   };
 
-  const handleSubmitMessage = (values: string) => {
+  const handleSubmitMessage = (values: string, tempId: string) => {
     socket.emit("message:send", {
       conversationId: conversationId,
       content: values,
-      // uuid: uuidv4(),
+      tempId: tempId,
     });
+  };
+
+  const handleEmojiClick = (emojiIdx: number) => {
+    setCharacterEmoji({idx: emojiIdx});
+
+    socket.emit("emoji", {
+      emojiId: emojiIdx
+    })
+  };
+
+  const handleGestureClick = (gestureIdx: number) => {
+    setCharacterGesture({idx: gestureIdx});
+    
+    socket.emit("gesture", {
+      gestureId: gestureIdx
+    })
   };
 
   useEffect(() => {
@@ -229,6 +243,12 @@ const Workspace = () => {
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
           setOfficeDetail(res.data.office ?? {});
+          setIsOwner(res?.data?.office?.createdBy?.id === userInfo.id);
+
+          if (res?.data?.office?.officeMembers.length > 0) {
+            console.log(res.data.office.officeMembers)
+            setOnlineMembers(res.data.office.officeMembers.filter((member) => member.onlineStatus === "online" || member.member.id === userInfo.id));
+        }
         }
       })
       .catch((err) => {
@@ -252,6 +272,7 @@ const Workspace = () => {
         setSelectedKey={setSelectedKey}
         setSelectedObject={setSelectedObject}
         handleObject3dDragged={handleObject3dDragged}
+        onlineMembers={onlineMembers}
       />
       <OfficeInterface
         open={open}
@@ -314,10 +335,8 @@ const Workspace = () => {
 
       {action === "action" && (
         <InteractionMenu
-          onGestureClick={(value: number) =>
-            setCharacterGesture({ idx: value })
-          }
-          onEmojiClick={(value: number) => setCharacterEmoji({ idx: value })}
+          onGestureClick={handleGestureClick}
+          onEmojiClick={handleEmojiClick}
         />
       )}
     </>

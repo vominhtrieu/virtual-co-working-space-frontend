@@ -32,9 +32,9 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
   const [isCreate, setIsCreate] = useState(false);
 
   const isOffice = useAppSelector(officeSelectors.getIsOffice);
- const isLoading = useAppSelector(loadSelectors.getIsLoad);
+  const isLoading = useAppSelector(loadSelectors.getIsLoad);
   const dispatch = useAppDispatch();
-  const arrThumnail: number[] = new Array(0, 1, 2, 3);
+  const arrThumnail: number[] = [0, 1, 2, 3];
 
   useEffect(() => {
     OfficeDetailProxy({ id: id })
@@ -48,8 +48,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
           setOfficeDetail(res.data.office ?? {});
         }
       })
-      .catch((err) => {
-      });
+      .catch((err) => {});
   }, [id]);
 
   const handleEdit = (values: EditOfficeDetailFormValuesInterface) => {
@@ -57,7 +56,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
       id: id,
       name: values.name,
       avatar: values.avatarUrl,
-      description: values.description
+      description: values.description,
     })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
@@ -72,8 +71,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
           setIsEditing(false);
         }
       })
-      .catch((err) => {
-      });
+      .catch((err) => {});
   };
 
   const handleDelete = () => {
@@ -91,11 +89,12 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
           setIsDeleting(false);
         }
       })
-      .catch((err) => {
-      });
+      .catch((err) => {});
   };
 
-  const handleCreateInvitation = (values: CreateInvitationFormValuesInterface) => {
+  const handleCreateInvitation = (
+    values: CreateInvitationFormValuesInterface
+  ) => {
     CreateByEmailProxy({ email: values.email, officeId: values.officeId })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
@@ -110,8 +109,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
           setIsCreate(false);
         }
       })
-      .catch((err) => {
-      });
+      .catch((err) => {});
   };
 
   const padTo2Digits = (num: number) => {
@@ -131,28 +129,31 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
   };
 
   const copy = async (code) => {
-    await navigator.clipboard.writeText(`${window.location.host}/invites/${code}`);
+    await navigator.clipboard.writeText(
+      `${window.location.host}/invites/${code}`
+    );
     toastSuccess("Copy success");
-  }
+  };
 
   const DetailForm = (
     <>
-      {isLoading ?
+      {isLoading ? (
         <div className="office-detail-form">
-          <Skeleton.Button className="office-detail-form__title"/>
+          <Skeleton.Button className="office-detail-form__title" />
 
           {arrThumnail?.map(() => (
-            <li className='office-detail-form__item'>
+            <li className="office-detail-form__item">
               <Skeleton.Button className="office-detail-form__item-title" />
               <Skeleton.Button className="office-detail-form__item-content" />
             </li>
-          ))
-          }
-          <div className='office-detail-form__group-btn'>
+          ))}
+          <div className="office-detail-form__group-btn">
             <Skeleton.Button />
             <Skeleton.Button />
           </div>
-        </div> : <div className="office-detail-form">
+        </div> 
+      ) : (
+        <div className="office-detail-form">
           <ul className="office-detail-form__items">
             {/* user item - start */}
             <li className="office-detail-form__item">
@@ -166,11 +167,9 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
             <li className="office-detail-form__item">
               <div className="office-detail-form__item-title">Mã tham gia:</div>
               <div className="office-detail-form__item-content-url">
-                {
-                  officeDetail ? <>
-                    <div>
-                      {officeDetail?.invitationCode}
-                    </div>
+                {officeDetail ? (
+                  <>
+                    <div>{officeDetail?.invitationCode}</div>
                     <div>
                       <FaLocationArrow
                         style={{ marginRight: "1rem" }}
@@ -178,10 +177,12 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
                           setIsCreate(true);
                         }}
                       />
-                      <FaLink onClick={() => copy(officeDetail?.invitationCode)} />
+                      <FaLink
+                        onClick={() => copy(officeDetail?.invitationCode)}
+                      />
                     </div>
-                  </> : null
-                }
+                  </>
+                ) : null}
               </div>
             </li>
             {/* user item - end */}
@@ -223,9 +224,8 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
             </div>
           )}
         </div>
-      }
+      )}
     </>
-
   );
 
   return (
