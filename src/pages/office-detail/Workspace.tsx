@@ -337,7 +337,7 @@ const Workspace = () => {
         <InteractionMenu
           onGestureClick={handleGestureClick}
           onEmojiClick={handleEmojiClick}
-O        />
+        />
       )}
     </>
   );
