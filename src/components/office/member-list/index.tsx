@@ -1,9 +1,15 @@
+import { useState } from "react";
 import RightBar from "../../layouts/rightbar";
 import MemberItem from "./member-item";
 import { MemberListProps } from "./types";
 
 const MemberList = (props: MemberListProps) => {
   const { onClose, officeDetail } = props;
+  const [isChangeRole, setIsChangeRole] = useState(false);
+
+  const handleOpenSettingPopup = (userId: number) => {
+    setIsChangeRole(true);
+  };
 
   return (
     <RightBar onClose={onClose}>
@@ -20,6 +26,7 @@ const MemberList = (props: MemberListProps) => {
                 : "member"
             }
             isOnline
+            onClick={handleOpenSettingPopup}
           />
         );
       })}
