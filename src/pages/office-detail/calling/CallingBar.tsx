@@ -24,7 +24,7 @@ export default function CallingBar() {
 
   const myPeer = useMemo(
     () =>
-      new Peer(undefined, {
+      new Peer("undefined", {
         host: process.env.REACT_APP_PEER_SERVER_HOST + "",
         port: +(process.env.REACT_APP_PEER_SERVER_PORT + ""),
         path: "/peer",

@@ -43,9 +43,11 @@ const CreateInvitationForm = (props: FormProps) => {
 
   return (
     <form onSubmit={handleSubmit(handleEditProfileSubmit)}>
-      <h1 className='edit-detail-office__title'>Gửi lời mời</h1>
-      <InputText control={control} name='email' hasLabel />
-      <div className='edit-detail-office__group-btn'>
+      <h1 className='send-email-office__title'>Gửi lời mời</h1>
+      <div className='send-email-office__input'>
+        <InputText control={control} name='email' hasLabel label="Email" />
+      </div>
+      <div className='send-email-office__group-btn'>
         <Button type='submit' variant='primary' disabled={isLoading}>
         {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
           Gửi

@@ -31,6 +31,17 @@
       color: #fff;
     }
   }
+  &__add {
+    margin-left: 1rem;
+    color: rgba(#fff, 0.8);
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: #fff;
+    }
+  }
 
   &__header-title {
     font-size: 2rem;

@@ -35,7 +35,7 @@ const CreateOfficeForm = (props: CreateOfficeFormProps) => {
     onSubmit(formatData);
   };
   return (
-    <Popup onClose={onClose}>
+    <Popup onClose={onClose} title="Tạo văn phòng">
       <form onSubmit={handleSubmit(handleCreateOfficeSubmit)}>
         <h1 className='create-office-form__title'>Tạo văn phòng</h1>
 

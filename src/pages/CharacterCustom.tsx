@@ -1,6 +1,6 @@
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useContext } from "react";
+import { Suspense, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button } from "antd";
@@ -32,6 +32,7 @@ const itemGroups = [
 
 const CharacterCustom = () => {
   const { open } = useSelector((state: any) => state.sidebar);
+  const [isCharacter, setIsCharacter] = useState(false);
   const character = useContext(CharacterContext);
 
   return (
@@ -44,7 +45,7 @@ const CharacterCustom = () => {
         left: 0,
       }}
     >
-      <CharacterForm />
+      <CharacterForm onClose={()=>setIsCharacter(false)} />
     </div>
 
     // <>

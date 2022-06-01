@@ -1,7 +1,11 @@
-.edit-detail-office {
-  &__item-title {
+.send-email-office {
+  &__title {
     color: $color-white;
-    text-align: center;
+    text-align: left;
+  }
+
+  &__input {
+    margin-bottom: 2rem;
   }
 
   &__group-btn {
@@ -9,8 +13,5 @@
     grid-template-columns: 1fr 1fr;
     grid-gap: 2rem;
   }
-  
-  &__item-avatar {
-    margin-bottom: 2rem;
-  }
+
 }

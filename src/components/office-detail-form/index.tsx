@@ -151,29 +151,15 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
             <Skeleton.Button />
             <Skeleton.Button />
           </div>
-        </div>
+        </div> 
       ) : (
         <div className="office-detail-form">
-          <h1 className="office-detail-form__title">Chi tiết văn phòng</h1>
           <ul className="office-detail-form__items">
             {/* user item - start */}
             <li className="office-detail-form__item">
               <div className="office-detail-form__item-title">Tên:</div>
               <div className="office-detail-form__item-content">
                 {officeDetail?.name}
-              </div>
-            </li>
-            {/* user item - end */}
-            {/* user item - start */}
-            <li className="office-detail-form__item">
-              <div className="office-detail-form__item-title">Thành viên:</div>
-              <div className="office-detail-form__item-content">
-                <ul>
-                  {officeDetail?.officeMembers &&
-                    officeDetail?.officeMembers.map((member, key) => {
-                      return <li key={key}>{member.member.name}</li>;
-                    })}
-                </ul>
               </div>
             </li>
             {/* user item - end */}
@@ -208,6 +194,14 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
               </div>
             </li>
             {/* user item - end */}
+                        {/* user item - start */}
+                        <li className="office-detail-form__item">
+              <div className="office-detail-form__item-title">Mô tả:</div>
+              <div className="office-detail-form__item-content">
+                {officeDetail?.description}
+              </div>
+            </li>
+            {/* user item - end */}
           </ul>
           {isOwner && (
             <div className="office-detail-form__group-btn">
@@ -235,7 +229,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
   );
 
   return (
-    <Popup onClose={onClose}>
+    <Popup onClose={onClose} title="Office Detail" type="dark" hasFooter={false}>
       {isEditing && officeDetail ? (
         <EditOfficeForm
           onClose={() => {

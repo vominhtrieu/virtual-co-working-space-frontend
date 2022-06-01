@@ -33,6 +33,7 @@ const ResetForm = ({ handleResetSubmit }: FormPropsInterface) => {
       password: "",
       confirmPassword: "",
     },
+    mode: "onChange",
     resolver: yupResolver(schema),
   });
 
@@ -57,6 +58,7 @@ const ResetForm = ({ handleResetSubmit }: FormPropsInterface) => {
           control={control}
           prefix={<FaKey />}
           size='large'
+          label="Password"
           placeholder="Password"
         />
       </div>
@@ -69,6 +71,7 @@ const ResetForm = ({ handleResetSubmit }: FormPropsInterface) => {
           control={control}
           prefix={<FaKey />}
           size='large'
+          label="Confirm Password"
           placeholder=" Confirm Password"
         />
       </div>

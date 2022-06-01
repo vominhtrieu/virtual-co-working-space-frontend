@@ -27,18 +27,10 @@ const LoginForm = (props: FormPropsInterface) => {
       .string()
       .required(t('default.error.required', { field: t('pages.login.email') }))
       .email(t('default.error.email', { field: t('pages.login.email') })),
-    password: yup
+      password: yup
       .string()
-      .required(
-        t('default.error.required', { field: t('pages.login.password') }),
-      )
-      .min(
-        6,
-        t('default.error.minLength', {
-          field: t('pages.login.password'),
-          min: 6,
-        }),
-      ),
+      .required(t("default.error.required", { field: t("pages.register.password") }))
+      .min(8, t("default.error.minLength", { field: t("pages.register.password"), min: 8 })),
   })
 
   const { control, handleSubmit } = useForm<InputInterface>({
@@ -70,6 +62,7 @@ const LoginForm = (props: FormPropsInterface) => {
           name="email"
           control={control}
           prefix={<FaEnvelope />}
+          label={t('pages.login.email')}
           size="large"
           placeholder={t('pages.login.email')}
         />
@@ -83,6 +76,7 @@ const LoginForm = (props: FormPropsInterface) => {
           control={control}
           prefix={<FaKey />}
           size="large"
+          label={t('pages.login.password')}
           placeholder={t('pages.login.password')}
         />
       </div>

@@ -1,3 +1,5 @@
+import { OfficeDetailInterface } from "../../office-detail-form/types";
+
 export interface OfficeBarPropsInterface {
   action:
     | "action"
@@ -22,4 +24,5 @@ export interface OfficeBarPropsInterface {
       | ""
   ) => void;
   isOwner?: boolean;
+  officeDetail: OfficeDetailInterface;
 }

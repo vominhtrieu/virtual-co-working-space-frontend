@@ -20,7 +20,6 @@ import CallingBar from "./calling/CallingBar";
 import { OfficeItem } from "../../services/api/offices/officce-item/types";
 import { OfficeMembersInterface } from "../../services/api/offices/office-detail/types";
 import InteractionMenu from "../../components/layouts/sidebar/offices/character-interaction";
-import { v4 as uuidv4 } from "uuid";
 
 export type positionType = {
   x: number;
@@ -262,7 +261,7 @@ const Workspace = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [officeId]);
+  }, [officeId, userInfo.id]);
 
   return (
     <>
@@ -285,7 +284,7 @@ const Workspace = () => {
       <OfficeInterface
         open={open}
         conversationId={conversationId}
-        isShowChatBox={isShowChatBox}
+        officeDetail={officeDetail}
         isCustomizing={action === "config"}
         objectActionVisible={objectActionVisible}
         handleButtonDeleteClick={handleButtonDeleteClick}
