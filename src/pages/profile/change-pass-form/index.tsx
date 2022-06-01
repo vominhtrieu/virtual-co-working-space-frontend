@@ -8,8 +8,7 @@ import {
 } from "./types";
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
-import InputText from "../../../components/UI/form-controls/input-text";
-import Button from "../../../components/UI/button";
+import InputWhite from "../../../components/UI/form-controls/input-white";
 
 const ChangePasswordForm = (props: ChangePasswordFormProps) => {
   const { onClose, onSubmit } = props;
@@ -53,10 +52,10 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
   };
 
   return (
-    <Popup onClose={onClose} title="Change Password" type="white"onSubmit={handleSubmit(handleChangePasswordSubmit)}>
+    <Popup onClose={onClose} title="Change Password" type="white"onSubmit={handleSubmit(handleChangePasswordSubmit)} hasFooter={true}>
       <form>
         <div className='change-pass-form__input-block'>
-          <InputText
+          <InputWhite
             control={control}
             type='password'
             name='oldPassword'
@@ -67,7 +66,7 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
         </div>
 
         <div className='change-pass-form__input-block'>
-          <InputText
+          <InputWhite
             control={control}
             type='password'
             name='newPassword'
@@ -78,7 +77,7 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
         </div>
 
         <div className='change-pass-form__input-block'>
-          <InputText
+          <InputWhite
             control={control}
             type='password'
             name='confirmPassword'

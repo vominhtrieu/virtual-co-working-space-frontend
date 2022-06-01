@@ -16,9 +16,9 @@ const DeleteOfficeForm = (props: OfficeDetailFormProps) => {
       <div className='delete__group-btn'>
         <Button 
         type='submit' 
-        variant='primary'
         onClick={handleDelete}
         disabled={isLoading}
+        className="cancel"
         >
           {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
          Đồng ý

@@ -1,9 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import Button from "../../../components/UI/button";
 import Popup from "../../../components/UI/popup";
-import InputText from "../../../components/UI/form-controls/input-text";
 import {
   EditProfileFormDataInterface,
   EditProfileFormProps,
@@ -67,7 +65,7 @@ const EditProfileForm = (props: EditProfileFormProps) => {
   };
 
   return (
-    <Popup onClose={onClose} title="Change Profile" type="white" onSubmit={handleSubmit(handleEditProfileSubmit)}>
+    <Popup onClose={onClose} title="Change Profile" type="white" onSubmit={handleSubmit(handleEditProfileSubmit)} hasFooter={true}>
       <form>
         <ul className='edit-profile__items'>
           {/* user item - start */}
@@ -76,7 +74,7 @@ const EditProfileForm = (props: EditProfileFormProps) => {
           </li>
           {/* user item - end */}
           <div className='change-pass-form__input-block'>
-            <InputText
+            <InputWhite
               control={control}
               type='text'
               name='name'
@@ -87,7 +85,7 @@ const EditProfileForm = (props: EditProfileFormProps) => {
           </div>
 
           <div className='change-pass-form__input-block'>
-            <InputText
+            <InputWhite
               control={control}
               type='text'
               name='phone'

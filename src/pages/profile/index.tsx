@@ -201,7 +201,7 @@ const Profile = () => {
             <div className="lobby__profile-user-group-btn">
               <Button
                 type="submit"
-                variant="primary"
+                className="ok"
                 onClick={() => {
                   setIsEditing(true);
                 }}
@@ -211,7 +211,7 @@ const Profile = () => {
               </Button>
               <Button
                 type="submit"
-                variant="primary"
+                className="ok"
                 onClick={() => {
                   setIsChangingPass(true);
                 }}

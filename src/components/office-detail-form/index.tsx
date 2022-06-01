@@ -5,6 +5,7 @@ import UpdateOfficeProxy from "../../services/proxy/offices/update-office";
 import DeleteOfficeProxy from "../../services/proxy/offices/delete-office";
 import CreateByEmailProxy from "../../services/proxy/office-invitation/create-by-email";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
+import NewButton from "../UI/new-button";
 import Button from "../UI/button";
 import Popup from "../UI/popup";
 import EditOfficeForm from "./edit-office-form";
@@ -172,12 +173,12 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
                     <div>{officeDetail?.invitationCode}</div>
                     <div>
                       <FaLocationArrow
-                        style={{ marginRight: "1rem" }}
+                        style={{ marginRight: "1rem", cursor:"pointer" }}
                         onClick={() => {
                           setIsCreate(true);
                         }}
                       />
-                      <FaLink
+                      <FaLink style={{ cursor:"pointer" }}
                         onClick={() => copy(officeDetail?.invitationCode)}
                       />
                     </div>
@@ -206,7 +207,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
           {isOwner && (
             <div className="office-detail-form__group-btn">
               <Button
-                variant="primary"
+                variant='primary'  
                 onClick={() => {
                   setIsEditing(true);
                 }}
@@ -214,7 +215,8 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
                 Chỉnh sửa thông tin
               </Button>
               <Button
-                variant="primary"
+                type='reset' 
+                variant='outlined'
                 onClick={() => {
                   setIsDeleting(true);
                 }}

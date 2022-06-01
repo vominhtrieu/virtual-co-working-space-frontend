@@ -26,9 +26,9 @@ const EditOfficeForm = (props: EditOfficeDetailFormProps) => {
   const { control, handleSubmit } = useForm<EditOfficeDetailFormInputInterface>(
     {
       defaultValues: {
-        name: "",
+        name: officeDetail?.name,
         avatarUrl: isAvatar,
-        description: "",
+        description: officeDetail?.description,
       },
       resolver: yupResolver(schema),
     }

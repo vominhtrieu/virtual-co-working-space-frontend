@@ -89,10 +89,6 @@ export default function OfficeInterface({
                 </div>
               </div>
             )}
-
-            <div aria-label="bottomMenu" style={{ pointerEvents: "auto" }}>
-              <EditOffice onItemClick={handleItemInBottomMenuClick} />
-            </div>
           </>
         ) : null}
       </div>

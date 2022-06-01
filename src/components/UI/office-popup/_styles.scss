@@ -1,0 +1,42 @@
+.office-popup {
+  width: 52rem;
+  height: 26rem;
+  border-radius: 1rem;
+  background-color: $color-primary;
+  position: absolute;
+  bottom: 7rem;
+  right: 5rem;
+  z-index: 200;
+  overflow: hidden;
+  
+  &__content {
+    padding: 1rem 2rem;
+  }
+
+  &__btn-close{
+    font-size: 2rem;
+    color: #fff;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  &__title{
+    font-size: 2rem;
+    font-weight: 700;
+    color: $color-white;
+  }
+
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $color-primary-dark;
+    padding: 10px 1rem;
+    border-radius: .5rem .5rem 0 0;
+    h1 {
+      margin-bottom: 0;
+    }
+  }
+
+}

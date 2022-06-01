@@ -6,8 +6,9 @@ import {EditOfficePropsInterface} from './types'
 import {getItemCategories} from "../../../../../services/api/offices/get-office-categories";
 import {getItems} from "../../../../../services/api/offices/get-office-item";
 import {ItemCategory} from "../../../../../services/api/offices/get-office-categories/types";
+import OfficePopup from '../../../../UI/office-popup'
 
-const EditOffice = ({onItemClick}: EditOfficePropsInterface) => {
+const EditOffice = () => {
     const [itemCategories, setItemCategories] = useState<any[]>([]);
     const [items, setItems] = useState<any[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<ItemCategory | null>(null)
@@ -45,38 +46,43 @@ const EditOffice = ({onItemClick}: EditOfficePropsInterface) => {
     ) : null;
 
     return (
-        <div className="edit-office">
-            <h1 className="edit-office__title">Edit office</h1>
-            <div className="edit-office__container">
-                {
-                    menu && selectedCategory && <Dropdown overlay={menu}>
-                        <div className="edit-office__select-items">
-                            {selectedCategory.name} <IoMdArrowDropdown/>
-                        </div>
-                    </Dropdown>
-                }
-                <div className="edit-office__item-list">
-                    {
-                        items.map((item: any) => {
-                            return (
-                                <Button
-                                    className="edit-office__btn-select"
-                                    key={item.id}
-                                    onClick={() => {
-                                        onItemClick(item)
-                                    }}
-                                >
-                                    <img
-                                        alt="models"
-                                        src={item.image}
-                                        className="edit-office__item-img"
-                                    />
-                                </Button>
-                            )
-                        })}
-                </div>
+        <OfficePopup title='Edit Office' onClose={()=>console.log("a")}>
+            <div>
+                hihi
             </div>
-        </div>
+        </OfficePopup>
+        // <div className="edit-office">
+        //     <h1 className="edit-office__title">Edit office</h1>
+        //     <div className="edit-office__container">
+        //         {
+        //             menu && selectedCategory && <Dropdown overlay={menu}>
+        //                 <div className="edit-office__select-items">
+        //                     {selectedCategory.name} <IoMdArrowDropdown/>
+        //                 </div>
+        //             </Dropdown>
+        //         }
+        //         <div className="edit-office__item-list">
+        //             {
+        //                 items.map((item: any) => {
+        //                     return (
+        //                         <Button
+        //                             className="edit-office__btn-select"
+        //                             key={item.id}
+        //                             onClick={() => {
+        //                                 onItemClick(item)
+        //                             }}
+        //                         >
+        //                             <img
+        //                                 alt="models"
+        //                                 src={item.image}
+        //                                 className="edit-office__item-img"
+        //                             />
+        //                         </Button>
+        //                     )
+        //                 })}
+        //         </div>
+        //     </div>
+        // </div>
     )
 }
 

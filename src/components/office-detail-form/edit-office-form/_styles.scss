@@ -8,9 +8,13 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 2rem;
+    margin-top: 4rem;
+    margin-bottom: 1rem;
   }
   
   &__item-avatar {
+    display: block;
+    text-align: center;
     margin-bottom: 2rem;
   }
   &__item-input {
