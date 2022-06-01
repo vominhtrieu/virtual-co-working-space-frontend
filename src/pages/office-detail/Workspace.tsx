@@ -20,6 +20,7 @@ import CallingBar from "./calling/CallingBar";
 import { OfficeItem } from "../../services/api/offices/officce-item/types";
 import { OfficeMembersInterface } from "../../services/api/offices/office-detail/types";
 import InteractionMenu from "../../components/layouts/sidebar/offices/character-interaction";
+import EditOffice from "../../components/layouts/sidebar/offices/edit-office";
 
 export type positionType = {
   x: number;
@@ -337,6 +338,10 @@ const Workspace = () => {
           onGestureClick={handleGestureClick}
           onEmojiClick={handleEmojiClick}
         />
+      )}
+
+      {action === "config" && (
+        <EditOffice/>
       )}
     </>
   );
