@@ -1,5 +1,5 @@
 import React from "react";
-import { CharacterInterface } from "../types/character";
+import { CharacterAppearance } from "../types/character";
 
 export const DefaultAppearance = {
   skinColor: 0,
@@ -10,7 +10,7 @@ export const DefaultAppearance = {
   pantColor: 0,
   shoeColor: 0,
 
-  changeCharacter: (character: CharacterInterface) => {},
+  changeCharacter: (character: CharacterAppearance) => {},
   changeAppearance: (groupId: number, itemIdx: number) => {},
 };
 

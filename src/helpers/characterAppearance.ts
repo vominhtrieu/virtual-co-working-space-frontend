@@ -1,2 +1,2 @@
-import {CharacterInterface} from "../types/character";
+import {CharacterAppearance} from "../types/character";
 import CharacterContext from "../context/CharacterContext";

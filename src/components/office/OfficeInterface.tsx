@@ -5,7 +5,7 @@ import { socketSelector } from "../../stores/socket-slice";
 import EditOffice from "../layouts/sidebar/offices/edit-office";
 import Button from "../UI/button";
 import OfficeBar from "./office-bar";
-import OfficceCheckInModal from "./office-checkin/OfficeCheckInModal";
+import OfficceCheckInModal from "./office-checkin";
 
 export default function OfficeInterface({
   open,
