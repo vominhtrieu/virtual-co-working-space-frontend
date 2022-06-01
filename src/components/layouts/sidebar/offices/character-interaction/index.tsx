@@ -18,7 +18,10 @@ const InteractionMenu = (props: InteractionMenuProps) => {
                     key={gesture}
                     onClick={() => props.onGestureClick(idx)}
                   >
-                    <div className="interact-menu__item-img">img</div>
+                    <img
+                      src={require(`../../../../../assets/images/gestures/${gesture}.png`)}
+                      alt={`gesture_${idx}`}
+                      className="interact-menu__item-img" />
                     <p className="interact-menu__item-text">{gesture}</p>
                   </Button>
                 )
