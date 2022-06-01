@@ -2,9 +2,14 @@ import { FaWrench } from "react-icons/fa";
 import { MemberItemProps } from "./types";
 
 const MemberItem = (props: MemberItemProps) => {
-  const { avatarUrl, userName, role, userId, isOnline } = props;
+  const { avatarUrl, userName, userId, role, isOnline, onClick } = props;
+
+  const handleOpenSettingPopup = () => {
+    onClick(userId);
+  };
+
   return (
-    <div className="member-item">
+    <div className="member-item" onClick={handleOpenSettingPopup}>
       <div className="member-item__user-box">
         <div className="member-item__avatar">
           <img

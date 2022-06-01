@@ -4,4 +4,5 @@ export interface MemberItemProps {
   role: string;
   userId: number;
   isOnline?: boolean;
+  onClick: (userId: number) => void;
 }
