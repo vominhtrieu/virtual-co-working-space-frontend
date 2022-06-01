@@ -9,6 +9,14 @@ import { ChatListProps } from "./types";
 const ChatList = (props: ChatListProps) => {
   const { onClose, onSelectConversation, officeDetail } = props;
   const [isCreate, setIsCreate] = useState(false);
+  const [conversationList, setConversationList] = useState<
+    {
+      id: number;
+      officeId: number;
+      name: string;
+      type: string;
+    }[]
+  >([]);
 
   const socket = useAppSelector(socketSelector.getSocket);
 
@@ -20,8 +28,16 @@ const ChatList = (props: ChatListProps) => {
   };
 
   useEffect(() => {
-    socket.on("conversation:created", (value) => {});
-  }, [socket]);
+    setConversationList(officeDetail.conversations);
+    console.log("on conversation list change");
+    socket.on("conversation:created", (value) => {
+      console.log(value);
+    });
+
+    return () => {
+      socket.off("conversation:created");
+    };
+  }, [socket, officeDetail.conversations]);
 
   return (
     <>
@@ -33,7 +49,7 @@ const ChatList = (props: ChatListProps) => {
         />
       )}
       <RightBar onClose={onClose} isAdd onAdd={() => setIsCreate(true)}>
-        {officeDetail?.conversations?.map((conversation) => {
+        {conversationList?.map((conversation) => {
           return (
             <ChatItem
               onSelectConversation={onSelectConversation}

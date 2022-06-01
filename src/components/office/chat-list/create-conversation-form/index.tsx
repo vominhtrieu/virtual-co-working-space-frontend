@@ -32,6 +32,7 @@ const CreateConversationForm = (props: CreateConversationFormProps) => {
     };
 
     onSubmit(formValues);
+    onClose();
   };
 
   const handleSelectMember = (memberId: number) => {
@@ -43,7 +44,13 @@ const CreateConversationForm = (props: CreateConversationFormProps) => {
   };
 
   return (
-    <Popup title="Tạo hội thoại" onClose={onClose} type="dark" hasFooter>
+    <Popup
+      title="Tạo hội thoại"
+      onClose={onClose}
+      onSubmit={handleSubmit(handleCreateConversationSubmit)}
+      type="dark"
+      hasFooter
+    >
       <form onSubmit={handleSubmit(handleCreateConversationSubmit)}>
         <div className="create-conversation-form__input-block">
           <InputText
