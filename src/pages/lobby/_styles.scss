@@ -4,6 +4,8 @@
   &__main {
     margin-top: 2rem;
     padding: 1rem 6rem;
+    height: calc(100vh - 7rem);
+    overflow: scroll;
   }
 
   &__office-list {
