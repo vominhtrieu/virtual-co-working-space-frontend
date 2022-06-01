@@ -21,203 +21,210 @@ import { FaPlus } from "react-icons/fa";
 import { UserOutlined } from "@ant-design/icons";
 import ChangePasswordForm from "./change-pass-form";
 import EditProfileForm from "./edit-profile-form";
-import { ChangePasswordFormValuesInterface, EditProfileFormValuesInterface } from "./types";
-
+import {
+  ChangePasswordFormValuesInterface,
+  EditProfileFormValuesInterface,
+} from "./types";
 
 const Profile = () => {
-    const dispatch = useAppDispatch();
-    const [isEditing, setIsEditing] = useState(false);
-    const [isChangingPass, setIsChangingPass] = useState(false);
-    const userInfo = useAppSelector(userSelectors.getUserInfo);
-    // const isLoading = useAppSelector(loadSelectors.getIsLoad);
+  const dispatch = useAppDispatch();
+  const [isEditing, setIsEditing] = useState(false);
+  const [isChangingPass, setIsChangingPass] = useState(false);
+  const userInfo = useAppSelector(userSelectors.getUserInfo);
+  // const isLoading = useAppSelector(loadSelectors.getIsLoad);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleLogout = () => {
-        dispatch(setAuthenticated(false));
-        dispatch(setUserInfo({}));
-        removeAllDataLocal();
-        removeAll();
-        navigate("/auth/login");
-      };
+  const handleLogout = () => {
+    dispatch(setAuthenticated(false));
+    dispatch(setUserInfo({}));
+    removeAllDataLocal();
+    removeAll();
+    navigate("/auth/login");
+  };
 
-    const padTo2Digits = (num: number) => {
-        return num.toString().padStart(2, '0');
+  const padTo2Digits = (num: number) => {
+    return num.toString().padStart(2, "0");
+  };
+
+  const parseStringToDate = (dateSTr) => {
+    if (dateSTr) {
+      const date = new Date(dateSTr);
+      return [
+        padTo2Digits(date.getDate()),
+        padTo2Digits(date.getMonth() + 1),
+        date.getFullYear(),
+      ].join("/");
     }
+    return "";
+  };
 
-    const parseStringToDate = (dateSTr) => {
-        if (dateSTr) {
-            const date = new Date(dateSTr);
-            return [
-                padTo2Digits(date.getDate()),
-                padTo2Digits(date.getMonth() + 1),
-                date.getFullYear(),
-            ].join("/");
-        }
-        return "";
+  const handleChangeProfile = (values: EditProfileFormValuesInterface) => {
+    if (values.avatar === "") {
+      toastError("Avatar is require");
+    } else {
+      UpdateProfileProxy({
+        name: values.name,
+        phone: values.phone,
+        avatar: values.avatar,
+      })
+        .then((res) => {
+          if (res.status === ProxyStatusEnum.FAIL) {
+            toastError(res.message ?? "update fail");
+          }
+
+          if (res.status === ProxyStatusEnum.SUCCESS) {
+            dispatch(setUserInfo(res?.data.userInfo));
+            toastSuccess("update success");
+            setIsEditing(!isEditing);
+          }
+        })
+        .catch((err) => {
+          toastError(err.message ?? "update fail");
+        })
+        .finally(() => {});
     }
+  };
 
-    const handleChangeProfile = (values: EditProfileFormValuesInterface) => {
-        if (values.avatar === "") {
-            toastError("Avatar is require");
+  const handleChangePassword = (values: ChangePasswordFormValuesInterface) => {
+    ChangePasswordProxy(values)
+      .then((res) => {
+        console.log(res);
+        if (res.status === ProxyStatusEnum.FAIL) {
+          toastError(res.message ?? "Change password fail!");
         }
-        else {
-            UpdateProfileProxy({
-                name: values.name,
-                phone: values.phone,
-                avatar: values.avatar,
-            })
-                .then((res) => {
-                    if (res.status === ProxyStatusEnum.FAIL) {
-                        toastError(res.message ?? "update fail");
-                    }
 
-                    if (res.status === ProxyStatusEnum.SUCCESS) {
-                        dispatch(setUserInfo(res?.data.userInfo));
-                        toastSuccess("update success");
-                        setIsEditing(!isEditing);
-                    }
-                })
-                .catch((err) => {
-                    toastError(err.message ?? "update fail");
-                })
-                .finally(() => { });
+        if (res.status === ProxyStatusEnum.SUCCESS) {
+          setIsChangingPass(false);
+          toastSuccess("Password changed successfully.");
+          handleLogout();
+          navigate("/auth/login");
         }
-    };
+      })
+      .catch((err) => {
+        toastError(err.message ?? "Change password fail!");
+      })
+      .finally(() => {});
+  };
 
-    const handleChangePassword = (values: ChangePasswordFormValuesInterface) => {
-        ChangePasswordProxy(values)
-            .then((res) => {
-                console.log(res)
-                if (res.status === ProxyStatusEnum.FAIL) {
-                    toastError(res.message ?? "Change password fail!");
-                }
+  useEffect(() => {
+    ProfileProxy()
+      .then((res) => {
+        if (res.status === ProxyStatusEnum.FAIL) {
+          toastError(res.message ?? "Load data fail!");
+        }
 
-                if (res.status === ProxyStatusEnum.SUCCESS) {
-                    setIsChangingPass(false);
-                    toastSuccess("Password changed successfully.");
-                    handleLogout();
-                    navigate("/auth/login");
-                }
-            })
-            .catch((err) => {
-                toastError(err.message ?? "Change password fail!");
-            })
-            .finally(() => { });
-    };
+        if (res.status === ProxyStatusEnum.SUCCESS) {
+          dispatch(setUserInfo(res?.data.userInfo));
+        }
+      })
+      .catch((err) => {
+        toastError(err.message ?? "Load data fail!");
+      })
+      .finally(() => {});
+  }, [dispatch]);
 
-    useEffect(() => {
-        ProfileProxy()
-            .then((res) => {
-                if (res.status === ProxyStatusEnum.FAIL) {
-                    toastError(res.message ?? "Load data fail!");
-                }
+  return (
+    <section className="lobby">
+      {isChangingPass ? (
+        <ChangePasswordForm
+          onClose={() => {
+            setIsChangingPass(false);
+          }}
+          onSubmit={handleChangePassword}
+        />
+      ) : null}
 
-                if (res.status === ProxyStatusEnum.SUCCESS) {
-                    dispatch(setUserInfo(res?.data.userInfo));
-                }
-            })
-            .catch((err) => {
-                toastError(err.message ?? "Load data fail!");
-            })
-            .finally(() => { });
-    }, [dispatch]);
+      {isEditing ? (
+        <EditProfileForm
+          onClose={() => {
+            setIsEditing(false);
+          }}
+          onSubmit={handleChangeProfile}
+        />
+      ) : null}
 
-    return (
-        <section className="lobby">
-            {isChangingPass ? (
-                <ChangePasswordForm
-                    onClose={() => {
-                        setIsChangingPass(false);
-                    }}
-                    onSubmit={handleChangePassword}
-                />
-            ) : null}
-
-            {isEditing ? (
-                <EditProfileForm
-                    onClose={() => {
-                        setIsEditing(false);
-                    }}
-                    onSubmit={handleChangeProfile}
-                />
-            ) : null}
-
-            {/* <Navbar /> */}
-            <div className="lobby__profile">
-                <div className="lobby__profile-container">
-                    <div className="lobby__profile-title">
-                        Your Account
-                    </div>
-                    <div className="lobby__profile-content">
-                        {userInfo.avatar == "" ?
-                            <div className="lobby__profile-avatar">
-                                <UserOutlined />
-                            </div> : <img
-                                src={userInfo.avatar}
-                                alt=""
-                                className="lobby__profile-avatar"
-                            />
-                        }
-                        <ul className='lobby__profile-user-items'>
-                            {/* user item - start */}
-                            <li className='lobby__profile-user-item'>
-                                <div className='lobby__profile-user-item-title'>Name</div>
-                                <div className='lobby__profile-user-item-content'>
-                                    {userInfo.name}
-                                </div>
-                            </li>
-                            {/* user item - end */}
-                            {/* user item - start */}
-                            <li className='lobby__profile-user-item'>
-                                <div className='lobby__profile-user-item-title'>Email</div>
-                                <div className='lobby__profile-user-item-content'>
-                                    {userInfo.email}
-                                </div>
-                            </li>
-                            {/* user item - end */}
-                            {/* user item - start */}
-                            <li className='lobby__profile-user-item'>
-                                <div className='lobby__profile-user-item-title'>
-                                    Phone number
-                                </div>
-                                <div className='lobby__profile-user-item-content'>
-                                    {userInfo.phone}
-
-                                </div>
-                            </li>
-                            {/* user item - end */}
-                            {/* user item - start */}
-                            <li className='lobby__profile-user-item'>
-                                <div className='lobby__profile-user-item-title'>
-                                    Joined date
-                                </div>
-                                <div className='lobby__profile-user-item-content'>
-                                    {parseStringToDate(userInfo.createdAt)}
-                                </div>
-                            </li>
-                            {/* user item - end */}
-                        </ul>
-                        <div className='lobby__profile-user-group-btn'>
-                            <Button type='submit' variant="primary" onClick={() => {
-                                setIsEditing(true);
-                            }}>
-                                {/* {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null} */}
-                                Change Profile
-                            </Button>
-                            <Button type='submit' variant="primary" onClick={() => {
-                                setIsChangingPass(true);
-                            }}>
-                                {/* {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null} */}
-                                Change Password
-                            </Button>
-
-                        </div>
-                    </div>
+      <Navbar />
+      <div className="lobby__profile">
+        <div className="lobby__profile-container">
+          <div className="lobby__profile-title">Your Account</div>
+          <div className="lobby__profile-content">
+            {userInfo.avatar == "" ? (
+              <div className="lobby__profile-avatar">
+                <UserOutlined />
+              </div>
+            ) : (
+              <img
+                src={userInfo.avatar}
+                alt=""
+                className="lobby__profile-avatar"
+              />
+            )}
+            <ul className="lobby__profile-user-items">
+              {/* user item - start */}
+              <li className="lobby__profile-user-item">
+                <div className="lobby__profile-user-item-title">Name</div>
+                <div className="lobby__profile-user-item-content">
+                  {userInfo.name}
                 </div>
+              </li>
+              {/* user item - end */}
+              {/* user item - start */}
+              <li className="lobby__profile-user-item">
+                <div className="lobby__profile-user-item-title">Email</div>
+                <div className="lobby__profile-user-item-content">
+                  {userInfo.email}
+                </div>
+              </li>
+              {/* user item - end */}
+              {/* user item - start */}
+              <li className="lobby__profile-user-item">
+                <div className="lobby__profile-user-item-title">
+                  Phone number
+                </div>
+                <div className="lobby__profile-user-item-content">
+                  {userInfo.phone}
+                </div>
+              </li>
+              {/* user item - end */}
+              {/* user item - start */}
+              <li className="lobby__profile-user-item">
+                <div className="lobby__profile-user-item-title">
+                  Joined date
+                </div>
+                <div className="lobby__profile-user-item-content">
+                  {parseStringToDate(userInfo.createdAt)}
+                </div>
+              </li>
+              {/* user item - end */}
+            </ul>
+            <div className="lobby__profile-user-group-btn">
+              <Button
+                type="submit"
+                variant="primary"
+                onClick={() => {
+                  setIsEditing(true);
+                }}
+              >
+                {/* {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null} */}
+                Change Profile
+              </Button>
+              <Button
+                type="submit"
+                variant="primary"
+                onClick={() => {
+                  setIsChangingPass(true);
+                }}
+              >
+                {/* {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null} */}
+                Change Password
+              </Button>
             </div>
-        </section>
-    );
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default Profile;

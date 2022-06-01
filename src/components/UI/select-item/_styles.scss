@@ -1,0 +1,17 @@
+.select-item {
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  transition: all 0.3s ease;
+  color: #fff;
+  cursor: pointer;
+  width: max-content;
+
+  &:hover {
+    background-color: $color-secondary-light;
+  }
+}
+
+.select-item.selected {
+  background-color: $color-secondary-light;
+}

@@ -29,7 +29,7 @@ const InputText = (
       ) : null}
       <Input
         className={error ? "error" : ""}
-        autoComplete="nope"
+        autoComplete="off"
         ref={ref ?? field.ref}
         onBlur={(e) => {
           changeCursorPosition && changeCursorPosition(e.target.selectionStart);

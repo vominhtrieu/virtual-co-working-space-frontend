@@ -30,8 +30,6 @@ const Workspace = () => {
   const [conversationId, setConversationId] = useState<number>(0);
   const [isOwner, setIsOwner] = useState(false);
   const { open } = useSelector((state: any) => state.sidebar);
-  const [isShowDetailForm, setIsShowDetailForm] = useState(false);
-  const [isShowChatBox, setIsShowChatBox] = useState(false);
   const [objectList, setObjectList] = useState<OfficeItem[]>([]);
   const [selectedKey, setSelectedKey] = useState(null);
   const [selectedObject, setSelectedObject] = useState<any>(null);
@@ -125,7 +123,6 @@ const Workspace = () => {
     socket.on("office_member:online", (message) => {
       const newMember: OfficeMembersInterface =
         message as OfficeMembersInterface;
-      console.log(onlineMembers);
       if (onlineMembers.findIndex((member) => member.id === newMember.id) < 0) {
         newMember.onlineStatus = "online";
         setOnlineMembers([...onlineMembers, newMember]);
@@ -283,7 +280,6 @@ const Workspace = () => {
       />
       <OfficeInterface
         open={open}
-        conversationId={conversationId}
         officeDetail={officeDetail}
         isCustomizing={action === "config"}
         objectActionVisible={objectActionVisible}
@@ -293,11 +289,6 @@ const Workspace = () => {
         handleItemInBottomMenuClick={handleItemInBottomMenuClick}
         object3dClickPos={object3dClickPos}
         isOwner={isOwner}
-        setCharacterEmoji={setCharacterEmoji}
-        setCharacterGesture={setCharacterGesture}
-        setIsCustomizing={setIsCustomizing}
-        setIsShowDetailForm={setIsShowDetailForm}
-        setIsShowChatBox={setIsShowChatBox}
         setAction={setAction}
         action={action}
       />
@@ -316,6 +307,7 @@ const Workspace = () => {
           onClose={() => setAction("")}
           id={+officeId}
           onSelectConversation={handleSelectConversation}
+          officeDetail={officeDetail!}
         />
       )}
 

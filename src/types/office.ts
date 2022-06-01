@@ -1,3 +1,5 @@
+import { OfficeMembersInterface } from "../services/api/offices/office-detail/types";
+
 export interface CoordinatesInterface {
   x: number;
   y: number;
@@ -37,8 +39,19 @@ export interface OfficeDetailInterface {
   name: string;
   invitationCode: string;
   avatarUrl: string;
-  createdBy: OfficeUserInterface;
+  description: string;
+  createdBy: {
+    id: number;
+    name: string;
+    avatar?: string;
+  };
   officeItems: any[];
-  officeMembers: Array<MemberOfficeInterface>;
+  officeMembers: OfficeMembersInterface[];
   createdAt: string;
+  conversations: {
+    id: number;
+    officeId: number;
+    name: string;
+    type: string;
+  }[];
 }

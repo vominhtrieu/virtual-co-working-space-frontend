@@ -1,20 +1,14 @@
-import { BiRotateLeft, BiRotateRight } from 'react-icons/bi'
-import { FaTrash } from 'react-icons/fa'
-import { useAppSelector } from '../../stores'
-import { socketSelector } from '../../stores/socket-slice'
-import EditOffice from '../layouts/sidebar/offices/edit-office'
-import Button from '../UI/button'
-import OfficeBar from './office-bar'
-import OfficceCheckInModal from './office-checkin/OfficeCheckInModal'
+import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
+import { FaTrash } from "react-icons/fa";
+import EditOffice from "../layouts/sidebar/offices/edit-office";
+import Button from "../UI/button";
+import OfficeBar from "./office-bar";
+import OfficceCheckInModal from "./office-checkin/OfficeCheckInModal";
 
 export default function OfficeInterface({
   open,
-  conversationId,
   officeDetail,
   isCustomizing,
-  setIsCustomizing,
-  setCharacterGesture,
-  setCharacterEmoji,
   objectActionVisible,
   object3dClickPos,
   handleButtonDeleteClick,
@@ -22,29 +16,25 @@ export default function OfficeInterface({
   handleButtonRotateRightClick,
   handleItemInBottomMenuClick,
   isOwner,
-  setIsShowDetailForm,
-  setIsShowChatBox,
   setAction,
   action,
 }) {
-  const socket = useAppSelector(socketSelector.getSocket)
-
   return (
     <>
       <OfficceCheckInModal />
       <div
         style={{
-          position: 'absolute',
+          position: "absolute",
           top: 0,
-          left: open !== '' ? '46rem' : '6rem',
+          left: open !== "" ? "46rem" : "6rem",
           right: 0,
-          width: '100%',
-          height: '100%',
-          textAlign: 'left',
-          pointerEvents: 'none',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
+          width: "100%",
+          height: "100%",
+          textAlign: "left",
+          pointerEvents: "none",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
         }}
       >
         {isCustomizing ? (
@@ -52,18 +42,18 @@ export default function OfficeInterface({
             {objectActionVisible && (
               <div
                 aria-label="actionContainer"
-                style={{ pointerEvents: 'none' }}
+                style={{ pointerEvents: "none" }}
               >
                 <div
                   style={{
-                    position: 'absolute',
+                    position: "absolute",
                     left: `${object3dClickPos.x}px`,
                     top: `${object3dClickPos.y - 10}px`,
-                    marginLeft: '10rem',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '10px',
-                    pointerEvents: 'auto',
+                    marginLeft: "10rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                    pointerEvents: "auto",
                   }}
                 >
                   <Button
@@ -72,7 +62,7 @@ export default function OfficeInterface({
                     className="menu-custom"
                     onClick={handleButtonDeleteClick}
                   >
-                    <FaTrash style={{ width: '1.5rem', height: '1.5rem' }} />
+                    <FaTrash style={{ width: "1.5rem", height: "1.5rem" }} />
                   </Button>
 
                   <Button
@@ -82,7 +72,7 @@ export default function OfficeInterface({
                     onClick={handleButtonRotateLeftClick}
                   >
                     <BiRotateLeft
-                      style={{ width: '1.5rem', height: '1.5rem' }}
+                      style={{ width: "1.5rem", height: "1.5rem" }}
                     />
                   </Button>
 
@@ -93,14 +83,14 @@ export default function OfficeInterface({
                     onClick={handleButtonRotateRightClick}
                   >
                     <BiRotateRight
-                      style={{ width: '1.5rem', height: '1.5rem' }}
+                      style={{ width: "1.5rem", height: "1.5rem" }}
                     />
                   </Button>
                 </div>
               </div>
             )}
 
-            <div aria-label="bottomMenu" style={{ pointerEvents: 'auto' }}>
+            <div aria-label="bottomMenu" style={{ pointerEvents: "auto" }}>
               <EditOffice onItemClick={handleItemInBottomMenuClick} />
             </div>
           </>
@@ -143,5 +133,5 @@ export default function OfficeInterface({
         </div>
       </div> */}
     </>
-  )
+  );
 }

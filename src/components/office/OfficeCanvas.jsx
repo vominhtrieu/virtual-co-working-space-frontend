@@ -41,8 +41,6 @@ export default function OfficeCanvas({
       temp = temp.parent;
     }
 
-    console.log(key)
-
     setSelectedObject(temp);
     setSelectedKey(key);
     setObjectActionVisible(true);
@@ -92,8 +90,16 @@ export default function OfficeCanvas({
                 <mesh
                   castShadow={true}
                   key={object.id}
-                  position={[object.transform.xPosition, object.transform.yPosition, object.transform.zPosition]}
-                  rotation={[object.transform.xRotation, object.transform.yRotation, object.transform.zRotation]}
+                  position={[
+                    object.transform.xPosition,
+                    object.transform.yPosition,
+                    object.transform.zPosition,
+                  ]}
+                  rotation={[
+                    object.transform.xRotation,
+                    object.transform.yRotation,
+                    object.transform.zRotation,
+                  ]}
                   onClick={(e) => handleObject3dClick(e, object.id)}
                   onPointerMissed={handleObject3dPointerMissed}
                 >
@@ -102,30 +108,43 @@ export default function OfficeCanvas({
                   </Suspense>
                 </mesh>
               ))}
-              {!isCustomizing && onlineMembers.map((member) =>
-                member.member.id === userInfo.id ? <Character
-                  key={member.id}
-                  appearance={appearance}
-                  startPosition={[member.transform.position.x, 3, member.transform.position.z]}
-                  scale={[2, 2, 2]}
-                  orbitRef={orbitRef}
-                  movable
-                  volume={volume}
-                  currentEmoji={characterEmoji}
-                  currentGesture={characterGesture}
-                /> : <MemberCharacter
-                  key={member.id}
-                  appearance={appearance}
-                  startPosition={[member.transform.position.x, 3, member.transform.position.z]}
-                  scale={[2, 2, 2]}
-                  orbitRef={orbitRef}
-                  movable
-                  volume={volume}
-                  currentEmoji={characterEmoji}
-                  currentGesture={characterGesture}
-                  memberId={member.member.id}
-                />
-              )}
+              {!isCustomizing &&
+                onlineMembers.map((member) =>
+                  member.member.id === userInfo.id ? (
+                    <Character
+                      key={member.id}
+                      appearance={appearance}
+                      startPosition={[
+                        member.transform.position.x,
+                        3,
+                        member.transform.position.z,
+                      ]}
+                      scale={[2, 2, 2]}
+                      orbitRef={orbitRef}
+                      movable
+                      volume={volume}
+                      currentEmoji={characterEmoji}
+                      currentGesture={characterGesture}
+                    />
+                  ) : (
+                    <MemberCharacter
+                      key={member.id}
+                      appearance={appearance}
+                      startPosition={[
+                        member.transform.position.x,
+                        3,
+                        member.transform.position.z,
+                      ]}
+                      scale={[2, 2, 2]}
+                      orbitRef={orbitRef}
+                      movable
+                      volume={volume}
+                      currentEmoji={characterEmoji}
+                      currentGesture={characterGesture}
+                      memberId={member.member.id}
+                    />
+                  )
+                )}
 
               {/* <Stats className="stats" /> */}
 
@@ -140,5 +159,6 @@ export default function OfficeCanvas({
           </Physics>
         </Suspense>
       </Provider>
-    </Canvas>)
+    </Canvas>
+  );
 }
