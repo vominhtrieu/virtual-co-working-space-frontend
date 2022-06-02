@@ -53,7 +53,7 @@ const CharacterCustomMobile = () => {
       >
         <CharacterCustomMobileMenu
           itemGroups={AppearanceGroups}
-          onItemClick={character.changeCharacter}
+          onItemClick={character.changeAppearance}
         />
       </div>
     </>

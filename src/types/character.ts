@@ -1,4 +1,4 @@
-export interface CharacterInterface {
+export interface CharacterAppearance {
   skinColor: number;
   hairColor: number;
   hairStyle: number;

@@ -108,43 +108,32 @@ export default function OfficeCanvas({
                   </Suspense>
                 </mesh>
               ))}
-              {!isCustomizing &&
-                onlineMembers.map((member) =>
-                  member.member.id === userInfo.id ? (
-                    <Character
-                      key={member.id}
-                      appearance={appearance}
-                      startPosition={[
-                        member.transform.position.x,
-                        3,
-                        member.transform.position.z,
-                      ]}
-                      scale={[2, 2, 2]}
-                      orbitRef={orbitRef}
-                      movable
-                      volume={volume}
-                      currentEmoji={characterEmoji}
-                      currentGesture={characterGesture}
-                    />
-                  ) : (
-                    <MemberCharacter
-                      key={member.id}
-                      appearance={appearance}
-                      startPosition={[
-                        member.transform.position.x,
-                        3,
-                        member.transform.position.z,
-                      ]}
-                      scale={[2, 2, 2]}
-                      orbitRef={orbitRef}
-                      movable
-                      volume={volume}
-                      currentEmoji={characterEmoji}
-                      currentGesture={characterGesture}
-                      memberId={member.member.id}
-                    />
-                  )
-                )}
+              {!isCustomizing && onlineMembers.map((member) =>
+                member.member.id === userInfo.id ? <Character
+                  key={member.id}
+                  appearance={appearance}
+                  startPosition={[member.transform.position.x, 2.5, member.transform.position.z]}
+                  startRotation={[member.transform.rotation.x, member.transform.rotation.y, member.transform.rotation.z]}
+                  scale={[2, 2, 2]}
+                  orbitRef={orbitRef}
+                  movable
+                  volume={volume}
+                  currentEmoji={characterEmoji}
+                  currentGesture={characterGesture}
+                /> : <MemberCharacter
+                  key={member.id}
+                  appearance={appearance}
+                  startPosition={[member.transform.position.x, 2.5, member.transform.position.z]}
+                  startRotation={[member.transform.rotation.x, member.transform.rotation.y, member.transform.rotation.z]}
+                  scale={[2, 2, 2]}
+                  orbitRef={orbitRef}
+                  movable
+                  volume={volume}
+                  currentEmoji={characterEmoji}
+                  currentGesture={characterGesture}
+                  memberId={member.member.id}
+                />
+              )}
 
               {/* <Stats className="stats" /> */}
 

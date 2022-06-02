@@ -7,11 +7,11 @@ import {useEffect, useRef} from 'react'
 import {useGLTF, useAnimations} from '@react-three/drei'
 import {GLTFActions, GLTFResult, useCustomGLTF} from "../../../helpers/utilities";
 import {AppearanceGroups} from "../../../helpers/constants";
-import {CharacterInterface} from "../../../types/character";
+import {CharacterAppearance} from "../../../types/character";
 
 type CharacterProps = JSX.IntrinsicElements['group'] & {
     startPosition: number[],
-    appearance: CharacterInterface,
+    appearance: CharacterAppearance,
 }
 
 const url = "https://virtual-space-models.s3.ap-southeast-1.amazonaws.com/Character/Character.gltf";

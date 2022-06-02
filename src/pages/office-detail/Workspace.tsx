@@ -136,6 +136,16 @@ const Workspace = () => {
   }, [socket, onlineMembers])
 
   useEffect(() => {
+    socket.on('office_member:offline', (memberId) => {
+      setOnlineMembers([...onlineMembers.filter((member) => member.member.id !== memberId)]);
+   })
+
+   return () => {
+     socket.removeListener('office_member:offline')
+   }
+  }, [socket, onlineMembers])
+
+  useEffect(() => {
     socket.on('office_item:created', (message) => {
       setObjectList((objectList) => [...objectList, message])
     })
@@ -181,6 +191,10 @@ const Workspace = () => {
       officeId: officeId,
     })
   }, [officeId, socket])
+
+  useEffect(() => {
+    console.log(onlineMembers);
+  }, [onlineMembers])
 
   const handleItemInBottomMenuClick = (item: Item) => {
     socket.emit('office_item:create', {
