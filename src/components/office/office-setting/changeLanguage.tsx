@@ -1,41 +1,29 @@
-import { Dropdown, Menu } from "antd";
-import i18n from "i18next";
-import { useTranslation } from "react-i18next";
-import { IoMdArrowDropdown } from "react-icons/io";
+import { Dropdown, Menu, Radio, RadioChangeEvent } from 'antd'
+import i18n from 'i18next'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { IoMdArrowDropdown } from 'react-icons/io'
 
 const ChangeLanguage = () => {
-  const { t } = useTranslation();
-  const menu = (
-    <Menu>
-      <Menu.Item key='vi'>
-        <p
-          className='lang__item'
-          onClick={() => {
-            i18n.changeLanguage("vi");
-          }}
-        >
-          {t("default.language.vi")}
-        </p>
-      </Menu.Item>
-      <Menu.Item key='en'>
-        <p
-          className='lang__item'
-          onClick={() => {
-            i18n.changeLanguage("en");
-          }}
-        >
-          {t("default.language.en")}
-        </p>
-      </Menu.Item>
-    </Menu>
-  );
-  return (
-    <Dropdown overlay={menu}>
-      <div className='sidebar-settings__change-lang'>
-        Chọn ngôn ngữ <IoMdArrowDropdown />
-      </div>
-    </Dropdown>
-  );
-};
+  const { t } = useTranslation()
+  const [value, setValue] = useState('vi')
 
-export default ChangeLanguage;
+  const onChange = (e: RadioChangeEvent) => {
+    console.log('radio checked', e.target.value)
+    setValue(e.target.value)
+    i18n.changeLanguage(e.target.value)
+  }
+
+  return (
+    <Radio.Group onChange={onChange} value={value}>
+      <Radio value={'vi'}>
+        <span className="text-white">{t('default.language.vi')}</span>
+      </Radio>
+      <Radio value={'en'}>
+        <span className="text-white">{t('default.language.en')}</span>
+      </Radio>
+    </Radio.Group>
+  )
+}
+
+export default ChangeLanguage
