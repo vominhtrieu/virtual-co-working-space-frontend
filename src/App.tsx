@@ -49,7 +49,7 @@ function AuthenticatedMobileRoutes() {
   return (
     <Routes>
       <Route path="/webgl" element={<CharacterCustomMobile />} />
-      <Route path="/webgl/office/:officeId" element={<WorkspaceMobile />} />
+      <Route path="/webgl/office/:id" element={<WorkspaceMobile />} />
     </Routes>
   );
 }
