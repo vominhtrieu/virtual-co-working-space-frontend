@@ -1,43 +1,49 @@
-import { useEffect, useState } from "react";
-import { useAppSelector } from "../../../stores";
-import { socketSelector } from "../../../stores/socket-slice";
-import RightBar from "../../layouts/rightbar";
-import ChatItem from "./chat-item";
-import CreateConversationForm from "./create-conversation-form";
-import { ChatListProps } from "./types";
+import { useEffect, useState } from 'react'
+import { useAppSelector } from '../../../stores'
+import { socketSelector } from '../../../stores/socket-slice'
+import RightBar from '../../layouts/rightbar'
+import ChatItem from './chat-item'
+import CreateConversationForm from './create-conversation-form'
+import { ChatListProps } from './types'
 
 const ChatList = (props: ChatListProps) => {
-  const { onClose, onSelectConversation, officeDetail } = props;
-  const [isCreate, setIsCreate] = useState(false);
+  const { onClose, onSelectConversation, officeDetail } = props
+  const [isCreate, setIsCreate] = useState(false)
   const [conversationList, setConversationList] = useState<
     {
-      id: number;
-      officeId: number;
-      name: string;
-      type: string;
+      id: number
+      officeId: number
+      name: string
+      type: string
     }[]
-  >([]);
+  >([])
 
-  const socket = useAppSelector(socketSelector.getSocket);
+  const socket = useAppSelector(socketSelector.getSocket)
 
   const handleCreateConversation = (values) => {
-    socket.emit("conversation:create", {
+    socket.emit('conversation:create', {
       name: values.name,
       memberIds: values.memberIds,
-    });
-  };
+    })
+  }
 
   useEffect(() => {
-    setConversationList(officeDetail.conversations);
-    console.log("on conversation list change");
-    socket.on("conversation:created", (value) => {
-      console.log(value);
-    });
+    setConversationList(officeDetail.conversations)
+    socket.on('conversation:created', (value) => {
+      const newConversation = {
+        id: value.conversation.id,
+        officeId: value.conversation.officeId,
+        name: value.conversation.name,
+        type: value.conversation.type,
+      }
+
+      setConversationList((prev) => [...prev, newConversation])
+    })
 
     return () => {
-      socket.off("conversation:created");
-    };
-  }, [socket, officeDetail.conversations]);
+      socket.off('conversation:created')
+    }
+  }, [socket, officeDetail.conversations])
 
   return (
     <>
@@ -55,15 +61,15 @@ const ChatList = (props: ChatListProps) => {
               onSelectConversation={onSelectConversation}
               key={conversation.id}
               conversationId={conversation.id}
-              name={conversation.name ?? "Tên cuộc trò chuyện"}
-              lastMess={"Làm ui lẹ lẹ lẹ"}
+              name={conversation.name ?? 'Tên cuộc trò chuyện'}
+              lastMess={'Làm ui lẹ lẹ lẹ'}
               isOnline
             />
-          );
+          )
         })}
       </RightBar>
     </>
-  );
-};
+  )
+}
 
-export default ChatList;
+export default ChatList
