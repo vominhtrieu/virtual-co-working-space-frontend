@@ -1,7 +1,6 @@
 import {
   FaCog,
   FaComments,
-  FaDoorOpen,
   FaGrin,
   FaInfoCircle,
   FaRegArrowAltCircleLeft,

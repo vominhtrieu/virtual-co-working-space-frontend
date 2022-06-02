@@ -1,8 +1,7 @@
-import { Dropdown, Menu, Radio, RadioChangeEvent } from 'antd'
+import { Radio, RadioChangeEvent } from 'antd'
 import i18n from 'i18next'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { IoMdArrowDropdown } from 'react-icons/io'
 
 const ChangeLanguage = () => {
   const { t } = useTranslation()

@@ -1,12 +1,10 @@
 import { Dropdown, Menu } from 'antd'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { IoMdArrowDropdown } from 'react-icons/io'
-import Button from '../../../../UI/button'
-import { EditOfficePropsInterface } from './types'
-import { getItemCategories } from '../../../../../services/api/offices/get-office-categories'
-import { getItems } from '../../../../../services/api/offices/get-office-item'
 import { ItemCategory } from '../../../../../services/api/offices/get-office-categories/types'
+import Button from '../../../../UI/button'
 import OfficePopup from '../../../../UI/office-popup'
+import { EditOfficePropsInterface } from './types'
 
 const EditOffice = (props: EditOfficePropsInterface) => {
   const { onClose, onItemClick } = props

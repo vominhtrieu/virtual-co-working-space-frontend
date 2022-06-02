@@ -1,67 +1,65 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Navbar from "../../components/layouts/navbar";
-import { toastError, toastSuccess } from "../../helpers/toast";
-import ProfileProxy from "../../services/proxy/users/get-profile";
-import UpdateProfileProxy from "../../services/proxy/users/update-user";
-import ChangePasswordProxy from "../../services/proxy/users/change-password";
-import { useAppDispatch, useAppSelector } from "../../stores";
-import { removeAll } from "../../helpers/cookies";
-import { removeAllDataLocal } from "../../helpers/localStorage";
+import { UserOutlined } from '@ant-design/icons'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Navbar from '../../components/layouts/navbar'
+import Button from '../../components/UI/button'
+import { removeAll } from '../../helpers/cookies'
+import { removeAllDataLocal } from '../../helpers/localStorage'
+import { toastError, toastSuccess } from '../../helpers/toast'
+import ChangePasswordProxy from '../../services/proxy/users/change-password'
+import ProfileProxy from '../../services/proxy/users/get-profile'
+import UpdateProfileProxy from '../../services/proxy/users/update-user'
+import { useAppDispatch, useAppSelector } from '../../stores'
 import {
   setAuthenticated,
   setUserInfo,
   userSelectors,
-} from "../../stores/auth-slice";
+} from '../../stores/auth-slice'
 // import { setUserInfo, userSelectors } from "../../stores/auth-slice";
-import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
-import NewButton from "../../components/UI/new-button";
-import Button from "../../components/UI/button";
-import { FaPlus } from "react-icons/fa";
-import { UserOutlined } from "@ant-design/icons";
-import ChangePasswordForm from "./change-pass-form";
-import EditProfileForm from "./edit-profile-form";
+import { ProxyStatusEnum } from '../../types/http/proxy/ProxyStatus'
+import ChangePasswordForm from './change-pass-form'
+import EditProfileForm from './edit-profile-form'
 import {
   ChangePasswordFormValuesInterface,
   EditProfileFormValuesInterface,
-} from "./types";
+} from './types'
 
 const Profile = () => {
-  const dispatch = useAppDispatch();
-  const [isEditing, setIsEditing] = useState(false);
-  const [isChangingPass, setIsChangingPass] = useState(false);
-  const userInfo = useAppSelector(userSelectors.getUserInfo);
+  const dispatch = useAppDispatch()
+  const [isEditing, setIsEditing] = useState(false)
+  const [isChangingPass, setIsChangingPass] = useState(false)
+  const userInfo = useAppSelector(userSelectors.getUserInfo)
   // const isLoading = useAppSelector(loadSelectors.getIsLoad);
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleLogout = () => {
-    dispatch(setAuthenticated(false));
-    dispatch(setUserInfo({}));
-    removeAllDataLocal();
-    removeAll();
-    navigate("/auth/login");
-  };
+    dispatch(setAuthenticated(false))
+    dispatch(setUserInfo({}))
+    removeAllDataLocal()
+    removeAll()
+    navigate('/auth/login')
+  }
 
   const padTo2Digits = (num: number) => {
-    return num.toString().padStart(2, "0");
-  };
+    return num.toString().padStart(2, '0')
+  }
 
   const parseStringToDate = (dateSTr) => {
     if (dateSTr) {
-      const date = new Date(dateSTr);
+      const date = new Date(dateSTr)
       return [
         padTo2Digits(date.getDate()),
         padTo2Digits(date.getMonth() + 1),
         date.getFullYear(),
-      ].join("/");
+      ].join('/')
     }
-    return "";
-  };
+    return ''
+  }
 
   const handleChangeProfile = (values: EditProfileFormValuesInterface) => {
-    if (values.avatar === "") {
-      toastError("Avatar is require");
+    if (values.avatar === '') {
+      toastError('Avatar is require')
     } else {
       UpdateProfileProxy({
         name: values.name,
@@ -70,66 +68,66 @@ const Profile = () => {
       })
         .then((res) => {
           if (res.status === ProxyStatusEnum.FAIL) {
-            toastError(res.message ?? "update fail");
+            toastError(res.message ?? 'update fail')
           }
 
           if (res.status === ProxyStatusEnum.SUCCESS) {
-            dispatch(setUserInfo(res?.data.userInfo));
-            toastSuccess("update success");
-            setIsEditing(!isEditing);
+            dispatch(setUserInfo(res?.data.userInfo))
+            toastSuccess('update success')
+            setIsEditing(!isEditing)
           }
         })
         .catch((err) => {
-          toastError(err.message ?? "update fail");
+          toastError(err.message ?? 'update fail')
         })
-        .finally(() => {});
+        .finally(() => {})
     }
-  };
+  }
 
   const handleChangePassword = (values: ChangePasswordFormValuesInterface) => {
     ChangePasswordProxy(values)
       .then((res) => {
-        console.log(res);
+        console.log(res)
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Change password fail!");
+          toastError(res.message ?? 'Change password fail!')
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          setIsChangingPass(false);
-          toastSuccess("Password changed successfully.");
-          handleLogout();
-          navigate("/auth/login");
+          setIsChangingPass(false)
+          toastSuccess('Password changed successfully.')
+          handleLogout()
+          navigate('/auth/login')
         }
       })
       .catch((err) => {
-        toastError(err.message ?? "Change password fail!");
+        toastError(err.message ?? 'Change password fail!')
       })
-      .finally(() => {});
-  };
+      .finally(() => {})
+  }
 
   useEffect(() => {
     ProfileProxy()
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Load data fail!");
+          toastError(res.message ?? 'Load data fail!')
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          dispatch(setUserInfo(res?.data.userInfo));
+          dispatch(setUserInfo(res?.data.userInfo))
         }
       })
       .catch((err) => {
-        toastError(err.message ?? "Load data fail!");
+        toastError(err.message ?? 'Load data fail!')
       })
-      .finally(() => {});
-  }, [dispatch]);
+      .finally(() => {})
+  }, [dispatch])
 
   return (
     <section className="lobby">
       {isChangingPass ? (
         <ChangePasswordForm
           onClose={() => {
-            setIsChangingPass(false);
+            setIsChangingPass(false)
           }}
           onSubmit={handleChangePassword}
         />
@@ -138,7 +136,7 @@ const Profile = () => {
       {isEditing ? (
         <EditProfileForm
           onClose={() => {
-            setIsEditing(false);
+            setIsEditing(false)
           }}
           onSubmit={handleChangeProfile}
         />
@@ -149,7 +147,7 @@ const Profile = () => {
         <div className="lobby__profile-container">
           <div className="lobby__profile-title">Your Account</div>
           <div className="lobby__profile-content">
-            {userInfo.avatar == "" ? (
+            {userInfo.avatar === '' ? (
               <div className="lobby__profile-avatar">
                 <UserOutlined />
               </div>
@@ -203,7 +201,7 @@ const Profile = () => {
                 type="submit"
                 className="ok"
                 onClick={() => {
-                  setIsEditing(true);
+                  setIsEditing(true)
                 }}
               >
                 {/* {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null} */}
@@ -213,7 +211,7 @@ const Profile = () => {
                 type="submit"
                 className="ok"
                 onClick={() => {
-                  setIsChangingPass(true);
+                  setIsChangingPass(true)
                 }}
               >
                 {/* {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null} */}
@@ -224,7 +222,7 @@ const Profile = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Profile;
+export default Profile

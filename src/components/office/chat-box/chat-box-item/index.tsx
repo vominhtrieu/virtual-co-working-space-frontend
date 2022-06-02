@@ -1,69 +1,77 @@
-import { useEffect, useRef, useState } from "react";
-import { FaCheckDouble, FaTrashAlt, FaUndo } from "react-icons/fa";
-import { useAppSelector } from "../../../../stores";
-import { userSelectors } from "../../../../stores/auth-slice";
-import { socketSelector } from "../../../../stores/socket-slice";
-import { ChatBoxItemPropsInterface } from "./types";
+import { useEffect, useRef, useState } from 'react'
+import { FaTrashAlt, FaUndo } from 'react-icons/fa'
+import { useAppSelector } from '../../../../stores'
+import { userSelectors } from '../../../../stores/auth-slice'
+import { socketSelector } from '../../../../stores/socket-slice'
+import { ChatBoxItemPropsInterface } from './types'
 
-const srcTemp = "https://ss-images.saostar.vn/2020/01/03/6750639/page1.jpg";
+const srcTemp = 'https://ss-images.saostar.vn/2020/01/03/6750639/page1.jpg'
 
 const ChatBoxItem = (props: ChatBoxItemPropsInterface) => {
-  const [isOpenAction, setIsOpenAction] = useState(false);
-  const { src, alt, message, isMe, conversationId, senderId, id, reader } =
-    props;
-  const actionRef = useRef<HTMLDivElement>(null);
+  const [isOpenAction, setIsOpenAction] = useState(false)
+  const {
+    src,
+    alt,
+    message,
+    isMe,
+    conversationId,
+    senderId,
+    id,
+    reader,
+  } = props
+  const actionRef = useRef<HTMLDivElement>(null)
 
-  const socket = useAppSelector(socketSelector.getSocket);
+  const socket = useAppSelector(socketSelector.getSocket)
 
-  const userInfo = useAppSelector(userSelectors.getUserInfo);
+  const userInfo = useAppSelector(userSelectors.getUserInfo)
 
   useEffect(() => {
     // check unfocus
     const handleClickOutside = (event: any) => {
       if (actionRef.current && !actionRef.current.contains(event.target)) {
-        setIsOpenAction(false);
+        setIsOpenAction(false)
       }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
+    }
+    document.addEventListener('mousedown', handleClickOutside)
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
 
   useEffect(() => {
-    socket.on("message:read", (value) => {
-      console.log(value);
-    });
+    socket.on('message:read', (value) => {
+      console.log(value)
+    })
 
     return () => {
-      socket.off("message:read");
-    };
-  }, [socket, reader]);
+      socket.off('message:read')
+    }
+  }, [socket, reader])
 
   // handle delete message
   const handleDeleteMessage = () => {
-    socket.emit("message:delete", {
+    socket.emit('message:delete', {
       conversationId: conversationId,
       messageId: id,
-    });
-  };
+    })
+  }
 
   // handle revoked message
   const handleRevokedMessage = () => {
-    socket.emit("message:revoke", {
+    socket.emit('message:revoke', {
       conversationId: conversationId,
       messageId: id,
-    });
-  };
+    })
+  }
 
   return (
-    <div className={"chat-box-item" + (isMe ? " mine" : "")}>
+    <div className={'chat-box-item' + (isMe ? ' mine' : '')}>
       <img src={src ?? srcTemp} alt={alt} className="chat-box-item__avatar" />
       <div
         className="chat-box-item__message"
         onClick={() => {
-          setIsOpenAction((curr) => !curr);
+          setIsOpenAction((curr) => !curr)
         }}
       >
         {isOpenAction && (
@@ -94,10 +102,10 @@ const ChatBoxItem = (props: ChatBoxItemPropsInterface) => {
             </ul>
           </div>
         )}
-        <span>{message ?? "Không có nội dung"}</span>
+        <span>{message ?? 'Không có nội dung'}</span>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ChatBoxItem;
+export default ChatBoxItem

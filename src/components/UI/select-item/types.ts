@@ -3,4 +3,5 @@ export interface SelectItemProps {
   isSelected: boolean;
   content: string;
   value: number;
+  avatar?: string;
 }

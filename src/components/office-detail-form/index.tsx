@@ -1,56 +1,54 @@
-import { useEffect, useState } from "react";
-import { toastError, toastSuccess } from "../../helpers/toast";
-import OfficeDetailProxy from "../../services/proxy/offices/office-detail";
-import UpdateOfficeProxy from "../../services/proxy/offices/update-office";
-import DeleteOfficeProxy from "../../services/proxy/offices/delete-office";
-import CreateByEmailProxy from "../../services/proxy/office-invitation/create-by-email";
-import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
-import NewButton from "../UI/new-button";
-import Button from "../UI/button";
-import Popup from "../UI/popup";
-import EditOfficeForm from "./edit-office-form";
-import CreateInvitationForm from "./create-invite-by-email";
+import { Skeleton } from 'antd'
+import { useEffect, useState } from 'react'
+import { FaLink, FaLocationArrow } from 'react-icons/fa'
+import { toastError, toastSuccess } from '../../helpers/toast'
+import CreateByEmailProxy from '../../services/proxy/office-invitation/create-by-email'
+import DeleteOfficeProxy from '../../services/proxy/offices/delete-office'
+import OfficeDetailProxy from '../../services/proxy/offices/office-detail'
+import UpdateOfficeProxy from '../../services/proxy/offices/update-office'
+import { useAppDispatch, useAppSelector } from '../../stores'
+import { loadSelectors } from '../../stores/load-slice'
+import { officeSelectors, setIsOffice } from '../../stores/office-slice'
+import { ProxyStatusEnum } from '../../types/http/proxy/ProxyStatus'
+import Button from '../UI/button'
+import Popup from '../UI/popup'
+import CreateInvitationForm from './create-invite-by-email'
+import DeleteOfficeForm from './delete-office-form'
+import EditOfficeForm from './edit-office-form'
 import {
-  EditOfficeDetailFormValuesInterface,
   CreateInvitationFormValuesInterface,
+  EditOfficeDetailFormValuesInterface,
   OfficeDetailFormProps,
   OfficeDetailInterface,
-} from "./types";
-import DeleteOfficeForm from "./delete-office-form";
-import { useAppDispatch, useAppSelector } from "../../stores";
-import { setIsOffice } from "../../stores/office-slice";
-import { officeSelectors } from "../../stores/office-slice";
-import { FaLink, FaLocationArrow } from "react-icons/fa";
-import { loadSelectors } from "../../stores/load-slice";
-import { Skeleton } from "antd";
+} from './types'
 
 const OfficeDetailForm = (props: OfficeDetailFormProps) => {
-  const [officeDetail, setOfficeDetail] = useState<OfficeDetailInterface>();
-  const { onClose, id, isOwner } = props;
+  const [officeDetail, setOfficeDetail] = useState<OfficeDetailInterface>()
+  const { onClose, id, isOwner } = props
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [isCreate, setIsCreate] = useState(false);
+  const [isEditing, setIsEditing] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [isCreate, setIsCreate] = useState(false)
 
-  const isOffice = useAppSelector(officeSelectors.getIsOffice);
-  const isLoading = useAppSelector(loadSelectors.getIsLoad);
-  const dispatch = useAppDispatch();
-  const arrThumnail: number[] = [0, 1, 2, 3];
+  const isOffice = useAppSelector(officeSelectors.getIsOffice)
+  const isLoading = useAppSelector(loadSelectors.getIsLoad)
+  const dispatch = useAppDispatch()
+  const arrThumnail: number[] = [0, 1, 2, 3]
 
   useEffect(() => {
     OfficeDetailProxy({ id: id })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Get offices detail fail");
-          return;
+          toastError(res.message ?? 'Get offices detail fail')
+          return
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          setOfficeDetail(res.data.office ?? {});
+          setOfficeDetail(res.data.office ?? {})
         }
       })
-      .catch((err) => {});
-  }, [id]);
+      .catch((err) => {})
+  }, [id])
 
   const handleEdit = (values: EditOfficeDetailFormValuesInterface) => {
     UpdateOfficeProxy({
@@ -61,80 +59,80 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
     })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Update office fail");
-          return;
+          toastError(res.message ?? 'Update office fail')
+          return
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          toastSuccess("Update office success");
-          dispatch(setIsOffice(!isOffice));
-          onClose();
-          setIsEditing(false);
+          toastSuccess('Update office success')
+          dispatch(setIsOffice(!isOffice))
+          onClose()
+          setIsEditing(false)
         }
       })
-      .catch((err) => {});
-  };
+      .catch((err) => {})
+  }
 
   const handleDelete = () => {
     DeleteOfficeProxy({ id: id })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Delete office fail");
-          return;
+          toastError(res.message ?? 'Delete office fail')
+          return
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          toastSuccess("Delete office success");
-          dispatch(setIsOffice(!isOffice));
-          onClose();
-          setIsDeleting(false);
+          toastSuccess('Delete office success')
+          dispatch(setIsOffice(!isOffice))
+          onClose()
+          setIsDeleting(false)
         }
       })
-      .catch((err) => {});
-  };
+      .catch((err) => {})
+  }
 
   const handleCreateInvitation = (
-    values: CreateInvitationFormValuesInterface
+    values: CreateInvitationFormValuesInterface,
   ) => {
     CreateByEmailProxy({ email: values.email, officeId: values.officeId })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Create invitation fail");
-          return;
+          toastError(res.message ?? 'Create invitation fail')
+          return
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          toastSuccess("Create invitation success");
-          dispatch(setIsOffice(!isOffice));
-          onClose();
-          setIsCreate(false);
+          toastSuccess('Create invitation success')
+          dispatch(setIsOffice(!isOffice))
+          onClose()
+          setIsCreate(false)
         }
       })
-      .catch((err) => {});
-  };
+      .catch((err) => {})
+  }
 
   const padTo2Digits = (num: number) => {
-    return num.toString().padStart(2, "0");
-  };
+    return num.toString().padStart(2, '0')
+  }
 
   const parseStringToDate = (dateSTr) => {
     if (dateSTr) {
-      const date = new Date(dateSTr);
+      const date = new Date(dateSTr)
       return [
         padTo2Digits(date.getDate()),
         padTo2Digits(date.getMonth() + 1),
         date.getFullYear(),
-      ].join("/");
+      ].join('/')
     }
-    return "";
-  };
+    return ''
+  }
 
   const copy = async (code) => {
     await navigator.clipboard.writeText(
-      `${window.location.host}/invites/${code}`
-    );
-    toastSuccess("Copy success");
-  };
+      `${window.location.host}/invites/${code}`,
+    )
+    toastSuccess('Copy success')
+  }
 
   const DetailForm = (
     <>
@@ -152,7 +150,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
             <Skeleton.Button />
             <Skeleton.Button />
           </div>
-        </div> 
+        </div>
       ) : (
         <div className="office-detail-form">
           <ul className="office-detail-form__items">
@@ -173,12 +171,13 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
                     <div>{officeDetail?.invitationCode}</div>
                     <div>
                       <FaLocationArrow
-                        style={{ marginRight: "1rem", cursor:"pointer" }}
+                        style={{ marginRight: '1rem', cursor: 'pointer' }}
                         onClick={() => {
-                          setIsCreate(true);
+                          setIsCreate(true)
                         }}
                       />
-                      <FaLink style={{ cursor:"pointer" }}
+                      <FaLink
+                        style={{ cursor: 'pointer' }}
                         onClick={() => copy(officeDetail?.invitationCode)}
                       />
                     </div>
@@ -195,8 +194,8 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
               </div>
             </li>
             {/* user item - end */}
-                        {/* user item - start */}
-                        <li className="office-detail-form__item">
+            {/* user item - start */}
+            <li className="office-detail-form__item">
               <div className="office-detail-form__item-title">Mô tả:</div>
               <div className="office-detail-form__item-content">
                 {officeDetail?.description}
@@ -207,18 +206,18 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
           {isOwner && (
             <div className="office-detail-form__group-btn">
               <Button
-                variant='primary'  
+                variant="primary"
                 onClick={() => {
-                  setIsEditing(true);
+                  setIsEditing(true)
                 }}
               >
                 Chỉnh sửa thông tin
               </Button>
               <Button
-                type='reset' 
-                variant='outlined'
+                type="reset"
+                variant="outlined"
                 onClick={() => {
-                  setIsDeleting(true);
+                  setIsDeleting(true)
                 }}
               >
                 Xoá
@@ -228,14 +227,19 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
         </div>
       )}
     </>
-  );
+  )
 
   return (
-    <Popup onClose={onClose} title="Office Detail" type="dark" hasFooter={false}>
+    <Popup
+      onClose={onClose}
+      title="Office Detail"
+      type="dark"
+      hasFooter={false}
+    >
       {isEditing && officeDetail ? (
         <EditOfficeForm
           onClose={() => {
-            setIsEditing(false);
+            setIsEditing(false)
           }}
           onSubmit={handleEdit}
           officeDetail={officeDetail}
@@ -243,14 +247,14 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
       ) : isDeleting ? (
         <DeleteOfficeForm
           onClose={() => {
-            setIsDeleting(false);
+            setIsDeleting(false)
           }}
           handleDelete={handleDelete}
         />
       ) : isCreate && officeDetail ? (
         <CreateInvitationForm
           onClose={() => {
-            setIsCreate(false);
+            setIsCreate(false)
           }}
           handleCreate={handleCreateInvitation}
           officeDetail={officeDetail}
@@ -259,6 +263,6 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
         DetailForm
       )}
     </Popup>
-  );
-};
-export default OfficeDetailForm;
+  )
+}
+export default OfficeDetailForm
