@@ -5,4 +5,5 @@ export interface ChatListProps {
   id: number;
   onSelectConversation: (id: number) => void;
   officeDetail: OfficeDetailInterface;
+  lastMess?: string;
 }

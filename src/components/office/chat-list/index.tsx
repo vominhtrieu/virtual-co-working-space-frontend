@@ -7,7 +7,7 @@ import CreateConversationForm from './create-conversation-form'
 import { ChatListProps } from './types'
 
 const ChatList = (props: ChatListProps) => {
-  const { onClose, onSelectConversation, officeDetail } = props
+  const { onClose, onSelectConversation, lastMess, officeDetail } = props
   const [isCreate, setIsCreate] = useState(false)
   const [conversationList, setConversationList] = useState<
     {
@@ -62,7 +62,7 @@ const ChatList = (props: ChatListProps) => {
               key={conversation.id}
               conversationId={conversation.id}
               name={conversation.name ?? 'Tên cuộc trò chuyện'}
-              lastMess={'Làm ui lẹ lẹ lẹ'}
+              lastMess={lastMess ?? ''}
               isOnline
             />
           )

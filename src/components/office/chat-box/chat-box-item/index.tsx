@@ -71,10 +71,10 @@ const ChatBoxItem = (props: ChatBoxItemPropsInterface) => {
             <ul className="chat-box-item__action-list">
               {senderId === userInfo.id && (
                 <>
-                  <li className="chat-box-item__action-item">
+                  {/* <li className="chat-box-item__action-item">
                     <FaCheckDouble />
                     Đã xem
-                  </li>
+                  </li> */}
                   <li
                     className="chat-box-item__action-item"
                     onClick={handleRevokedMessage}

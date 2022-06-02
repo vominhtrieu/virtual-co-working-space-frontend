@@ -45,7 +45,6 @@ const SetupInterceptors = (store) => {
   HttpClient.interceptors.response.use(
     async (response) => {
       if (response.data.code === 401) {
-        console.log("code");
         const refreshTokenResponse = await axios.post(
           `${process.env.REACT_APP_BASE_URL}/auth/refreshToken`,
           null,
@@ -56,8 +55,7 @@ const SetupInterceptors = (store) => {
 
         if (
           !refreshTokenResponse ||
-          !refreshTokenResponse.data ||
-          refreshTokenResponse.data.code === 401
+          !refreshTokenResponse.data
         ) {
           store.dispatch(setAuthenticated(false));
           store.dispatch(setUserInfo({}));
