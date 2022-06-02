@@ -13,6 +13,14 @@ const Thumbnail = (props: ThumbnailPropsInterface) => {
   const [memberTotal, setMemberTotal] = useState(0)
   const [online, setOnline] = useState(0)
 
+  
+  const formatName = (name: any) => {
+    if (name.length > 17 )
+      return name.substr(0,15)+"...";
+    return name;
+  }
+
+
   useEffect(() => {
     if (!office) return
 
@@ -44,6 +52,7 @@ const Thumbnail = (props: ThumbnailPropsInterface) => {
     toastSuccess('Copied to clipboard')
   }
 
+ 
   return (
     <div className="thumbnail">
       <img
@@ -56,7 +65,7 @@ const Thumbnail = (props: ThumbnailPropsInterface) => {
         {/* header - start */}
         <div className="thumbnail__content-header">
           <span className="thumbnail__content-title" onClick={onClick}>
-            {office?.name}
+            {formatName(office?.name)}
           </span>
           <div className="thumbnail__content-count">
             <span className="thumbnail__content-active" />

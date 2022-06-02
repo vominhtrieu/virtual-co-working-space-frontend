@@ -59,7 +59,7 @@ const UserPopup = () => {
           <div className="navbar__dropdown-item-icon">
             <FaSignOutAlt />
           </div>
-          <p>Logout</p>
+          <p>Log out</p>
         </div>
       </Menu.Item>
     </Menu>

@@ -16,10 +16,16 @@ const OfficeBar = (props: OfficeBarPropsInterface) => {
 
   const navigate = useNavigate()
 
+  const formatName = (name: any) => {
+    if (name.length > 30 )
+      return name.substr(0,27)+"...";
+    return name;
+  }
+
   return (
     <nav className="office-bar">
       <div className="office-bar__name" onClick={() => navigate('/lobby')}>
-        <FaRegArrowAltCircleLeft /> {officeDetail?.name ?? ''}
+        <FaRegArrowAltCircleLeft /> {formatName(officeDetail?.name ?? '')}
       </div>
 
       <div className="office-bar__right-content">
