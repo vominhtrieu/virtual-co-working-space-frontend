@@ -1,13 +1,13 @@
-import HttpClient from "./axios";
 import axios from "axios";
+import { setAuthenticated, setUserInfo } from "../stores/auth-slice";
 import { setIsLoad } from "../stores/load-slice";
+import HttpClient from "./axios";
+import { getData, removeAll } from "./cookies";
 import {
   getDataLocal,
   removeAllDataLocal,
-  saveDataLocal,
+  saveDataLocal
 } from "./localStorage";
-import { saveData, getData, removeAll } from "./cookies";
-import { setAuthenticated, setUserInfo } from "../stores/auth-slice";
 
 export const HTTP_HEADER_KEY = {
   CONTENT_TYPE: "Content-Type",
@@ -45,7 +45,6 @@ const SetupInterceptors = (store) => {
   HttpClient.interceptors.response.use(
     async (response) => {
       if (response.data.code === 401) {
-        console.log("code");
         const refreshTokenResponse = await axios.post(
           `${process.env.REACT_APP_BASE_URL}/auth/refreshToken`,
           null,
@@ -56,8 +55,7 @@ const SetupInterceptors = (store) => {
 
         if (
           !refreshTokenResponse ||
-          !refreshTokenResponse.data ||
-          refreshTokenResponse.data.code === 401
+          !refreshTokenResponse.data
         ) {
           store.dispatch(setAuthenticated(false));
           store.dispatch(setUserInfo({}));

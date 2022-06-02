@@ -5,5 +5,5 @@ export interface IsCheckinTodayParamsProxy {
 export interface IsCheckinTodayResponseProxy {
     userId: number,
     officeId: number,
-    checkinDate: Date
+    checkInDate: Date
 }

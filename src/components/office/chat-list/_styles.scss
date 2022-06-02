@@ -1,0 +1,6 @@
+.create-conversation-form {
+    &__select-member {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

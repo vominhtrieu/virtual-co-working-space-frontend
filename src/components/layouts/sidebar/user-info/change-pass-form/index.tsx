@@ -18,19 +18,50 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
   const schema = yup.object().shape({
     oldPassword: yup
       .string()
-      .required(t("default.error.required", { field: t("pages.register.password") })),
+      .required(
+        t("default.error.required", { field: t("pages.register.password") })
+      ),
     newPassword: yup
       .string()
-      .required(t("default.error.required", { field: t("pages.register.password") }))
-      .matches(/^(?=.*[a-z])/, t("default.error.oneLowercase", { field: t("pages.register.password") }))
-      .matches(/^(?=.*[A-Z])/, t("default.error.oneUppercase", { field: t("pages.register.password") }))
-      .matches(/^(?=.*[0-9])/, t("default.error.oneNumber", { field: t("pages.register.password") }))
-      .matches(/^(?=.*[!@#\$%\^&\*~])/, t("default.error.oneSpecial", { field: t("pages.register.password") }))
-      .min(8, t("default.error.minLength", { field: t("pages.register.password"), min: 8 })),
+      .required(
+        t("default.error.required", { field: t("pages.register.password") })
+      )
+      .matches(
+        /^(?=.*[a-z])/,
+        t("default.error.oneLowercase", { field: t("pages.register.password") })
+      )
+      .matches(
+        /^(?=.*[A-Z])/,
+        t("default.error.oneUppercase", { field: t("pages.register.password") })
+      )
+      .matches(
+        /^(?=.*[0-9])/,
+        t("default.error.oneNumber", { field: t("pages.register.password") })
+      )
+      .matches(
+        /^(?=.*[!@#\$%\^&\*~])/,
+        t("default.error.oneSpecial", { field: t("pages.register.password") })
+      )
+      .min(
+        8,
+        t("default.error.minLength", {
+          field: t("pages.register.password"),
+          min: 8,
+        })
+      ),
     confirmPassword: yup
       .string()
-      .required(t("default.error.required", { field: t("pages.register.confirmPassword") }))
-      .oneOf([yup.ref("newPassword")], t("default.error.confirmPassword", { field: t("pages.register.confirmPassword") }))
+      .required(
+        t("default.error.required", {
+          field: t("pages.register.confirmPassword"),
+        })
+      )
+      .oneOf(
+        [yup.ref("newPassword")],
+        t("default.error.confirmPassword", {
+          field: t("pages.register.confirmPassword"),
+        })
+      ),
   });
 
   const { control, handleSubmit } = useForm<ChangePasswordInputInterface>({
@@ -52,46 +83,46 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
   };
 
   return (
-    <Popup onClose={onClose} title="Change Password">
+    <Popup onClose={onClose} title="Change Password" type="white">
       <form onSubmit={handleSubmit(handleChangePasswordSubmit)}>
-        <h1 className='change-pass-form__title'>Change Password</h1>
+        <h1 className="change-pass-form__title">Change Password</h1>
 
-        <div className='change-pass-form__input-block'>
+        <div className="change-pass-form__input-block">
           <InputText
             control={control}
-            type='password'
-            name='oldPassword'
+            type="password"
+            name="oldPassword"
             hasLabel
-            placeholder='Current Password'
+            placeholder="Current Password"
           />
         </div>
 
-        <div className='change-pass-form__input-block'>
+        <div className="change-pass-form__input-block">
           <InputText
             control={control}
-            type='password'
-            name='newPassword'
+            type="password"
+            name="newPassword"
             hasLabel
-            placeholder='New Password'
+            placeholder="New Password"
           />
         </div>
 
-        <div className='change-pass-form__input-block'>
+        <div className="change-pass-form__input-block">
           <InputText
             control={control}
-            type='password'
-            name='confirmPassword'
+            type="password"
+            name="confirmPassword"
             hasLabel
-            placeholder='Password Confirmation'
+            placeholder="Password Confirmation"
           />
         </div>
 
-        <div className='change-pass-form__group-btn'>
-          <Button type='submit' variant='primary'>
+        <div className="change-pass-form__group-btn">
+          <Button type="submit" variant="primary">
             Submit
           </Button>
 
-          <Button type='reset' variant='outlined' onClick={onClose}>
+          <Button type="reset" variant="outlined" onClick={onClose}>
             Cancel
           </Button>
         </div>

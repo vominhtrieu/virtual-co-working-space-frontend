@@ -1,84 +1,91 @@
-import { useState } from 'react'
-import { FaDoorClosed, FaPlus } from 'react-icons/fa'
-import { useNavigate } from 'react-router-dom'
-import LogoVSpace from '../../../assets/images/VSpaceLogo.svg'
-import { toastError, toastSuccess } from '../../../helpers/toast'
+import { useState } from "react";
+import { FaDoorClosed, FaPlus } from "react-icons/fa";
+import { useLocation, useNavigate } from "react-router-dom";
+import LogoVSpace from "../../../assets/images/VSpaceLogo.svg";
+import { toastError, toastSuccess } from "../../../helpers/toast";
 import {
   CreateOfficeFormValuesInterface,
   JoinOfficeFormValuesInterface,
-} from '../../../pages/lobby/types'
-import JoinByCodeProxy from '../../../services/proxy/office-invitation/join-invite-code'
-import CreateOfficeProxy from '../../../services/proxy/offices/create-office'
-import { useAppDispatch, useAppSelector } from '../../../stores'
-import { loadSelectors } from '../../../stores/load-slice'
-import { officeSelectors, setIsOffice } from '../../../stores/office-slice'
-import { ProxyStatusEnum } from '../../../types/http/proxy/ProxyStatus'
-import NewButton from '../../UI/new-button'
-import UserPopup from '../user-popup'
-import CreateOfficeForm from './create-office-form'
-import JoinOfficeForm from './join-by-code'
-import { NavbarProps } from './types'
+} from "../../../pages/lobby/types";
+import JoinByCodeProxy from "../../../services/proxy/office-invitation/join-invite-code";
+import CreateOfficeProxy from "../../../services/proxy/offices/create-office";
+import { useAppDispatch, useAppSelector } from "../../../stores";
+import { officeSelectors, setIsOffice } from "../../../stores/office-slice";
+import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
+import NewButton from "../../UI/new-button";
+import UserPopup from "../user-popup";
+import CreateOfficeForm from "./create-office-form";
+import JoinOfficeForm from "./join-by-code";
+import { NavbarProps } from "./types";
 
 const Navbar = (props: NavbarProps) => {
-  const { onInsertOffice } = props
-  const navigate = useNavigate()
-  const [isJoinOffice, setIsJoinOffice] = useState(false)
-  const [isCreateOffice, setIsCreateOffice] = useState(false)
-  const isOffice = useAppSelector(officeSelectors.getIsOffice)
-  const isLoading = useAppSelector(loadSelectors.getIsLoad)
-  const dispatch = useAppDispatch()
+  const { onInsertOffice } = props;
+  const navigate = useNavigate();
+  const [isJoinOffice, setIsJoinOffice] = useState(false);
+  const [isCreateOffice, setIsCreateOffice] = useState(false);
+  const isOffice = useAppSelector(officeSelectors.getIsOffice);
+  const dispatch = useAppDispatch();
+
+  const location = useLocation();
+
+  const isLobby = location.pathname.split("/")[1] === "lobby";
 
   const handleCreateOfficeSubmit = (
-    values: CreateOfficeFormValuesInterface,
+    values: CreateOfficeFormValuesInterface
   ) => {
     CreateOfficeProxy(values)
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? 'Create office fail')
-          return
+          toastError(res.message ?? "Create office fail");
+          return;
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          setIsCreateOffice(false)
-          toastSuccess('Create office success')
-          onInsertOffice && onInsertOffice()
-          dispatch(setIsOffice(!isOffice))
-          return
+          setIsCreateOffice(false);
+          toastSuccess("Create office success");
+          onInsertOffice && onInsertOffice();
+          dispatch(setIsOffice(!isOffice));
+          if (!isLobby) {
+            navigate("/lobby");
+          }
+          return;
         }
       })
       .catch((err) => {
-        toastError(err.message ?? 'Create office fail')
-      })
-  }
+        toastError(err.message ?? "Create office fail");
+      });
+  };
 
   const handleJoinOfficeSubmit = (values: JoinOfficeFormValuesInterface) => {
     JoinByCodeProxy(values)
       .then((res) => {
-        console.log(res)
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? 'Join office fail')
-          return
+          toastError(res.message ?? "Join office fail");
+          return;
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          setIsJoinOffice(false)
-          toastSuccess('Join office success')
-          onInsertOffice && onInsertOffice()
-          dispatch(setIsOffice(!isOffice))
-          return
+          setIsJoinOffice(false);
+          toastSuccess("Join office success");
+          onInsertOffice && onInsertOffice();
+          dispatch(setIsOffice(!isOffice));
+          if (!isLobby) {
+            navigate("/lobby");
+          }
+          return;
         }
       })
       .catch((err) => {
-        toastError(err.message ?? 'Join office fail')
-      })
-  }
+        toastError(err.message ?? "Join office fail");
+      });
+  };
 
   return (
     <>
       {isCreateOffice ? (
         <CreateOfficeForm
           onClose={() => {
-            setIsCreateOffice(false)
+            setIsCreateOffice(false);
           }}
           onSubmit={handleCreateOfficeSubmit}
         />
@@ -87,14 +94,14 @@ const Navbar = (props: NavbarProps) => {
       {isJoinOffice ? (
         <JoinOfficeForm
           onClose={() => {
-            setIsJoinOffice(false)
+            setIsJoinOffice(false);
           }}
           onSubmit={handleJoinOfficeSubmit}
         />
       ) : null}
 
       <nav className="navbar">
-        <div className="navbar__logo" onClick={() => navigate('/lobby')}>
+        <div className="navbar__logo" onClick={() => navigate("/lobby")}>
           <img src={LogoVSpace} alt="" className="navbar__logo-img" />
         </div>
         <div className="navbar__right-content">
@@ -119,7 +126,7 @@ const Navbar = (props: NavbarProps) => {
         </div>
       </nav>
     </>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

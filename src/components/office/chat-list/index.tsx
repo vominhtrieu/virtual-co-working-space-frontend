@@ -1,48 +1,74 @@
 import { useEffect, useState } from 'react'
-import { toastError } from '../../../helpers/toast'
-import OfficeDetailProxy from '../../../services/proxy/offices/office-detail'
-import { ProxyStatusEnum } from '../../../types/http/proxy/ProxyStatus'
+import { useAppSelector } from '../../../stores'
+import { socketSelector } from '../../../stores/socket-slice'
 import RightBar from '../../layouts/rightbar'
-import { OfficeDetailInterface } from '../../office-detail-form/types'
 import ChatItem from './chat-item'
+import CreateConversationForm from './create-conversation-form'
 import { ChatListProps } from './types'
 
 const ChatList = (props: ChatListProps) => {
-  const [officeDetail, setOfficeDetail] = useState<OfficeDetailInterface>()
-  const { onClose, id, onSelectConversation } = props
+  const { onClose, onSelectConversation, lastMess, officeDetail } = props
+  const [isCreate, setIsCreate] = useState(false)
+  const [conversationList, setConversationList] = useState<
+    {
+      id: number
+      officeId: number
+      name: string
+      type: string
+    }[]
+  >([])
+
+  const socket = useAppSelector(socketSelector.getSocket)
+
+  const handleCreateConversation = (values) => {
+    socket.emit('conversation:create', {
+      name: values.name,
+      memberIds: values.memberIds,
+    })
+  }
 
   useEffect(() => {
-    OfficeDetailProxy({ id: id })
-      .then((res) => {
-        if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? 'Get offices detail fail')
-          return
-        }
+    setConversationList(officeDetail.conversations)
+    socket.on('conversation:created', (value) => {
+      const newConversation = {
+        id: value.conversation.id,
+        officeId: value.conversation.officeId,
+        name: value.conversation.name,
+        type: value.conversation.type,
+      }
 
-        if (res.status === ProxyStatusEnum.SUCCESS) {
-          setOfficeDetail(res.data.office ?? {})
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }, [id])
+      setConversationList((prev) => [...prev, newConversation])
+    })
+
+    return () => {
+      socket.off('conversation:created')
+    }
+  }, [socket, officeDetail.conversations])
 
   return (
-    <RightBar onClose={onClose} isAdd>
-      {officeDetail?.conversations?.map((conversation) => {
-        return (
-          <ChatItem
-            onSelectConversation={onSelectConversation}
-            key={conversation.id}
-            conversationId={conversation.id}
-            name={conversation.name ?? 'Tên cuộc trò chuyện'}
-            lastMess={'Làm ui lẹ lẹ lẹ'}
-            isOnline
-          />
-        )
-      })}
-    </RightBar>
+    <>
+      {isCreate && (
+        <CreateConversationForm
+          onClose={() => setIsCreate(false)}
+          onSubmit={handleCreateConversation}
+          memberList={officeDetail.officeMembers}
+        />
+      )}
+      <RightBar onClose={onClose} isAdd onAdd={() => setIsCreate(true)}>
+        {conversationList?.map((conversation) => {
+          return (
+            <ChatItem
+              onSelectConversation={onSelectConversation}
+              key={conversation.id}
+              conversationId={conversation.id}
+              name={conversation.name ?? 'Tên cuộc trò chuyện'}
+              lastMess={lastMess ?? ''}
+              isOnline
+            />
+          )
+        })}
+      </RightBar>
+    </>
   )
 }
 

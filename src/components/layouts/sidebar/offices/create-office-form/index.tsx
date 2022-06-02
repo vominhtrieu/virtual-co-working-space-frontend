@@ -35,26 +35,26 @@ const CreateOfficeForm = (props: CreateOfficeFormProps) => {
     onSubmit(formatData);
   };
   return (
-    <Popup onClose={onClose} title="Tạo văn phòng">
+    <Popup onClose={onClose} title="Tạo văn phòng" type="dark">
       <form onSubmit={handleSubmit(handleCreateOfficeSubmit)}>
-        <h1 className='create-office-form__title'>Tạo văn phòng</h1>
+        <h1 className="create-office-form__title">Tạo văn phòng</h1>
 
-        <div className='create-office-form__input-block'>
+        <div className="create-office-form__input-block">
           <InputText
             control={control}
-            name='name'
+            name="name"
             hasLabel
-            placeholder='Tên văn phòng'
+            placeholder="Tên văn phòng"
           />
         </div>
 
-        <div className='create-office-form__group-btn'>
-          <Button type='submit' variant='primary' disabled={isLoading}>
-          {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
+        <div className="create-office-form__group-btn">
+          <Button type="submit" variant="primary" disabled={isLoading}>
+            {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
             Tạo
           </Button>
 
-          <Button type='reset' variant='outlined' onClick={onClose}>
+          <Button type="reset" variant="outlined" onClick={onClose}>
             Huỷ
           </Button>
         </div>

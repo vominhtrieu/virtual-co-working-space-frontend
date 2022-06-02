@@ -15,15 +15,15 @@ import { Spin } from "antd";
 
 const JoinOfficeForm = (props: JoinOfficeFormProps) => {
   const { onClose, onSubmit } = props;
-  
+
   const isLoading = useAppSelector(loadSelectors.getIsLoad);
 
   const schema = yup.object().shape({
     code: yup
-    .string()
-    .required("Code is required")
-    .matches(/^[A-Za-z0-9]*$/,("Code only contain character and number"))
-    .test('len', "Code must be 6 character", val => val?.length === 6)
+      .string()
+      .required("Code is required")
+      .matches(/^[A-Za-z0-9]*$/, "Code only contain character and number")
+      .test("len", "Code must be 6 character", (val) => val?.length === 6),
   });
 
   const { control, handleSubmit } = useForm<JoinOfficeFormInputInterface>({
@@ -42,26 +42,26 @@ const JoinOfficeForm = (props: JoinOfficeFormProps) => {
     onClose();
   };
   return (
-    <Popup onClose={onClose} title="Tham gia văn phòng">
+    <Popup onClose={onClose} title="Tham gia văn phòng" type="dark">
       <form onSubmit={handleSubmit(handleJoinOfficeSubmit)}>
-        <h1 className='join-office-form__title'>Tham gia văn phòng</h1>
+        <h1 className="join-office-form__title">Tham gia văn phòng</h1>
 
-        <div className='join-office-form__input-block'>
+        <div className="join-office-form__input-block">
           <InputText
             control={control}
-            name='code'
+            name="code"
             hasLabel
-            placeholder='Mã code'
+            placeholder="Mã code"
           />
         </div>
 
-        <div className='join-office-form__group-btn'>
-          <Button type='submit' variant='primary' disabled={isLoading}>
-          {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
+        <div className="join-office-form__group-btn">
+          <Button type="submit" variant="primary" disabled={isLoading}>
+            {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
             Tham gia
           </Button>
 
-          <Button type='reset' variant='outlined' onClick={onClose}>
+          <Button type="reset" variant="outlined" onClick={onClose}>
             Huỷ
           </Button>
         </div>

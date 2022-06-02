@@ -3,6 +3,6 @@ export interface PopupPropsInterface {
   onClose: () => void;
   onSubmit?: () => void;
   title: string;
-  type?: "white" | "dark";
+  type: "white" | "dark";
   hasFooter?:boolean
 }

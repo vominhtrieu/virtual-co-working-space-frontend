@@ -1,10 +1,10 @@
 import {UpdateAppearanceApiResponse, CharacterInterfaceItem} from "./types";
 import HttpClient from "../../../../helpers/axios";
-import {CharacterInterface} from "../../../../types/character";
+import {CharacterAppearance} from "../../../../types/character";
 
 const URL = "/appearances";
 
-export async function updateAppearance(body: CharacterInterface) {
+export async function updateAppearance(body: CharacterAppearance) {
     const data: CharacterInterfaceItem[] = [];
 
     for (const key in body) {
