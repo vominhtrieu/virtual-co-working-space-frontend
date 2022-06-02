@@ -16,7 +16,6 @@ import Register from "./pages/auth/register";
 import ResetPassword from "./pages/auth/reset-password";
 import CharacterCustom from "./pages/CharacterCustom";
 import Lobby from "./pages/lobby";
-import CharacterForm from "./components/character-form";
 import Profile from "./pages/profile";
 import CharacterCustomMobile from "./pages/mobile/CharacterCustomMobile";
 import WorkspaceMobile from "./pages/mobile/WorkspaceMobile";
@@ -48,7 +47,7 @@ function AuthenticatedMobileRoutes() {
   return (
     <Routes>
       <Route path="/webgl" element={<CharacterCustomMobile />} />
-      <Route path="/webgl/office/:officeId" element={<WorkspaceMobile />} />
+      <Route path="/webgl/office/:id" element={<WorkspaceMobile />} />
     </Routes>
   );
 }

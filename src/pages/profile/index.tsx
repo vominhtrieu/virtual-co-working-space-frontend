@@ -150,7 +150,7 @@ const Profile = () => {
                         Your Account
                     </div>
                     <div className="lobby__profile-content">
-                        {userInfo.avatar == "" ?
+                        {userInfo.avatar === "" ?
                             <div className="lobby__profile-avatar">
                                 <UserOutlined />
                             </div> : <img
