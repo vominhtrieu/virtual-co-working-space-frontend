@@ -49,12 +49,6 @@ export default function CallingBar() {
     []
   );
 
-  // useEffect(() => {
-  //     if (!socket) {
-  //         dispatch(connect());
-  //     }
-  // }, [socket])
-
   useEffect(() => {
     myPeer.on("open", (id) => {
       socket.emit("calling:join", {

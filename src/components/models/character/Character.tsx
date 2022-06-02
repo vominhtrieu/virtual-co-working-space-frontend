@@ -11,22 +11,22 @@ import {
   GLTFActions,
   GLTFResult,
   useCustomGLTF,
-} from '../../../helpers/utilities'
-import { matchPath } from 'react-router-dom'
-import { ANIMATION_LIST, EMOJI_LIST } from '../../../helpers/constants'
-import { socketSelector } from '../../../stores/socket-slice'
-import { useAppSelector } from '../../../stores'
-import CharacterContext from '../../../context/CharacterContext'
+} from "../../../helpers/utilities";
+import { matchPath } from "react-router-dom";
+import { ANIMATION_LIST, AppearanceGroups, EMOJI_LIST } from "../../../helpers/constants";
+import { socketSelector } from "../../../stores/socket-slice";
+import { useAppSelector } from "../../../stores";
+import { CharacterAppearance } from "../../../types/character";
 
-const stepFoot = require('../../../assets/audios/foot-step.mp3')
+const stepFoot = require("../../../assets/audios/foot-step.mp3");
 
-type CharacterProps = JSX.IntrinsicElements['group'] & {
-  hair: number
-  eyes: number
-  movable: boolean
-  startPosition: number[]
-  orbitRef?: any
-  volume: number
+type CharacterProps = JSX.IntrinsicElements["group"] & {
+  appearance: CharacterAppearance
+  movable: boolean;
+  startPosition: number[];
+  startRotation: number[];
+  orbitRef?: any;
+  volume: number;
   currentGesture?: {
     idx: number
   }
@@ -36,33 +36,31 @@ type CharacterProps = JSX.IntrinsicElements['group'] & {
 }
 
 type KeyProps = {
-  ArrowUp?: boolean
-  ArrowDown?: boolean
-  ArrowLeft?: boolean
-  ArrowRight?: boolean
-  W?: boolean
-  S?: boolean
-  A?: boolean
-  D?: boolean
-  w?: boolean
-  s?: boolean
-  a?: boolean
-  d?: boolean
-  g?: boolean
-  e?: boolean
-}
+  ArrowUp?: boolean;
+  ArrowDown?: boolean;
+  ArrowLeft?: boolean;
+  ArrowRight?: boolean;
+  W?: boolean;
+  S?: boolean;
+  A?: boolean;
+  D?: boolean;
+  w?: boolean;
+  s?: boolean;
+  a?: boolean;
+  d?: boolean;
+  g?: boolean;
+  e?: boolean;
+};
 
-let audio = new Audio(stepFoot)
+let audio = new Audio(stepFoot);
+const url = "https://virtual-space-models.s3.ap-southeast-1.amazonaws.com/Character/Character.gltf";
+const MovingSpeed: number = 6;
 
-const MovingSpeed: number = 6
 export default function Character(props: CharacterProps) {
-  audio.volume = props.volume / 100
-  const characterCtx = useContext(CharacterContext)
-  const socket = useAppSelector(socketSelector.getSocket)
+  audio.volume = props.volume / 100;
+  const socket = useAppSelector(socketSelector.getSocket);
 
-  const { scene, animations, materials } = useCustomGLTF(
-    '/models/Character.glb',
-  ) as GLTFResult
+  const { scene, animations, materials } = useCustomGLTF(url) as GLTFResult;
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
   const { nodes } = useGraph(clone)
 
@@ -266,20 +264,65 @@ export default function Character(props: CharacterProps) {
       ref.current.position.set(
         props.startPosition[0],
         props.startPosition[1],
-        props.startPosition[2],
-      )
-      ref.current.rotation.set(0, 0, 0)
+        props.startPosition[2]
+      );
+      ref.current.rotation.set(
+        props.startRotation[0],
+        props.startRotation[1],
+        props.startRotation[2]
+      );
       api.position.set(
         props.startPosition[0],
         props.startPosition[1],
-        props.startPosition[2],
-      )
-      api.rotation.set(0, 0, 0)
+        props.startPosition[2]
+      );
+      api.rotation.set(
+        props.startRotation[0],
+        props.startRotation[1],
+        props.startRotation[2]
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match?.params.id])
 
-  // useSocketEvent(socket, match, updatedPosition, updatedRotation);
+  const appearance = props.appearance;
+  // let hair: any = null;
+  // switch (appearance.hairStyle) {
+  //     case 0:
+  //         hair = (<skinnedMesh
+  //             geometry={nodes.Hair_1.geometry}
+  //             material={materials["Hair_1"]}
+  //             skeleton={nodes.Hair_1.skeleton}
+  //         />);
+  //         break;
+  //     case 1:
+  //         hair = (<skinnedMesh
+  //             geometry={nodes.Hair_2.geometry}
+  //             material={materials["Hair_2"]}
+  //             skeleton={nodes.Hair_2.skeleton}
+  //         />);
+  //         break;
+  //     case 2:
+  //         hair = (<skinnedMesh
+  //             geometry={nodes.Hair_3.geometry}
+  //             material={materials["Hair_3"]}
+  //             skeleton={nodes.Hair_3.skeleton}
+  //         />);
+  //         break;
+  // }
+  const hairStyle = `Hair_${appearance.hairStyle + 1}`
+  const hair = (<skinnedMesh geometry={nodes[hairStyle].geometry} material={materials[hairStyle]} skeleton={nodes[hairStyle].skeleton} />)
+
+  if (hair && hair.props.material) {
+      hair.props.material.color.setStyle(AppearanceGroups[2].items[appearance.hairColor].hex);
+  }
+
+  materials.Skin.color.setStyle(AppearanceGroups[0].items[appearance.skinColor].hex);
+  materials.Head.color.setStyle(AppearanceGroups[0].items[appearance.skinColor].hex);
+  materials.Eye.color.setStyle(AppearanceGroups[0].items[appearance.skinColor].hex);
+  materials.Body.color.setStyle(AppearanceGroups[4].items[appearance.shirtColor].hex);
+  materials.Pant.color.setStyle(AppearanceGroups[5].items[appearance.pantColor].hex);
+  materials.Shoes.color.setStyle(AppearanceGroups[6].items[appearance.shoeColor].hex);
 
   return (
     <>
@@ -303,38 +346,31 @@ export default function Character(props: CharacterProps) {
                     <skinnedMesh geometry={nodes.Cube001_1.geometry} material={materials.Head}
                                  skeleton={nodes.Cube001_1.skeleton}/> */}
           <skinnedMesh
-            geometry={nodes.Cube006.geometry}
+            geometry={nodes.Character_1.geometry}
             material={materials.Body}
-            skeleton={nodes.Cube006.skeleton}
+            skeleton={nodes.Character_1.skeleton}
           />
           <skinnedMesh
-            geometry={nodes.Cube006_1.geometry}
+            geometry={nodes.Character_2.geometry}
+            material={materials.Skin}
+            skeleton={nodes.Character_2.skeleton}
+          />
+          <skinnedMesh
+            geometry={nodes.Character_3.geometry}
             material={materials.Head}
-            skeleton={nodes.Cube006_1.skeleton}
+            skeleton={nodes.Character_3.skeleton}
           />
           <skinnedMesh
-            geometry={nodes.Cube006_2.geometry}
+            geometry={nodes.Character_4.geometry}
             material={materials.Eye}
-            skeleton={nodes.Cube006_2.skeleton}
+            skeleton={nodes.Character_4.skeleton}
           />
-          {/* <skinnedMesh
-                        geometry={nodes.Cube001_2.geometry}
-                        material={props.eyes === 1 ? materials["Eye 1"] : materials["Eye 2"]}
-                        skeleton={nodes.Cube001_2.skeleton}
-                    /> */}
-          {props.hair === 1 ? (
-            <skinnedMesh
-              geometry={nodes.Hair_1.geometry}
-              material={materials['Hair_1']}
-              skeleton={nodes.Hair_1.skeleton}
-            />
-          ) : (
-            <skinnedMesh
-              geometry={nodes.Hair_2.geometry}
-              material={materials['Hair_2']}
-              skeleton={nodes.Hair_2.skeleton}
-            />
-          )}
+          <skinnedMesh
+            geometry={nodes.Character_5.geometry}
+            material={materials.Pant}
+            skeleton={nodes.Character_5.skeleton}
+          />
+          {hair}
           <skinnedMesh
             geometry={nodes.Shoe.geometry}
             material={materials.Shoes}
