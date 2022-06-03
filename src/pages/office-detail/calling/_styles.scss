@@ -1,11 +1,10 @@
 .calling-bar-container {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 150px;
   z-index: 1;
-  padding-left: 6rem;
   display: flex;
   justify-content: center;
 }

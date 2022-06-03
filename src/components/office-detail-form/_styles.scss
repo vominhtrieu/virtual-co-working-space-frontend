@@ -25,7 +25,9 @@
 
     &-content {
       flex: 0 0 60%;
-
+      max-width: 60%;
+      overflow-wrap: break-word;
+      
       &-url {
         display: flex;
         width: 60%;

@@ -44,6 +44,7 @@ const SetupInterceptors = (store) => {
 
   HttpClient.interceptors.response.use(
     async (response) => {
+      console.log("thuy xinh dep")
       if (response.data.code === 401) {
         const refreshTokenResponse = await axios.post(
           `${process.env.REACT_APP_BASE_URL}/auth/refreshToken`,
