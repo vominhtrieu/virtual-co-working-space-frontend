@@ -1,0 +1,33 @@
+.radio-btn{
+    &__item {
+        background-color: transparent;
+        color: #fff;
+        border: none;
+        border-left: none;
+        outline: none;
+        border-radius: 0.5rem !important;
+        transition: all 0.3s ease;
+
+        &:hover {
+            color: #fff;
+            background-color: $color-secondary-light !important;
+            background-color: transparent;
+        }
+
+        &:not(:last-child) {
+            margin-right: 1rem;
+        }
+    }
+}
+
+.ant-radio-button-wrapper::before {
+    background-color: transparent !important;
+}
+
+.ant-radio-button-wrapper:not(:first-child)::before {
+    background-color: transparent !important;
+}
+
+.ant-radio-button-wrapper:first-child {
+     border-left: none !important;
+}

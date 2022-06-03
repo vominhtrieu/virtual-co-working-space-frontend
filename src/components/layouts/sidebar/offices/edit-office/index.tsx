@@ -1,9 +1,12 @@
-import { Dropdown, Menu } from 'antd'
-import { useState } from 'react'
+import { Dropdown, Menu, Radio } from 'antd'
+import { useEffect, useState } from 'react'
 import { IoMdArrowDropdown } from 'react-icons/io'
+import { getItemCategories } from '../../../../../services/api/offices/get-office-categories'
 import { ItemCategory } from '../../../../../services/api/offices/get-office-categories/types'
+import { getItems } from '../../../../../services/api/offices/get-office-item'
 import Button from '../../../../UI/button'
 import OfficePopup from '../../../../UI/office-popup'
+import RadioButton from '../../../../UI/radio-button'
 import { EditOfficePropsInterface } from './types'
 
 const EditOffice = (props: EditOfficePropsInterface) => {
@@ -14,49 +17,35 @@ const EditOffice = (props: EditOfficePropsInterface) => {
     null,
   )
 
-  //   useEffect(() => {
-  //     getItemCategories().then((data: any) => {
-  //       if (data) {
-  //         setItemCategories(data.data.itemCategories)
-  //         setSelectedCategory(data.data.itemCategories[0])
-  //       }
-  //     })
-  //   }, [])
+  useEffect(() => {
+    getItemCategories().then((data: any) => {
+      if (data) {
+        setItemCategories(data.data.itemCategories)
+        setSelectedCategory(data.data.itemCategories[0])
+      }
+    })
+  }, [])
 
-  //   useEffect(() => {
-  //     if (selectedCategory)
-  //       getItems(selectedCategory.id).then((data: any) => {
-  //         setItems(data.data.items)
-  //       })
-  //   }, [selectedCategory])
+  useEffect(() => {
+    if (selectedCategory)
+      getItems(selectedCategory.id).then((data: any) => {
+        setItems(data.data.items)
+      })
+  }, [selectedCategory])
 
-  const menu =
-    itemCategories.length > 0 ? (
-      <Menu>
-        {itemCategories.map((item) => {
-          return (
-            <Menu.Item
-              key={item.id}
-              onClick={() => setSelectedCategory(item)}
-              className="edit-office__item"
-            >
-              {item.name}
-            </Menu.Item>
-          )
-        })}
-      </Menu>
-    ) : null
+  const onCategoryClick = (itemId: number) => {
+    //find item
+    const item = itemCategories.find((item) => item.id === itemId)
+
+    if (item) {
+      setSelectedCategory(item)
+    }
+  }
 
   return (
     <OfficePopup title="Edit Office" onClose={onClose}>
       <div className="edit-office__container">
-        {menu && selectedCategory && (
-          <Dropdown overlay={menu}>
-            <div className="edit-office__select-items">
-              {selectedCategory.name} <IoMdArrowDropdown />
-            </div>
-          </Dropdown>
-        )}
+        <RadioButton listCategory={itemCategories} onClick={onCategoryClick} />
         <div className="edit-office__item-list">
           {items.map((item: any) => {
             return (
@@ -64,7 +53,7 @@ const EditOffice = (props: EditOfficePropsInterface) => {
                 className="edit-office__btn-select"
                 key={item.id}
                 onClick={() => {
-                  //   onItemClick(item)
+                  onItemClick(item)
                 }}
               >
                 <img
@@ -82,6 +71,3 @@ const EditOffice = (props: EditOfficePropsInterface) => {
 }
 
 export default EditOffice
-// <div className="edit-office">
-
-// </div>
