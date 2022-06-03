@@ -358,8 +358,7 @@ const Workspace = ({mobile = false}: WorkspaceProps) => {
             )}
 
             {action === 'config' && (
-                <EditOffice onClose={() => setAction('')} onItemClick={() => {
-                }}/>
+                <EditOffice onClose={() => setAction('')} onItemClick={handleItemInBottomMenuClick}/>
             )}
 
             {action === 'setting' && <OfficeSetting onClose={() => setAction('')}/>}

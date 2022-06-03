@@ -1,68 +1,68 @@
-import { OrbitControls } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
-import { Dropdown, Menu } from "antd";
-import { Suspense, useContext, useState } from "react";
-import { FaSave, FaTimes } from "react-icons/fa";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import Box from "../../components/models/Box";
-import DisplayCharacter from "../../components/models/character/DisplayCharacter";
-import CharacterContext from "../../context/CharacterContext";
-import Button from "../UI/button";
-import NewButton from "../UI/new-button";
-import Popup from "../UI/popup";
-import { CharacterFormProps } from "./types";
+import { OrbitControls } from '@react-three/drei'
+import { Canvas } from '@react-three/fiber'
+import { Dropdown, Menu } from 'antd'
+import { Suspense, useContext, useState } from 'react'
+import { FaSave, FaTimes } from 'react-icons/fa'
+import { IoMdArrowDropdown } from 'react-icons/io'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import Box from '../../components/models/Box'
+import DisplayCharacter from '../../components/models/character/DisplayCharacter'
+import CharacterContext from '../../context/CharacterContext'
+import Button from '../UI/button'
+import NewButton from '../UI/new-button'
+import Popup from '../UI/popup'
+import RadioButton from '../UI/radio-button'
+import { CharacterFormProps } from './types'
 
 const itemGroups = [
   {
-    groupName: "Hair",
+    groupName: 'Hair',
     items: [
-      { code: "Hair1", url: "./images/Hair1.png" },
-      { code: "Hair2", url: "./images/Hair2.png" },
-      { code: "Hair1", url: "./images/Hair1.png" },
-      { code: "Hair2", url: "./images/Hair2.png" },
-      { code: "Hair1", url: "./images/Hair1.png" },
-      { code: "Hair2", url: "./images/Hair2.png" },
+      { code: 'Hair1', url: './images/Hair1.png' },
+      { code: 'Hair2', url: './images/Hair2.png' },
+      { code: 'Hair1', url: './images/Hair1.png' },
+      { code: 'Hair2', url: './images/Hair2.png' },
+      { code: 'Hair1', url: './images/Hair1.png' },
+      { code: 'Hair2', url: './images/Hair2.png' },
     ],
   },
   {
-    groupName: "Eyes",
+    groupName: 'Eyes',
     items: [
-      { code: "Eyes1", url: "./images/Eyes1.png" },
-      { code: "Eyes2", url: "./images/Eyes2.png" },
+      { code: 'Eyes1', url: './images/Eyes1.png' },
+      { code: 'Eyes2', url: './images/Eyes2.png' },
     ],
   },
-];
+]
 
 const CharacterForm = (props: CharacterFormProps) => {
-  
-  const [itemGroupSelected, setItemGroupSelected] = useState(0);
+  const [itemGroupSelected, setItemGroupSelected] = useState(0)
 
-  const { onClose } = props;
+  const { onClose } = props
 
-  const { open } = useSelector((state: any) => state.sidebar);
-  const character = useContext(CharacterContext);
-  const navigate = useNavigate();
+  const { open } = useSelector((state: any) => state.sidebar)
+  const character = useContext(CharacterContext)
+  const navigate = useNavigate()
 
   const handleBottomMenuItemClick = ({ code }: any) => {
     switch (code) {
-      case "Hair1":
-        character.changeCharacter({ ...character, hairStyle: 1 });
-        break;
-      case "Hair2":
-        character.changeCharacter({ ...character, hairStyle: 2 });
-        break;
-      case "Eyes1":
-        character.changeCharacter({ ...character, eyeStyle: 1 });
-        break;
-      case "Eyes2":
-        character.changeCharacter({ ...character, eyeStyle: 2 });
-        break;
+      case 'Hair1':
+        character.changeCharacter({ ...character, hairStyle: 1 })
+        break
+      case 'Hair2':
+        character.changeCharacter({ ...character, hairStyle: 2 })
+        break
+      case 'Eyes1':
+        character.changeCharacter({ ...character, eyeStyle: 1 })
+        break
+      case 'Eyes2':
+        character.changeCharacter({ ...character, eyeStyle: 2 })
+        break
       default:
-        break;
+        break
     }
-  };
+  }
 
   const menu = (
     <Menu>
@@ -75,10 +75,14 @@ const CharacterForm = (props: CharacterFormProps) => {
           >
             {item.groupName}
           </Menu.Item>
-        );
+        )
       })}
     </Menu>
-  );
+  )
+
+  const handleClickCategory = (id: number) => {
+    setItemGroupSelected(id)
+  }
 
   return (
     <Popup onClose={onClose} title="Chỉnh sửa nhân vật" type="dark">
@@ -88,11 +92,11 @@ const CharacterForm = (props: CharacterFormProps) => {
             shadows={{ enabled: true, autoUpdate: true }}
             camera={{ position: [0, 2, 5], zoom: 2.2 }}
             style={{
-              height: "100%",
-              background: "transparent",
-              position: "fixed",
+              height: '100%',
+              background: 'transparent',
+              position: 'fixed',
               left: 0,
-              width: "50%",
+              width: '50%',
             }}
           >
             <OrbitControls
@@ -121,11 +125,15 @@ const CharacterForm = (props: CharacterFormProps) => {
         </div>
 
         <div className="character-custom__container-right">
-          <Dropdown overlay={menu}>
-            <div className="character-custom__select-items">
-              {itemGroups[itemGroupSelected].groupName} <IoMdArrowDropdown />
-            </div>
-          </Dropdown>
+          <RadioButton
+            listCategory={itemGroups.map((item, index) => {
+              return {
+                id: index,
+                name: item.groupName,
+              }
+            })}
+            onClick={handleClickCategory}
+          />
           <div className="character-custom__content">
             <div className="character-custom__list">
               <div className="character-custom__item-list">
@@ -135,7 +143,7 @@ const CharacterForm = (props: CharacterFormProps) => {
                       <Button
                         className="character-custom__btn-select"
                         onClick={() => {
-                          handleBottomMenuItemClick(item);
+                          handleBottomMenuItemClick(item)
                         }}
                       >
                         <img
@@ -144,7 +152,7 @@ const CharacterForm = (props: CharacterFormProps) => {
                           className="character-custom__item-img"
                         />
                       </Button>
-                    );
+                    )
                   })}
               </div>
             </div>
@@ -152,7 +160,7 @@ const CharacterForm = (props: CharacterFormProps) => {
         </div>
       </div>
     </Popup>
-  );
-};
+  )
+}
 
-export default CharacterForm;
+export default CharacterForm

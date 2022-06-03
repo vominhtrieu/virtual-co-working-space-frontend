@@ -5,7 +5,10 @@ const RadioButton = (props: RadioButtonProps) => {
   const { listCategory, onClick } = props
 
   return (
-    <Radio.Group defaultValue={listCategory[0]} buttonStyle="solid">
+    <Radio.Group
+      defaultValue={listCategory[0] ? listCategory[0].id : 0}
+      buttonStyle="solid"
+    >
       {listCategory.map((item) => {
         return (
           <Radio.Button
