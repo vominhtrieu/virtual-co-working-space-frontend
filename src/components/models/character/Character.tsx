@@ -58,7 +58,7 @@ type KeyProps = {
 
 let audio = new Audio(stepFoot)
 const url =
-  'https://virtual-space-models.s3.ap-southeast-1.amazonaws.com/Character/Character.gltf'
+  'https://virtual-space-models.s3.ap-southeast-1.amazonaws.com/Character/Character.glb'
 const MovingSpeed: number = 6
 
 export default function Character(props: CharacterProps) {
@@ -66,6 +66,9 @@ export default function Character(props: CharacterProps) {
   const socket = useAppSelector(socketSelector.getSocket)
 
   const { scene, animations, materials } = useCustomGLTF(url) as GLTFResult
+  // const { scene, animations, materials } = useCustomGLTF(
+  //   "/models/Character.glb"
+  // ) as GLTFResult;
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
   const { nodes } = useGraph(clone)
 
@@ -96,7 +99,7 @@ export default function Character(props: CharacterProps) {
 
   const match = matchPath({ path: '/office/:id' }, window.location.pathname)
 
-  const timeoutId = useRef<NodeJS.Timeout>()
+  const timeoutId = useRef<NodeJS.Timeout>();
 
   const getGesture = () => {
     if (props.currentGesture && props.currentGesture.idx > 1) {
@@ -358,18 +361,14 @@ export default function Character(props: CharacterProps) {
           </sprite>
           <primitive object={nodes.mixamorigHips} />
           <primitive object={nodes.Ctrl_ArmPole_IK_Left} />
+          <primitive object={nodes.Ctrl_ArmPole_IK_Right} />\
           <primitive object={nodes.Ctrl_Hand_IK_Left} />
-          <primitive object={nodes.Ctrl_ArmPole_IK_Right} />
           <primitive object={nodes.Ctrl_Hand_IK_Right} />
           <primitive object={nodes.Ctrl_Foot_IK_Left} />
           <primitive object={nodes.Ctrl_LegPole_IK_Left} />
           <primitive object={nodes.Ctrl_Foot_IK_Right} />
           <primitive object={nodes.Ctrl_LegPole_IK_Right} />
           <primitive object={nodes.Ctrl_Master} />
-          {/* <skinnedMesh geometry={nodes.Cube001.geometry} material={materials.Body}
-                                 skeleton={nodes.Cube001.skeleton}/>
-                    <skinnedMesh geometry={nodes.Cube001_1.geometry} material={materials.Head}
-                                 skeleton={nodes.Cube001_1.skeleton}/> */}
           <skinnedMesh
             geometry={nodes.Character_1.geometry}
             material={materials.Body}

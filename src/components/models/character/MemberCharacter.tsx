@@ -30,33 +30,19 @@ type MemberCharacterProps = JSX.IntrinsicElements["group"] & {
   memberId: number;
 };
 
-type KeyProps = {
-  ArrowUp?: boolean;
-  ArrowDown?: boolean;
-  ArrowLeft?: boolean;
-  ArrowRight?: boolean;
-  W?: boolean;
-  S?: boolean;
-  A?: boolean;
-  D?: boolean;
-  w?: boolean;
-  s?: boolean;
-  a?: boolean;
-  d?: boolean;
-  g?: boolean;
-  e?: boolean;
-};
-
 let audio = new Audio(stepFoot);
-
 const MovingSpeed: number = 6;
+const url =
+  'https://virtual-space-models.s3.ap-southeast-1.amazonaws.com/Character/Character.glb'
+
 export default function MemberCharacter(props: MemberCharacterProps) {
   audio.volume = props.volume / 100;
   const socket = useAppSelector(socketSelector.getSocket);
 
-  const { scene, animations, materials } = useCustomGLTF(
-    "/models/Character.glb"
-  ) as GLTFResult;
+  const { scene, animations, materials } = useCustomGLTF(url) as GLTFResult
+  // const { scene, animations, materials } = useCustomGLTF(
+  //   "/models/Character.glb"
+  // ) as GLTFResult;
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
   const { nodes } = useGraph(clone);
 
@@ -248,24 +234,30 @@ export default function MemberCharacter(props: MemberCharacterProps) {
           <primitive object={nodes.Ctrl_Foot_IK_Right} />
           <primitive object={nodes.Ctrl_LegPole_IK_Right} />
           <primitive object={nodes.Ctrl_Master} />
-          {/* <skinnedMesh geometry={nodes.Cube001.geometry} material={materials.Body}
-                                 skeleton={nodes.Cube001.skeleton}/>
-                    <skinnedMesh geometry={nodes.Cube001_1.geometry} material={materials.Head}
-                                 skeleton={nodes.Cube001_1.skeleton}/> */}
           <skinnedMesh
-            geometry={nodes.Cube006.geometry}
+            geometry={nodes.Character_1.geometry}
             material={materials.Body}
-            skeleton={nodes.Cube006.skeleton}
+            skeleton={nodes.Character_1.skeleton}
           />
           <skinnedMesh
-            geometry={nodes.Cube006_1.geometry}
+            geometry={nodes.Character_2.geometry}
+            material={materials.Skin}
+            skeleton={nodes.Character_2.skeleton}
+          />
+          <skinnedMesh
+            geometry={nodes.Character_3.geometry}
             material={materials.Head}
-            skeleton={nodes.Cube006_1.skeleton}
+            skeleton={nodes.Character_3.skeleton}
           />
           <skinnedMesh
-            geometry={nodes.Cube006_2.geometry}
+            geometry={nodes.Character_4.geometry}
             material={materials.Eye}
-            skeleton={nodes.Cube006_2.skeleton}
+            skeleton={nodes.Character_4.skeleton}
+          />
+          <skinnedMesh
+            geometry={nodes.Character_5.geometry}
+            material={materials.Pant}
+            skeleton={nodes.Character_5.skeleton}
           />
           {/* <skinnedMesh
                         geometry={nodes.Cube001_2.geometry}
