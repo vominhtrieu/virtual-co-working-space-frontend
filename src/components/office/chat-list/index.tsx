@@ -1,49 +1,51 @@
-import { useEffect, useState } from 'react'
-import { useAppSelector } from '../../../stores'
-import { socketSelector } from '../../../stores/socket-slice'
-import RightBar from '../../layouts/rightbar'
-import ChatItem from './chat-item'
-import CreateConversationForm from './create-conversation-form'
-import { ChatListProps } from './types'
+import { useEffect, useState } from "react";
+import { useAppSelector } from "../../../stores";
+import { userSelectors } from "../../../stores/auth-slice";
+import { socketSelector } from "../../../stores/socket-slice";
+import RightBar from "../../layouts/rightbar";
+import ChatItem from "./chat-item";
+import CreateConversationForm from "./create-conversation-form";
+import { ChatListProps } from "./types";
 
 const ChatList = (props: ChatListProps) => {
-  const { onClose, onSelectConversation, lastMess, officeDetail } = props
-  const [isCreate, setIsCreate] = useState(false)
+  const { onClose, onSelectConversation, lastMess, officeDetail } = props;
+  const [isCreate, setIsCreate] = useState(false);
   const [conversationList, setConversationList] = useState<
     {
-      id: number
-      officeId: number
-      name: string
-      type: string
+      id: number;
+      officeId: number;
+      name: string;
+      type: string;
     }[]
-  >([])
+  >([]);
 
-  const socket = useAppSelector(socketSelector.getSocket)
+  const userInfo = useAppSelector(userSelectors.getUserInfo);
+  const socket = useAppSelector(socketSelector.getSocket);
 
   const handleCreateConversation = (values) => {
-    socket.emit('conversation:create', {
+    socket.emit("conversation:create", {
       name: values.name,
       memberIds: values.memberIds,
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    setConversationList(officeDetail.conversations)
-    socket.on('conversation:created', (value) => {
+    setConversationList(officeDetail.conversations);
+    socket.on("conversation:created", (value) => {
       const newConversation = {
         id: value.conversation.id,
         officeId: value.conversation.officeId,
         name: value.conversation.name,
         type: value.conversation.type,
-      }
+      };
 
-      setConversationList((prev) => [...prev, newConversation])
-    })
+      setConversationList((prev) => [...prev, newConversation]);
+    });
 
     return () => {
-      socket.off('conversation:created')
-    }
-  }, [socket, officeDetail.conversations])
+      socket.off("conversation:created");
+    };
+  }, [socket, officeDetail.conversations]);
 
   return (
     <>
@@ -51,7 +53,9 @@ const ChatList = (props: ChatListProps) => {
         <CreateConversationForm
           onClose={() => setIsCreate(false)}
           onSubmit={handleCreateConversation}
-          memberList={officeDetail.officeMembers}
+          memberList={officeDetail.officeMembers.filter(
+            (member) => member.member.id !== userInfo.id
+          )}
         />
       )}
       <RightBar onClose={onClose} isAdd onAdd={() => setIsCreate(true)}>
@@ -61,15 +65,15 @@ const ChatList = (props: ChatListProps) => {
               onSelectConversation={onSelectConversation}
               key={conversation.id}
               conversationId={conversation.id}
-              name={conversation.name ?? 'Tên cuộc trò chuyện'}
-              lastMess={lastMess ?? ''}
+              name={conversation.name ?? "Tên cuộc trò chuyện"}
+              lastMess={lastMess ?? ""}
               isOnline
             />
-          )
+          );
         })}
       </RightBar>
     </>
-  )
-}
+  );
+};
 
-export default ChatList
+export default ChatList;

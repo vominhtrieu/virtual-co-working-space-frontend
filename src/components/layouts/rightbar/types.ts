@@ -6,4 +6,8 @@ export interface RightBarProps {
   onBack?: () => void;
   onAdd?: () => void;
   title?: string;
+  isEdit?: boolean;
+  isAddMember?: boolean;
+  onEdit?: () => void;
+  onAddMember?: () => void;
 }
