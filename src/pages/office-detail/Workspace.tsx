@@ -122,7 +122,9 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
     setSelectedObject(null);
     setSelectedKey(null);
     setObjectActionVisible(false);
-    socket.emit("office_item:delete", selectedKey);
+    socket.emit("office_item:delete", {
+        id: selectedKey
+    });
   };
 
   useEffect(() => {
@@ -204,7 +206,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
       itemId: item.id,
       officeId: officeId,
       xPosition: 0,
-      yPosition: 1,
+      yPosition: 0,
       zPosition: 0,
       xRotation: 0,
       yRotation: 0,
@@ -269,6 +271,10 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
                   member.member.id === userInfo.id
               )
             );
+          }
+
+          if (res.data.office?.officeItems.length > 0) {
+              setObjectList(res.data.office.officeItems);
           }
         }
       })
