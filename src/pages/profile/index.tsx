@@ -146,7 +146,6 @@ const Profile = () => {
       <Navbar />
       <div className="lobby__profile">
         <div className="lobby__profile-container">
-          <div className="lobby__profile-title">Your Account</div>
           <div className="lobby__profile-content">
             <div className="lobby__profile-avatar">
               {userInfo.avatar === '' ? (

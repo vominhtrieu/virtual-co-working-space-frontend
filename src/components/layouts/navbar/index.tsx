@@ -9,8 +9,8 @@ const Navbar = (props: NavbarProps) => {
     return (
         <>
             <nav className="navbar">
-                <div className="navbar__brand">
-                    <img src={DarkLogo} alt="" className="navbar__logo_img" onClick={() => navigate("/lobby")} />
+                <div className="navbar__brand" onClick={() => navigate("/lobby")}>
+                    <img src={DarkLogo} alt="" className="navbar__logo_img" />
                     <h1>iSpace</h1>
                 </div>
                 <div className="navbar__right-content">

@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
-import InputWhite from '../../../components/UI/form-controls/input-white'
+import InputText from '../../../components/UI/form-controls/input-text'
 import Popup from '../../../components/UI/popup'
 import {
   ChangePasswordFormDataInterface,
@@ -42,7 +42,7 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
         t('default.error.oneNumber', { field: t('pages.register.password') }),
       )
       .matches(
-        /^(?=.*[!@#\$%\^&\*~])/,
+        /^(?=.*[!@#$%^&*~])/,
         t('default.error.oneSpecial', { field: t('pages.register.password') }),
       )
       .min(
@@ -90,39 +90,36 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
     <Popup
       onClose={onClose}
       title="Change Password"
-      type="white"
+      type="dark"
       onSubmit={handleSubmit(handleChangePasswordSubmit)}
       hasFooter={true}
     >
       <form>
         <div className="change-pass-form__input-block">
-          <InputWhite
+          <InputText
             control={control}
             type="password"
             name="oldPassword"
             label="Current Password"
-            hasLabel
             placeholder="Enter current password"
           />
         </div>
 
         <div className="change-pass-form__input-block">
-          <InputWhite
+          <InputText
             control={control}
             type="password"
             name="newPassword"
             label="New Password"
-            hasLabel
             placeholder="Enter new password"
           />
         </div>
 
         <div className="change-pass-form__input-block">
-          <InputWhite
+          <InputText
             control={control}
             type="password"
             name="confirmPassword"
-            hasLabel
             label="Password Confirmation"
             placeholder="Enter password confirmation"
           />
