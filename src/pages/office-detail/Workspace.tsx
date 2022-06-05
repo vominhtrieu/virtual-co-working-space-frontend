@@ -22,6 +22,7 @@ import {OfficeMembersInterface} from '../../services/api/offices/office-detail/t
 import InteractionMenu from '../../components/layouts/sidebar/offices/character-interaction'
 import EditOffice from '../../components/layouts/sidebar/offices/edit-office'
 import OfficeSetting from '../../components/office/office-setting'
+import { message } from 'antd'
 
 export type positionType = {
     x: number
@@ -119,7 +120,9 @@ const Workspace = ({mobile = false}: WorkspaceProps) => {
         setSelectedObject(null)
         setSelectedKey(null)
         setObjectActionVisible(false)
-        socket.emit('office_item:delete', selectedKey)
+        socket.emit('office_item:delete', {
+            id: selectedKey
+        })
     }
 
     useEffect(() => {
@@ -186,6 +189,14 @@ const Workspace = ({mobile = false}: WorkspaceProps) => {
             socket.removeListener('office_item:moved')
         }
     }, [socket, objectList])
+
+    useEffect(() => {
+        socket.on('office_item:error', (message) => {
+            console.log(message);
+        })
+        
+        
+    }, [])
 
     useEffect(() => {
         socket.emit('office_member:join', {
@@ -263,6 +274,10 @@ const Workspace = ({mobile = false}: WorkspaceProps) => {
                                     member.member.id === userInfo.id,
                             ),
                         )
+                    }
+                    
+                    if (res.data?.office?.officeItems.length > 0) {
+                        setObjectList(res.data.office.officeItems);
                     }
                 }
             })
