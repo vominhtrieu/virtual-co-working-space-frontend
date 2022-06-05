@@ -24,7 +24,7 @@ const Popup = (props: PopupPropsInterface) => {
             <div className="popup__btn">
               <NewButton
                 type="reset"
-                variant="secondary"
+                variant="outlined"
                 onClick={onClose}
                 content="Cancel"
                 icon={<FaTimes />}

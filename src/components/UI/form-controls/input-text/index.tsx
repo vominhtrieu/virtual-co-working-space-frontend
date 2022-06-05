@@ -1,6 +1,7 @@
 import {Input} from "antd";
 import {forwardRef} from "react";
 import {useController} from "react-hook-form";
+import { FaEnvelope, FaPen } from "react-icons/fa";
 import {InputTextProps} from "./types";
 
 const InputText = (
@@ -10,6 +11,7 @@ const InputText = (
         onFocus,
         label,
         changeCursorPosition,
+        prefix,
         ...rest
     }: InputTextProps,
     ref
@@ -27,7 +29,7 @@ const InputText = (
                 </label>
             )}
             <Input
-                className={error ? "error" : ""}
+            className={(error ? "error" : "") + (prefix?"":" no-prefix")}
                 autoComplete="off"
                 ref={ref ?? field.ref}
                 onBlur={(e) => {
@@ -40,6 +42,7 @@ const InputText = (
                     changeCursorPosition && changeCursorPosition(e.target.selectionStart);
                     field.onChange(e.target.value);
                 }}
+                prefix={prefix?prefix:<FaPen />}
                 {...rest}
                 onFocus={onFocus}
             />
