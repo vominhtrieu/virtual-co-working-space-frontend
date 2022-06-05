@@ -1,5 +1,6 @@
 .new-btn {
   width: max-content;
+  height: 100%;
   padding: 0.2rem 1rem;
   font-size: 1.8rem;
   border-radius: 5px;
@@ -8,9 +9,11 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  display: flex;
+  align-items: center;
 
   &__content {
-    margin-left: 1rem;
+    margin-left: 0.5rem;
   }
 
   &--primary {
@@ -20,7 +23,7 @@
     border: none;
     transition: all 0.3s ease;
 
-    &:hover {
+    &:focus {
       background-color: $color-secondary;
     }
   }
@@ -32,20 +35,19 @@
     border: none;
     transition: all 0.3s ease;
 
-    &:hover {
+    &:focus {
       background-color: $color-secondary-dark;
     }
   }
 
   &--outlined {
     background-color: transparent;
-    color: $color-white;
     outline: none;
-    border: 1px solid $color-primary-light;
+    border: 1px solid #cecece;
     transition: all 0.3s ease;
 
     &:hover {
-      background-color: $color-primary-light;
+      background-color: rgba(0,0,0,0.05);
     }
   }
 }

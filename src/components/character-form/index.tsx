@@ -1,16 +1,11 @@
 import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import { Dropdown, Menu } from 'antd'
+import { Menu } from 'antd'
 import { Suspense, useContext, useState } from 'react'
-import { FaSave, FaTimes } from 'react-icons/fa'
-import { IoMdArrowDropdown } from 'react-icons/io'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 import Box from '../../components/models/Box'
 import DisplayCharacter from '../../components/models/character/DisplayCharacter'
 import CharacterContext from '../../context/CharacterContext'
 import Button from '../UI/button'
-import NewButton from '../UI/new-button'
 import Popup from '../UI/popup'
 import RadioButton from '../UI/radio-button'
 import { CharacterFormProps } from './types'
@@ -40,10 +35,7 @@ const CharacterForm = (props: CharacterFormProps) => {
   const [itemGroupSelected, setItemGroupSelected] = useState(0)
 
   const { onClose } = props
-
-  const { open } = useSelector((state: any) => state.sidebar)
   const character = useContext(CharacterContext)
-  const navigate = useNavigate()
 
   const handleBottomMenuItemClick = ({ code }: any) => {
     switch (code) {

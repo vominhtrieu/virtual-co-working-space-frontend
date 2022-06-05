@@ -265,7 +265,7 @@ export default function Character(props: CharacterProps) {
       // audio.play();
       setKeyPressed((keyPressed) => ({ ...keyPressed, [event.key]: false }))
     })
-  }, [orbitRef, ref, props.movable])
+  }, [orbitRef, ref, props.movable, actions.Idle])
 
   useEffect(() => {
     if (ref.current) {

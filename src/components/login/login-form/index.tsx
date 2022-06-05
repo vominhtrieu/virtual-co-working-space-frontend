@@ -27,7 +27,7 @@ const LoginForm = (props: FormPropsInterface) => {
       .string()
       .required(t('default.error.required', { field: t('pages.login.email') }))
       .email(t('default.error.email', { field: t('pages.login.email') })),
-      password: yup
+    password: yup
       .string()
       .required(t("default.error.required", { field: t("pages.register.password") }))
       .min(8, t("default.error.minLength", { field: t("pages.register.password"), min: 8 })),
@@ -52,25 +52,24 @@ const LoginForm = (props: FormPropsInterface) => {
   }
 
   return (
-    <form className="login-form" onSubmit={handleSubmit(onLoginSubmit)}>
-      <div className="login-form__title">
-        <h1 className="login-form__title-cell">{t('pages.login.title')}</h1>
-      </div>
+    <form className="login-form" autoComplete="off" onSubmit={handleSubmit(onLoginSubmit)}>
+      {/*<div className="login-form__title">*/}
+      {/*  <h1 className="login-form__title-cell">{t('pages.login.title')}</h1>*/}
+      {/*</div>*/}
       <div className="login-form__input-block">
         <InputText
-          hasLabel
           name="email"
           control={control}
           prefix={<FaEnvelope />}
           label={t('pages.login.email')}
           size="large"
           placeholder={t('pages.login.email')}
+          autoComplete="off"
         />
       </div>
 
       <div className="login-form__input-block">
         <InputText
-          hasLabel
           type="password"
           name="password"
           control={control}
@@ -78,6 +77,7 @@ const LoginForm = (props: FormPropsInterface) => {
           size="large"
           label={t('pages.login.password')}
           placeholder={t('pages.login.password')}
+          autoComplete="off"
         />
       </div>
 
@@ -86,7 +86,7 @@ const LoginForm = (props: FormPropsInterface) => {
       </div>
 
       <button type="submit" className="login-form__btn" disabled={isLoading}>
-      {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
+        {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
         {t('pages.login.title')}
       </button>
 
@@ -100,25 +100,22 @@ const LoginForm = (props: FormPropsInterface) => {
       <div className="login-form__or">{t('pages.login.or')}</div>
 
       <div className="login-form__social">
-        <a href={`${process.env.REACT_APP_BASE_URL}/auth/facebook`}>
-          <div className="login-form__social-item">
-            <RiFacebookFill />
-          </div>
-        </a>
-        <div className="login-form__social-item">
-          <RiGithubFill />
-        </div>
         <a href={`${process.env.REACT_APP_BASE_URL}/auth/google`}>
-          <div className="login-form__social-item">
-            <RiGoogleFill />
+          <div className="login-form__social-btn login-form__google-btn">
+            <div className="login-form__social-item">
+              <RiGoogleFill />
+            </div>
+            <div>{t('pages.login.google')}</div>
           </div>
         </a>
-        <div className="login-form__social-item">
-          <RiLinkedinFill />
-        </div>
-        <div className="login-form__social-item">
-          <RiTwitterLine />
-        </div>
+        <a href={`${process.env.REACT_APP_BASE_URL}/auth/facebook`}>
+          <div className="login-form__social-btn login-form__facebook-btn">
+            <div className="login-form__social-item">
+              <RiFacebookFill />
+            </div>
+            <div>{t('pages.login.facebook')}</div>
+          </div>
+        </a>
       </div>
     </form>
   )

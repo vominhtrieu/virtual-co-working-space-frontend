@@ -28,7 +28,7 @@ function Active() {
         }
       })
       .catch((err) => {
-        toastError(err.message ?? "Active user fail");
+        toastError("Active user fail");
       })
       .finally(() => {});
   };

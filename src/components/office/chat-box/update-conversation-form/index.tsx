@@ -41,12 +41,7 @@ const UpdateConversationForm = (props: UpdateConversationFormProps) => {
     >
       <form onSubmit={handleSubmit(handleUpdateConversationSubmit)}>
         <div className="create-conversation-form__input-block">
-          <InputText
-            name="name"
-            control={control}
-            hasLabel
-            label="Tên hội thoại"
-          />
+          <InputText name="name" control={control} label="Tên hội thoại" />
         </div>
       </form>
     </Popup>

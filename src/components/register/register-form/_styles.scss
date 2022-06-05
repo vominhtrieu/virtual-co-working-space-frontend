@@ -20,19 +20,24 @@
 
   &__btn {
     width: 100%;
-    height: 4.5rem;
+    height: 5rem;
     background-color: $color-primary;
     color: #fff;
     padding: 0.5rem 0;
     font-size: 1.8rem;
     font-weight: 600;
-    border-radius: 0.5rem;
+    border-radius: 1rem;
     cursor: pointer;
     border: none;
     margin-bottom: 1.5rem;
     &:hover{
       background-color: $color-primary-light;
-      color: $color-primary-dark;
+      color: $color-white;
+    }
+
+    &:disabled{
+      background-color: $color-primary-light;
+      cursor: default;
     }
   }
 
@@ -46,7 +51,7 @@
       font-weight: 500;
       margin-left: 0.5rem;
       &:hover{
-        color: $color-primary-light;
+        color: $color-blur-white;
       }
     }
   }

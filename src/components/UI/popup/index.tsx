@@ -17,12 +17,16 @@ const Popup = (props: PopupPropsInterface) => {
         <div className="popup__content">{children}</div>
         {hasFooter && (
           <div className="popup__footer">
+            {props.customButton && (<div className="popup__btn">
+              {props.customButton}
+            </div>)}
+
             <div className="popup__btn">
               <NewButton
                 type="reset"
                 variant="secondary"
                 onClick={onClose}
-                content="Huỷ"
+                content="Cancel"
                 icon={<FaTimes />}
               />
             </div>
@@ -31,7 +35,7 @@ const Popup = (props: PopupPropsInterface) => {
               <NewButton
                 type="submit"
                 variant="primary"
-                content="Lưu"
+                content="Save"
                 onClick={onSubmit}
                 icon={<FaSave />}
               />

@@ -1,6 +1,4 @@
-import { Dropdown, Menu, Radio } from 'antd'
 import { useEffect, useState } from 'react'
-import { IoMdArrowDropdown } from 'react-icons/io'
 import { getItemCategories } from '../../../../../services/api/offices/get-office-categories'
 import { ItemCategory } from '../../../../../services/api/offices/get-office-categories/types'
 import { getItems } from '../../../../../services/api/offices/get-office-item'

@@ -111,9 +111,10 @@
   &__footer {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 1rem;
+    border-top: 1px solid #cecece;
+    padding: 1rem 18px;
   }
   &__btn {
-    margin-right: 2rem;
+    margin-left: 1rem;
   }
 }

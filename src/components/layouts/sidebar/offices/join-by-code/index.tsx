@@ -50,7 +50,6 @@ const JoinOfficeForm = (props: JoinOfficeFormProps) => {
           <InputText
             control={control}
             name="code"
-            hasLabel
             placeholder="Mã code"
           />
         </div>

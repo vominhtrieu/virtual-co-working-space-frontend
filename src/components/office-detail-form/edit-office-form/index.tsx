@@ -52,12 +52,12 @@ const EditOfficeForm = (props: EditOfficeDetailFormProps) => {
       </div>
 
       <div className="edit-detail-office__item-input">
-        <InputText control={control} name='name' hasLabel label="Name" />
+        <InputText control={control} name='name' label="Name" />
 
       </div>
 
       <div className="edit-detail-office__item-input">
-        <InputText control={control} name='description' hasLabel label="Description" />
+        <InputText control={control} name='description' label="Description" />
 
       </div>
 

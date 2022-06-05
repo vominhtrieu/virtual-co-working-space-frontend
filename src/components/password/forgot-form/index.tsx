@@ -42,7 +42,6 @@ const ForgotForm= ({ handleForgotSubmit }: FormPropsInterface) => {
       <p className='forgot-form__content'> Enter your email to reset password.</p> 
       <div className='forgot-form__input-block'>
         <InputText
-          hasLabel
           type='text'
           name='email'
           control={control}

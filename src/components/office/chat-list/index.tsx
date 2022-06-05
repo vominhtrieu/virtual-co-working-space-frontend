@@ -25,7 +25,7 @@ const ChatList = (props: ChatListProps) => {
   const handleCreateConversation = (values) => {
     socket.emit("conversation:create", {
       name: values.name,
-      memberIds: values.memberIds,
+      userIds: values.memberIds,
     });
   };
 

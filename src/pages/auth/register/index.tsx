@@ -39,14 +39,14 @@ function Register() {
     <section className='register'>
     <IconLanguages />
     <Row justify='space-around'>
+      <Col span={12}>
+        <div className='register__img'>
+          <img src={registerImage} alt='ViWorkSpaceloginImage' />
+        </div>
+      </Col>
       <Col span={6}>
         <div className='register__form'>
           <RegisterForm handleRegisterSubmit={handleRegister} />
-        </div>
-      </Col>
-      <Col span={10}>
-        <div className='register__img'>
-          <img src={registerImage} alt='ViWorkSpaceloginImage' />
         </div>
       </Col>
     </Row>

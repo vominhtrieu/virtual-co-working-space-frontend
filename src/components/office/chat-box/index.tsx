@@ -255,15 +255,15 @@ const ChatBox = (props: ChatBoxProps) => {
 
   const handleUpdateConversation = (values) => {
     socket.emit("conversation:update", {
-      id: conversationId,
+      conversationId: conversationId,
       name: values.name,
     });
   };
 
   const handleAddMemberConversation = (values) => {
     socket.emit("conversation:add_member", {
-      id: conversationId,
-      memberIds: values.memberIds,
+      conversationId: conversationId,
+      userIds: values.memberIds,
     });
   };
 
