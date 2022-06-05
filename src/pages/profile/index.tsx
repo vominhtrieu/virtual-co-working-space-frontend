@@ -10,6 +10,7 @@ import ChangePasswordProxy from '../../services/proxy/users/change-password'
 import ProfileProxy from '../../services/proxy/users/get-profile'
 import UpdateProfileProxy from '../../services/proxy/users/update-user'
 import { useAppDispatch, useAppSelector } from '../../stores'
+import { Avatar } from 'antd'
 import {
   setAuthenticated,
   setUserInfo,
@@ -80,7 +81,7 @@ const Profile = () => {
         .catch((err) => {
           toastError(err.message ?? 'update fail')
         })
-        .finally(() => {})
+        .finally(() => { })
     }
   }
 
@@ -102,7 +103,7 @@ const Profile = () => {
       .catch((err) => {
         toastError(err.message ?? 'Change password fail!')
       })
-      .finally(() => {})
+      .finally(() => { })
   }
 
   useEffect(() => {
@@ -119,7 +120,7 @@ const Profile = () => {
       .catch((err) => {
         toastError(err.message ?? 'Load data fail!')
       })
-      .finally(() => {})
+      .finally(() => { })
   }, [dispatch])
 
   return (
@@ -147,17 +148,16 @@ const Profile = () => {
         <div className="lobby__profile-container">
           <div className="lobby__profile-title">Your Account</div>
           <div className="lobby__profile-content">
-            {userInfo.avatar === '' ? (
-              <div className="lobby__profile-avatar">
-                <UserOutlined />
-              </div>
-            ) : (
-              <img
-                src={userInfo.avatar}
-                alt=""
-                className="lobby__profile-avatar"
-              />
-            )}
+            <div className="lobby__profile-avatar">
+              {userInfo.avatar === '' ? (
+                <Avatar shape="circle" size={150} icon={<UserOutlined />} />
+
+              ) : (
+                <Avatar shape="circle" size={150} src={userInfo.avatar} />
+
+              )}
+            </div>
+
             <ul className="lobby__profile-user-items">
               {/* user item - start */}
               <li className="lobby__profile-user-item">

@@ -12,7 +12,7 @@ const DeleteOfficeForm = (props: OfficeDetailFormProps) => {
 
   return (
     <div>
-     <p className='delete__title'>Bạn có chắc chắn muốn xoá văn phòng nào không?</p>
+     <p className='delete__title'>Bạn có chắc chắn muốn xoá văn phòng này không?</p>
       <div className='delete__group-btn'>
         <Button 
         type='submit' 

@@ -25,12 +25,9 @@
         }
 
         &-avatar {
-            width: 15rem;
-            height: 15rem;
-            border-radius: 50%;
             object-fit: cover;
             overflow: hidden;
-            margin: 0 auto;
+            text-align: center;
             display: block;
         }
 
