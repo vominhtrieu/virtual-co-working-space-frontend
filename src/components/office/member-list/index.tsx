@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useAppSelector } from "../../../stores";
+import { userSelectors } from "../../../stores/auth-slice";
 import RightBar from "../../layouts/rightbar";
 import ChangeRoleForm from "./change-role-form";
 import MemberItem from "./member-item";
@@ -8,8 +10,12 @@ const MemberList = (props: MemberListProps) => {
   const { onClose, officeDetail } = props;
   const [isChangeRole, setIsChangeRole] = useState(false);
 
-  const handleOpenSettingPopup = () => {
-    setIsChangeRole(true);
+  const userInfo = useAppSelector(userSelectors.getUserInfo);
+
+  const handleOpenSettingPopup = (memberId: number) => {
+    if (memberId !== userInfo.id) {
+      setIsChangeRole(true);
+    }
   };
 
   const handleChangeRole = (userId: number) => {
@@ -37,7 +43,7 @@ const MemberList = (props: MemberListProps) => {
                 : "member"
             }
             isOnline
-            onClick={handleOpenSettingPopup}
+            onClick={() => handleOpenSettingPopup(member.member.id)}
           />
         );
       })}
