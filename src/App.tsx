@@ -1,12 +1,12 @@
-import {useState, useEffect, useCallback} from "react";
-import {useSelector} from "react-redux";
+import { useState, useEffect, useCallback } from "react";
+import { useSelector } from "react-redux";
 import {
     BrowserRouter as Router,
     Navigate,
     Route,
     Routes,
 } from "react-router-dom";
-import {ToastContainer} from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CharacterContext from "./context/CharacterContext";
 import Active from "./pages/auth/active";
@@ -24,67 +24,65 @@ import Workspace from "./pages/office-detail/Workspace";
 import PrivateInvitation from "./pages/office-invitation/get-private-invitation";
 import PublicInvitation from "./pages/office-invitation/get-public-invitation";
 import "./scss/main.scss";
-import {CharacterAppearance} from "./types/character";
-import {updateAppearance} from "./services/api/users/update-appearance";
-import {getAppearance} from "./services/api/users/get-appearance";
+import { CharacterAppearance } from "./types/character";
+import { updateAppearance } from "./services/api/users/update-appearance";
+import { getAppearance } from "./services/api/users/get-appearance";
 
 function AuthenticatedDesktopRoutes() {
     return (
-        <>
-            <Routes>
-                <Route path="/" element={<Navigate to="/lobby" replace/>}/>
-                <Route path="/character" element={<CharacterCustom/>}/>
-                <Route path="/lobby" element={<Lobby/>}/>
-                <Route path="/profile" element={<Profile/>}/>
-                <Route path="/office/:id" element={<Workspace/>}/>
-                <Route path="invites/:token" element={<PublicInvitation/>}/>
-                <Route path="invites/token/:token" element={<PrivateInvitation/>}/>
-                <Route path="/auth/activate/:token" element={<Active/>}/>
-                <Route path="*" element={<NotFound />}></Route>
-            </Routes>
-        </>
+        <Routes>
+            <Route path="/" element={<Navigate to="/lobby" replace />} />
+            <Route path="/character" element={<CharacterCustom />} />
+            <Route path="/lobby" element={<Lobby />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/office/:id" element={<Workspace />} />
+            <Route path="invites/:token" element={<PublicInvitation />} />
+            <Route path="invites/token/:token" element={<PrivateInvitation />} />
+            <Route path="/auth/activate/:token" element={<Active />} />
+            <Route path="*" element={<NotFound />}></Route>
+        </Routes>
     );
 }
 
 function AuthenticatedMobileRoutes() {
     return (
         <Routes>
-            <Route path="/webgl" element={<CharacterCustomMobile/>}/>
-            <Route path="/webgl/office/:id" element={<WorkspaceMobile/>}/>
+            <Route path="/webgl" element={<CharacterCustomMobile />} />
+            <Route path="/webgl/office/:id" element={<WorkspaceMobile />} />
         </Routes>
     );
 }
 
 function UnauthenticatedRoutes() {
     return (
-        <>
-            <Route path="/auth/forgot" element={<ForgotPassword/>}/>
-            <Route path="/auth/login" element={<Login/>}/>
-            <Route path="/auth/register" element={<Register/>}/>
-            <Route path="/auth/reset/:token" element={<ResetPassword/>}/>
-            <Route path="/webgl" element={<CharacterCustomMobile/>}/>
-            <Route path="*" element={<NotFound/>}/>
+        <Routes>
+            <Route path="/auth/forgot" element={<ForgotPassword />} />
+            <Route path="/auth/login" element={<Login />} />
+            <Route path="/auth/register" element={<Register />} />
+            <Route path="/auth/reset/:token" element={<ResetPassword />} />
+            <Route path="/webgl" element={<CharacterCustomMobile />} />
+            <Route path="*" element={<NotFound />} />
 
             {/* redirect */}
-            <Route path="/" element={<Navigate to="/auth/login" replace/>}/>
+            <Route path="/" element={<Navigate to="/auth/login" replace />} />
             <Route
                 path="/character"
-                element={<Navigate to="/auth/login" replace/>}
+                element={<Navigate to="/auth/login" replace />}
             />
             <Route
                 path="invites/:token"
-                element={<Navigate to="/auth/login" replace/>}
+                element={<Navigate to="/auth/login" replace />}
             />
             <Route
                 path="invites/token/:token"
-                element={<Navigate to="/auth/login" replace/>}
+                element={<Navigate to="/auth/login" replace />}
             />
             <Route
                 path="/office/:id"
-                element={<Navigate to="/auth/login" replace/>}
+                element={<Navigate to="/auth/login" replace />}
             />
             <Route path="*" element={<NotFound />}></Route>
-        </>
+        </Routes>
     );
 }
 
@@ -104,35 +102,35 @@ function App() {
 
         switch (groupId) {
             case 0:
-                newData = {...character, skinColor: itemIdx};
+                newData = { ...character, skinColor: itemIdx };
                 break;
             case 1:
-                newData = {...character, hairStyle: itemIdx};
+                newData = { ...character, hairStyle: itemIdx };
                 break;
             case 2:
-                newData = {...character, hairColor: itemIdx};
+                newData = { ...character, hairColor: itemIdx };
                 break;
             case 3:
-                newData = {...character, eyeStyle: itemIdx};
+                newData = { ...character, eyeStyle: itemIdx };
                 break;
             case 4:
-                newData = {...character, shirtColor: itemIdx};
+                newData = { ...character, shirtColor: itemIdx };
                 break;
             case 5:
-                newData = {...character, pantColor: itemIdx};
+                newData = { ...character, pantColor: itemIdx };
                 break;
             case 6:
-                newData = {...character, shoeColor: itemIdx};
+                newData = { ...character, shoeColor: itemIdx };
                 break;
             default:
-                newData = {...character};
+                newData = { ...character };
                 break;
         }
         updateAppearance(newData)
         setCharacter(newData);
     }, [character]);
 
-    const {isAuthenticated} = useSelector((state: any) => state.auth);
+    const { isAuthenticated } = useSelector((state: any) => state.auth);
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -155,16 +153,16 @@ function App() {
                 changeAppearance: changeAppearance,
             }}
         >
-            <ToastContainer/>
+            <ToastContainer />
             <div className="App">
                 <Router>
                     {isAuthenticated ? (
                         <>
-                            <AuthenticatedDesktopRoutes/>
-                            <AuthenticatedMobileRoutes/>
+                            <AuthenticatedDesktopRoutes />
+                            <AuthenticatedMobileRoutes />
                         </>
                     ) : (
-                        <UnauthenticatedRoutes/>
+                        <UnauthenticatedRoutes />
                     )}
                 </Router>
             </div>
