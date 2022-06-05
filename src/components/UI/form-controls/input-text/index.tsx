@@ -1,7 +1,7 @@
 import {Input} from "antd";
 import {forwardRef} from "react";
 import {useController} from "react-hook-form";
-import { FaEnvelope, FaPen } from "react-icons/fa";
+import { FaPen } from "react-icons/fa";
 import {InputTextProps} from "./types";
 
 const InputText = (
