@@ -1,8 +1,26 @@
-import { FaArrowLeft, FaPlus, FaTimes } from 'react-icons/fa'
-import { RightBarProps } from './types'
+import {
+  FaArrowLeft,
+  FaEdit,
+  FaPlus,
+  FaTimes,
+  FaUserPlus,
+} from "react-icons/fa";
+import { RightBarProps } from "./types";
 
 const RightBar = (props: RightBarProps) => {
-  const { isBack, isAdd, children, onClose, onAdd, onBack, title } = props
+  const {
+    isBack,
+    isAdd,
+    children,
+    onClose,
+    onAdd,
+    onBack,
+    title,
+    isEdit,
+    isAddMember,
+    onAddMember,
+    onEdit,
+  } = props;
   return (
     <section className="right-bar">
       <div className="right-bar__header">
@@ -12,18 +30,38 @@ const RightBar = (props: RightBarProps) => {
               className="right-bar__back"
               onClick={() => {
                 if (onBack) {
-                  onBack()
+                  onBack();
                 }
               }}
             />
           )}
-          <div className="right-bar__header-title">{title ?? 'Danh sách'}</div>
+          <div className="right-bar__header-title">{title ?? "Danh sách"}</div>
           {isAdd && (
             <FaPlus
               className="right-bar__add"
               onClick={() => {
                 if (onAdd) {
-                  onAdd()
+                  onAdd();
+                }
+              }}
+            />
+          )}
+          {isEdit && (
+            <FaEdit
+              className="right-bar__add"
+              onClick={() => {
+                if (onEdit) {
+                  onEdit();
+                }
+              }}
+            />
+          )}
+          {isAddMember && (
+            <FaUserPlus
+              className="right-bar__add"
+              onClick={() => {
+                if (onAddMember) {
+                  onAddMember();
                 }
               }}
             />
@@ -34,7 +72,7 @@ const RightBar = (props: RightBarProps) => {
 
       <div className="right-bar__content">{children}</div>
     </section>
-  )
-}
+  );
+};
 
-export default RightBar
+export default RightBar;
