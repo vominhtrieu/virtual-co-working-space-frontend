@@ -1,5 +1,4 @@
 .lobby {
-  background-color: $color-secondary-light;
   padding-top: 70px;
 
   &__main {
@@ -42,7 +41,7 @@
   }
 
   .lobby__sync svg {
-    animation: rotating 1s infinite;
+    animation: rotating 1s 1s infinite;
   }
 }
 

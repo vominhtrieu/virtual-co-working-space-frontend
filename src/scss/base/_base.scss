@@ -21,9 +21,9 @@ html {
 
 body {
   box-sizing: border-box;
-  background-color: #FAFAFA;
   overflow-y: scroll;
   overflow-x: hidden;
+  background-color: $color-secondary-dark-1;
 }
 
 p {
