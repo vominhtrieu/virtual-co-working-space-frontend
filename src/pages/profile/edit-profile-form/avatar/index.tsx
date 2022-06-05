@@ -41,7 +41,7 @@ const ProfileAvatar = ({ size, isAvatar, setIsAvatar}: any) => {
                 accept=".png,.jpg,.jpeg"
             >
                 <Button
-                    style={{position: "absolute", right: 2, bottom: 2}}
+                    style={{position: "absolute", right: 10, bottom: 10}}
                     disabled={uploadingAvatar}
                     size="large"
                     type="primary"

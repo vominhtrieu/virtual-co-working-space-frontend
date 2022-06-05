@@ -1,8 +1,9 @@
 .new-btn {
   width: max-content;
   height: 100%;
-  padding: 0.2rem 1rem;
-  font-size: 1.8rem;
+  padding: 0 2rem;
+  height: 5rem;
+  font-size: 2rem;
   border-radius: 5px;
   outline: none;
   border: none;
@@ -13,15 +14,23 @@
   align-items: center;
 
   &__content {
-    margin-left: 0.5rem;
+    margin-left: 1rem;
+  }
+
+  & svg {
+    font-size: 2.5rem;
   }
 
   &--primary {
-    background-color: $color-secondary-light;
+    background-color: $color-primary;
     color: $color-white;
     outline: none;
     border: none;
     transition: all 0.3s ease;
+
+    &:hover {
+      background-color: $color-primary-dark
+    }
 
     &:focus {
       background-color: $color-secondary;
@@ -35,6 +44,10 @@
     border: none;
     transition: all 0.3s ease;
 
+    &:hover {
+      background-color: $color-primary-dark
+    }
+
     &:focus {
       background-color: $color-secondary-dark;
     }
@@ -45,9 +58,10 @@
     outline: none;
     border: 1px solid #cecece;
     transition: all 0.3s ease;
+    color: white;
 
     &:hover {
-      background-color: rgba(0,0,0,0.05);
+      background-color: rgba(0,0,0,0.4);
     }
   }
 }

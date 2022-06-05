@@ -1,16 +1,16 @@
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form"
-import InputWhite from "../../components/UI/form-controls/input-white"
 import Popup from "../../components/UI/popup"
-import { CreateOfficeFormInputInterface, CreateOfficeFormDataInterface, JoinOfficeFormValuesInterface, JoinOfficeFormInputInterface, JoinOfficeFormDataInterface } from "./types";
+import { CreateOfficeFormInputInterface, CreateOfficeFormDataInterface, JoinOfficeFormInputInterface, JoinOfficeFormDataInterface } from "./types";
 import { toastError, toastSuccess } from "../../helpers/toast";
 import JoinByCodeProxy from "../../services/proxy/office-invitation/join-invite-code";
 import CreateOfficeProxy from "../../services/proxy/offices/create-office";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import NewButton from "../../components/UI/new-button";
-import { FaClipboard, FaCode, FaDoorOpen, FaPlus } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import { useState } from "react";
+import InputText from "../../components/UI/form-controls/input-text";
 
 interface JoinOrCreateOfficeModalProps {
     onClose: () => void;
@@ -89,7 +89,7 @@ export default function JoinOrCreateOfficeModal({ onClose, onInsertOffice }: Joi
         <Popup
             onClose={onClose}
             title={(isCreating ? "Create" : "Join") + " Office"}
-            type="white"
+            type="dark"
             onSubmit={isCreating ? createOfficeHandleSubmit(handleCreateOfficeSubmit) : joinOfficeHandleSubmit(handleJoinOfficeSubmit)}
             hasFooter
             customButton={<NewButton variant="outlined" icon={<FaPlus />} onClick={() => setIsCreating(!isCreating)} content={isCreating ? "Join by code" : "Create new"} />}
@@ -97,27 +97,24 @@ export default function JoinOrCreateOfficeModal({ onClose, onInsertOffice }: Joi
             {
                 isCreating ? <form>
                     <div className="create-office-form__input-block">
-                        <InputWhite
+                        <InputText
                             control={createOfficeControl}
                             name="name"
                             label="Name"
-                            hasLabel
                             placeholder="Enter name..."
                         />
-                        <InputWhite
+                        <InputText
                             control={createOfficeControl}
                             name="description"
                             label="Description"
-                            hasLabel
                             placeholder="Enter description..."
                         />
                     </div>
                 </form> : <form>
-                    <InputWhite
+                    <InputText
                         control={joinOfficeControl}
                         name="code"
                         label="Code"
-                        hasLabel
                         placeholder="Enter the code..."
                     />
                 </form>

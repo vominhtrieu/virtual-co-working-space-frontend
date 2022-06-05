@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   height: 6rem;
-  background-color: #141e61;
+  background-color: $color-primary-dark;
   padding: 0 6rem;
   position: fixed;
   z-index: 99;
@@ -14,6 +14,7 @@
   &__brand {
     display: flex;
     align-items: flex-end;
+    cursor: pointer;
     & h1 {
       font-size: 20px;
       margin-left: -15px;

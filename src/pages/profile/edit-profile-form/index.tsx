@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
-import InputWhite from '../../../components/UI/form-controls/input-white'
+import InputText from '../../../components/UI/form-controls/input-text'
 import Popup from '../../../components/UI/popup'
 import { useAppSelector } from '../../../stores'
 import { userSelectors } from '../../../stores/auth-slice'
@@ -82,7 +82,7 @@ const EditProfileForm = (props: EditProfileFormProps) => {
     <Popup
       onClose={onClose}
       title="Change Profile"
-      type="white"
+      type="dark"
       onSubmit={handleSubmit(handleEditProfileSubmit)}
       hasFooter={true}
     >
@@ -91,30 +91,28 @@ const EditProfileForm = (props: EditProfileFormProps) => {
           {/* user item - start */}
           <li className="edit-profile__item-avatar">
             <ProfileAvatar
-              size={120}
+              size={180}
               setIsAvatar={setIsAvatar}
               isAvatar={isAvatar}
             />
           </li>
           {/* user item - end */}
           <div className="change-pass-form__input-block">
-            <InputWhite
+            <InputText
               control={control}
               type="text"
               name="name"
               label="Name"
-              hasLabel
               placeholder="Enter name..."
             />
           </div>
 
           <div className="change-pass-form__input-block">
-            <InputWhite
+            <InputText
               control={control}
               type="text"
               name="phone"
               label="Phone Number"
-              hasLabel
               placeholder="Enter phone number..."
             />
           </div>

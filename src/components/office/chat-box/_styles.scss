@@ -59,6 +59,11 @@
   display: flex;
   margin-bottom: 2rem;
 
+  &__mess {
+    max-width: 20rem;
+    word-break: break-all;
+  }
+
   &__avatar {
     width: 4rem;
     height: 4rem;
