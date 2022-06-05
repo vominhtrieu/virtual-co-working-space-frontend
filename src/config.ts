@@ -1,0 +1,1 @@
+export const DEFAULT_BACKGROUND = "https://images.pexels.com/photos/5011647/pexels-photo-5011647.jpeg";

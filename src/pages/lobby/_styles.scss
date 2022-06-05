@@ -1,11 +1,9 @@
 .lobby {
-  background-color: $color-secondary-dark-1;
+  background-color: $color-secondary-light;
+  padding-top: 70px;
 
   &__main {
-    margin-top: 2rem;
     padding: 1rem 6rem;
-    height: calc(100vh - 7rem);
-    overflow: scroll;
   }
 
   &__office-list {
@@ -25,4 +23,82 @@
       grid-template-columns: repeat(1, minmax(20rem, 1fr));
     }
   }
+
+  .lobby__button, .lobby__sync {
+    background: rgba(0,0,0,0.4);
+    color: white;
+    border: none;
+    width: 100%;
+    height: 100%;
+    transition: all 1s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      background-color: rgba(0,0,0,0.6);
+      cursor: pointer;
+    }
+  }
+
+  .lobby__sync svg {
+    animation: rotating 1s infinite;
+  }
+}
+
+@keyframes rotating {
+  from {
+    transform: rotateZ(0deg);
+  }
+
+  to {
+    transform: rotateZ(360deg);
+  }
+}
+
+.create-office-form {
+  &__title {
+    font-size: $font-title;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: $color-primary-dark;
+  }
+
+  &__input-block {
+    margin-bottom: 2rem;
+  }
+
+  &__group-btn {
+    width: 50%;
+    margin-left: 50%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 2rem;
+  }
+}
+
+.join-office-form {
+  &__title {
+    font-size: $font-title;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: $color-primary-dark;
+  }
+
+  &__input-block {
+    margin-bottom: 2rem;
+  }
+
+  &__group-btn {
+    width: 50%;
+    margin-left: 50%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 2rem;
+  }
+}
+
+.popup__header-white {
+  padding-left: 18px;
+  padding-right: 18px;
 }

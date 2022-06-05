@@ -5,23 +5,28 @@
   height: 6rem;
   background-color: #141e61;
   padding: 0 6rem;
+  position: fixed;
+  z-index: 99;
+  width: 100vw;
+  top: 0;
+  left: 0;
 
-  &__logo {
+  &__brand {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 4rem;
-    height: 4rem;
-    border-radius: 1rem;
-    background-color: #fff;
-    cursor: pointer;
-
-    &-img {
-      width: 70%;
-      height: 70%;
-      overflow: hidden;
-      object-fit: cover;
+    align-items: flex-end;
+    & h1 {
+      font-size: 20px;
+      margin-left: -15px;
+      color: white;
     }
+  }
+
+  &__logo_img {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 1rem;
+    overflow: hidden;
+    cursor: pointer;
   }
 
   &__right-content {

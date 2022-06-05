@@ -7,7 +7,6 @@ const JoinByCodeProxy =async (
   params: ParamsInterface
 ): Promise<ProxyFuncType>  => {
   const res = await joinByCode(params);
-  console.log("join by code");
   
   if (res?.code && res?.code !==200) {
     return {

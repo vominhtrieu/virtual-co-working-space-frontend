@@ -56,7 +56,6 @@ const CreateConversationForm = (props: CreateConversationFormProps) => {
           <InputText
             name="name"
             control={control}
-            hasLabel
             label="Tên hội thoại"
           />
         </div>

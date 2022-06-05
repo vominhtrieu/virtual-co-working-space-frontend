@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from 'react'
 import {useSelector} from 'react-redux'
-import {useLocation, useParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 import CharacterForm from '../../components/character-form'
 import OfficeDetailForm from '../../components/office-detail-form'
 import ChatBox from '../../components/office/chat-box'
@@ -44,7 +44,6 @@ const Workspace = ({mobile = false}: WorkspaceProps) => {
         x: 0,
         y: 0,
     })
-    const [isCustomizing, setIsCustomizing] = useState(false)
     const [characterGesture, setCharacterGesture] = useState({idx: -1})
     const [characterEmoji, setCharacterEmoji] = useState({idx: -1})
     const [onlineMembers, setOnlineMembers] = useState<OfficeMembersInterface[]>(
@@ -274,7 +273,7 @@ const Workspace = ({mobile = false}: WorkspaceProps) => {
 
     return (
         <>
-            {!isCustomizing && !mobile && <CallingBar/>}
+            {!mobile && <CallingBar/>}
             <OfficeCanvas
                 setObjectionClickPos={setObjectionClickPos}
                 characterGesture={characterGesture}

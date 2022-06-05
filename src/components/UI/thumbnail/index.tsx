@@ -5,7 +5,7 @@ import OfficeDetailProxy from '../../../services/proxy/offices/office-detail'
 import { ProxyStatusEnum } from '../../../types/http/proxy/ProxyStatus'
 import { ThumbnailPropsInterface } from './types'
 
-const srcTemp = 'https://ss-images.saostar.vn/2020/01/03/6750639/page1.jpg'
+const srcTemp = 'https://images.pexels.com/photos/5011647/pexels-photo-5011647.jpeg'
 
 const Thumbnail = (props: ThumbnailPropsInterface) => {
   const { src, alt, office, onClick } = props
@@ -13,10 +13,10 @@ const Thumbnail = (props: ThumbnailPropsInterface) => {
   const [memberTotal, setMemberTotal] = useState(0)
   const [online, setOnline] = useState(0)
 
-  
+
   const formatName = (name: any) => {
-    if (name.length > 17 )
-      return name.substr(0,15)+"...";
+    if (name.length > 17)
+      return name.substr(0, 15) + "...";
     return name;
   }
 
@@ -52,15 +52,10 @@ const Thumbnail = (props: ThumbnailPropsInterface) => {
     toastSuccess('Copied to clipboard')
   }
 
- 
   return (
-    <div className="thumbnail">
-      <img
-        src={src ?? srcTemp}
-        alt={alt}
-        className="thumbnail__img"
-        onClick={onClick}
-      />
+    <div className="thumbnail" style={{
+      backgroundImage: `url("${src ? src : srcTemp}")`
+    }}>
       <div className="thumbnail__content">
         {/* header - start */}
         <div className="thumbnail__content-header">
@@ -69,17 +64,15 @@ const Thumbnail = (props: ThumbnailPropsInterface) => {
           </span>
           <div className="thumbnail__content-count">
             <span className="thumbnail__content-active" />
-            {memberTotal > 0 && (
-              <span className="thumbnail__content-num">
-                {online}/{memberTotal}
-              </span>
-            )}
+            <span className="thumbnail__content-num">
+              {memberTotal > 0 ? `${online}/${memberTotal}` : "-/-"}
+            </span>
           </div>
         </div>
         {/* header - end */}
 
         <div className="thumbnail__content-item">
-          <span className="thumbnail__content-label">Mã phòng: </span>
+          <span className="thumbnail__content-label">Code: </span>
           <span className="thumbnail__content-value">
             {office?.invitationCode}
           </span>
@@ -87,7 +80,7 @@ const Thumbnail = (props: ThumbnailPropsInterface) => {
         </div>
 
         <div className="thumbnail__content-item">
-          <span className="thumbnail__content-label">Người tạo: </span>
+          <span className="thumbnail__content-label">Owner: </span>
           <span className="thumbnail__content-value">
             {office?.createdBy?.name}
           </span>

@@ -92,7 +92,6 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
             control={control}
             type="password"
             name="oldPassword"
-            hasLabel
             placeholder="Current Password"
           />
         </div>
@@ -102,7 +101,6 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
             control={control}
             type="password"
             name="newPassword"
-            hasLabel
             placeholder="New Password"
           />
         </div>
@@ -112,7 +110,6 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
             control={control}
             type="password"
             name="confirmPassword"
-            hasLabel
             placeholder="Password Confirmation"
           />
         </div>

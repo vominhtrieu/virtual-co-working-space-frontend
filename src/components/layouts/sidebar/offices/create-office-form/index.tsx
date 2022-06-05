@@ -43,7 +43,6 @@ const CreateOfficeForm = (props: CreateOfficeFormProps) => {
           <InputText
             control={control}
             name="name"
-            hasLabel
             placeholder="Tên văn phòng"
           />
         </div>

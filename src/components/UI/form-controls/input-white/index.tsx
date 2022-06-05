@@ -44,7 +44,7 @@ const InputWhite = (
         {...rest}
         onFocus={onFocus}
       />
-      {error && <p className="error-message">{error.message}</p>}
+      <p className="error-message">{error && error.message}</p>
     </div>
   )
 }

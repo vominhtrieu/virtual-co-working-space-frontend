@@ -54,14 +54,14 @@ function Login() {
   const FormLogin = () => {
     return (
       <Row justify="space-around">
+        <Col span={12}>
+          <div className="login__img">
+            <img src={loginImage} alt="ViSpace Login Image" />
+          </div>
+        </Col>
         <Col span={6}>
           <div className="login__form">
             <LoginForm handleLoginSubmit={handleLogin} />
-          </div>
-        </Col>
-        <Col span={10}>
-          <div className="login__img">
-            <img src={loginImage} alt="ViWorkSpaceloginImage" />
           </div>
         </Col>
       </Row>
