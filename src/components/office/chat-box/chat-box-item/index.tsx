@@ -5,7 +5,8 @@ import { userSelectors } from "../../../../stores/auth-slice";
 import { socketSelector } from "../../../../stores/socket-slice";
 import { ChatBoxItemPropsInterface } from "./types";
 
-const srcTemp = "https://ss-images.saostar.vn/2020/01/03/6750639/page1.jpg";
+const srcTemp =
+  "https://static.vecteezy.com/system/resources/thumbnails/003/337/584/small/default-avatar-photo-placeholder-profile-icon-vector.jpg";
 
 const ChatBoxItem = (props: ChatBoxItemPropsInterface) => {
   const [isOpenAction, setIsOpenAction] = useState(false);
