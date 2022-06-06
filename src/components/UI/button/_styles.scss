@@ -57,20 +57,20 @@
     padding: 0.2rem 0.5rem;
     font-size: $font-text-small;
 
-
     &:hover {
       outline: $color-primary-dark;
       background-color: $color-white;
-      color:$color-primary-dark;
+      color: $color-primary-dark;
     }
   }
 
   &--menu-custom {
     border-radius: 1rem;
-    color: $color-pure-black;
-    border: 2px solid $color-primary-light;
+    border: 2px solid $color-primary-dark;
+    background-color: $color-secondary-dark;
+    color: #fff;
     &:hover {
-      background-color: $color-primary-light;
+      background-color: $color-secondary;
       color: $color-gray-10;
     }
   }

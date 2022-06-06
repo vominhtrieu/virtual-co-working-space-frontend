@@ -53,12 +53,12 @@ const ChatBox = (props: ChatBoxProps) => {
               return {
                 src:
                   officeDetail.officeMembers.find((sender) => {
-                    return sender.id === mess.senderId;
+                    return sender.member.id === mess.senderId;
                   })?.member.avatar ??
                   "https://s199.imacdn.com/tt24/2020/03/06/c13c137597da081f_f4278fdff371f2b7_93155158347150251.jpg",
                 alt:
                   officeDetail.officeMembers.find((sender) => {
-                    return sender.id === mess.senderId;
+                    return sender.member.id === mess.senderId;
                   })?.member.name ?? "Tên người dùng",
                 message:
                   mess.status === "revoked"
@@ -81,7 +81,7 @@ const ChatBox = (props: ChatBoxProps) => {
                           officeDetail.officeMembers.find(
                             (m) => m.id === r.readerId
                           )?.member.avatar ??
-                          "https://s199.imacdn.com/tt24/2020/03/06/c13c137597da081f_f4278fdff371f2b7_93155158347150251.jpg",
+                          "https://static.vecteezy.com/system/resources/thumbnails/003/337/584/small/default-avatar-photo-placeholder-profile-icon-vector.jpg",
                       };
                     })
                   : [],
@@ -125,12 +125,13 @@ const ChatBox = (props: ChatBoxProps) => {
             {
               src:
                 officeDetail.officeMembers.find((sender) => {
-                  return sender.id === value["senderId"];
-                })?.member.avatar ?? "",
+                  return sender.member.id === value["senderId"];
+                })?.member.avatar ??
+                "https://static.vecteezy.com/system/resources/thumbnails/003/337/584/small/default-avatar-photo-placeholder-profile-icon-vector.jpg",
               conversationId: value["conversationId"],
               alt:
                 officeDetail.officeMembers.find((sender) => {
-                  return sender.id === value["senderId"];
+                  return sender.member.id === value["senderId"];
                 })?.member.name ?? "",
               message: value["content"],
               isMe: false,

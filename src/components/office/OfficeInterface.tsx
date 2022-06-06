@@ -1,6 +1,5 @@
 import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
 import { FaTrash } from "react-icons/fa";
-import EditOffice from "../layouts/sidebar/offices/edit-office";
 import Button from "../UI/button";
 import OfficeBar from "./office-bar";
 import OfficceCheckInModal from "./office-checkin";
@@ -62,7 +61,11 @@ export default function OfficeInterface({
                     className="menu-custom"
                     onClick={handleButtonDeleteClick}
                   >
-                    <FaTrash style={{ width: "1.5rem", height: "1.5rem" }} />
+                    <FaTrash
+                      style={{
+                        fontSize: 16,
+                      }}
+                    />
                   </Button>
 
                   <Button
@@ -72,7 +75,9 @@ export default function OfficeInterface({
                     onClick={handleButtonRotateLeftClick}
                   >
                     <BiRotateLeft
-                      style={{ width: "1.5rem", height: "1.5rem" }}
+                      style={{
+                        fontSize: 22,
+                      }}
                     />
                   </Button>
 
@@ -83,7 +88,9 @@ export default function OfficeInterface({
                     onClick={handleButtonRotateRightClick}
                   >
                     <BiRotateRight
-                      style={{ width: "1.5rem", height: "1.5rem" }}
+                      style={{
+                        fontSize: 22,
+                      }}
                     />
                   </Button>
                 </div>

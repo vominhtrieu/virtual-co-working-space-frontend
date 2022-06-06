@@ -1,150 +1,170 @@
-import {OrbitControls, Stats} from "@react-three/drei";
-import {Suspense, useContext, useRef} from "react";
+import { OrbitControls, Stats } from "@react-three/drei";
+import { Suspense, useContext, useRef } from "react";
 import Box from "../models/Box";
-import {Debug, Physics} from "@react-three/cannon";
+import { Debug, Physics } from "@react-three/cannon";
 import Office from "../models/Office";
 import Character from "../models/character/Character";
 import MemberCharacter from "../models/character/MemberCharacter";
 import CustomTransformControl from "../controls/CustomTransformControl";
-import {Canvas} from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import CharacterContext from "../../context/CharacterContext";
-import {useAppSelector} from "../../stores";
-import {volumeSelectors} from "../../stores/volume-slice";
-import {Provider} from "react-redux";
+import { useAppSelector } from "../../stores";
+import { volumeSelectors } from "../../stores/volume-slice";
+import { Provider } from "react-redux";
 import store from "../../stores";
 import ItemModel from "../models/ItemModel";
-import {userSelectors} from "../../stores/auth-slice";
+import { userSelectors } from "../../stores/auth-slice";
 
 export default function OfficeCanvas({
-                                         setObjectionClickPos,
-                                         characterGesture,
-                                         characterEmoji,
-                                         setSelectedObject,
-                                         setSelectedKey,
-                                         setObjectActionVisible,
-                                         objectList,
-                                         objectActionVisible,
-                                         selectedObject,
-                                         selectedKey,
-                                         onlineMembers,
-                                         handleObject3dDragged,
-                                         action,
-                                     }) {
-    const orbitRef = useRef(null);
-    const appearance = useContext(CharacterContext);
-    const volume = useAppSelector(volumeSelectors.getVolume);
-    const userInfo = useAppSelector(userSelectors.getUserInfo);
+  setObjectionClickPos,
+  characterGesture,
+  characterEmoji,
+  setSelectedObject,
+  setSelectedKey,
+  setObjectActionVisible,
+  objectList,
+  objectActionVisible,
+  selectedObject,
+  selectedKey,
+  onlineMembers,
+  handleObject3dDragged,
+  action,
+}) {
+  const orbitRef = useRef(null);
+  const appearance = useContext(CharacterContext);
+  const volume = useAppSelector(volumeSelectors.getVolume);
+  const userInfo = useAppSelector(userSelectors.getUserInfo);
 
-    const handleObject3dClick = (e, key) => {
-        let temp = e.object;
-        while (temp.parent && temp.parent.type !== "Scene") {
-            temp = temp.parent;
-        }
+  const handleObject3dClick = (e, key) => {
+    let temp = e.object;
+    while (temp.parent && temp.parent.type !== "Scene") {
+      temp = temp.parent;
+    }
 
-        setSelectedObject(temp);
-        setSelectedKey(key);
-        setObjectActionVisible(true);
+    setSelectedObject(temp);
+    setSelectedKey(key);
+    setObjectActionVisible(true);
 
-        const x = e.clientX;
-        const y = e.clientY;
+    const x = e.clientX;
+    const y = e.clientY;
 
-        setObjectionClickPos({x, y});
-    };
+    setObjectionClickPos({ x, y });
+  };
 
-    const handleObject3dPointerMissed = () => {
-        setObjectActionVisible(false);
-    };
+  const handleObject3dPointerMissed = () => {
+    setObjectActionVisible(false);
+  };
 
-    return (
-        <Canvas
-            shadows={{enabled: true, autoUpdate: true}}
-            camera={{position: [0, 5, 5], rotation: [45, 0, 0]}}
-            style={{
-                height: "100vh",
-                width: "100vw",
-                background: "#577BC1",
-                position: "fixed",
-                top: 0,
-                left: 0,
-            }}
-        >
-            <Provider store={store}>
-                <OrbitControls
-                    ref={orbitRef}
-                    minDistance={action !== "config" ? 5 : 0}
-                    maxDistance={action !== "config" ? 5 : 100}
-                    enablePan={action === "config"}
-                    enableZoom={action === "config"}
-                />
-                <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45}/>
-                <ambientLight/>
-                {/* <Stats /> */}
-                <Suspense fallback={<Box/>}>
-                    <Physics gravity={[0, 0, 0]}>
-                        <Office castShadow={true}/>
-                        {objectList.map((object) => (
-                            <mesh
-                                castShadow={true}
-                                key={object.id}
-                                position={[
-                                    object.transform.xPosition,
-                                    object.transform.yPosition,
-                                    object.transform.zPosition,
-                                ]}
-                                rotation={[
-                                    object.transform.xRotation,
-                                    object.transform.yRotation,
-                                    object.transform.zRotation,
-                                ]}
-                                onClick={(e) => handleObject3dClick(e, object.id)}
-                                onPointerMissed={handleObject3dPointerMissed}
-                            >
-                                <Suspense fallback={null}>
-                                    <ItemModel url={object.item.modelPath} itemId={object.id}/>
-                                </Suspense>
-                            </mesh>
-                        ))}
-                        {onlineMembers.map((member) =>
-                            member.member.id === userInfo.id ? <Character
-                                key={member.id}
-                                appearance={appearance}
-                                startPosition={[member.transform.position.x, 2.5, member.transform.position.z]}
-                                startRotation={[member.transform.rotation.x, member.transform.rotation.y, member.transform.rotation.z]}
-                                scale={[2, 2, 2]}
-                                orbitRef={orbitRef}
-                                movable={action === "" || action === "action"}
-                                volume={volume}
-                                currentEmoji={characterEmoji}
-                                currentGesture={characterGesture}
-                                visible={action !== "config"}
-                            /> : <MemberCharacter
-                                key={member.id}
-                                appearance={appearance}
-                                startPosition={[member.transform.position.x, 2.5, member.transform.position.z]}
-                                startRotation={[member.transform.rotation.x, member.transform.rotation.y, member.transform.rotation.z]}
-                                scale={[2, 2, 2]}
-                                orbitRef={orbitRef}
-                                movable
-                                volume={volume}
-                                currentEmoji={characterEmoji}
-                                currentGesture={characterGesture}
-                                memberId={member.member.id}
-                                visible={action !== "config"}
-                            />
-                        )}
-
-                        {/* <Stats className="stats" /> */}
-
-                        <CustomTransformControl
-                            object={selectedObject}
-                            objectKey={selectedKey}
-                            orbit={orbitRef}
-                            visible={objectActionVisible && (action === "config")}
-                            handleObject3dDragged={handleObject3dDragged}
-                        />
-                    </Physics>
+  return (
+    <Canvas
+      shadows={{ enabled: true, autoUpdate: true }}
+      camera={{ position: [0, 5, 5], rotation: [45, 0, 0] }}
+      style={{
+        height: "100vh",
+        width: "100vw",
+        background: "#577BC1",
+        position: "fixed",
+        top: 0,
+        left: 0,
+      }}
+    >
+      <Provider store={store}>
+        <OrbitControls
+          ref={orbitRef}
+          minDistance={action !== "config" ? 5 : 0}
+          maxDistance={action !== "config" ? 5 : 100}
+          enablePan={action === "config"}
+          enableZoom={action === "config"}
+        />
+        <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45} />
+        <ambientLight />
+        {/* <Stats /> */}
+        <Suspense fallback={<Box />}>
+          <Physics gravity={[0, 0, 0]}>
+            <Office castShadow={true} />
+            {objectList.map((object) => (
+              <mesh
+                castShadow={true}
+                key={object.id}
+                position={[
+                  object.transform.xPosition,
+                  object.transform.yPosition,
+                  object.transform.zPosition,
+                ]}
+                rotation={[
+                  object.transform.xRotation,
+                  object.transform.yRotation,
+                  object.transform.zRotation,
+                ]}
+                onClick={(e) => handleObject3dClick(e, object.id)}
+                onPointerMissed={handleObject3dPointerMissed}
+              >
+                <Suspense fallback={null}>
+                  <ItemModel url={object.item.modelPath} itemId={object.id} />
                 </Suspense>
-            </Provider>
-        </Canvas>
-    );
+              </mesh>
+            ))}
+            {onlineMembers.map((member) =>
+              member.member.id === userInfo.id ? (
+                <Character
+                  key={member.id}
+                  appearance={appearance}
+                  startPosition={[
+                    member.transform.position.x,
+                    2.5,
+                    member.transform.position.z,
+                  ]}
+                  startRotation={[
+                    member.transform.rotation.x,
+                    member.transform.rotation.y,
+                    member.transform.rotation.z,
+                  ]}
+                  scale={[2, 2, 2]}
+                  orbitRef={orbitRef}
+                  movable={action === "" || action === "action"}
+                  volume={volume}
+                  currentEmoji={characterEmoji}
+                  currentGesture={characterGesture}
+                  visible={action !== "config"}
+                />
+              ) : (
+                <MemberCharacter
+                  key={member.id}
+                  appearance={appearance}
+                  startPosition={[
+                    member.transform.position.x,
+                    2.5,
+                    member.transform.position.z,
+                  ]}
+                  startRotation={[
+                    member.transform.rotation.x,
+                    member.transform.rotation.y,
+                    member.transform.rotation.z,
+                  ]}
+                  scale={[2, 2, 2]}
+                  orbitRef={orbitRef}
+                  movable
+                  volume={volume}
+                  currentEmoji={characterEmoji}
+                  currentGesture={characterGesture}
+                  memberId={member.member.id}
+                  visible={action !== "config"}
+                />
+              )
+            )}
+
+            {/* <Stats className="stats" /> */}
+
+            <CustomTransformControl
+              object={selectedObject}
+              objectKey={selectedKey}
+              orbit={orbitRef}
+              visible={objectActionVisible && action === "config"}
+              handleObject3dDragged={handleObject3dDragged}
+            />
+          </Physics>
+        </Suspense>
+      </Provider>
+    </Canvas>
+  );
 }
