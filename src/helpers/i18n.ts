@@ -21,8 +21,8 @@ i18n.use(initReactI18next).init({
       },
     },
   },
-  lng: "en",
-  fallbackLng: "en",
+  lng: "vi",
+  fallbackLng: "vi",
   keySeparator: ".",
   interpolation: { escapeValue: false },
 });

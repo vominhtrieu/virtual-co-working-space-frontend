@@ -1,21 +1,20 @@
-import { Radio, RadioChangeEvent } from 'antd'
-import React, { useState } from 'react'
-import Popup from '../../../UI/popup'
-import { ChangeRoleFormProps } from './types'
+import { Radio, RadioChangeEvent } from "antd";
+import React, { useState } from "react";
+import Popup from "../../../UI/popup";
+import { ChangeRoleFormProps } from "./types";
 
 const ChangeRoleForm = (props: ChangeRoleFormProps) => {
-  const [value, setValue] = useState(1)
+  const [value, setValue] = useState(1);
 
   const onChange = (e: RadioChangeEvent) => {
-    console.log('radio checked', e.target.value)
-    setValue(e.target.value)
-  }
-  const { onClose, onSubmit } = props
+    setValue(e.target.value);
+  };
+  const { onClose, onSubmit } = props;
 
   const handleCreateConversationSubmit = () => {
-    onSubmit(value)
-    onClose()
-  }
+    onSubmit(value);
+    onClose();
+  };
 
   return (
     <Popup
@@ -37,7 +36,7 @@ const ChangeRoleForm = (props: ChangeRoleFormProps) => {
         </Radio>
       </Radio.Group>
     </Popup>
-  )
-}
+  );
+};
 
-export default ChangeRoleForm
+export default ChangeRoleForm;
