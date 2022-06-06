@@ -46,7 +46,6 @@ export default function ItemModel({url, itemId}: ItemModelProps) {
             min: {x: Infinity, y: Infinity, z: Infinity},
             max: {x: -Infinity, y: -Infinity, z: -Infinity},
         }
-        console.log(itemId);
 
         for (let key in obj.nodes) {
             let node = obj.nodes[key];
@@ -54,7 +53,6 @@ export default function ItemModel({url, itemId}: ItemModelProps) {
             if (node.type !== "Mesh") {
                 continue;
             }
-            console.log(node);
             boundingBox.min.x = Math.min(boundingBox.min.x, node.geometry.boundingBox.min.x);
             boundingBox.min.y = Math.min(boundingBox.min.y, node.geometry.boundingBox.min.y);
             boundingBox.min.z = Math.min(boundingBox.min.z, node.geometry.boundingBox.min.z);
