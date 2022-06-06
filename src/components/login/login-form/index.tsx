@@ -3,7 +3,7 @@ import { Spin } from "antd";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FaEnvelope, FaKey } from "react-icons/fa";
-import { RiGoogleFill } from "react-icons/ri";
+import { RiFacebookFill, RiGoogleFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { useAppSelector } from "../../../stores";
@@ -114,14 +114,14 @@ const LoginForm = (props: FormPropsInterface) => {
             <div>{t("pages.login.google")}</div>
           </div>
         </a>
-        {/* <a href={`${process.env.REACT_APP_BASE_URL}/auth/facebook`}>
+        <a href={`${process.env.REACT_APP_BASE_URL}/auth/facebook`}>
           <div className="login-form__social-btn login-form__facebook-btn">
             <div className="login-form__social-item">
               <RiFacebookFill />
             </div>
-            <div>{t('pages.login.facebook')}</div>
+            <div>{t("pages.login.facebook")}</div>
           </div>
-        </a> */}
+        </a>
       </div>
     </form>
   );
