@@ -23,5 +23,8 @@ export const TranslationEnCommon = {
     create: "Create",
     join: "Join",
     save: "Save",
+    edit: "Edit",
+    delete: "Delete",
+    send: "Send",
   },
 };

@@ -12,7 +12,6 @@ const ChangeLanguage = () => {
     const language = getDataLocal("language");
     if (language) {
       setValue(language);
-      i18n.changeLanguage(language);
     }
   }, []);
 

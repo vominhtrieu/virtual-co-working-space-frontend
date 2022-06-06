@@ -60,9 +60,66 @@ export const TranslationEnPages = {
       account: "Your Account",
       editCharacter: "Edit Character",
       logout: "Logout",
-    }
+    },
   },
   office: {
     title: "Office",
+
+    // office detail
+    officeDetail: {
+      title: "Office Detail",
+      name: "Name",
+      description: "Description",
+      owner: "Owner",
+      members: "Members",
+      createAt: "Created At",
+      joinAt: "Joined At",
+      code: "Code",
+      invite: "Send invite",
+    },
+
+    // chat list
+    chatList: {
+      title: "Chat List",
+      createChat: "Create Chat",
+    },
+
+    // chat box
+    chatBox: {
+      title: "Chat Box",
+      enterMessage: "Enter message ...",
+    },
+
+    // setting
+    setting: {
+      title: "Setting",
+      language: "Language",
+      volume: "Volume",
+    },
+
+    // member list
+    memberList: {
+      title: "Member List",
+      owner: "Owner",
+      member: "Member",
+      admin: "Admin",
+      changeRole: "Change Role",
+    },
+
+    // edit character
+    editCharacter: {
+      title: "Edit Character",
+    },
+
+    // emoji
+    emoji: {
+      gestures: "Gestures",
+      emojis: "Emojis",
+    },
+
+    // edit office
+    editOffice: {
+      title: "Edit Office",
+    },
   },
 };

@@ -47,7 +47,7 @@ const Lobby = () => {
 
     search.addIndex("name");
     search.addDocuments(officeList);
-    if (value.trim() != "") setOfficeSearchList(search.search(value));
+    if (value.trim() !== "") setOfficeSearchList(search.search(value));
     else setOfficeSearchList(officeList);
   };
 

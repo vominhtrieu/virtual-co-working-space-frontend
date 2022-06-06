@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getItemCategories } from "../../../../../services/api/offices/get-office-categories";
 import { ItemCategory } from "../../../../../services/api/offices/get-office-categories/types";
 import { getItems } from "../../../../../services/api/offices/get-office-item";
@@ -14,6 +15,8 @@ const EditOffice = (props: EditOfficePropsInterface) => {
   const [selectedCategory, setSelectedCategory] = useState<ItemCategory | null>(
     null
   );
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     getItemCategories().then((data: any) => {
@@ -41,7 +44,7 @@ const EditOffice = (props: EditOfficePropsInterface) => {
   };
 
   return (
-    <OfficePopup title="Edit Office" onClose={onClose}>
+    <OfficePopup title={t("pages.office.editOffice.title")} onClose={onClose}>
       <div className="edit-office__container">
         {itemCategories.length > 0 && (
           <RadioButton

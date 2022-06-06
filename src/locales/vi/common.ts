@@ -23,5 +23,8 @@ export const TranslationViCommon = {
     create: "Tạo",
     join: "Tham gia",
     save: "Lưu",
+    edit: "Chỉnh sửa",
+    delete: "Xóa",
+    send: "Gửi",
   },
 };

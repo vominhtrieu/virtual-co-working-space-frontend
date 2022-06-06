@@ -60,9 +60,66 @@ export const TranslationViPages = {
       account: "Tài khoản của bạn",
       editCharacter: "Sửa nhân vật",
       logout: "Đăng xuất",
-    }
+    },
   },
   office: {
     title: "Văn phòng",
+
+    // office detail
+    officeDetail: {
+      title: "Thông tin văn phòng",
+      name: "Tên phòng",
+      description: "Mô tả",
+      owner: "Chủ phòng",
+      members: "Thành viên",
+      createAt: "Ngày tạo",
+      joinAt: "Ngày tham gia",
+      code: "Mã phòng",
+      invite: "Gửi lời mời",
+    },
+
+    // chat list
+    chatList: {
+      title: "Danh sách hội thoại",
+      createChat: "Tạo hội thoại",
+    },
+
+    // chat box
+    chatBox: {
+      title: "Hội thoại",
+      enterMessage: "Nhập tin nhắn ...",
+    },
+
+    // setting
+    setting: {
+      title: "Cài đặt",
+      language: "Ngôn ngữ",
+      volume: "Âm lượng",
+    },
+
+    // member list
+    memberList: {
+      title: "Danh sách thành viên",
+      owner: "Chủ phòng",
+      member: "Thành viên",
+      admin: "Quản trị",
+      changeRole: "Thay đổi vai trò",
+    },
+
+    // edit character
+    editCharacter: {
+      title: "Sửa nhân vật",
+    },
+
+    // emoji
+    emoji: {
+      gestures: "Hành động",
+      emojis: "Biểu cảm",
+    },
+
+    // edit office
+    editOffice: {
+      title: "Sửa văn phòng",
+    },
   },
 };

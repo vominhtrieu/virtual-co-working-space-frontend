@@ -1,3 +1,4 @@
+import i18next from "i18next";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -202,6 +203,11 @@ function App() {
   );
 
   const { isAuthenticated } = useSelector((state: any) => state.auth);
+
+  useEffect(() => {
+    const language = getDataLocal("language");
+    i18next.changeLanguage(language);
+  }, []);
 
   // useEffect(() => {
   //     if (isAuthenticated) {
