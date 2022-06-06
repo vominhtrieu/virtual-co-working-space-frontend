@@ -49,7 +49,6 @@ const ResetForm = ({handleResetSubmit}: FormPropsInterface) => {
     return (
         <form className='reset-form' onSubmit={handleSubmit(onResetSubmit)}>
             <h3 className='reset-form__title'>New Password</h3>
-            <p className='reset-form__content'> Enter your email to reset password.</p>
             <div className='reset-form__input-block'>
                 <InputText
                     type='password'
