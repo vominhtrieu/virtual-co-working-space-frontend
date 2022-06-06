@@ -44,7 +44,6 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
     x: 0,
     y: 0,
   });
-  const [isCustomizing, setIsCustomizing] = useState(false);
   const [characterGesture, setCharacterGesture] = useState({ idx: -1 });
   const [characterEmoji, setCharacterEmoji] = useState({ idx: -1 });
   const [onlineMembers, setOnlineMembers] = useState<OfficeMembersInterface[]>(
@@ -122,7 +121,9 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
     setSelectedObject(null);
     setSelectedKey(null);
     setObjectActionVisible(false);
-    socket.emit("office_item:delete", selectedKey);
+    socket.emit("office_item:delete", {
+        id: selectedKey
+    });
   };
 
   useEffect(() => {
@@ -204,7 +205,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
       itemId: item.id,
       officeId: officeId,
       xPosition: 0,
-      yPosition: 1,
+      yPosition: 0,
       zPosition: 0,
       xRotation: 0,
       yRotation: 0,
@@ -235,7 +236,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
 
   const handleGestureClick = (gestureIdx: number) => {
     setCharacterGesture({ idx: gestureIdx });
-
+    
     socket.emit("gesture", {
       gestureId: gestureIdx,
     });
@@ -270,6 +271,10 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
               )
             );
           }
+
+          if (res.data.office?.officeItems.length > 0) {
+              setObjectList(res.data.office.officeItems);
+          }
         }
       })
       .catch((err) => {
@@ -279,12 +284,11 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
 
   return (
     <>
-      {!isCustomizing && !mobile && <CallingBar />}
+      {action !== "config" && !mobile && <CallingBar />}
       <OfficeCanvas
         setObjectionClickPos={setObjectionClickPos}
         characterGesture={characterGesture}
         characterEmoji={characterEmoji}
-        isCustomizing={action === "config"}
         objectActionVisible={objectActionVisible}
         objectList={objectList}
         selectedObject={selectedObject}
@@ -294,6 +298,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
         setSelectedObject={setSelectedObject}
         handleObject3dDragged={handleObject3dDragged}
         onlineMembers={onlineMembers}
+        action={action}
       />
       {!mobile && (
         <OfficeInterface

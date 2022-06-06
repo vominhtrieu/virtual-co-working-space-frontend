@@ -34,4 +34,92 @@ export const TranslationEnPages = {
     confirmPassword: "Password Confirmation",
     login: "Login",
   },
+  lobby: {
+    title: "Lobby",
+    createOffice: "Create Office",
+    joinOffice: "Join Office",
+    inputSearch: "Input search text",
+
+    // office list
+    code: "Code",
+    owner: "Owner",
+
+    createForm: {
+      name: "Office Name",
+      enterName: "Enter office name ...",
+      description: "Description",
+      enterDescription: "Enter description ...",
+      joinByCode: "Join by code",
+      createNew: "Create new",
+      code: "Code",
+      enterCode: "Enter code ...",
+    },
+
+    // user menu
+    userMenu: {
+      account: "Your Account",
+      editCharacter: "Edit Character",
+      logout: "Logout",
+    },
+  },
+  office: {
+    title: "Office",
+
+    // office detail
+    officeDetail: {
+      title: "Office Detail",
+      name: "Name",
+      description: "Description",
+      owner: "Owner",
+      members: "Members",
+      createAt: "Created At",
+      joinAt: "Joined At",
+      code: "Code",
+      invite: "Send invite",
+    },
+
+    // chat list
+    chatList: {
+      title: "Chat List",
+      createChat: "Create Chat",
+    },
+
+    // chat box
+    chatBox: {
+      title: "Chat Box",
+      enterMessage: "Enter message ...",
+    },
+
+    // setting
+    setting: {
+      title: "Setting",
+      language: "Language",
+      volume: "Volume",
+    },
+
+    // member list
+    memberList: {
+      title: "Member List",
+      owner: "Owner",
+      member: "Member",
+      admin: "Admin",
+      changeRole: "Change Role",
+    },
+
+    // edit character
+    editCharacter: {
+      title: "Edit Character",
+    },
+
+    // emoji
+    emoji: {
+      gestures: "Gestures",
+      emojis: "Emojis",
+    },
+
+    // edit office
+    editOffice: {
+      title: "Edit Office",
+    },
+  },
 };

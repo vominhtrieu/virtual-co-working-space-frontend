@@ -22,6 +22,43 @@
     }
   }
 
+  &__search {
+    .ant-input-search > .ant-input-group > .ant-input-group-addon:last-child {
+      left: -1px;
+      padding: 0;
+      border-radius: 50%;
+      border:none ;
+  }
+    .ant-input, .ant-input-search {
+      border: 1px solid $color-white;
+      border-radius: 2rem;
+      background-color: transparent;
+      color: $color-white;
+
+      &:focus, :hover{
+        border: none;
+        color: $color-white;
+        box-shadow: none;
+      }
+    }
+
+    .ant-input{
+      border: none;
+    }
+
+
+    .ant-input-group-addon {
+      .ant-input-search-button {
+        background-color: $color-primary-dark;
+        border: none;
+        border-radius: 50% !important;
+        .anticon-search{
+          color: $color-white;
+        }
+      }
+    }
+  }
+
   &__logo_img {
     width: 6rem;
     height: 6rem;

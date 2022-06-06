@@ -1,7 +1,7 @@
 // import React, { useState } from "react";
 import { Col, Row, Spin } from "antd";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import loginImage from "../../../assets/images/login/login.gif";
 import LoginForm from "../../../components/login/login-form";
 import { saveData } from "../../../helpers/cookies";

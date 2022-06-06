@@ -79,7 +79,7 @@ export default function ItemModel({url, itemId}: ItemModelProps) {
         mass: 0,
         position: (ref.current && vectorToArray(ref.current.parent.position)) || [0, 0, 0],
         args: (boundingBox && [boundingBox.max.x - boundingBox.min.x, boundingBox.max.y - boundingBox.min.y, boundingBox.max.z - boundingBox.min.z])||[0,0,0],
-    }))
+    }))    
 
     useFrame(()=>{
         if (ref.current && ref.current.parent) {

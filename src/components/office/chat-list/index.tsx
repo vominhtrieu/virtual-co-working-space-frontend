@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../../stores";
 import { userSelectors } from "../../../stores/auth-slice";
 import { socketSelector } from "../../../stores/socket-slice";
@@ -21,6 +22,8 @@ const ChatList = (props: ChatListProps) => {
 
   const userInfo = useAppSelector(userSelectors.getUserInfo);
   const socket = useAppSelector(socketSelector.getSocket);
+
+  const { t } = useTranslation();
 
   const handleCreateConversation = (values) => {
     socket.emit("conversation:create", {
@@ -58,7 +61,12 @@ const ChatList = (props: ChatListProps) => {
           )}
         />
       )}
-      <RightBar onClose={onClose} isAdd onAdd={() => setIsCreate(true)}>
+      <RightBar
+        onClose={onClose}
+        isAdd
+        onAdd={() => setIsCreate(true)}
+        title={t("pages.office.chatList.title")}
+      >
         {conversationList?.map((conversation) => {
           return (
             <ChatItem

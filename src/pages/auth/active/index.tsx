@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toastError, toastSuccess } from "../../../helpers/toast";
 import ActiveProxy from "../../../services/proxy/auth/active";
 import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
-import Home from "../../home/Home";
+import Lobby from "../../lobby";
 
 
 function Active() {
@@ -39,7 +39,7 @@ function Active() {
 
 
   return (
-    <Home/>
+    <Lobby/>
   );
 }
 

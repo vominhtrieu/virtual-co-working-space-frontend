@@ -14,6 +14,7 @@ import { ChatBoxProps, ChatItemInterface } from "./types";
 import { v4 as uuidv4 } from "uuid";
 import UpdateConversationForm from "./update-conversation-form";
 import AddMemberConversationForm from "./add-member-form";
+import { useTranslation } from "react-i18next";
 
 const ChatBox = (props: ChatBoxProps) => {
   const {
@@ -36,6 +37,8 @@ const ChatBox = (props: ChatBoxProps) => {
   const inputRef = useRef<any>(null);
 
   const userInfo = useAppSelector(userSelectors.getUserInfo);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     GetMessagesProxy({ id: conversationId })
@@ -353,7 +356,7 @@ const ChatBox = (props: ChatBoxProps) => {
               <div className="chat-box__emoji-table" ref={emojiBoxRef}>
                 {emojiList.map((emoji, index) => {
                   return (
-                    <span
+                    <div
                       key={index}
                       className="chat-box__emoji-item"
                       onClick={() => {
@@ -361,7 +364,7 @@ const ChatBox = (props: ChatBoxProps) => {
                       }}
                     >
                       {emoji.content}
-                    </span>
+                    </div>
                   );
                 })}
               </div>
@@ -375,7 +378,7 @@ const ChatBox = (props: ChatBoxProps) => {
             size="large"
             name="message"
             control={control}
-            placeholder="Nhập tin nhắn"
+            placeholder={t("pages.office.chatBox.enterMessage")}
             style={{
               outline: "none",
               border: "none",

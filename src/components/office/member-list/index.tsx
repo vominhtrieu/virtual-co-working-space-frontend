@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../../stores";
 import { userSelectors } from "../../../stores/auth-slice";
 import RightBar from "../../layouts/rightbar";
@@ -9,11 +10,12 @@ import { MemberListProps } from "./types";
 const MemberList = (props: MemberListProps) => {
   const { onClose, officeDetail } = props;
   const [isChangeRole, setIsChangeRole] = useState(false);
+  const { t } = useTranslation();
 
   const userInfo = useAppSelector(userSelectors.getUserInfo);
 
-  const handleOpenSettingPopup = (memberId: number) => {
-    if (memberId !== userInfo.id) {
+  const handleOpenSettingPopup = () => {
+    if (officeDetail.createdBy.id === userInfo.id) {
       setIsChangeRole(true);
     }
   };
@@ -23,7 +25,7 @@ const MemberList = (props: MemberListProps) => {
   };
 
   return (
-    <RightBar onClose={onClose}>
+    <RightBar onClose={onClose} title={t("pages.office.memberList.title")}>
       {isChangeRole && (
         <ChangeRoleForm
           onClose={() => setIsChangeRole(false)}
@@ -39,11 +41,11 @@ const MemberList = (props: MemberListProps) => {
             avatarUrl={member.member.avatar}
             role={
               member.member.id === officeDetail.createdBy.id
-                ? "owner"
-                : "member"
+                ? t("pages.office.memberList.owner")
+                : t("pages.office.memberList.member")
             }
             isOnline
-            onClick={() => handleOpenSettingPopup(member.member.id)}
+            onClick={handleOpenSettingPopup}
           />
         );
       })}
