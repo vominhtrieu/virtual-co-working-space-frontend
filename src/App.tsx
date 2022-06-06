@@ -94,7 +94,7 @@ function UnauthenticatedRoutes() {
     const refreshToken = location.search.slice(1).split("&")[2]?.split("=")[1];
     const error = location.search.slice(1).split("&")[0]?.split("=")[1];
     if (error === "400") {
-      toastError("Tài khoản email đã được sử dụng");
+      toastError("Email này đã được đăng ký, hãy đăng nhập bằng mật khẩu!");
     }
     if (accessToken && refreshToken) {
       saveDataLocal("access_token", accessToken);
