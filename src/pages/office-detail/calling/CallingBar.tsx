@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from "../../../stores";
 // import { connect } from "../../../stores/socket-slice";
 import { socketSelector } from "../../../stores/socket-slice";
 import { FaCamera, FaMicrophone } from "react-icons/fa";
+import { v4 } from "uuid";
 
 export default function CallingBar() {
   const videoContainer = useRef<any>();
@@ -24,10 +25,10 @@ export default function CallingBar() {
   console.log(socket.connected);
   const myPeer = useMemo(
     () =>
-      new Peer("undefined", {
+      new Peer(v4(), {
         host: process.env.REACT_APP_PEER_SERVER_HOST + "",
         port: +(process.env.REACT_APP_PEER_SERVER_PORT + ""),
-        path: "/peer",
+        path: "/peer",  
       }),
     []
   );
