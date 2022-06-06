@@ -23,6 +23,15 @@
   }
 
   &__search {
+    & input {
+      padding: 10px;
+      padding-left: 20px;
+    }
+
+    & .ant-input-group-addon {
+      background: none;
+    }
+
     .ant-input-search > .ant-input-group > .ant-input-group-addon:last-child {
       left: -1px;
       padding: 0;
@@ -48,6 +57,7 @@
 
 
     .ant-input-group-addon {
+      padding-right: 10px !important;
       .ant-input-search-button {
         background-color: $color-primary-dark;
         border: none;
