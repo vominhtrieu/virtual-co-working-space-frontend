@@ -323,17 +323,17 @@ export default function Character(props: CharacterProps) {
   materials.Head.color.setStyle(
     AppearanceGroups[0].items[appearance.skinColor].hex
   );
-  // materials.Eye.color.setStyle(
-  //   AppearanceGroups[0].items[appearance.skinColor].hex
-  // );
+  materials.Eye.color.setStyle(
+    AppearanceGroups[0].items[appearance.skinColor].hex
+  );
   materials.Body.color.setStyle(
-    AppearanceGroups[4].items[appearance.shirtColor].hex
+    AppearanceGroups[3].items[appearance.shirtColor].hex
   );
   materials.Pant.color.setStyle(
-    AppearanceGroups[5].items[appearance.pantColor].hex
+    AppearanceGroups[4].items[appearance.pantColor].hex
   );
   materials.Shoes.color.setStyle(
-    AppearanceGroups[6].items[appearance.shoeColor].hex
+    AppearanceGroups[5].items[appearance.shoeColor].hex
   );
 
   return (

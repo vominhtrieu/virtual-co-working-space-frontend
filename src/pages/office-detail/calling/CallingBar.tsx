@@ -21,7 +21,7 @@ export default function CallingBar() {
   const socket = useAppSelector(socketSelector.getSocket);
   const [cameraEnabled, setCameraEnabled] = useState(true);
   const [microphoneEnabled, setMicrophoneEnabled] = useState(true);
-
+  console.log(socket.connected);
   const myPeer = useMemo(
     () =>
       new Peer("undefined", {
