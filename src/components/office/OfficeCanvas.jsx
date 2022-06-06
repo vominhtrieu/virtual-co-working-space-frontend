@@ -81,70 +81,68 @@ export default function OfficeCanvas({
         />
         <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45} />
         <ambientLight />
-        <Stats />
+        {/* <Stats /> */}
         <Suspense fallback={<Box />}>
           <Physics gravity={[0, 0, 0]}>
-            <Debug>
-              <Office castShadow={true} />
-              {objectList.map((object) => (
-                <mesh
-                  castShadow={true}
-                  key={object.id}
-                  position={[
-                    object.transform.xPosition,
-                    object.transform.yPosition,
-                    object.transform.zPosition,
-                  ]}
-                  rotation={[
-                    object.transform.xRotation,
-                    object.transform.yRotation,
-                    object.transform.zRotation,
-                  ]}
-                  onClick={(e) => handleObject3dClick(e, object.id)}
-                  onPointerMissed={handleObject3dPointerMissed}
-                >
-                  <Suspense fallback={null}>
-                    <ItemModel url={object.item.modelPath} itemId={object.id} />
-                  </Suspense>
-                </mesh>
-              ))}
-              {!isCustomizing && onlineMembers.map((member) =>
-                member.member.id === userInfo.id ? <Character
-                  key={member.id}
-                  appearance={appearance}
-                  startPosition={[member.transform.position.x, 2.5, member.transform.position.z]}
-                  startRotation={[member.transform.rotation.x, member.transform.rotation.y, member.transform.rotation.z]}
-                  scale={[2, 2, 2]}
-                  orbitRef={orbitRef}
-                  movable
-                  volume={volume}
-                  currentEmoji={characterEmoji}
-                  currentGesture={characterGesture}
-                /> : <MemberCharacter
-                  key={member.id}
-                  appearance={appearance}
-                  startPosition={[member.transform.position.x, 2.5, member.transform.position.z]}
-                  startRotation={[member.transform.rotation.x, member.transform.rotation.y, member.transform.rotation.z]}
-                  scale={[2, 2, 2]}
-                  orbitRef={orbitRef}
-                  movable
-                  volume={volume}
-                  currentEmoji={characterEmoji}
-                  currentGesture={characterGesture}
-                  memberId={member.member.id}
-                />
-              )}
-
-              {/* <Stats className="stats" /> */}
-
-              <CustomTransformControl
-                object={selectedObject}
-                objectKey={selectedKey}
-                orbit={orbitRef}
-                visible={objectActionVisible && isCustomizing}
-                handleObject3dDragged={handleObject3dDragged}
+            <Office castShadow={true} />
+            {objectList.map((object) => (
+              <mesh
+                castShadow={true}
+                key={object.id}
+                position={[
+                  object.transform.xPosition,
+                  object.transform.yPosition,
+                  object.transform.zPosition,
+                ]}
+                rotation={[
+                  object.transform.xRotation,
+                  object.transform.yRotation,
+                  object.transform.zRotation,
+                ]}
+                onClick={(e) => handleObject3dClick(e, object.id)}
+                onPointerMissed={handleObject3dPointerMissed}
+              >
+                <Suspense fallback={null}>
+                  <ItemModel url={object.item.modelPath} itemId={object.id} />
+                </Suspense>
+              </mesh>
+            ))}
+            {!isCustomizing && onlineMembers.map((member) =>
+              member.member.id === userInfo.id ? <Character
+                key={member.id}
+                appearance={appearance}
+                startPosition={[member.transform.position.x, 2.5, member.transform.position.z]}
+                startRotation={[member.transform.rotation.x, member.transform.rotation.y, member.transform.rotation.z]}
+                scale={[2, 2, 2]}
+                orbitRef={orbitRef}
+                movable
+                volume={volume}
+                currentEmoji={characterEmoji}
+                currentGesture={characterGesture}
+              /> : <MemberCharacter
+                key={member.id}
+                appearance={appearance}
+                startPosition={[member.transform.position.x, 2.5, member.transform.position.z]}
+                startRotation={[member.transform.rotation.x, member.transform.rotation.y, member.transform.rotation.z]}
+                scale={[2, 2, 2]}
+                orbitRef={orbitRef}
+                movable
+                volume={volume}
+                currentEmoji={characterEmoji}
+                currentGesture={characterGesture}
+                memberId={member.member.id}
               />
-            </Debug>
+            )}
+
+            {/* <Stats className="stats" /> */}
+
+            <CustomTransformControl
+              object={selectedObject}
+              objectKey={selectedKey}
+              orbit={orbitRef}
+              visible={objectActionVisible && isCustomizing}
+              handleObject3dDragged={handleObject3dDragged}
+            />
           </Physics>
         </Suspense>
       </Provider>

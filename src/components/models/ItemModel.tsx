@@ -61,8 +61,8 @@ export default function ItemModel({url, itemId}: ItemModelProps) {
             boundingBox.max.z = Math.max(boundingBox.max.z, node.geometry.boundingBox.max.z);
         }
         const diff = 0 - boundingBox.min.y;
-        boundingBox.min.y += diff;
-        boundingBox.max.y += diff;
+        boundingBox.min.y += diff + 1;
+        boundingBox.max.y += diff + 1;
 
         const divisor = 25; //Just my guess. It may be wrong hihi
         boundingBox.max.x /= divisor;
