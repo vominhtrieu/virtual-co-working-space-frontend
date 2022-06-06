@@ -353,7 +353,7 @@ const ChatBox = (props: ChatBoxProps) => {
               <div className="chat-box__emoji-table" ref={emojiBoxRef}>
                 {emojiList.map((emoji, index) => {
                   return (
-                    <span
+                    <div
                       key={index}
                       className="chat-box__emoji-item"
                       onClick={() => {
@@ -361,7 +361,7 @@ const ChatBox = (props: ChatBoxProps) => {
                       }}
                     >
                       {emoji.content}
-                    </span>
+                    </div>
                   );
                 })}
               </div>
