@@ -239,7 +239,6 @@ export default function Character(props: CharacterProps) {
       count.current++;
       clip = actions.Walking;
     } else {
-      console.log(gesturePlaying)
       if (gesturePlaying) {
         clip = actions[getGesture()];
       } else {
