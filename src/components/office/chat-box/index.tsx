@@ -74,12 +74,12 @@ const ChatBox = (props: ChatBoxProps) => {
                         id: r.readerId,
                         name:
                           officeDetail.officeMembers.find(
-                            (m) => m.id === r.readerId
+                            (m) => m.member.id === r.readerId
                           )?.member.name ?? "Tên",
 
                         avatar:
                           officeDetail.officeMembers.find(
-                            (m) => m.id === r.readerId
+                            (m) => m.member.id === r.readerId
                           )?.member.avatar ??
                           "https://static.vecteezy.com/system/resources/thumbnails/003/337/584/small/default-avatar-photo-placeholder-profile-icon-vector.jpg",
                       };
