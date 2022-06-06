@@ -1,9 +1,13 @@
-import { PopupPropsInterface } from './types'
-import { FaSave, FaTimes } from 'react-icons/fa'
-import NewButton from '../new-button'
+import { PopupPropsInterface } from "./types";
+import { FaSave, FaTimes } from "react-icons/fa";
+import NewButton from "../new-button";
+import { useTranslation } from "react-i18next";
 
 const Popup = (props: PopupPropsInterface) => {
-  const { children, onClose, title, type, onSubmit, hasFooter } = props
+  const { children, onClose, title, type, onSubmit, hasFooter } = props;
+
+  const { t } = useTranslation();
+
   return (
     <div className="popup">
       <div className="popup__background" onClick={onClose} />
@@ -17,16 +21,16 @@ const Popup = (props: PopupPropsInterface) => {
         <div className="popup__content">{children}</div>
         {hasFooter && (
           <div className="popup__footer">
-            {props.customButton && (<div className="popup__btn">
-              {props.customButton}
-            </div>)}
+            {props.customButton && (
+              <div className="popup__btn">{props.customButton}</div>
+            )}
 
             <div className="popup__btn">
               <NewButton
                 type="reset"
                 variant="outlined"
                 onClick={onClose}
-                content="Cancel"
+                content={t("default.action.cancel")}
                 icon={<FaTimes />}
               />
             </div>
@@ -35,7 +39,7 @@ const Popup = (props: PopupPropsInterface) => {
               <NewButton
                 type="submit"
                 variant="primary"
-                content="Save"
+                content={t("default.action.save")}
                 onClick={onSubmit}
                 icon={<FaSave />}
               />
@@ -44,7 +48,7 @@ const Popup = (props: PopupPropsInterface) => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Popup
+export default Popup;

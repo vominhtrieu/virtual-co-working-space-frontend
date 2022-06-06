@@ -34,4 +34,35 @@ export const TranslationEnPages = {
     confirmPassword: "Password Confirmation",
     login: "Login",
   },
+  lobby: {
+    title: "Lobby",
+    createOffice: "Create Office",
+    joinOffice: "Join Office",
+    inputSearch: "Input search text",
+
+    // office list
+    code: "Code",
+    owner: "Owner",
+
+    createForm: {
+      name: "Office Name",
+      enterName: "Enter office name ...",
+      description: "Description",
+      enterDescription: "Enter description ...",
+      joinByCode: "Join by code",
+      createNew: "Create new",
+      code: "Code",
+      enterCode: "Enter code ...",
+    },
+
+    // user menu
+    userMenu: {
+      account: "Your Account",
+      editCharacter: "Edit Character",
+      logout: "Logout",
+    }
+  },
+  office: {
+    title: "Office",
+  },
 };

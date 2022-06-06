@@ -13,7 +13,15 @@ export const TranslationEnCommon = {
     oneLowercase: "{{field}} must be at least 1 lowercase",
     oneNumber: "{{field}} must be at least 1 number",
     oneSpecial: "{{field}} must be at least 1 special",
-    password: "Must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
+    password:
+      "Must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
     phone: "Phone must be a valid phone number",
+  },
+  action: {
+    cancel: "Cancel",
+    confirm: "Confirm",
+    create: "Create",
+    join: "Join",
+    save: "Save",
   },
 };

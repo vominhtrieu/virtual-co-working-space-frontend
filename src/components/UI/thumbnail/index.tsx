@@ -1,61 +1,65 @@
-import { useEffect, useState } from 'react'
-import { FaCopy } from 'react-icons/fa'
-import { toastSuccess } from '../../../helpers/toast'
-import OfficeDetailProxy from '../../../services/proxy/offices/office-detail'
-import { ProxyStatusEnum } from '../../../types/http/proxy/ProxyStatus'
-import { ThumbnailPropsInterface } from './types'
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { FaCopy } from "react-icons/fa";
+import { toastSuccess } from "../../../helpers/toast";
+import OfficeDetailProxy from "../../../services/proxy/offices/office-detail";
+import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
+import { ThumbnailPropsInterface } from "./types";
 
-const srcTemp = 'https://images.pexels.com/photos/5011647/pexels-photo-5011647.jpeg'
+const srcTemp =
+  "https://images.pexels.com/photos/5011647/pexels-photo-5011647.jpeg";
 
 const Thumbnail = (props: ThumbnailPropsInterface) => {
-  const { src, alt, office, onClick } = props
+  const { src, alt, office, onClick } = props;
 
-  const [memberTotal, setMemberTotal] = useState(0)
-  const [online, setOnline] = useState(0)
+  const { t } = useTranslation();
 
+  const [memberTotal, setMemberTotal] = useState(0);
+  const [online, setOnline] = useState(0);
 
   const formatName = (name: any) => {
-    if (name.length > 17)
-      return name.substr(0, 15) + "...";
+    if (name.length > 17) return name.substr(0, 15) + "...";
     return name;
-  }
-
+  };
 
   useEffect(() => {
-    if (!office) return
+    if (!office) return;
 
     OfficeDetailProxy({ id: office.id })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          return
+          return;
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          setMemberTotal(res.data.office.officeMembers.length)
-          let countOnline = 0
+          setMemberTotal(res.data.office.officeMembers.length);
+          let countOnline = 0;
           res.data.office.officeMembers.forEach((member) => {
-            if (member.onlineStatus === 'online') countOnline++
-          })
+            if (member.onlineStatus === "online") countOnline++;
+          });
 
-          setOnline(countOnline)
+          setOnline(countOnline);
         }
       })
       .catch((err) => {
-        console.log(err)
-      })
-  }, [office])
+        console.log(err);
+      });
+  }, [office]);
 
   const handleCopy = () => {
-    if (!office) return
-    navigator.clipboard.writeText(office.invitationCode)
+    if (!office) return;
+    navigator.clipboard.writeText(office.invitationCode);
 
-    toastSuccess('Copied to clipboard')
-  }
+    toastSuccess("Copied to clipboard");
+  };
 
   return (
-    <div className="thumbnail" style={{
-      backgroundImage: `url("${src ? src : srcTemp}")`
-    }}>
+    <div
+      className="thumbnail"
+      style={{
+        backgroundImage: `url("${src ? src : srcTemp}")`,
+      }}
+    >
       <div className="thumbnail__content">
         {/* header - start */}
         <div className="thumbnail__content-header">
@@ -72,7 +76,9 @@ const Thumbnail = (props: ThumbnailPropsInterface) => {
         {/* header - end */}
 
         <div className="thumbnail__content-item">
-          <span className="thumbnail__content-label">Code: </span>
+          <span className="thumbnail__content-label">
+            {t("pages.lobby.code")}:{" "}
+          </span>
           <span className="thumbnail__content-value">
             {office?.invitationCode}
           </span>
@@ -80,14 +86,16 @@ const Thumbnail = (props: ThumbnailPropsInterface) => {
         </div>
 
         <div className="thumbnail__content-item">
-          <span className="thumbnail__content-label">Owner: </span>
+          <span className="thumbnail__content-label">
+            {t("pages.lobby.owner")}:{" "}
+          </span>
           <span className="thumbnail__content-value">
             {office?.createdBy?.name}
           </span>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Thumbnail
+export default Thumbnail;
