@@ -14,7 +14,6 @@ import { AppearanceGroups } from "../../helpers/constants";
 const itemGroups = AppearanceGroups;
 
 const CharacterForm = (props: CharacterFormProps) => {
-  const [itemGroupSelected, setItemGroupSelected] = useState(0);
   const [position, setPosition] = useState(0);
   const [selectedIndexes, setSelectedIndexes] = useState<number[]>(Array<number>(itemGroups.length).fill(0, 0, itemGroups.length));
 
@@ -37,29 +36,6 @@ const CharacterForm = (props: CharacterFormProps) => {
   const { onClose } = props;
   const character = useContext(CharacterContext);
 
-  // const handleBottomMenuItemClick = ({ code }: any) => {
-  //   switch (code) {
-  //     case "Hair1":
-  //       character.changeCharacter({ ...character, hairStyle: 1 });
-  //       break;
-  //     case "Hair2":
-  //       character.changeCharacter({ ...character, hairStyle: 2 });
-  //       break;
-  //     case "Eyes1":
-  //       character.changeCharacter({ ...character, eyeStyle: 1 });
-  //       break;
-  //     case "Eyes2":
-  //       character.changeCharacter({ ...character, eyeStyle: 2 });
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
-
-  // const handleClickCategory = (id: number) => {
-  //   setItemGroupSelected(id);
-  // };
-
   return (
     <Popup
       onClose={onClose}
@@ -70,13 +46,11 @@ const CharacterForm = (props: CharacterFormProps) => {
         <div className="character-custom__container-left">
           <Canvas
             shadows={{ enabled: true, autoUpdate: true }}
-            camera={{ position: [0, 2, 5], zoom: 2.2 }}
+            camera={{ position: [0, 2, 5], zoom: 4 }}
             style={{
               height: "100%",
               background: "transparent",
-              position: "fixed",
-              left: 0,
-              width: "50%",
+              width: "100%",
             }}
           >
             <OrbitControls
@@ -85,6 +59,7 @@ const CharacterForm = (props: CharacterFormProps) => {
               removeEventListener={undefined}
               dispatchEvent={undefined}
               enablePan={false}
+              enableZoom={false}
               minPolarAngle={Math.PI / 2}
               maxPolarAngle={Math.PI / 2}
             />
@@ -97,47 +72,13 @@ const CharacterForm = (props: CharacterFormProps) => {
             <Suspense fallback={<Box />}>
               <DisplayCharacter
                 appearance={character}
-                startPosition={[0, -0.5, 0]}
+                startPosition={[0, -1, 0]}
                 movable={false}
               />
             </Suspense>
           </Canvas>
         </div>
-
-        {/* <div className="character-custom__container-right">
-          <RadioButton
-            listCategory={AppearanceGroups.map((item, index) => {
-              return {
-                id: index,
-                name: item.groupName,
-              };
-            })}
-            onClick={handleClickCategory}
-          />
-          <div className="character-custom__content">
-            <div className="character-custom__list">
-              <div className="character-custom__item-list">
-                {itemGroups[itemGroupSelected].items &&
-                  itemGroups[itemGroupSelected].items.map((item: any) => {
-                    return (
-                      <Button
-                        className="character-custom__btn-select"
-                        onClick={() => {
-                          handleBottomMenuItemClick(item);
-                        }}
-                      >
-                        <img
-                          alt="models"
-                          src={item.url}
-                          className="character-custom__item-img"
-                        />
-                      </Button>
-                    );
-                  })}
-              </div>
-            </div>
-          </div>
-        </div> */}
+        
         <div className="character-custom__container-right">
           <div className="character-custom__content">
             <div style={{

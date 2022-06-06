@@ -1,4 +1,14 @@
 .character-custom {
+  &__container {
+    & h2,h3 {
+      color: white !important;
+    }
+
+    & h3 {
+      cursor: pointer;
+    }
+  }
+
   &__title {
     font-size: 2rem;
     font-weight: 700;
@@ -29,12 +39,12 @@
     grid-gap: 0rem;
 
     &-left {
-      border-right: 2px solid #0F044C;
       height: 100%;
     }
 
     &-right {
       padding: 1rem;
+      color: white;
     }
   }
 
@@ -45,7 +55,9 @@
     position: absolute;
     bottom: 10px;
     right: 10px;
+    color: white;
   }
+
   &__btn-icon {
     display: flex;
     justify-content: space-around;
@@ -85,7 +97,7 @@
 
   &__item-list {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     margin: auto;
   }

@@ -323,9 +323,9 @@ export default function Character(props: CharacterProps) {
   materials.Head.color.setStyle(
     AppearanceGroups[0].items[appearance.skinColor].hex
   );
-  materials.Eye.color.setStyle(
-    AppearanceGroups[0].items[appearance.skinColor].hex
-  );
+  // materials.Eye.color.setStyle(
+  //   AppearanceGroups[0].items[appearance.skinColor].hex
+  // );
   materials.Body.color.setStyle(
     AppearanceGroups[4].items[appearance.shirtColor].hex
   );
