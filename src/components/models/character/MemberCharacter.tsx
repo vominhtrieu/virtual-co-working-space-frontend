@@ -141,6 +141,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         }
 
         let clip: THREE.AnimationClip = null;
+        console.log(clip);
 
         //update from remote position
         if (shouldUpdate()) {
