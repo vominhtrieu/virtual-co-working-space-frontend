@@ -49,9 +49,9 @@ export default function DisplayCharacter({startPosition, appearance}: CharacterP
             break;
     }
 
-    // if (hair && hair.props.material) {
-    //     hair.props.material.color.setStyle(AppearanceGroups[2].items[appearance.hairColor].hex);
-    // }
+    if (hair && hair.props.material) {
+        hair.props.material.color.setStyle(AppearanceGroups[2].items[appearance.hairColor].hex);
+    }
 
     materials.Skin.color.setStyle(AppearanceGroups[0].items[appearance.skinColor].hex);
     materials.Head.color.setStyle(AppearanceGroups[0].items[appearance.skinColor].hex);

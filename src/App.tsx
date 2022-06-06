@@ -182,15 +182,12 @@ function App() {
           newData = { ...character, hairColor: itemIdx };
           break;
         case 3:
-          newData = { ...character, eyeStyle: itemIdx };
-          break;
-        case 4:
           newData = { ...character, shirtColor: itemIdx };
           break;
-        case 5:
+        case 4:
           newData = { ...character, pantColor: itemIdx };
           break;
-        case 6:
+        case 5:
           newData = { ...character, shoeColor: itemIdx };
           break;
         default:
