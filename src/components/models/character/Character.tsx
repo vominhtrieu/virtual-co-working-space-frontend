@@ -35,9 +35,10 @@ type CharacterProps = JSX.IntrinsicElements["group"] & {
     idx: number;
   };
   currentEmoji?: {
-    idx: number;
-  };
-};
+    idx: number
+  }
+  visible: boolean
+}
 
 type KeyProps = {
   ArrowUp?: boolean;
@@ -62,8 +63,10 @@ const url =
 const MovingSpeed: number = 6;
 
 export default function Character(props: CharacterProps) {
-  audio.volume = props.volume / 100;
-  const socket = useAppSelector(socketSelector.getSocket);
+  const movable = useRef(true);
+  movable.current = props.movable;
+  audio.volume = props.volume / 100
+  const socket = useAppSelector(socketSelector.getSocket)
 
   const { scene, animations, materials } = useCustomGLTF(url) as GLTFResult;
   // const { scene, animations, materials } = useCustomGLTF(
@@ -112,18 +115,18 @@ export default function Character(props: CharacterProps) {
   const getEmoji = () => {
     if (props.currentEmoji && props.currentEmoji.idx >= 0) {
       return loader.load(
-        require(`../../../assets/images/emojis/${
-          EMOJI_LIST[props.currentEmoji?.idx!]
-        }.png`)
-      );
+        require(`../../../assets/images/emojis/${EMOJI_LIST[props.currentEmoji?.idx!]
+          }.png`),
+      )
     } else {
       return loader.load();
     }
   };
 
   useEffect(() => {
-    if (props.currentGesture && props.currentGesture.idx >= 0)
+    if (props.currentGesture && props.currentGesture.idx >= 0) {
       setGesturePlaying(true);
+    }
   }, [props.currentGesture]);
 
   useEffect(() => {
@@ -163,9 +166,11 @@ export default function Character(props: CharacterProps) {
   }, [emojiPlaying]);
 
   const isMoving = () => {
-    const moveVector = getMovingVector(keyPressed);
-    return Math.abs(moveVector.x) > 0.1 || Math.abs(moveVector.z) > 0.1;
-  };
+    if (!movable.current)
+      return false;
+    const moveVector = getMovingVector(keyPressed)
+    return Math.abs(moveVector.x) > 0.1 || Math.abs(moveVector.z) > 0.1
+  }
 
   const getDirectionOffset = () => {
     const vector = getMovingVector(keyPressed);
@@ -181,13 +186,13 @@ export default function Character(props: CharacterProps) {
   };
 
   useFrame((state, delta) => {
-    if (!props.movable) {
-      return;
+    if (!movable.current) {
+      return
     }
     const { camera } = state;
     let clip: THREE.AnimationClip = null;
 
-    if (props.movable && isMoving()) {
+    if (isMoving()) {
       if (gesturePlaying) {
         setGesturePlaying(false);
       }
@@ -220,7 +225,6 @@ export default function Character(props: CharacterProps) {
       api.velocity.set(moveX, 0, moveZ);
 
       // api.quaternion.copy(ref.current.quaternion);
-
       if (count.current > 20) {
         socket.emit("office_member:move", {
           xRotation: rotation.current[0],
@@ -255,9 +259,9 @@ export default function Character(props: CharacterProps) {
   });
 
   useEffect(() => {
-    actions.Idle?.play();
-    if (!props.movable) {
-      return;
+    actions.Idle?.play()
+    if (!movable.current) {
+      return
     }
 
     document.addEventListener("keydown", (event) => {
@@ -266,9 +270,9 @@ export default function Character(props: CharacterProps) {
     });
     document.addEventListener("keyup", (event) => {
       // audio.play();
-      setKeyPressed((keyPressed) => ({ ...keyPressed, [event.key]: false }));
-    });
-  }, [orbitRef, ref, props.movable, actions.Idle]);
+      setKeyPressed((keyPressed) => ({ ...keyPressed, [event.key]: false }))
+    })
+  }, [orbitRef, ref, actions.Idle])
 
   useEffect(() => {
     if (ref.current) {
@@ -297,30 +301,7 @@ export default function Character(props: CharacterProps) {
   }, [match?.params.id]);
 
   const appearance = props.appearance;
-  // let hair: any = null;
-  // switch (appearance.hairStyle) {
-  //     case 0:
-  //         hair = (<skinnedMesh
-  //             geometry={nodes.Hair_1.geometry}
-  //             material={materials["Hair_1"]}
-  //             skeleton={nodes.Hair_1.skeleton}
-  //         />);
-  //         break;
-  //     case 1:
-  //         hair = (<skinnedMesh
-  //             geometry={nodes.Hair_2.geometry}
-  //             material={materials["Hair_2"]}
-  //             skeleton={nodes.Hair_2.skeleton}
-  //         />);
-  //         break;
-  //     case 2:
-  //         hair = (<skinnedMesh
-  //             geometry={nodes.Hair_3.geometry}
-  //             material={materials["Hair_3"]}
-  //             skeleton={nodes.Hair_3.skeleton}
-  //         />);
-  //         break;
-  // }
+
   const hairStyle = `Hair_${appearance.hairStyle + 1}`;
   const hair = (
     <skinnedMesh

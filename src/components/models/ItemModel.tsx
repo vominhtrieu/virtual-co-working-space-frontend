@@ -46,7 +46,6 @@ export default function ItemModel({url, itemId}: ItemModelProps) {
             min: {x: Infinity, y: Infinity, z: Infinity},
             max: {x: -Infinity, y: -Infinity, z: -Infinity},
         }
-        console.log(itemId);
 
         for (let key in obj.nodes) {
             let node = obj.nodes[key];
@@ -54,7 +53,6 @@ export default function ItemModel({url, itemId}: ItemModelProps) {
             if (node.type !== "Mesh") {
                 continue;
             }
-            console.log(node);
             boundingBox.min.x = Math.min(boundingBox.min.x, node.geometry.boundingBox.min.x);
             boundingBox.min.y = Math.min(boundingBox.min.y, node.geometry.boundingBox.min.y);
             boundingBox.min.z = Math.min(boundingBox.min.z, node.geometry.boundingBox.min.z);
@@ -63,8 +61,8 @@ export default function ItemModel({url, itemId}: ItemModelProps) {
             boundingBox.max.z = Math.max(boundingBox.max.z, node.geometry.boundingBox.max.z);
         }
         const diff = 0 - boundingBox.min.y;
-        boundingBox.min.y += diff;
-        boundingBox.max.y += diff;
+        boundingBox.min.y += diff + 1;
+        boundingBox.max.y += diff + 1;
 
         const divisor = 25; //Just my guess. It may be wrong hihi
         boundingBox.max.x /= divisor;

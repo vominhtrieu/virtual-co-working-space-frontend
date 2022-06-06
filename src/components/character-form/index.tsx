@@ -9,58 +9,56 @@ import Button from "../UI/button";
 import Popup from "../UI/popup";
 import RadioButton from "../UI/radio-button";
 import { CharacterFormProps } from "./types";
+import { AppearanceGroups } from "../../helpers/constants";
 
-const itemGroups = [
-  {
-    groupName: "Hair",
-    items: [
-      { code: "Hair1", url: "./images/Hair1.png" },
-      { code: "Hair2", url: "./images/Hair2.png" },
-      { code: "Hair1", url: "./images/Hair1.png" },
-      { code: "Hair2", url: "./images/Hair2.png" },
-      { code: "Hair1", url: "./images/Hair1.png" },
-      { code: "Hair2", url: "./images/Hair2.png" },
-    ],
-  },
-  {
-    groupName: "Eyes",
-    items: [
-      { code: "Eyes1", url: "./images/Eyes1.png" },
-      { code: "Eyes2", url: "./images/Eyes2.png" },
-    ],
-  },
-];
+const itemGroups = AppearanceGroups;
 
 const CharacterForm = (props: CharacterFormProps) => {
   const [itemGroupSelected, setItemGroupSelected] = useState(0);
+  const [position, setPosition] = useState(0);
+  const [selectedIndexes, setSelectedIndexes] = useState<number[]>(Array<number>(itemGroups.length).fill(0, 0, itemGroups.length));
+
+  const handleButtonLeft = () => {
+    if (position <= 0) return
+    if (position >= 1) setPosition(position - 1)
+  }
+
+  const handleButtonRight = () => {
+    if (position >= itemGroups.length - 1) return;
+    if (position < itemGroups.length - 1) setPosition(position + 1)
+  }
+
+  const onItemClick = (groupId, itemId) => {
+    character.changeAppearance(groupId, itemId)
+  }
 
   const { t } = useTranslation();
 
   const { onClose } = props;
   const character = useContext(CharacterContext);
 
-  const handleBottomMenuItemClick = ({ code }: any) => {
-    switch (code) {
-      case "Hair1":
-        character.changeCharacter({ ...character, hairStyle: 1 });
-        break;
-      case "Hair2":
-        character.changeCharacter({ ...character, hairStyle: 2 });
-        break;
-      case "Eyes1":
-        character.changeCharacter({ ...character, eyeStyle: 1 });
-        break;
-      case "Eyes2":
-        character.changeCharacter({ ...character, eyeStyle: 2 });
-        break;
-      default:
-        break;
-    }
-  };
+  // const handleBottomMenuItemClick = ({ code }: any) => {
+  //   switch (code) {
+  //     case "Hair1":
+  //       character.changeCharacter({ ...character, hairStyle: 1 });
+  //       break;
+  //     case "Hair2":
+  //       character.changeCharacter({ ...character, hairStyle: 2 });
+  //       break;
+  //     case "Eyes1":
+  //       character.changeCharacter({ ...character, eyeStyle: 1 });
+  //       break;
+  //     case "Eyes2":
+  //       character.changeCharacter({ ...character, eyeStyle: 2 });
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
 
-  const handleClickCategory = (id: number) => {
-    setItemGroupSelected(id);
-  };
+  // const handleClickCategory = (id: number) => {
+  //   setItemGroupSelected(id);
+  // };
 
   return (
     <Popup
@@ -106,9 +104,9 @@ const CharacterForm = (props: CharacterFormProps) => {
           </Canvas>
         </div>
 
-        <div className="character-custom__container-right">
+        {/* <div className="character-custom__container-right">
           <RadioButton
-            listCategory={itemGroups.map((item, index) => {
+            listCategory={AppearanceGroups.map((item, index) => {
               return {
                 id: index,
                 name: item.groupName,
@@ -135,6 +133,89 @@ const CharacterForm = (props: CharacterFormProps) => {
                         />
                       </Button>
                     );
+                  })}
+              </div>
+            </div>
+          </div>
+        </div> */}
+        <div className="character-custom__container-right">
+          <div className="character-custom__content">
+            <div style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              paddingBottom: 5,
+            }}>
+              <button onClick={handleButtonLeft}
+                style={{
+                  padding: 0, background: "none", border: "none", margin: 0,
+                  display: "flex", alignItems: "center",
+                  justifyContent: "flex-end",
+                  width: 100,
+                  outline: "none"
+                }}>
+                {position > 0 &&
+                  <h3 style={{
+                    margin: 0,
+                    textAlign: "right",
+                    opacity: 0.8
+                  }}>{itemGroups[position - 1].groupName}</h3>
+                }
+              </button>
+              <h2 style={{ margin: 0, marginLeft: 5, marginRight: 5, width: 120, textAlign: "center" }}>
+                {itemGroups[position].groupName}
+              </h2>
+              <button onClick={handleButtonRight}
+                style={{
+                  padding: 0, background: "none", border: "none", margin: 0,
+                  display: "flex", alignItems: "center",
+                  width: 100,
+                  outline: "none"
+                }}>
+                {position < itemGroups.length - 1 &&
+                  <h3 style={{ margin: 0, opacity: 0.8 }}>{itemGroups[position + 1].groupName}</h3>
+                }
+              </button>
+            </div>
+
+            <div className="character-custom__list">
+              <div className="character-custom__item-list">
+                {itemGroups[position].items &&
+                  itemGroups[position].items.map((item: any, index: number) => {
+                    return (
+                      <Button key={item.code}
+                        type="button"
+                        variant="outlined"
+                        className="menu-custom"
+                        style={{
+                          width: 100,
+                          height: 100,
+                          marginRight: 5,
+                          marginLeft: 5,
+                          padding: 0,
+                          background: item.type === "color" ? item.hex : "white",
+                          borderColor: selectedIndexes[position] === index ? "#0777E8" : "#333333",
+                          borderWidth: 4,
+                          borderRadius: 25,
+                          overflow: "hidden",
+                          position: "relative",
+                        }}
+                        onClick={() => {
+                          setSelectedIndexes((indexes: number[]) => {
+                            let temp = [...indexes];
+                            temp[position] = index;
+                            return temp;
+                          });
+                          onItemClick(position, index);
+                        }}
+                      >
+                        {item.type === "image" && <img
+                          alt="models"
+                          src={item.url}
+                          className="character-custom__item-img"
+                        />}
+                      </Button>
+                    )
                   })}
               </div>
             </div>

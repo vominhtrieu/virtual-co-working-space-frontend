@@ -28,6 +28,7 @@ type MemberCharacterProps = JSX.IntrinsicElements["group"] & {
     orbitRef?: any;
     volume: number;
     memberId: number;
+    visible: boolean
 };
 
 let audio = new Audio(stepFoot);
@@ -214,6 +215,10 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [match?.params.id]);
+
+    useEffect(() => {
+        ref.current.visible = props.visible
+    }, [ref, props.visible])
 
     useSocketEvent(socket, props.memberId, updatedPosition, updatedRotation, setCurrentEmoji, setCurrentGesture);
 

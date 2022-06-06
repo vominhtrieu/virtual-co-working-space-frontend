@@ -20,30 +20,30 @@ export default function OfficceCheckInModal () {
     const isLoading = useAppSelector(loadSelectors.getIsLoad);
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        dispatch(setIsLoad(true));
-        IsCheckinProxy({ officeId: +params.id! }).then((res) => {
-            if (res.status === ProxyStatusEnum.FAIL) {
-                toastError(res.message ?? "Find check-in fail");
-            }
+    // useEffect(() => {
+    //     dispatch(setIsLoad(true));
+    //     IsCheckinProxy({ officeId: +params.id! }).then((res) => {
+    //         if (res.status === ProxyStatusEnum.FAIL) {
+    //             toastError(res.message ?? "Find check-in fail");
+    //         }
 
-            if (res.status === ProxyStatusEnum.SUCCESS) {
-                const data = res.data;
-                if (Object.keys(data).length === 0 && data.constructor === Object) {
-                    setOpen(true);
+    //         if (res.status === ProxyStatusEnum.SUCCESS) {
+    //             const data = res.data;
+    //             if (Object.keys(data).length === 0 && data.constructor === Object) {
+    //                 setOpen(true);
 
-                    navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-                        setMyStream(stream);
-                        if (myVideo.current) {
-                            myVideo.current.srcObject = stream;
-                        }
-                    })
-                }
-            }
+    //                 navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+    //                     setMyStream(stream);
+    //                     if (myVideo.current) {
+    //                         myVideo.current.srcObject = stream;
+    //                     }
+    //                 })
+    //             }
+    //         }
 
-            dispatch(setIsLoad(false));
-        })
-    }, [params.id])
+    //         dispatch(setIsLoad(false));
+    //     })
+    // }, [params.id])
 
     const onSubmitClick = () => {
         const width = 500;

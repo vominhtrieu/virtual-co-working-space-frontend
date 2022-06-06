@@ -29,6 +29,7 @@ import PrivateInvitation from "./pages/office-invitation/get-private-invitation"
 import PublicInvitation from "./pages/office-invitation/get-public-invitation";
 import Profile from "./pages/profile";
 import "./scss/main.scss";
+import { getAppearance } from "./services/api/users/get-appearance";
 import { updateAppearance } from "./services/api/users/update-appearance";
 import ProfileProxy from "./services/proxy/users/get-profile";
 import { useAppDispatch } from "./stores";
@@ -209,13 +210,14 @@ function App() {
     i18next.changeLanguage(language);
   }, []);
 
-  // useEffect(() => {
-  //     if (isAuthenticated) {
-  //         getAppearance().then((data) => {
-  //             setCharacter(data);
-  //         })
-  //     }O
-  // }, [isAuthenticated])
+  useEffect(() => {
+      if (isAuthenticated) {
+          getAppearance().then((data) => {
+              setCharacter(data);
+          })
+      }
+  }, [isAuthenticated])
+
   return (
     <CharacterContext.Provider
       value={{
