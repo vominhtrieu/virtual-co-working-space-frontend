@@ -12,8 +12,8 @@ const MemberList = (props: MemberListProps) => {
 
   const userInfo = useAppSelector(userSelectors.getUserInfo);
 
-  const handleOpenSettingPopup = (memberId: number) => {
-    if (memberId !== userInfo.id) {
+  const handleOpenSettingPopup = () => {
+    if (officeDetail.createdBy.id === userInfo.id) {
       setIsChangeRole(true);
     }
   };
@@ -43,7 +43,7 @@ const MemberList = (props: MemberListProps) => {
                 : "member"
             }
             isOnline
-            onClick={() => handleOpenSettingPopup(member.member.id)}
+            onClick={handleOpenSettingPopup}
           />
         );
       })}
