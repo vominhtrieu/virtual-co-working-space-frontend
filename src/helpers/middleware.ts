@@ -6,7 +6,7 @@ import { getData, removeAll } from "./cookies";
 import {
   getDataLocal,
   removeAllDataLocal,
-  saveDataLocal
+  saveDataLocal,
 } from "./localStorage";
 
 export const HTTP_HEADER_KEY = {
@@ -53,10 +53,7 @@ const SetupInterceptors = (store) => {
           }
         );
 
-        if (
-          !refreshTokenResponse ||
-          !refreshTokenResponse.data
-        ) {
+        if (!refreshTokenResponse || !refreshTokenResponse.data) {
           store.dispatch(setAuthenticated(false));
           store.dispatch(setUserInfo({}));
           removeAllDataLocal();
