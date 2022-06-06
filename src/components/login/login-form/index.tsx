@@ -108,14 +108,14 @@ const LoginForm = (props: FormPropsInterface) => {
             <div>{t('pages.login.google')}</div>
           </div>
         </a>
-        <a href={`${process.env.REACT_APP_BASE_URL}/auth/facebook`}>
+        {/* <a href={`${process.env.REACT_APP_BASE_URL}/auth/facebook`}>
           <div className="login-form__social-btn login-form__facebook-btn">
             <div className="login-form__social-item">
               <RiFacebookFill />
             </div>
             <div>{t('pages.login.facebook')}</div>
           </div>
-        </a>
+        </a> */}
       </div>
     </form>
   )
