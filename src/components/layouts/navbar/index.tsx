@@ -25,8 +25,8 @@ const Navbar = (props: NavbarProps) => {
           <div className="navbar__search">
             <Search
               placeholder={t("pages.lobby.inputSearch")}
-              onSearch={(value) => onSubmit(value)}
-              style={{ width: 200 }}
+              onChange={(e) => onSubmit(e.target.value)}
+              style={{ width: 300 }}
             />
           </div>
         )}
