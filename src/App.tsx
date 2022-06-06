@@ -11,7 +11,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CharacterContext from "./context/CharacterContext";
 import { saveData } from "./helpers/cookies";
-import { saveDataLocal } from "./helpers/localStorage";
+import { getDataLocal, saveDataLocal } from "./helpers/localStorage";
+import { toastError } from "./helpers/toast";
 import Active from "./pages/auth/active";
 import ForgotPassword from "./pages/auth/forgot-password";
 import Login from "./pages/auth/login";
@@ -91,6 +92,10 @@ function UnauthenticatedRoutes() {
   useEffect(() => {
     const accessToken = location.search.slice(1).split("&")[0]?.split("=")[1];
     const refreshToken = location.search.slice(1).split("&")[2]?.split("=")[1];
+    const error = location.search.slice(1).split("&")[0]?.split("=")[1];
+    if (error) {
+      toastError("Tài khoản email đã được sử dụng");
+    }
     if (accessToken && refreshToken) {
       saveDataLocal("access_token", accessToken);
       saveData("refresh_token", refreshToken);
@@ -98,6 +103,8 @@ function UnauthenticatedRoutes() {
   }, [location]);
 
   useEffect(() => {
+    const accessToken = getDataLocal("access_token");
+    if (!accessToken) return;
     ProfileProxy()
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
