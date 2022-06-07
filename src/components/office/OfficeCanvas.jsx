@@ -62,7 +62,6 @@ export default function OfficeCanvas({
     // console.log(otherStreams)
     if (myPeer) {
         myPeer.on("open", (id) => {
-            console.log(socket.connected)
             socket.emit("calling:join", {
                 officeId: params.id,
                 peerId: id,
@@ -83,15 +82,14 @@ export default function OfficeCanvas({
 
         navigator.mediaDevices
             .getUserMedia({
-                video: true,
                 audio: true,
             })
             .then((stream) => {
+                console.log("hii")
                 setMyStream(stream);
                 const streamMap = {};
                 myPeer.on("call", (call) => {
                     call.answer({...stream, userId: userInfo.id});
-                    const video = document.createElement("video");
                     call.on("stream", (userVideoStream) => {
                         console.log("User ID:", userVideoStream.userId);
                         if (streamMap[userVideoStream.id]) {
@@ -103,10 +101,11 @@ export default function OfficeCanvas({
                 if (myVideo.current) {
                     myVideo.current.srcObject = stream;
                 }
-            });
-    }, [socket, params.id]);
+            }).catch((err)=>console.log(err));
+    }, [socket, params.id, myPeer, userInfo.id]);
 
     useEffect(() => {
+        console.log(myStream)
         if (!myStream || !myPeer) {
             return;
         }
@@ -118,7 +117,7 @@ export default function OfficeCanvas({
                 const call = myPeer.call(peerId, {...myStream, userId: userInfo.id});
 
                 call.on("stream", (userVideoStream) => {
-                    console.log(myStream.userId);
+                    console.log("User ID:", myStream.userId);
                     if (streamMap[userVideoStream.id]) {
                         return;
                     }
