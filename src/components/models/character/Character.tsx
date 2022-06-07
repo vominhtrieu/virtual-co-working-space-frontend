@@ -21,6 +21,9 @@ import {
 import { useAppSelector } from "../../../stores";
 import { socketSelector } from "../../../stores/socket-slice";
 import { CharacterAppearance } from "../../../types/character";
+import VideoAlphaMap from "../../../VideoAlphaMap.png";
+const loader = new THREE.TextureLoader();
+const alphaMap = loader.load(VideoAlphaMap);
 
 const stepFoot = require("../../../assets/audios/foot-step.mp3");
 
@@ -35,10 +38,10 @@ type CharacterProps = JSX.IntrinsicElements["group"] & {
     idx: number;
   };
   currentEmoji?: {
-    idx: number
-  }
-  visible: boolean
-}
+    idx: number;
+  };
+  visible: boolean;
+};
 
 type KeyProps = {
   ArrowUp?: boolean;
@@ -65,8 +68,8 @@ const MovingSpeed: number = 6;
 export default function Character(props: CharacterProps) {
   const movable = useRef(true);
   movable.current = props.movable;
-  audio.volume = props.volume / 100
-  const socket = useAppSelector(socketSelector.getSocket)
+  audio.volume = props.volume / 100;
+  const socket = useAppSelector(socketSelector.getSocket);
 
   const { scene, animations, materials } = useCustomGLTF(url) as GLTFResult;
   // const { scene, animations, materials } = useCustomGLTF(
@@ -98,8 +101,6 @@ export default function Character(props: CharacterProps) {
   const rotation = useRef([0, 0, 0]);
   const count = useRef(0);
 
-  const loader = new THREE.TextureLoader();
-
   const match = matchPath({ path: "/office/:id" }, window.location.pathname);
 
   const timeoutId = useRef<NodeJS.Timeout>();
@@ -115,9 +116,10 @@ export default function Character(props: CharacterProps) {
   const getEmoji = () => {
     if (props.currentEmoji && props.currentEmoji.idx >= 0) {
       return loader.load(
-        require(`../../../assets/images/emojis/${EMOJI_LIST[props.currentEmoji?.idx!]
-          }.png`),
-      )
+        require(`../../../assets/images/emojis/${
+          EMOJI_LIST[props.currentEmoji?.idx!]
+        }.png`)
+      );
     } else {
       return loader.load();
     }
@@ -157,6 +159,30 @@ export default function Character(props: CharacterProps) {
     });
   });
 
+  const [video, setVideo] = useState<any>(null);
+
+  useEffect(() => {
+    navigator.mediaDevices
+      .getUserMedia({
+        video: {
+          width: 360,
+          height: 360,
+        },
+        audio: true,
+      })
+      .then((stream) => {
+        const selfVideo = document.createElement("video");
+        selfVideo.muted = true;
+        selfVideo.srcObject = stream;
+        setVideo(selfVideo);
+        selfVideo.addEventListener("loadedmetadata", () => {
+          selfVideo.play();
+        });
+      })
+      .catch((err) => {});
+    // eslint-disable-next-line
+  }, []);
+
   useEffect(() => {
     if (emojiPlaying) {
       setTimeout(() => {
@@ -166,11 +192,10 @@ export default function Character(props: CharacterProps) {
   }, [emojiPlaying]);
 
   const isMoving = () => {
-    if (!movable.current)
-      return false;
-    const moveVector = getMovingVector(keyPressed)
-    return Math.abs(moveVector.x) > 0.1 || Math.abs(moveVector.z) > 0.1
-  }
+    if (!movable.current) return false;
+    const moveVector = getMovingVector(keyPressed);
+    return Math.abs(moveVector.x) > 0.1 || Math.abs(moveVector.z) > 0.1;
+  };
 
   const getDirectionOffset = () => {
     const vector = getMovingVector(keyPressed);
@@ -187,7 +212,7 @@ export default function Character(props: CharacterProps) {
 
   useFrame((state, delta) => {
     if (!movable.current) {
-      return
+      return;
     }
     const { camera } = state;
     let clip: THREE.AnimationClip = null;
@@ -259,9 +284,9 @@ export default function Character(props: CharacterProps) {
   });
 
   useEffect(() => {
-    actions.Idle?.play()
+    actions.Idle?.play();
     if (!movable.current) {
-      return
+      return;
     }
 
     document.addEventListener("keydown", (event) => {
@@ -270,9 +295,9 @@ export default function Character(props: CharacterProps) {
     });
     document.addEventListener("keyup", (event) => {
       // audio.play();
-      setKeyPressed((keyPressed) => ({ ...keyPressed, [event.key]: false }))
-    })
-  }, [orbitRef, ref, actions.Idle])
+      setKeyPressed((keyPressed) => ({ ...keyPressed, [event.key]: false }));
+    });
+  }, [orbitRef, ref, actions.Idle]);
 
   useEffect(() => {
     if (ref.current) {
@@ -305,7 +330,7 @@ export default function Character(props: CharacterProps) {
   const hairStyle = `Hair_${appearance.hairStyle + 1}`;
   materials[hairStyle].color.setStyle(
     AppearanceGroups[2].items[appearance.hairColor].hex
-  )
+  );
   const hair = (
     <skinnedMesh
       geometry={nodes[hairStyle]?.geometry}
@@ -333,12 +358,26 @@ export default function Character(props: CharacterProps) {
     AppearanceGroups[5].items[appearance.shoeColor].hex
   );
 
+  const texture = useMemo(()=>{
+    if (!video) {
+      return null;
+    }
+    return new THREE.VideoTexture(video);
+  }, [video])
   return (
     <>
       <mesh ref={ref} {...props}>
         <group ref={group} position={[0, -1, 0]} dispose={null}>
-          <sprite position={[0, 2.6, 0]} visible={emojiPlaying}>
+          <sprite position={[0, 2.6, 0]} visible={true}>
             <spriteMaterial map={getEmoji()} />
+          </sprite>
+          <sprite position={[0, 2.6, 0]} scale={[-1,1,1]} visible={true}>
+            {video &&texture && (
+              <spriteMaterial
+                alphaMap={alphaMap}
+                map={texture}
+              />
+            )}
           </sprite>
           <primitive object={nodes.mixamorigHips} />
           <primitive object={nodes.Ctrl_ArmPole_IK_Left} />

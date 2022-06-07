@@ -294,7 +294,6 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
 
   return (
     <>
-      {action !== "config" && !mobile && <CallingBar />}
       <OfficeCanvas
         setObjectionClickPos={setObjectionClickPos}
         characterGesture={characterGesture}
