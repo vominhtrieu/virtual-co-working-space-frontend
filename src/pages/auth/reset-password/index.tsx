@@ -41,7 +41,9 @@ function ResetPassword() {
 
   return (
     <section className="reset">
-      <IconLanguages />
+             <div className="icon-lang">
+        <IconLanguages />
+        </div>
       <Row justify="space-around">
         <Col span={8}>
           <div className="reset__img">

@@ -89,7 +89,7 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
   return (
     <Popup
       onClose={onClose}
-      title="Change Password"
+      title={t("pages.profile.updatePassword.title")}
       type="dark"
       onSubmit={handleSubmit(handleChangePasswordSubmit)}
       hasFooter={true}
@@ -100,8 +100,8 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
             control={control}
             type="password"
             name="oldPassword"
-            label="Current Password"
-            placeholder="Enter current password"
+            label={t("pages.profile.updatePassword.currentPass")}
+            placeholder={t("pages.profile.updatePassword.enterCurrent")}
           />
         </div>
 
@@ -110,8 +110,8 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
             control={control}
             type="password"
             name="newPassword"
-            label="New Password"
-            placeholder="Enter new password"
+            label={t("pages.profile.updatePassword.newPass")}
+            placeholder={t("pages.profile.updatePassword.enterNew")}
           />
         </div>
 
@@ -120,8 +120,8 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
             control={control}
             type="password"
             name="confirmPassword"
-            label="Password Confirmation"
-            placeholder="Enter password confirmation"
+            label={t("pages.profile.updatePassword.passConfirm")}
+            placeholder={t("pages.profile.updatePassword.enterConfirm")}
           />
         </div>
       </form>

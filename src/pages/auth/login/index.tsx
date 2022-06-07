@@ -3,6 +3,7 @@ import { Col, Row, Spin } from "antd";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import loginImage from "../../../assets/images/login/login.gif";
+import IconLanguages from "../../../components/icon-lang";
 import LoginForm from "../../../components/login/login-form";
 import { saveData } from "../../../helpers/cookies";
 import { saveDataLocal } from "../../../helpers/localStorage";
@@ -48,23 +49,28 @@ function Login() {
         toastError(err.message ?? "Login fail");
         setIsLoading(false);
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
   const FormLogin = () => {
     return (
-      <Row justify="space-around">
-        <Col span={12}>
-          <div className="login__img">
-            <img src={loginImage} alt="ViSpace Login Image" />
-          </div>
-        </Col>
-        <Col span={6}>
-          <div className="login__form">
-            <LoginForm handleLoginSubmit={handleLogin} />
-          </div>
-        </Col>
-      </Row>
+      <>
+        <div className="icon-lang">
+        <IconLanguages />
+        </div>
+        <Row justify="space-around">
+          <Col span={12}>
+            <div className="login__img">
+              <img src={loginImage} alt="ViSpace Login Image" />
+            </div>
+          </Col>
+          <Col span={6}>
+            <div className="login__form">
+              <LoginForm handleLoginSubmit={handleLogin} />
+            </div>
+          </Col>
+        </Row>
+      </>
     );
   };
 

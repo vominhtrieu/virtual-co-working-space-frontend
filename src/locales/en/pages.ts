@@ -34,6 +34,34 @@ export const TranslationEnPages = {
     confirmPassword: "Password Confirmation",
     login: "Login",
   },
+  profile: {
+    name: "Name",
+    email: "Email",
+    phone: "Phone number",
+    date: "Joined date",
+    changeProfile:"Change Profile",
+    changePassword: "ChangePassword",
+    editProfile: {
+      title:"Change Profile",
+      name: "Name",
+      enterName: "Enter name ...",
+      phone: "Phone number",
+      enterPhone: "Enter phone number...",
+      avatar:{
+        title: "Edit your avatar",
+        change: "Change your avatar"
+      }
+    },
+    updatePassword: {
+      title:"Change password",
+      currentPass:"Current Password",
+      newPass:"New Password",
+      passConfirm:"Password Confirmation",
+      enterCurrent:"Enter current password",
+      enterNew:"Enter new password",
+      enterConfirm:"Enter password confirmation",
+    }
+  },
   lobby: {
     title: "Lobby",
     createOffice: "Create Office",

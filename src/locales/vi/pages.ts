@@ -34,6 +34,34 @@ export const TranslationViPages = {
     confirmPassword: "Nhập lại mật khẩu",
     login: "Đăng nhập",
   },
+  profile: {
+    name: "Tên",
+    email: "Email",
+    phone: "Số điện thoại",
+    date: "Ngày tham gia",
+    changeProfile:"Thay đổi thông tin",
+    changePassword: "Thay đổi mật khẩu",
+    editProfile: {
+      title:"Thay đổi thông tin",
+      name: "Tên",
+      enterName: "Nhập tên ...",
+      phone: "Số điện thoại",
+      enterPhone: "Nhập số điện thoại...",
+      avatar:{
+        title: "Chỉnh sửa ảnh đại diện",
+        change: "Thay đổi ảnh đại diện"
+      }
+    },
+    updatePassword: {
+      title:"Thay đổi mật khẩu",
+      currentPass:"Mật khẩu hiện tại",
+      newPass:"Mật khẩu mới",
+      passConfirm:"Xác thực mật khẩu",
+      enterCurrent:"Nhập mật khẩu hiện tại...",
+      enterNew:"Nhập mật khẩu mới...",
+      enterConfirm:"Nhập lại mật khẩu...",
+    }
+  },
   lobby: {
     title: "Sảnh chính",
     createOffice: "Tạo văn phòng",

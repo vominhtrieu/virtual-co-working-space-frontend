@@ -30,7 +30,9 @@ function ForgotPassword() {
 
   return (
     <section className='forgot'>
-      <IconLanguages />
+        <div className="icon-lang">
+        <IconLanguages />
+        </div>
       <Row justify='space-around'>
         <Col span={8}>
           <div className='forgot__img'>

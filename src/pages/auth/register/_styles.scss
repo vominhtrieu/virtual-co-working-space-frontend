@@ -1,6 +1,13 @@
+
 .register {
   background-color: $color-primary-dark;
   min-height: 100vh;
+
+  .icon-lang {
+    top:4rem;
+    left: 4rem;
+    position:absolute;
+  }
 
   &__form {
     @include flex-center;

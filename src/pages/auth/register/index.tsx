@@ -37,7 +37,9 @@ function Register() {
 
   return (
     <section className='register'>
-    <IconLanguages />
+            <div className="icon-lang">
+        <IconLanguages />
+        </div>
     <Row justify='space-around'>
       <Col span={12}>
         <div className='register__img'>

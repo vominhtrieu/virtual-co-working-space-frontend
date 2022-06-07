@@ -2,6 +2,7 @@ import { Input } from "antd";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import DarkLogo from "../../../assets/images/DarkLogo.png";
+import IconLanguages from "../../icon-lang";
 import UserPopup from "../user-popup";
 import { NavbarProps } from "./types";
 
@@ -32,6 +33,7 @@ const Navbar = (props: NavbarProps) => {
         )}
         <div className="navbar__right-content">
           <UserPopup />
+          <IconLanguages/>
         </div>
       </nav>
     </>
