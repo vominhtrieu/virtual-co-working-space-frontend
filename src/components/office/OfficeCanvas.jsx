@@ -63,7 +63,7 @@ export default function OfficeCanvas({
 
     return (
         <>
-            <CallingBar myStream={myStream} setMyStream={setMyStream} setOtherStreams={setOtherStreams}/>
+            <CallingBar userInfo={userInfo} myStream={myStream} setMyStream={setMyStream} setOtherStreams={setOtherStreams}/>
             <Canvas
                 shadows={{enabled: true, autoUpdate: true}}
                 camera={{position: [0, 5, 5], rotation: [45, 0, 0]}}
