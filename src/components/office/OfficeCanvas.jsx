@@ -59,9 +59,11 @@ export default function OfficeCanvas({
         setObjectActionVisible(false);
     };
 
+    console.log(otherStreams)
+
     return (
         <>
-            <CallingBar myStream={myStream} setMyStream={setMyStream} setOtherStreams={setOtherStreams} userInfo={userInfo}/>
+            <CallingBar myStream={myStream} setMyStream={setMyStream} setOtherStreams={setOtherStreams}/>
             <Canvas
                 shadows={{enabled: true, autoUpdate: true}}
                 camera={{position: [0, 5, 5], rotation: [45, 0, 0]}}
@@ -148,9 +150,9 @@ export default function OfficeCanvas({
                                             member.transform.rotation.y,
                                             member.transform.rotation.z,
                                         ]}
-                                        stream={otherStreams[member.id]}
                                         scale={[2, 2, 2]}
                                         orbitRef={orbitRef}
+                                        stream={otherStreams[member.member.id]}
                                         movable
                                         volume={volume}
                                         currentEmoji={characterEmoji}
