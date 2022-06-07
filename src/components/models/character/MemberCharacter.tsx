@@ -18,6 +18,7 @@ import {socketSelector} from "../../../stores/socket-slice";
 import {useAppSelector} from "../../../stores";
 import { AppearanceGroups } from "../../../helpers/constants";
 import { CharacterAppearance } from "../../../types/character";
+import {alphaMap} from "./Character";
 
 const stepFoot = require("../../../assets/audios/foot-step.mp3");
 
@@ -29,7 +30,8 @@ type MemberCharacterProps = JSX.IntrinsicElements["group"] & {
     orbitRef?: any;
     volume: number;
     memberId: number;
-    visible: boolean
+    visible: boolean;
+    stream: any;
 };
 
 let audio = new Audio(stepFoot);
@@ -280,6 +282,19 @@ export default function MemberCharacter(props: MemberCharacterProps) {
             );
     }, [props.appearance])
 
+    const texture = useMemo(() => {
+        if (!props.stream) {
+            return null;
+        }
+        const selfVideo = document.createElement("video");
+        selfVideo.muted = true;
+        selfVideo.srcObject = props.stream;
+        selfVideo.addEventListener("loadedmetadata", () => {
+            selfVideo.play();
+        });
+        return new THREE.VideoTexture(selfVideo);
+    }, [props.stream]);
+
     return (
         <>
             <mesh ref={ref} {...props}>
@@ -287,6 +302,13 @@ export default function MemberCharacter(props: MemberCharacterProps) {
                     <sprite position={[0, 2.6, 0]} visible={emojiPlaying}>
                         <spriteMaterial map={getEmoji(currentEmoji.idx)}/>
                     </sprite>
+                    {texture && (<sprite position={[0, 2.6, 0]} scale={[-1, 1, 1]} visible={true}>
+                            <spriteMaterial
+                                alphaMap={alphaMap}
+                                map={texture}
+                            />
+                        </sprite>
+                    )}
                     <primitive object={nodes.mixamorigHips}/>
                     <primitive object={nodes.Ctrl_ArmPole_IK_Left}/>
                     <primitive object={nodes.Ctrl_Hand_IK_Left}/>
