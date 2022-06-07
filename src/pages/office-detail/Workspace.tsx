@@ -12,7 +12,10 @@ import OfficeSetting from "../../components/office/office-setting";
 import OfficeCanvas from "../../components/office/OfficeCanvas";
 import OfficeInterface from "../../components/office/OfficeInterface";
 import { toastError } from "../../helpers/toast";
+import { groupBy } from "../../helpers/utilities";
 import { Item } from "../../services/api/offices/get-office-item/types";
+import { getMemberAppearances } from "../../services/api/offices/member-appearances";
+import { Appearance, MemberAppearance } from "../../services/api/offices/member-appearances/types";
 import { OfficeItem } from "../../services/api/offices/officce-item/types";
 import { OfficeMembersInterface } from "../../services/api/offices/office-detail/types";
 import OfficeDetailProxy from "../../services/proxy/offices/office-detail";
@@ -51,6 +54,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
   );
 
   const [officeDetail, setOfficeDetail] = useState<OfficeDetailInterface>();
+  const [memberAppearances, setMemberAppearances] = useState<MemberAppearance[]>([])
 
   const [action, setAction] = useState<
     | "action"
@@ -282,6 +286,12 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
       });
   }, [officeId, userInfo.id]);
 
+  useEffect(() => {
+    getMemberAppearances(officeId).then((data) => {
+      setMemberAppearances(data);
+    })
+  }, [officeId])
+
   return (
     <>
       {action !== "config" && !mobile && <CallingBar />}
@@ -299,6 +309,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
         handleObject3dDragged={handleObject3dDragged}
         onlineMembers={onlineMembers}
         action={action}
+        memberAppearances={memberAppearances}
       />
       {!mobile && (
         <OfficeInterface

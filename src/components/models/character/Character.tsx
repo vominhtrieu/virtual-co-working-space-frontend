@@ -303,6 +303,9 @@ export default function Character(props: CharacterProps) {
   const appearance = props.appearance;
 
   const hairStyle = `Hair_${appearance.hairStyle + 1}`;
+  materials[hairStyle].color.setStyle(
+    AppearanceGroups[2].items[appearance.hairColor].hex
+  )
   const hair = (
     <skinnedMesh
       geometry={nodes[hairStyle]?.geometry}
@@ -310,12 +313,6 @@ export default function Character(props: CharacterProps) {
       skeleton={nodes[hairStyle].skeleton}
     />
   );
-
-  if (hair && hair.props.material) {
-    hair.props.material.color.setStyle(
-      AppearanceGroups[2].items[appearance.hairColor].hex
-    );
-  }
 
   materials.Skin.color.setStyle(
     AppearanceGroups[0].items[appearance.skinColor].hex

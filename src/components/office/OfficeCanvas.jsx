@@ -1,7 +1,7 @@
-import { OrbitControls, Stats } from "@react-three/drei";
-import { Suspense, useContext, useRef } from "react";
+import {OrbitControls} from "@react-three/drei";
+import {Suspense, useContext, useRef} from "react";
 import Box from "../models/Box";
-import { Debug, Physics } from "@react-three/cannon";
+import {Physics} from "@react-three/cannon";
 import Office from "../models/Office";
 import Character from "../models/character/Character";
 import MemberCharacter from "../models/character/MemberCharacter";
@@ -16,24 +16,25 @@ import ItemModel from "../models/ItemModel";
 import { userSelectors } from "../../stores/auth-slice";
 
 export default function OfficeCanvas({
-  setObjectionClickPos,
-  characterGesture,
-  characterEmoji,
-  setSelectedObject,
-  setSelectedKey,
-  setObjectActionVisible,
-  objectList,
-  objectActionVisible,
-  selectedObject,
-  selectedKey,
-  onlineMembers,
-  handleObject3dDragged,
-  action,
-}) {
-  const orbitRef = useRef(null);
-  const appearance = useContext(CharacterContext);
-  const volume = useAppSelector(volumeSelectors.getVolume);
-  const userInfo = useAppSelector(userSelectors.getUserInfo);
+                                         setObjectionClickPos,
+                                         characterGesture,
+                                         characterEmoji,
+                                         setSelectedObject,
+                                         setSelectedKey,
+                                         setObjectActionVisible,
+                                         objectList,
+                                         objectActionVisible,
+                                         selectedObject,
+                                         selectedKey,
+                                         onlineMembers,
+                                         handleObject3dDragged,
+                                         action,
+                                         memberAppearances
+                                     }) {
+    const orbitRef = useRef(null);
+    const appearance = useContext(CharacterContext);
+    const volume = useAppSelector(volumeSelectors.getVolume);
+    const userInfo = useAppSelector(userSelectors.getUserInfo);
 
   const handleObject3dClick = (e, key) => {
     let temp = e.object;
@@ -130,7 +131,7 @@ export default function OfficeCanvas({
               ) : (
                 <MemberCharacter
                   key={member.id}
-                  appearance={appearance}
+                  appearance={memberAppearances.find((memberAppearance) => memberAppearance.userId === member.member.id)?.appearance}
                   startPosition={[
                     member.transform.position.x,
                     2.5,

@@ -16,12 +16,13 @@ import {matchPath} from "react-router-dom";
 import {ANIMATION_LIST, EMOJI_LIST} from "../../../helpers/constants";
 import {socketSelector} from "../../../stores/socket-slice";
 import {useAppSelector} from "../../../stores";
+import { AppearanceGroups } from "../../../helpers/constants";
+import { CharacterAppearance } from "../../../types/character";
 
 const stepFoot = require("../../../assets/audios/foot-step.mp3");
 
 type MemberCharacterProps = JSX.IntrinsicElements["group"] & {
-    hair: number;
-    eyes: number;
+    appearance: CharacterAppearance
     movable: boolean;
     startPosition: number[];
     startRotation: number[];
@@ -35,6 +36,16 @@ let audio = new Audio(stepFoot);
 const MovingSpeed: number = 6;
 const url =
     'https://virtual-space-models.s3.ap-southeast-1.amazonaws.com/Character/Character.glb'
+
+const defaultAppearance: CharacterAppearance = {
+    hairColor: 0,
+    hairStyle: 0,
+    eyeStyle: 0,
+    shirtColor: 0,
+    pantColor: 0,
+    shoeColor: 0,
+    skinColor: 0
+}
 
 export default function MemberCharacter(props: MemberCharacterProps) {
     audio.volume = props.volume / 100;
@@ -65,6 +76,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     const [emojiPlaying, setEmojiPlaying] = useState<boolean>(false);
     const [currentEmoji, setCurrentEmoji] = useState({idx: -1});
     const [currentGesture, setCurrentGesture] = useState({idx: -1});
+    const [hairStyle, setHairStyle] = useState("Hair_1");
 
     const position = useRef([0, 0, 0]);
     const updatedPosition = useRef(props.startPosition);
@@ -141,7 +153,6 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         }
 
         let clip: THREE.AnimationClip = null;
-        console.log(clip);
 
         //update from remote position
         if (shouldUpdate()) {
@@ -223,6 +234,52 @@ export default function MemberCharacter(props: MemberCharacterProps) {
 
     useSocketEvent(socket, props.memberId, updatedPosition, updatedRotation, setCurrentEmoji, setCurrentGesture);
 
+    useEffect(() => {
+        let appearance;
+        if (props.appearance) {
+            appearance = props.appearance;
+        } else {
+            appearance = defaultAppearance;
+        }
+
+        const hairStyle = `Hair_${appearance.hairStyle + 1}`;
+            // const hairMesh = (
+            //   <skinnedMesh
+            //     geometry={nodes[hairStyle]?.geometry}
+            //     material={materials[hairStyle]}
+            //     skeleton={nodes[hairStyle].skeleton}
+            //   />
+            // );
+            materials[hairStyle].color.setStyle(AppearanceGroups[2].items[appearance.hairColor].hex);
+          
+            // if (hair && hairMesh.props.material) {
+            //     hairMesh.props.material.color.setStyle(
+            //     AppearanceGroups[2].items[appearance.hairColor].hex
+            //   );
+            // }
+
+            setHairStyle(hairStyle);
+          
+            materials.Skin.color.setStyle(
+              AppearanceGroups[0].items[appearance.skinColor].hex
+            );
+            materials.Head.color.setStyle(
+              AppearanceGroups[0].items[appearance.skinColor].hex
+            );
+            materials.Eye.color.setStyle(
+              AppearanceGroups[0].items[appearance.skinColor].hex
+            );
+            materials.Body.color.setStyle(
+              AppearanceGroups[4].items[appearance.shirtColor].hex
+            );
+            materials.Pant.color.setStyle(
+              AppearanceGroups[5].items[appearance.pantColor].hex
+            );
+            materials.Shoes.color.setStyle(
+              AppearanceGroups[6].items[appearance.shoeColor].hex
+            );
+    }, [props.appearance])
+
     return (
         <>
             <mesh ref={ref} {...props}>
@@ -265,24 +322,11 @@ export default function MemberCharacter(props: MemberCharacterProps) {
                         material={materials.Pant}
                         skeleton={nodes.Character_5.skeleton}
                     />
-                    {/* <skinnedMesh
-                        geometry={nodes.Cube001_2.geometry}
-                        material={props.eyes === 1 ? materials["Eye 1"] : materials["Eye 2"]}
-                        skeleton={nodes.Cube001_2.skeleton}
-                    /> */}
-                    {props.hair === 1 ? (
-                        <skinnedMesh
-                            geometry={nodes.Hair_1.geometry}
-                            material={materials["Hair_1"]}
-                            skeleton={nodes.Hair_1.skeleton}
-                        />
-                    ) : (
-                        <skinnedMesh
-                            geometry={nodes.Hair_2.geometry}
-                            material={materials["Hair_2"]}
-                            skeleton={nodes.Hair_2.skeleton}
-                        />
-                    )}
+                    <skinnedMesh
+                        geometry={nodes[hairStyle]?.geometry}
+                        material={materials[hairStyle]}
+                        skeleton={nodes[hairStyle].skeleton}
+                    />
                     <skinnedMesh
                         geometry={nodes.Shoe.geometry}
                         material={materials.Shoes}
