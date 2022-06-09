@@ -26,13 +26,13 @@ export const AppearanceGroups:any[] = [
             {code: "Black", type: "color", hex: "#111111"},
         ],
     },
-    {
-        groupName: "Eyes Style",
-        items: [
-            {code: "Eyes1", type: "image", url: "/images/Eyes1.png"},
-            {code: "Eyes2", type: "image", url: "/images/Eyes2.png"},
-        ],
-    },
+    // {
+    //     groupName: "Eyes Style",
+    //     items: [
+    //         {code: "Eyes1", type: "image", url: "/images/Eyes1.png"},
+    //         {code: "Eyes2", type: "image", url: "/images/Eyes2.png"},
+    //     ],
+    // },
     {
         groupName: "Shirt Color",
         items: [

@@ -57,6 +57,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     // const { scene, animations, materials } = useCustomGLTF(
     //   "/models/Character.glb"
     // ) as GLTFResult;
+    console.log("Rerender")
     const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
     const {nodes} = useGraph(clone);
 
@@ -67,7 +68,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         fixedRotation: true,
         mass: 1,
     }));
-
+    api.velocity.set(1, 0, 1);
     const rotateQuaternion = useRef(new THREE.Quaternion());
     const walkDirection = useRef(new THREE.Vector3());
     const currentClip = useRef<THREE.AnimationClip>(null);
@@ -245,41 +246,41 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         }
 
         const hairStyle = `Hair_${appearance.hairStyle + 1}`;
-            // const hairMesh = (
-            //   <skinnedMesh
-            //     geometry={nodes[hairStyle]?.geometry}
-            //     material={materials[hairStyle]}
-            //     skeleton={nodes[hairStyle].skeleton}
-            //   />
-            // );
-            materials[hairStyle].color.setStyle(AppearanceGroups[2].items[appearance.hairColor].hex);
-          
-            // if (hair && hairMesh.props.material) {
-            //     hairMesh.props.material.color.setStyle(
-            //     AppearanceGroups[2].items[appearance.hairColor].hex
-            //   );
-            // }
+        // const hairMesh = (
+        //   <skinnedMesh
+        //     geometry={nodes[hairStyle]?.geometry}
+        //     material={materials[hairStyle]}
+        //     skeleton={nodes[hairStyle].skeleton}
+        //   />
+        // );
+        materials[hairStyle].color.setStyle(AppearanceGroups[2].items[appearance.hairColor].hex);
+        
+        // if (hair && hairMesh.props.material) {
+        //     hairMesh.props.material.color.setStyle(
+        //     AppearanceGroups[2].items[appearance.hairColor].hex
+        //   );
+        // }
 
-            setHairStyle(hairStyle);
-          
-            materials.Skin.color.setStyle(
-              AppearanceGroups[0].items[appearance.skinColor].hex
-            );
-            materials.Head.color.setStyle(
-              AppearanceGroups[0].items[appearance.skinColor].hex
-            );
-            materials.Eye.color.setStyle(
-              AppearanceGroups[0].items[appearance.skinColor].hex
-            );
-            materials.Body.color.setStyle(
-              AppearanceGroups[4].items[appearance.shirtColor].hex
-            );
-            materials.Pant.color.setStyle(
-              AppearanceGroups[5].items[appearance.pantColor].hex
-            );
-            materials.Shoes.color.setStyle(
-              AppearanceGroups[6].items[appearance.shoeColor].hex
-            );
+        setHairStyle(hairStyle);
+        
+        materials.Skin.color.setStyle(
+            AppearanceGroups[0].items[appearance.skinColor].hex
+        );
+        materials.Head.color.setStyle(
+            AppearanceGroups[0].items[appearance.skinColor].hex
+        );
+        materials.Eye.color.setStyle(
+            AppearanceGroups[0].items[appearance.skinColor].hex
+        );
+        materials.Body.color.setStyle(
+            AppearanceGroups[3].items[appearance.shirtColor].hex
+        );
+        materials.Pant.color.setStyle(
+            AppearanceGroups[4].items[appearance.pantColor].hex
+        );
+        materials.Shoes.color.setStyle(
+            AppearanceGroups[5].items[appearance.shoeColor].hex
+        );
     }, [props.appearance]);
 
     const texture = useMemo(() => {
