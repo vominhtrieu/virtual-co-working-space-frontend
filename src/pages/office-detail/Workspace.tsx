@@ -146,9 +146,9 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
 
   useEffect(() => {
     socket.on("office_member:offline", (memberId) => {
-      setOnlineMembers([
-        ...onlineMembers.filter((member) => member.member.id !== memberId),
-      ]);
+      setOnlineMembers(
+        onlineMembers.filter((member) => member.member.id !== memberId),
+      );
     });
 
     return () => {
@@ -169,7 +169,6 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
     });
 
     return () => {
-      socket.removeListener("office_item:online");
       socket.removeListener("office_item:created");
       socket.removeListener("office_item:deleted");
     };
