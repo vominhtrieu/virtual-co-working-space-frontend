@@ -353,10 +353,10 @@ export default function Character(props: CharacterProps) {
         <>
             <mesh ref={ref} {...props}>
                 <group ref={group} position={[0, -1, 0]} dispose={null}>
-                    <sprite position={[0, 2.6, 0]} visible={true}>
+                    <sprite position={[0, 2.6, 0]} visible={emojiPlaying}>
                         <spriteMaterial map={getEmoji()}/>
                     </sprite>
-                    {texture && (<sprite position={[0, 2.6, 0]} scale={[-1, 1, 1]} visible={true}>
+                    {texture && (<sprite position={[0, 2.6, 0]} scale={[-1, 1, 1]} visible={!emojiPlaying}>
                             <spriteMaterial
                                 alphaMap={alphaMap}
                                 map={texture}

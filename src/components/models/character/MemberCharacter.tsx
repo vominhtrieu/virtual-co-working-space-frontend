@@ -302,7 +302,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
                     <sprite position={[0, 2.6, 0]} visible={emojiPlaying}>
                         <spriteMaterial map={getEmoji(currentEmoji.idx)}/>
                     </sprite>
-                    {texture && (<sprite position={[0, 2.6, 0]} scale={[-1, 1, 1]} visible={true}>
+                    {texture && (<sprite position={[0, 2.6, 0]} scale={[-1, 1, 1]} visible={!emojiPlaying}>
                             <spriteMaterial
                                 alphaMap={alphaMap}
                                 map={texture}
