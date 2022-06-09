@@ -1,37 +1,38 @@
-import {OrbitControls} from "@react-three/drei";
-import {Suspense, useContext, useRef, useState} from "react";
+import { OrbitControls } from "@react-three/drei";
+import { Suspense, useContext, useRef, useState } from "react";
 import Box from "../models/Box";
-import {Physics} from "@react-three/cannon";
+import { Physics } from "@react-three/cannon";
 import Office from "../models/Office";
 import Character from "../models/character/Character";
 import MemberCharacter from "../models/character/MemberCharacter";
 import CustomTransformControl from "../controls/CustomTransformControl";
-import {Canvas} from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import CharacterContext from "../../context/CharacterContext";
-import {useAppSelector} from "../../stores";
-import {volumeSelectors} from "../../stores/volume-slice";
-import {Provider} from "react-redux";
+import { useAppSelector } from "../../stores";
+import { volumeSelectors } from "../../stores/volume-slice";
+import { Provider } from "react-redux";
 import store from "../../stores";
 import ItemModel from "../models/ItemModel";
-import {userSelectors} from "../../stores/auth-slice";
+import { userSelectors } from "../../stores/auth-slice";
 import CallingBar from "../../pages/office-detail/calling/CallingBar";
+import { socketSelector } from "../../stores/socket-slice";
 
 export default function OfficeCanvas({
-                                         setObjectionClickPos,
-                                         characterGesture,
-                                         characterEmoji,
-                                         setSelectedObject,
-                                         setSelectedKey,
-                                         setObjectActionVisible,
-                                         objectList,
-                                         objectActionVisible,
-                                         selectedObject,
-                                         selectedKey,
-                                         onlineMembers,
-                                         handleObject3dDragged,
-                                         action,
-                                         memberAppearances
-                                     }) {
+    setObjectionClickPos,
+    characterGesture,
+    characterEmoji,
+    setSelectedObject,
+    setSelectedKey,
+    setObjectActionVisible,
+    objectList,
+    objectActionVisible,
+    selectedObject,
+    selectedKey,
+    onlineMembers,
+    handleObject3dDragged,
+    action,
+    memberAppearances
+}) {
     const orbitRef = useRef(null);
     const appearance = useContext(CharacterContext);
     const volume = useAppSelector(volumeSelectors.getVolume);
@@ -52,21 +53,20 @@ export default function OfficeCanvas({
         const x = e.clientX;
         const y = e.clientY;
 
-        setObjectionClickPos({x, y});
+        setObjectionClickPos({ x, y });
     };
 
     const handleObject3dPointerMissed = () => {
         setObjectActionVisible(false);
     };
 
-    console.log(otherStreams)
-
+    const socket = useAppSelector(socketSelector.getSocket);
     return (
         <>
-            <CallingBar userInfo={userInfo} myStream={myStream} setMyStream={setMyStream} setOtherStreams={setOtherStreams}/>
+            {socket.connected && <CallingBar userInfo={userInfo} myStream={myStream} setMyStream={setMyStream} setOtherStreams={setOtherStreams} />}
             <Canvas
-                shadows={{enabled: true, autoUpdate: true}}
-                camera={{position: [0, 5, 5], rotation: [45, 0, 0]}}
+                shadows={{ enabled: true, autoUpdate: true }}
+                camera={{ position: [0, 5, 5], rotation: [45, 0, 0] }}
                 style={{
                     height: "100vh",
                     width: "100vw",
@@ -84,12 +84,12 @@ export default function OfficeCanvas({
                         enablePan={action === "config"}
                         enableZoom={action === "config"}
                     />
-                    <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45}/>
-                    <ambientLight/>
+                    <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45} />
+                    <ambientLight />
                     {/* <Stats /> */}
-                    <Suspense fallback={<Box/>}>
+                    <Suspense fallback={<Box />}>
                         <Physics gravity={[0, 0, 0]}>
-                            <Office castShadow={true}/>
+                            <Office castShadow={true} />
                             {objectList.map((object) => (
                                 <mesh
                                     castShadow={true}
@@ -108,7 +108,7 @@ export default function OfficeCanvas({
                                     onPointerMissed={handleObject3dPointerMissed}
                                 >
                                     <Suspense fallback={null}>
-                                        <ItemModel url={object.item.modelPath} itemId={object.id}/>
+                                        <ItemModel url={object.item.modelPath} itemId={object.id} />
                                     </Suspense>
                                 </mesh>
                             ))}

@@ -24,7 +24,6 @@ import { userSelectors } from "../../stores/auth-slice";
 import { socketSelector } from "../../stores/socket-slice";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import { OfficeDetailInterface } from "../../types/office";
-import CallingBar from "./calling/CallingBar";
 
 export type positionType = {
   x: number;

@@ -7,19 +7,19 @@ import React, {
 } from "react";
 import Peer from "peerjs";
 import "./_styles.scss";
-import {useParams} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "../../../stores";
+import { useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../stores";
 // import { connect } from "../../../stores/socket-slice";
-import {socketSelector} from "../../../stores/socket-slice";
-import {FaCamera, FaMicrophone} from "react-icons/fa";
-import {v4} from "uuid";
+import { socketSelector } from "../../../stores/socket-slice";
+import { FaCamera, FaMicrophone } from "react-icons/fa";
+import { v4 } from "uuid";
 
 export default function CallingBar({
-                                       myStream,
-                                       setMyStream,
-                                       setOtherStreams,
-                                       userInfo,
-                                   }: any) {
+    myStream,
+    setMyStream,
+    setOtherStreams,
+    userInfo,
+}: any) {
     const videoContainer = useRef<any>();
     const myVideo = useRef<any>();
     const params = useParams();
@@ -29,11 +29,18 @@ export default function CallingBar({
 
     const myPeer = useMemo(
         () => {
-            const p = new Peer(userInfo.id + "", {
+            const p = new Peer(v4(), {
                 host: process.env.REACT_APP_PEER_SERVER_HOST + "",
                 port: +(process.env.REACT_APP_PEER_SERVER_PORT + ""),
                 path: "/peer",
             });
+            p.on("open", (id) => {
+                socket.emit("calling:join", {
+                    officeId: params.id,
+                    peerId: id,
+                });
+            });
+
             return p;
         }, [userInfo.id]
     );
@@ -56,13 +63,6 @@ export default function CallingBar({
     );
 
     useEffect(() => {
-        myPeer.on("open", (id) => {
-            socket.emit("calling:join", {
-                officeId: params.id,
-                peerId: id,
-            });
-        });
-
         navigator.mediaDevices
             .getUserMedia({
                 video: {
@@ -83,8 +83,8 @@ export default function CallingBar({
                         }
                         streamMap[userVideoStream.id] = true;
                         setOtherStreams((streams) => {
-                            const temp = {...streams};
-                            temp[userVideoStream.userId] = userVideoStream;
+                            const temp = { ...streams };
+                            temp[call.metadata.userId] = userVideoStream;
                             return temp;
                         })
                     });
@@ -100,9 +100,14 @@ export default function CallingBar({
             return;
         }
         const streamMap = {};
-        socket.on("calling:join", ({userId, peerId}) => {
+        socket.on("calling:join", ({ userId, peerId }) => {
+            console.log("Received a call")
             setTimeout(() => {
-                const call = myPeer.call(peerId, myStream);
+                const call = myPeer.call(peerId, myStream, {
+                    metadata: {
+                        userId: userInfo.id,
+                    }
+                });
 
                 call.on("stream", (userVideoStream: any) => {
                     if (streamMap[userVideoStream.id]) {
@@ -110,7 +115,7 @@ export default function CallingBar({
                     }
                     streamMap[userVideoStream.id] = true;
                     setOtherStreams((streams) => {
-                        const temp = {...streams};
+                        const temp = { ...streams };
                         temp[userId] = userVideoStream;
                         return temp;
                     })
