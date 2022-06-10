@@ -299,6 +299,26 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         }
     }, [currentEmoji, loader])
 
+    const [isVideoOpening, setIsVideoOpening] = useState(false);
+    
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (props.stream) {
+                const vidTrack = props.stream?.getVideoTracks();
+                let enabled = false;
+                for (const track of vidTrack) {
+                    if (track.enabled) {
+                        enabled = true;
+                    }
+                }
+                if (enabled !== isVideoOpening) {
+                    setIsVideoOpening(enabled);
+                }
+            }
+        }, 500);
+        return () => clearInterval(interval);
+    }, [props.stream, isVideoOpening]);
+
     return (
         <>
             <mesh ref={ref} {...props}>
@@ -306,7 +326,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
                     <sprite position={[0, 2.6, 0]} visible={emojiPlaying}>
                         <spriteMaterial map={emojiTexture}/>
                     </sprite>
-                    {texture && (<sprite position={[0, 2.6, 0]} scale={[-1, 1, 1]} visible={!emojiPlaying}>
+                    {texture &&isVideoOpening&& (<sprite position={[0, 2.6, 0]} scale={[-1, 1, 1]} visible={!emojiPlaying}>
                             <spriteMaterial
                                 alphaMap={alphaMap}
                                 map={texture}

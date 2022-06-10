@@ -41,21 +41,23 @@ a {
   color: inherit;
 }
 
-// /* width */
-// ::-webkit-scrollbar {
-//   width: 10px;
-// }
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  margin-left: -10px;
+}
 
-// /* Track */
-// ::-webkit-scrollbar-track {
-//   background-color: $color-secondary-dark-1;
-// }
+/* Track */
+*::-webkit-scrollbar-track {
+  background: none;
+  background-color: transparent;
+}
 
 // /* Handle */
-// ::-webkit-scrollbar-thumb {
-//   background: $color-secondary-light;
-//   border-radius: 2px;
-// }
+*::-webkit-scrollbar-thumb {
+  background: $color-secondary-light;
+  border-radius: 2px;
+}
 
 // /* Handle on hover */
 // ::-webkit-scrollbar-thumb:hover {

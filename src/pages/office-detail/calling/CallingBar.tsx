@@ -130,5 +130,28 @@ export default function CallingBar({
         };
     }, [addVideoStream, myPeer, myStream]);
 
-    return null;
+    return <div className="video-button-container">
+        <button
+            className={`video-button ${cameraEnabled ? "active" : ""}`}
+            onClick={() => {
+                const vidTrack = myStream?.getVideoTracks();
+                vidTrack.forEach((track) => (track.enabled = !cameraEnabled));
+                setCameraEnabled(!cameraEnabled);
+            }}
+        >
+            <FaCamera fontSize={20} />
+        </button>
+        <button
+            className={`video-button ${microphoneEnabled ? "active" : ""}`}
+            onClick={() => {
+                const vidTrack = myStream?.getAudioTracks();
+                vidTrack.forEach(
+                    (track) => (track.enabled = !microphoneEnabled)
+                );
+                setMicrophoneEnabled(!microphoneEnabled);
+            }}
+        >
+            <FaMicrophone fontSize={20} />
+        </button>
+    </div>;
 }
