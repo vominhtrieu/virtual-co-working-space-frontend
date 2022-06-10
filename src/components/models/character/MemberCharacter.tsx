@@ -100,18 +100,6 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         }
     };
 
-    const getEmoji = (emojiIndex: number) => {
-        if (emojiIndex >= 0) {
-            return loader.load(
-                require(`../../../assets/images/emojis/${
-                    EMOJI_LIST[emojiIndex]
-                }.png`)
-            );
-        } else {
-            return loader.load();
-        }
-    };
-
     useEffect(() => {
         if (currentGesture.idx > 1)
             setGesturePlaying(true);
@@ -128,18 +116,21 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         }, 2000);
     }, [currentEmoji]);
 
-    useThree(() => {
-        api.position.subscribe((v) => {
+    useEffect(() => {
+        const unsubPosition = api.position.subscribe((v) => {
             position.current = v;
         });
-        api.rotation.subscribe((v) => {
-            rotation.current = v;
-        });
-    });
+
+        return unsubPosition
+    }, []);
 
     useEffect(() => {
+        const unsubRotation = api.rotation.subscribe((v) => {
+            rotation.current = v;
+        });
 
-    }, [emojiPlaying]);
+        return unsubRotation;
+    }, [])
 
     const shouldUpdate = () => {
         return (
@@ -296,12 +287,24 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         return new THREE.VideoTexture(selfVideo);
     }, [props.stream]);
 
+    const emojiTexture = useMemo(() => {
+        if (currentEmoji && currentEmoji.idx >= 0) {
+            return loader.load(
+                require(`../../../assets/images/emojis/${
+                    EMOJI_LIST[currentEmoji.idx]
+                }.png`)
+            );
+        } else {
+            return loader.load();
+        }
+    }, [currentEmoji, loader])
+
     return (
         <>
             <mesh ref={ref} {...props}>
                 <group ref={group} position={[0, -1, 0]} dispose={null}>
                     <sprite position={[0, 2.6, 0]} visible={emojiPlaying}>
-                        <spriteMaterial map={getEmoji(currentEmoji.idx)}/>
+                        <spriteMaterial map={emojiTexture}/>
                     </sprite>
                     {texture && (<sprite position={[0, 2.6, 0]} scale={[-1, 1, 1]} visible={!emojiPlaying}>
                             <spriteMaterial

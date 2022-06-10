@@ -41,6 +41,7 @@ export default function OfficeCanvas({
     const [otherStreams, setOtherStreams] = useState({});
 
     const handleObject3dClick = (e, key) => {
+        if (action === "config") return;
         let temp = e.object;
         while (temp.parent && temp.parent.type !== "Scene") {
             temp = temp.parent;

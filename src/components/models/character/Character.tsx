@@ -115,18 +115,6 @@ export default function Character(props: CharacterProps) {
         }
     };
 
-    const getEmoji = () => {
-        if (props.currentEmoji && props.currentEmoji.idx >= 0) {
-            return loader.load(
-                require(`../../../assets/images/emojis/${
-                    EMOJI_LIST[props.currentEmoji?.idx!]
-                }.png`)
-            );
-        } else {
-            return loader.load();
-        }
-    };
-
     useEffect(() => {
         if (props.currentGesture && props.currentGesture.idx >= 0) {
             setGesturePlaying(true);
@@ -229,6 +217,7 @@ export default function Character(props: CharacterProps) {
 
             // api.quaternion.copy(ref.current.quaternion);
             if (count.current > 20) {
+                console.log("alo")
                 socket.emit("office_member:move", {
                     xRotation: rotation.current[0],
                     yRotation: rotation.current[1],
@@ -349,12 +338,24 @@ export default function Character(props: CharacterProps) {
         return new THREE.VideoTexture(selfVideo);
     }, [props.stream]);
 
+    const emojiTexture = useMemo(() => {
+        if (props.currentEmoji && props.currentEmoji.idx >= 0) {
+            return loader.load(
+                require(`../../../assets/images/emojis/${
+                    EMOJI_LIST[props.currentEmoji?.idx!]
+                }.png`)
+            );
+        } else {
+            return loader.load();
+        }
+    }, [props.currentEmoji])
+
     return (
         <>
             <mesh ref={ref} {...props}>
                 <group ref={group} position={[0, -1, 0]} dispose={null}>
                     <sprite position={[0, 2.6, 0]} visible={emojiPlaying}>
-                        <spriteMaterial map={getEmoji()}/>
+                        <spriteMaterial map={emojiTexture}/>
                     </sprite>
                     {texture && (<sprite position={[0, 2.6, 0]} scale={[-1, 1, 1]} visible={!emojiPlaying}>
                             <spriteMaterial
@@ -366,7 +367,6 @@ export default function Character(props: CharacterProps) {
                     <primitive object={nodes.mixamorigHips}/>
                     <primitive object={nodes.Ctrl_ArmPole_IK_Left}/>
                     <primitive object={nodes.Ctrl_ArmPole_IK_Right}/>
-                    \
                     <primitive object={nodes.Ctrl_Hand_IK_Left}/>
                     <primitive object={nodes.Ctrl_Hand_IK_Right}/>
                     <primitive object={nodes.Ctrl_Foot_IK_Left}/>
