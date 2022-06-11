@@ -318,7 +318,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         }, 500);
         return () => clearInterval(interval);
     }, [props.stream, isVideoOpening]);
-
+    console.log(props.stream);
     return (
         <>
             <mesh ref={ref} {...props}>
