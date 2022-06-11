@@ -7,7 +7,7 @@ import {useFrame} from "@react-three/fiber";
 
 interface ItemModelProps {
     url: string,
-    itemId: number
+    itemId: number,
 }
 
 function vectorToArray(v) {

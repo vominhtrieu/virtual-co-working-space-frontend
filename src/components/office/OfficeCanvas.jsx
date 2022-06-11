@@ -16,6 +16,7 @@ import ItemModel from "../models/ItemModel";
 import { userSelectors } from "../../stores/auth-slice";
 import CallingBar from "../../pages/office-detail/calling/CallingBar";
 import { socketSelector } from "../../stores/socket-slice";
+import Outline from "../models/Outline";
 
 export default function OfficeCanvas({
     setObjectionClickPos,
@@ -90,79 +91,81 @@ export default function OfficeCanvas({
                     {/* <Stats /> */}
                     <Suspense fallback={<Box />}>
                         <Physics gravity={[0, 0, 0]}>
-                            <Office castShadow={true} />
-                            {objectList.map((object) => (
-                                <mesh
-                                    castShadow={true}
-                                    key={object.id}
-                                    position={[
-                                        object.transform.xPosition,
-                                        object.transform.yPosition,
-                                        object.transform.zPosition,
-                                    ]}
-                                    rotation={[
-                                        object.transform.xRotation,
-                                        object.transform.yRotation,
-                                        object.transform.zRotation,
-                                    ]}
-                                    onClick={(e) => handleObject3dClick(e, object.id)}
-                                    onPointerMissed={handleObject3dPointerMissed}
-                                >
-                                    <Suspense fallback={null}>
-                                        <ItemModel url={object.item.modelPath} itemId={object.id} />
-                                    </Suspense>
-                                </mesh>
-                            ))}
-                            {onlineMembers.map((member) =>
-                                member.member.id === userInfo.id ? (
-                                    <Character
-                                        key={member.id}
-                                        appearance={appearance}
-                                        startPosition={[
-                                            member.transform.position.x,
-                                            2.5,
-                                            member.transform.position.z,
+                            {/* <Outline> */}
+                                <Office castShadow={true} />
+                                {objectList.map((object) => (
+                                    <mesh
+                                        castShadow={true}
+                                        key={object.id}
+                                        position={[
+                                            object.transform.xPosition,
+                                            object.transform.yPosition,
+                                            object.transform.zPosition,
                                         ]}
-                                        startRotation={[
-                                            member.transform.rotation.x,
-                                            member.transform.rotation.y,
-                                            member.transform.rotation.z,
+                                        rotation={[
+                                            object.transform.xRotation,
+                                            object.transform.yRotation,
+                                            object.transform.zRotation,
                                         ]}
-                                        stream={myStream}
-                                        scale={[2, 2, 2]}
-                                        orbitRef={orbitRef}
-                                        movable={action === "" || action === "action"}
-                                        volume={volume}
-                                        currentEmoji={characterEmoji}
-                                        currentGesture={characterGesture}
-                                        visible={action !== "config"}
-                                    />
-                                ) : (
-                                    <MemberCharacter
-                                        key={member.id}
-                                        appearance={memberAppearances.find((memberAppearance) => memberAppearance.userId === member.member.id)?.appearance}
-                                        startPosition={[
-                                            member.transform.position.x,
-                                            2.5,
-                                            member.transform.position.z,
-                                        ]}
-                                        startRotation={[
-                                            member.transform.rotation.x,
-                                            member.transform.rotation.y,
-                                            member.transform.rotation.z,
-                                        ]}
-                                        scale={[2, 2, 2]}
-                                        orbitRef={orbitRef}
-                                        stream={otherStreams[member.member.id]}
-                                        movable
-                                        volume={volume}
-                                        currentEmoji={characterEmoji}
-                                        currentGesture={characterGesture}
-                                        memberId={member.member.id}
-                                        visible={action !== "config"}
-                                    />
-                                )
-                            )}
+                                        onClick={(e) => handleObject3dClick(e, object.id)}
+                                        onPointerMissed={handleObject3dPointerMissed}
+                                    >
+                                        <Suspense fallback={null}>
+                                            <ItemModel url={object.item.modelPath} itemId={object.id} />
+                                        </Suspense>
+                                    </mesh>
+                                ))}
+                                {onlineMembers.map((member) =>
+                                    member.member.id === userInfo.id ? (
+                                        <Character
+                                            key={member.id}
+                                            appearance={appearance}
+                                            startPosition={[
+                                                member.transform.position.x,
+                                                2.5,
+                                                member.transform.position.z,
+                                            ]}
+                                            startRotation={[
+                                                member.transform.rotation.x,
+                                                member.transform.rotation.y,
+                                                member.transform.rotation.z,
+                                            ]}
+                                            stream={myStream}
+                                            scale={[2, 2, 2]}
+                                            orbitRef={orbitRef}
+                                            movable={action === "" || action === "action"}
+                                            volume={volume}
+                                            currentEmoji={characterEmoji}
+                                            currentGesture={characterGesture}
+                                            visible={action !== "config"}
+                                        />
+                                    ) : (
+                                        <MemberCharacter
+                                            key={member.id}
+                                            appearance={memberAppearances.find((memberAppearance) => memberAppearance.userId === member.member.id)?.appearance}
+                                            startPosition={[
+                                                member.transform.position.x,
+                                                2.5,
+                                                member.transform.position.z,
+                                            ]}
+                                            startRotation={[
+                                                member.transform.rotation.x,
+                                                member.transform.rotation.y,
+                                                member.transform.rotation.z,
+                                            ]}
+                                            scale={[2, 2, 2]}
+                                            orbitRef={orbitRef}
+                                            stream={otherStreams[member.member.id]}
+                                            movable
+                                            volume={volume}
+                                            currentEmoji={characterEmoji}
+                                            currentGesture={characterGesture}
+                                            memberId={member.member.id}
+                                            visible={action !== "config"}
+                                        />
+                                    )
+                                )}
+                            {/* </Outline> */}
 
                             {/* <Stats className="stats" /> */}
 
