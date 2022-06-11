@@ -88,6 +88,7 @@ export const TranslationEnPages = {
       account: "Your Account",
       editCharacter: "Edit Character",
       logout: "Logout",
+      setting:"Setting"
     },
   },
   office: {

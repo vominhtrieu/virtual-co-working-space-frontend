@@ -88,6 +88,7 @@ export const TranslationViPages = {
       account: "Tài khoản của bạn",
       editCharacter: "Sửa nhân vật",
       logout: "Đăng xuất",
+      setting:"Cài đặt"
     },
   },
   office: {
