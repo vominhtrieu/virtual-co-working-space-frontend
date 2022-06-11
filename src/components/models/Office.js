@@ -24,7 +24,7 @@ export default function Office(props) {
             <mesh position={[45, 0, 0]} rotation={[0, Math.PI / 2, 0]} scale={[2, 2, 1]}>
                 <ItemModel url="/models/Wall.glb" />
             </mesh>
-            <mesh position={[-45, 0, 0]} rotation={[0, Math.PI / 2, 0]} scale={[2, 2, 1]}>
+            <mesh position={[-45, 0, 0]} rotation={[0, -Math.PI / 2, 0]} scale={[2, 2, 1]}>
                 <ItemModel url="/models/Wall.glb" />
             </mesh>
         </>
