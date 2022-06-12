@@ -33,7 +33,7 @@ const ChatList = (props: ChatListProps) => {
   };
 
   useEffect(() => {
-    setConversationList(officeDetail.conversations);
+    setConversationList(officeDetail?.conversations);
     socket.on("conversation:created", (value) => {
       const newConversation = {
         id: value.conversation.id,
@@ -48,7 +48,7 @@ const ChatList = (props: ChatListProps) => {
     return () => {
       socket.off("conversation:created");
     };
-  }, [socket, officeDetail.conversations]);
+  }, [socket, officeDetail?.conversations]);
 
   return (
     <>
@@ -56,7 +56,7 @@ const ChatList = (props: ChatListProps) => {
         <CreateConversationForm
           onClose={() => setIsCreate(false)}
           onSubmit={handleCreateConversation}
-          memberList={officeDetail.officeMembers.filter(
+          memberList={officeDetail?.officeMembers.filter(
             (member) => member.member.id !== userInfo.id
           )}
         />

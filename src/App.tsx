@@ -20,6 +20,7 @@ import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
 import ResetPassword from "./pages/auth/reset-password";
 import CharacterCustom from "./pages/CharacterCustom";
+import Home from "./pages/home/Home";
 import Lobby from "./pages/lobby";
 import CharacterCustomMobile from "./pages/mobile/CharacterCustomMobile";
 import WorkspaceMobile from "./pages/mobile/WorkspaceMobile";
@@ -126,6 +127,7 @@ function UnauthenticatedRoutes() {
 
   return (
     <Routes>
+      <Route path="/" element={<Home />} />
       <Route path="/auth/forgot" element={<ForgotPassword />} />
       <Route path="/auth/login" element={<Login />} />
       <Route path="/auth/register" element={<Register />} />

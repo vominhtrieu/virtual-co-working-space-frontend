@@ -1,3 +1,78 @@
 .home {
   color: $color-gray;
 }
+
+.container {
+  min-height: 100vh;
+  width: 70%;
+  margin: 0 auto;
+
+  @include respond(tab-land) {
+    width: 80%;
+  }
+
+  @include respond(tab-port) {
+    width: 90%;
+  }
+}
+
+.slide {
+  height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @include respond(phone) {
+    flex-direction: column-reverse;
+  }
+
+  &__content {
+    flex: 0 0 50%;
+
+    @include respond(phone) {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      & > * {
+        text-align: center;
+      }
+    }
+  }
+
+  &__header {
+    font-size: 5rem;
+    font-weight: 900;
+    margin-bottom: 2rem;
+    animation: moveInTop 1s ease-in-out 0s both;
+    color: $color-white;
+
+    @include respond(tab-land) {
+      font-size: 6rem;
+    }
+
+    @include respond(tab-port) {
+      font-size: 4rem;
+    }
+  }
+
+  &__sub {
+    color: $color-white;
+    font-size: 2rem;
+    font-weight: 400;
+    margin-bottom: 4rem;
+    animation: moveInLeft 1s ease-in-out 0.3s both;
+  }
+
+  &__image {
+    flex: 0 0 45%;
+    animation: zoomIn 1s ease-in-out 0s both;
+
+    img {
+      width: 100%;
+    }
+
+    @include respond(phone) {
+      margin-bottom: 2rem;
+    }
+  }
+}
