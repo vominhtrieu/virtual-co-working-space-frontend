@@ -90,7 +90,11 @@ const ChatBox = (props: ChatBoxProps) => {
             });
 
           setChatList(chatListTransform.reverse());
-          setCurrentCursor(chatListTransform.reverse()[0].id);
+          setCurrentCursor(
+            chatListTransform.reverse()[0]
+              ? chatListTransform.reverse()[0].id
+              : 0
+          );
 
           if (scrollRef !== null && scrollRef.current !== null) {
             scrollRef.current.scrollIntoView({ behavior: "smooth" });
@@ -190,8 +194,6 @@ const ChatBox = (props: ChatBoxProps) => {
       );
     });
 
-    scrollRef.current.scrollIntoView({ behavior: "smooth" });
-
     return () => {
       socket.off("message:deleted");
     };
@@ -204,7 +206,6 @@ const ChatBox = (props: ChatBoxProps) => {
   });
 
   const handleSendMess = (values) => {
-    console.log(values);
     if (values.message.trim() === "") return;
 
     const tempId = uuidv4();
@@ -224,9 +225,6 @@ const ChatBox = (props: ChatBoxProps) => {
 
     setValue("message", "");
     setIsShowEmojiBox(false);
-    if (scrollRef !== null && scrollRef.current !== null) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth" });
-    }
   };
 
   const watchMessage = useWatch({
@@ -297,12 +295,11 @@ const ChatBox = (props: ChatBoxProps) => {
   }, [socket, officeDetail.conversations]);
 
   const handleScrollMess = (event) => {
-    console.log("scroll top");
     if (event.target.scrollTop === 0) {
+      if (currentCursor === 0) return;
       // load more message
       GetMessagesProxy({ id: conversationId, nextCursor: currentCursor })
         .then((res) => {
-          console.log(res);
           if (res.status === ProxyStatusEnum.FAIL) {
             return;
           }
@@ -347,8 +344,12 @@ const ChatBox = (props: ChatBoxProps) => {
                     : [],
                 };
               });
-
             setChatList((prev) => [...chatListTransform.reverse(), ...prev]);
+            setCurrentCursor(
+              chatListTransform.reverse()[0]
+                ? chatListTransform.reverse()[0].id
+                : 0
+            );
           }
         })
         .catch((err) => {
@@ -376,6 +377,7 @@ const ChatBox = (props: ChatBoxProps) => {
                 <li className="chat-box__item" key={index}>
                   <ChatBoxItem
                     message={item.message}
+                    src={item.src}
                     alt={item.alt}
                     name={item.alt}
                     isMe={item.isMe}
