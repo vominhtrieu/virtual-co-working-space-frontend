@@ -135,6 +135,7 @@ function UnauthenticatedRoutes() {
 
       {/* redirect */}
       <Route path="/" element={<Navigate to="/auth/login" replace />} />
+      <Route path="/lobby" element={<Navigate to="/auth/login" replace />} />
       <Route
         path="/character"
         element={<Navigate to="/auth/login" replace />}
@@ -208,12 +209,12 @@ function App() {
   }, []);
 
   useEffect(() => {
-      if (isAuthenticated) {
-          getAppearance().then((data) => {
-              setCharacter(data);
-          })
-      }
-  }, [isAuthenticated])
+    if (isAuthenticated) {
+      getAppearance().then((data) => {
+        setCharacter(data);
+      });
+    }
+  }, [isAuthenticated]);
 
   return (
     <CharacterContext.Provider

@@ -53,7 +53,7 @@ const SetupInterceptors = (store) => {
           }
         );
 
-        if (!refreshTokenResponse || !refreshTokenResponse.data) {
+        if (!refreshTokenResponse || refreshTokenResponse.data.code === 401) {
           store.dispatch(setAuthenticated(false));
           store.dispatch(setUserInfo({}));
           removeAllDataLocal();

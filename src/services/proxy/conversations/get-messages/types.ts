@@ -1,5 +1,7 @@
 export interface GetMessagesProxyParamsInterface {
   id: number;
+  nextCursor?: number;
+  limit?: number;
 }
 export interface GetMessagesProxyTransformInterface {
   messages: {
