@@ -81,7 +81,7 @@ const EditProfileForm = (props: EditProfileFormProps) => {
   return (
     <Popup
       onClose={onClose}
-      title="Change Profile"
+      title={t("pages.profile.editProfile.title")}
       type="dark"
       onSubmit={handleSubmit(handleEditProfileSubmit)}
       hasFooter={true}
@@ -102,8 +102,8 @@ const EditProfileForm = (props: EditProfileFormProps) => {
               control={control}
               type="text"
               name="name"
-              label="Name"
-              placeholder="Enter name..."
+              label={t("pages.profile.editProfile.name")}
+              placeholder={t("pages.profile.editProfile.enterName")}
             />
           </div>
 
@@ -112,8 +112,8 @@ const EditProfileForm = (props: EditProfileFormProps) => {
               control={control}
               type="text"
               name="phone"
-              label="Phone Number"
-              placeholder="Enter phone number..."
+              label={t("pages.profile.editProfile.phone")}
+              placeholder={t("pages.profile.editProfile.enterPhone")}
             />
           </div>
         </ul>

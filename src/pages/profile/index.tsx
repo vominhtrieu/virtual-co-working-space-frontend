@@ -24,6 +24,8 @@ import {
   ChangePasswordFormValuesInterface,
   EditProfileFormValuesInterface,
 } from './types'
+import { useTranslation } from "react-i18next";
+
 
 const Profile = () => {
   const dispatch = useAppDispatch()
@@ -31,6 +33,7 @@ const Profile = () => {
   const [isChangingPass, setIsChangingPass] = useState(false)
   const userInfo = useAppSelector(userSelectors.getUserInfo)
   // const isLoading = useAppSelector(loadSelectors.getIsLoad);
+  const { t } = useTranslation();
 
   const navigate = useNavigate()
 
@@ -159,7 +162,7 @@ const Profile = () => {
             <ul className="lobby__profile-user-items">
               {/* user item - start */}
               <li className="lobby__profile-user-item">
-                <div className="lobby__profile-user-item-title">Name</div>
+                <div className="lobby__profile-user-item-title">{t("pages.profile.name")}</div>
                 <div className="lobby__profile-user-item-content">
                   {userInfo.name}
                 </div>
@@ -167,7 +170,7 @@ const Profile = () => {
               {/* user item - end */}
               {/* user item - start */}
               <li className="lobby__profile-user-item">
-                <div className="lobby__profile-user-item-title">Email</div>
+                <div className="lobby__profile-user-item-title">{t("pages.profile.email")}</div>
                 <div className="lobby__profile-user-item-content">
                   {userInfo.email}
                 </div>
@@ -176,8 +179,7 @@ const Profile = () => {
               {/* user item - start */}
               <li className="lobby__profile-user-item">
                 <div className="lobby__profile-user-item-title">
-                  Phone number
-                </div>
+                  {t("pages.profile.phone")}                </div>
                 <div className="lobby__profile-user-item-content">
                   {userInfo.phone}
                 </div>
@@ -186,8 +188,7 @@ const Profile = () => {
               {/* user item - start */}
               <li className="lobby__profile-user-item">
                 <div className="lobby__profile-user-item-title">
-                  Joined date
-                </div>
+                  {t("pages.profile.date")}                </div>
                 <div className="lobby__profile-user-item-content">
                   {parseStringToDate(userInfo.createdAt)}
                 </div>
@@ -203,7 +204,7 @@ const Profile = () => {
                 }}
               >
                 {/* {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null} */}
-                Change Profile
+                {t("pages.profile.changeProfile")}
               </Button>
               <Button
                 type="submit"
@@ -213,7 +214,7 @@ const Profile = () => {
                 }}
               >
                 {/* {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null} */}
-                Change Password
+                {t("pages.profile.changePassword")}
               </Button>
             </div>
           </div>

@@ -27,7 +27,8 @@ import { userSelectors } from "../../stores/auth-slice";
 import { socketSelector } from "../../stores/socket-slice";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import { OfficeDetailInterface } from "../../types/office";
-import CallingBar from "./calling/CallingBar";
+import { officeSelectors } from "../../stores/office-slice";
+
 
 export type positionType = {
   x: number;
@@ -55,7 +56,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
   const [onlineMembers, setOnlineMembers] = useState<OfficeMembersInterface[]>(
     []
   );
-
+  const isOffice = useAppSelector(officeSelectors.getIsOffice);
   const [officeDetail, setOfficeDetail] = useState<OfficeDetailInterface>();
   const [memberAppearances, setMemberAppearances] = useState<
     MemberAppearance[]
@@ -152,9 +153,9 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
 
   useEffect(() => {
     socket.on("office_member:offline", (memberId) => {
-      setOnlineMembers([
-        ...onlineMembers.filter((member) => member.member.id !== memberId),
-      ]);
+      setOnlineMembers(
+        onlineMembers.filter((member) => member.member.id !== memberId),
+      );
     });
 
     return () => {
@@ -175,7 +176,6 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
     });
 
     return () => {
-      socket.removeListener("office_item:online");
       socket.removeListener("office_item:created");
       socket.removeListener("office_item:deleted");
     };
@@ -289,7 +289,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [officeId, userInfo.id]);
+  }, [officeId, userInfo.id, isOffice]);
 
   useEffect(() => {
     getMemberAppearances(officeId).then((data) => {

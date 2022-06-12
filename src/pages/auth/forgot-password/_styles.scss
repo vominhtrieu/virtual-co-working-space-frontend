@@ -1,6 +1,14 @@
+
 .forgot {
   background-color: $color-primary-dark;
   height: 100vh;
+  
+  .icon-lang {
+    top:4rem;
+    left: 4rem;
+    position:absolute;
+  }
+  
 
   &__form {
     @include flex-center;

@@ -57,6 +57,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     // const { scene, animations, materials } = useCustomGLTF(
     //   "/models/Character.glb"
     // ) as GLTFResult;
+    console.log("Rerender")
     const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
     const {nodes} = useGraph(clone);
 
@@ -67,7 +68,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         fixedRotation: true,
         mass: 1,
     }));
-
+    api.velocity.set(1, 0, 1);
     const rotateQuaternion = useRef(new THREE.Quaternion());
     const walkDirection = useRef(new THREE.Vector3());
     const currentClip = useRef<THREE.AnimationClip>(null);
@@ -99,18 +100,6 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         }
     };
 
-    const getEmoji = (emojiIndex: number) => {
-        if (emojiIndex >= 0) {
-            return loader.load(
-                require(`../../../assets/images/emojis/${
-                    EMOJI_LIST[emojiIndex]
-                }.png`)
-            );
-        } else {
-            return loader.load();
-        }
-    };
-
     useEffect(() => {
         if (currentGesture.idx > 1)
             setGesturePlaying(true);
@@ -127,18 +116,21 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         }, 2000);
     }, [currentEmoji]);
 
-    useThree(() => {
-        api.position.subscribe((v) => {
+    useEffect(() => {
+        const unsubPosition = api.position.subscribe((v) => {
             position.current = v;
         });
-        api.rotation.subscribe((v) => {
-            rotation.current = v;
-        });
-    });
+
+        return unsubPosition
+    }, []);
 
     useEffect(() => {
+        const unsubRotation = api.rotation.subscribe((v) => {
+            rotation.current = v;
+        });
 
-    }, [emojiPlaying]);
+        return unsubRotation;
+    }, [])
 
     const shouldUpdate = () => {
         return (
@@ -245,42 +237,42 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         }
 
         const hairStyle = `Hair_${appearance.hairStyle + 1}`;
-            // const hairMesh = (
-            //   <skinnedMesh
-            //     geometry={nodes[hairStyle]?.geometry}
-            //     material={materials[hairStyle]}
-            //     skeleton={nodes[hairStyle].skeleton}
-            //   />
-            // );
-            materials[hairStyle].color.setStyle(AppearanceGroups[2].items[appearance.hairColor].hex);
-          
-            // if (hair && hairMesh.props.material) {
-            //     hairMesh.props.material.color.setStyle(
-            //     AppearanceGroups[2].items[appearance.hairColor].hex
-            //   );
-            // }
+        // const hairMesh = (
+        //   <skinnedMesh
+        //     geometry={nodes[hairStyle]?.geometry}
+        //     material={materials[hairStyle]}
+        //     skeleton={nodes[hairStyle].skeleton}
+        //   />
+        // );
+        materials[hairStyle].color.setStyle(AppearanceGroups[2].items[appearance.hairColor].hex);
+        
+        // if (hair && hairMesh.props.material) {
+        //     hairMesh.props.material.color.setStyle(
+        //     AppearanceGroups[2].items[appearance.hairColor].hex
+        //   );
+        // }
 
-            setHairStyle(hairStyle);
-          
-            materials.Skin.color.setStyle(
-              AppearanceGroups[0].items[appearance.skinColor].hex
-            );
-            materials.Head.color.setStyle(
-              AppearanceGroups[0].items[appearance.skinColor].hex
-            );
-            materials.Eye.color.setStyle(
-              AppearanceGroups[0].items[appearance.skinColor].hex
-            );
-            materials.Body.color.setStyle(
-              AppearanceGroups[4].items[appearance.shirtColor].hex
-            );
-            materials.Pant.color.setStyle(
-              AppearanceGroups[5].items[appearance.pantColor].hex
-            );
-            materials.Shoes.color.setStyle(
-              AppearanceGroups[6].items[appearance.shoeColor].hex
-            );
-    }, [props.appearance])
+        setHairStyle(hairStyle);
+        
+        materials.Skin.color.setStyle(
+            AppearanceGroups[0].items[appearance.skinColor].hex
+        );
+        materials.Head.color.setStyle(
+            AppearanceGroups[0].items[appearance.skinColor].hex
+        );
+        materials.Eye.color.setStyle(
+            AppearanceGroups[0].items[appearance.skinColor].hex
+        );
+        materials.Body.color.setStyle(
+            AppearanceGroups[3].items[appearance.shirtColor].hex
+        );
+        materials.Pant.color.setStyle(
+            AppearanceGroups[4].items[appearance.pantColor].hex
+        );
+        materials.Shoes.color.setStyle(
+            AppearanceGroups[5].items[appearance.shoeColor].hex
+        );
+    }, [props.appearance]);
 
     const texture = useMemo(() => {
         if (!props.stream) {
@@ -295,14 +287,46 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         return new THREE.VideoTexture(selfVideo);
     }, [props.stream]);
 
+    const emojiTexture = useMemo(() => {
+        if (currentEmoji && currentEmoji.idx >= 0) {
+            return loader.load(
+                require(`../../../assets/images/emojis/${
+                    EMOJI_LIST[currentEmoji.idx]
+                }.png`)
+            );
+        } else {
+            return loader.load();
+        }
+    }, [currentEmoji, loader])
+
+    const [isVideoOpening, setIsVideoOpening] = useState(false);
+    
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (props.stream) {
+                const vidTrack = props.stream?.getVideoTracks();
+                let enabled = false;
+                for (const track of vidTrack) {
+                    if (track.enabled) {
+                        enabled = true;
+                    }
+                }
+                if (enabled !== isVideoOpening) {
+                    setIsVideoOpening(enabled);
+                }
+            }
+        }, 500);
+        return () => clearInterval(interval);
+    }, [props.stream, isVideoOpening]);
+    console.log(props.stream);
     return (
         <>
             <mesh ref={ref} {...props}>
                 <group ref={group} position={[0, -1, 0]} dispose={null}>
                     <sprite position={[0, 2.6, 0]} visible={emojiPlaying}>
-                        <spriteMaterial map={getEmoji(currentEmoji.idx)}/>
+                        <spriteMaterial map={emojiTexture}/>
                     </sprite>
-                    {texture && (<sprite position={[0, 2.6, 0]} scale={[-1, 1, 1]} visible={true}>
+                    {texture &&isVideoOpening&& (<sprite position={[0, 2.6, 0]} scale={[-1, 1, 1]} visible={!emojiPlaying}>
                             <spriteMaterial
                                 alphaMap={alphaMap}
                                 map={texture}
