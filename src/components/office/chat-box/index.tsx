@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { FaGrin, FaPaperPlane } from "react-icons/fa";
+import { v4 as uuidv4 } from "uuid";
 import GetMessagesProxy from "../../../services/proxy/conversations/get-messages";
 import { useAppSelector } from "../../../stores";
 import { userSelectors } from "../../../stores/auth-slice";
@@ -8,13 +10,11 @@ import { socketSelector } from "../../../stores/socket-slice";
 import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
 import RightBar from "../../layouts/rightbar";
 import InputText from "../../UI/form-controls/input-text";
+import AddMemberConversationForm from "./add-member-form";
 import ChatBoxItem from "./chat-box-item";
 import { emojiList } from "./emoji";
 import { ChatBoxProps, ChatItemInterface } from "./types";
-import { v4 as uuidv4 } from "uuid";
 import UpdateConversationForm from "./update-conversation-form";
-import AddMemberConversationForm from "./add-member-form";
-import { useTranslation } from "react-i18next";
 
 const ChatBox = (props: ChatBoxProps) => {
   const {
@@ -31,6 +31,7 @@ const ChatBox = (props: ChatBoxProps) => {
   const socket = useAppSelector(socketSelector.getSocket);
   const [isShowUpdateForm, setIsShowUpdateForm] = useState(false);
   const [isShowAddMemberForm, setIsShowAddMemberForm] = useState(false);
+  const [currentCursor, setCurrentCursor] = useState(1);
 
   const scrollRef = useRef<any>(null);
   const emojiBoxRef = useRef<any>(null);
@@ -89,6 +90,11 @@ const ChatBox = (props: ChatBoxProps) => {
             });
 
           setChatList(chatListTransform.reverse());
+          setCurrentCursor(
+            chatListTransform.reverse()[0]
+              ? chatListTransform.reverse()[0].id
+              : 0
+          );
 
           if (scrollRef !== null && scrollRef.current !== null) {
             scrollRef.current.scrollIntoView({ behavior: "smooth" });
@@ -188,8 +194,6 @@ const ChatBox = (props: ChatBoxProps) => {
       );
     });
 
-    scrollRef.current.scrollIntoView({ behavior: "smooth" });
-
     return () => {
       socket.off("message:deleted");
     };
@@ -221,9 +225,6 @@ const ChatBox = (props: ChatBoxProps) => {
 
     setValue("message", "");
     setIsShowEmojiBox(false);
-    if (scrollRef !== null && scrollRef.current !== null) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth" });
-    }
   };
 
   const watchMessage = useWatch({
@@ -272,28 +273,6 @@ const ChatBox = (props: ChatBoxProps) => {
   };
 
   useEffect(() => {
-    socket.on("conversation:updated", (value) => {
-      console.log(value);
-      // setConversationList((prev) => {
-      //   return prev.map((item) => {
-      //     if (item.id === value.conversation.id) {
-      //       return {
-      //         ...item,
-      //         ...value.conversation,
-      //       };
-      //     }
-
-      //     return item;
-      //   });
-      // });
-    });
-
-    return () => {
-      socket.off("conversation:updated");
-    };
-  }, [socket, officeDetail.conversations]);
-
-  useEffect(() => {
     socket.on("conversation:members_added", (value) => {
       console.log(value);
       // setConversationList((prev) => {
@@ -315,6 +294,70 @@ const ChatBox = (props: ChatBoxProps) => {
     };
   }, [socket, officeDetail.conversations]);
 
+  const handleScrollMess = (event) => {
+    if (event.target.scrollTop === 0) {
+      if (currentCursor === 0) return;
+      // load more message
+      GetMessagesProxy({ id: conversationId, nextCursor: currentCursor })
+        .then((res) => {
+          if (res.status === ProxyStatusEnum.FAIL) {
+            return;
+          }
+
+          if (res.status === ProxyStatusEnum.SUCCESS) {
+            const chatListTransform: ChatItemInterface[] =
+              res?.data?.messages?.messages.map((mess) => {
+                return {
+                  src:
+                    officeDetail.officeMembers.find((sender) => {
+                      return sender.member.id === mess.senderId;
+                    })?.member.avatar ??
+                    "https://s199.imacdn.com/tt24/2020/03/06/c13c137597da081f_f4278fdff371f2b7_93155158347150251.jpg",
+                  alt:
+                    officeDetail.officeMembers.find((sender) => {
+                      return sender.member.id === mess.senderId;
+                    })?.member.name ?? "Tên người dùng",
+                  message:
+                    mess.status === "revoked"
+                      ? "Tin nhắn đã bị thu hồi"
+                      : mess?.content,
+                  isMe: userInfo.id === mess?.senderId,
+                  id: mess?.id,
+                  conversationId: mess?.conversationId,
+                  senderId: mess?.senderId,
+                  reader: mess?.readers
+                    ? mess?.readers.map((r) => {
+                        return {
+                          id: r.readerId,
+                          name:
+                            officeDetail.officeMembers.find(
+                              (m) => m.member.id === r.readerId
+                            )?.member.name ?? "Tên",
+
+                          avatar:
+                            officeDetail.officeMembers.find(
+                              (m) => m.member.id === r.readerId
+                            )?.member.avatar ??
+                            "https://static.vecteezy.com/system/resources/thumbnails/003/337/584/small/default-avatar-photo-placeholder-profile-icon-vector.jpg",
+                        };
+                      })
+                    : [],
+                };
+              });
+            setChatList((prev) => [...chatListTransform.reverse(), ...prev]);
+            setCurrentCursor(
+              chatListTransform.reverse()[0]
+                ? chatListTransform.reverse()[0].id
+                : 0
+            );
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   return (
     <>
       <RightBar
@@ -328,12 +371,13 @@ const ChatBox = (props: ChatBoxProps) => {
         onAddMember={() => setIsShowAddMemberForm(true)}
       >
         <div className="chat-box">
-          <ul className="chat-box__list">
+          <ul className="chat-box__list" onScroll={handleScrollMess}>
             {chatList.map((item, index) => {
               return (
                 <li className="chat-box__item" key={index}>
                   <ChatBoxItem
                     message={item.message}
+                    src={item.src}
                     alt={item.alt}
                     name={item.alt}
                     isMe={item.isMe}

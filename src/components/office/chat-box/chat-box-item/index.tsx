@@ -1,3 +1,4 @@
+import { Tooltip } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { FaTrashAlt, FaUndo } from "react-icons/fa";
 import { useAppSelector } from "../../../../stores";
@@ -60,7 +61,9 @@ const ChatBoxItem = (props: ChatBoxItemPropsInterface) => {
 
   return (
     <div className={"chat-box-item" + (isMe ? " mine" : "")}>
-      <img src={src ?? srcTemp} alt={alt} className="chat-box-item__avatar" />
+      <Tooltip placement="topLeft" title={alt}>
+        <img src={src ?? srcTemp} alt={alt} className="chat-box-item__avatar" />
+      </Tooltip>
       <div
         className="chat-box-item__message"
         onClick={() => {

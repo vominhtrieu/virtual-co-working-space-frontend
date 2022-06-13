@@ -3,7 +3,7 @@ import { Avatar, Dropdown, Menu } from "antd";
 import MenuDivider from "antd/lib/menu/MenuDivider";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FaSignOutAlt, FaTshirt, FaUserAlt } from "react-icons/fa";
+import { FaSignOutAlt, FaTshirt, FaUserAlt,FaCog } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { removeAll } from "../../../helpers/cookies";
 import { removeAllDataLocal } from "../../../helpers/localStorage";
@@ -14,12 +14,14 @@ import {
   userSelectors,
 } from "../../../stores/auth-slice";
 import CharacterForm from "../../character-form";
+import Setting from "./setting";
 
 const UserPopup = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const userInfo = useAppSelector(userSelectors.getUserInfo);
   const [isCharacter, setIsCharacter] = useState(false);
+  const [isSetting, setIsSetting] = useState(false);
 
   const { t } = useTranslation();
 
@@ -37,7 +39,7 @@ const UserPopup = () => {
 
   const menu = (
     <Menu className="navbar__dropdown-menu">
-      <Menu.Item className="navbar__dropdown-item" onClick={handleClickProfile}>
+      <Menu.Item key="user" className="navbar__dropdown-item" onClick={handleClickProfile}>
         <div className="navbar__dropdown-content-bottom">
           <div className="navbar__dropdown-item-icon">
             <FaUserAlt />
@@ -45,7 +47,7 @@ const UserPopup = () => {
           <p>{t("pages.lobby.userMenu.account")}</p>
         </div>
       </Menu.Item>
-      <Menu.Item
+      <Menu.Item key="character"
         className="navbar__dropdown-item"
         onClick={() => setIsCharacter(true)}
       >
@@ -56,8 +58,19 @@ const UserPopup = () => {
           <p>{t("pages.lobby.userMenu.editCharacter")}</p>
         </div>
       </Menu.Item>
+      <Menu.Item key="translate"
+        className="navbar__dropdown-item"
+        onClick={() => setIsSetting(true)}
+      >
+        <div className="navbar__dropdown-content-bottom">
+          <div className="navbar__dropdown-item-icon">
+            <FaCog />
+          </div>
+          <p>{t("pages.lobby.userMenu.setting")}</p>
+        </div>
+      </Menu.Item>
       <MenuDivider />
-      <Menu.Item className="navbar__dropdown-item" onClick={handleLogout}>
+      <Menu.Item key="logout" className="navbar__dropdown-item" onClick={handleLogout}>
         <div className="navbar__dropdown-content-bottom">
           <div className="navbar__dropdown-item-icon">
             <FaSignOutAlt />
@@ -71,6 +84,7 @@ const UserPopup = () => {
   return (
     <>
       {isCharacter && <CharacterForm onClose={() => setIsCharacter(false)} />}
+      {isSetting && <Setting onClose={() => setIsSetting(false)} />}
       <Dropdown overlay={menu} placement="bottomRight">
         <div className="navbar__user">
           {userInfo.avatar === "" ? (

@@ -15,7 +15,10 @@ import { toastError } from "../../helpers/toast";
 import { groupBy } from "../../helpers/utilities";
 import { Item } from "../../services/api/offices/get-office-item/types";
 import { getMemberAppearances } from "../../services/api/offices/member-appearances";
-import { Appearance, MemberAppearance } from "../../services/api/offices/member-appearances/types";
+import {
+  Appearance,
+  MemberAppearance,
+} from "../../services/api/offices/member-appearances/types";
 import { OfficeItem } from "../../services/api/offices/officce-item/types";
 import { OfficeMembersInterface } from "../../services/api/offices/office-detail/types";
 import OfficeDetailProxy from "../../services/proxy/offices/office-detail";
@@ -24,6 +27,8 @@ import { userSelectors } from "../../stores/auth-slice";
 import { socketSelector } from "../../stores/socket-slice";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import { OfficeDetailInterface } from "../../types/office";
+import { officeSelectors } from "../../stores/office-slice";
+
 
 export type positionType = {
   x: number;
@@ -51,9 +56,11 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
   const [onlineMembers, setOnlineMembers] = useState<OfficeMembersInterface[]>(
     []
   );
-
+  const isOffice = useAppSelector(officeSelectors.getIsOffice);
   const [officeDetail, setOfficeDetail] = useState<OfficeDetailInterface>();
-  const [memberAppearances, setMemberAppearances] = useState<MemberAppearance[]>([])
+  const [memberAppearances, setMemberAppearances] = useState<
+    MemberAppearance[]
+  >([]);
 
   const [action, setAction] = useState<
     | "action"
@@ -125,7 +132,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
     setSelectedKey(null);
     setObjectActionVisible(false);
     socket.emit("office_item:delete", {
-        id: selectedKey
+      id: selectedKey,
     });
   };
 
@@ -238,7 +245,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
 
   const handleGestureClick = (gestureIdx: number) => {
     setCharacterGesture({ idx: gestureIdx });
-    
+
     socket.emit("gesture", {
       gestureId: gestureIdx,
     });
@@ -275,20 +282,46 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
           }
 
           if (res.data.office?.officeItems.length > 0) {
-              setObjectList(res.data.office.officeItems);
+            setObjectList(res.data.office.officeItems);
           }
         }
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [officeId, userInfo.id]);
+  }, [officeId, userInfo.id, isOffice]);
 
   useEffect(() => {
     getMemberAppearances(officeId).then((data) => {
       setMemberAppearances(data);
-    })
-  }, [officeId])
+    });
+  }, [officeId]);
+
+  useEffect(() => {
+    socket.on("conversation:updated", (value) => {
+      //change conversation name
+      setOfficeDetail((curr) => {
+        return curr
+          ? {
+              ...curr,
+              conversations: curr?.conversations.map((conversation) => {
+                if (conversation.id === value.conversation.id) {
+                  return {
+                    ...conversation,
+                    name: value.conversation.name,
+                  };
+                }
+                return conversation;
+              }),
+            }
+          : undefined;
+      });
+    });
+
+    return () => {
+      socket.off("conversation:updated");
+    };
+  }, [socket]);
 
   return (
     <>

@@ -22,9 +22,11 @@ import {
   OfficeDetailFormProps,
   OfficeDetailInterface,
 } from "./types";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const OfficeDetailForm = (props: OfficeDetailFormProps) => {
   const [officeDetail, setOfficeDetail] = useState<OfficeDetailInterface>();
+  const navigate = useNavigate();
   const { onClose, id, isOwner } = props;
 
   const { t } = useTranslation();
@@ -87,9 +89,9 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
           toastSuccess("Delete office success");
-          dispatch(setIsOffice(!isOffice));
           onClose();
           setIsDeleting(false);
+          navigate("/lobby");
         }
       })
       .catch((err) => {
@@ -110,6 +112,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
         if (res.status === ProxyStatusEnum.SUCCESS) {
           toastSuccess("Create invitation success");
           dispatch(setIsOffice(!isOffice));
+          
           onClose();
           setIsCreate(false);
         }

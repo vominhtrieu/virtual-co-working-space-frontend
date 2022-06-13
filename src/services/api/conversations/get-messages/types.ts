@@ -1,5 +1,7 @@
 export interface GetMessagesParamsInterface {
   id: number;
+  nextCursor?: number;
+  limit?: number;
 }
 
 export interface GetMessagesApiResponseInterface {
