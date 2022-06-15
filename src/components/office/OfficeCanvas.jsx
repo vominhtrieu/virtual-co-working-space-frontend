@@ -42,12 +42,16 @@ export default function OfficeCanvas({
     const [otherStreams, setOtherStreams] = useState({});
 
     const handleObject3dClick = (e, key) => {
-        if (action === "config") return;
+        if (action !== "config") return;
         let temp = e.object;
         while (temp.parent && temp.parent.type !== "Scene") {
             temp = temp.parent;
         }
 
+        if (temp === selectedObject) {
+            return;
+        }
+        console.log("Hi")
         setSelectedObject(temp);
         setSelectedKey(key);
         setObjectActionVisible(true);
@@ -61,7 +65,6 @@ export default function OfficeCanvas({
     const handleObject3dPointerMissed = () => {
         setObjectActionVisible(false);
     };
-
     const socket = useAppSelector(socketSelector.getSocket);
     return (
         <>
@@ -92,7 +95,7 @@ export default function OfficeCanvas({
                     <Suspense fallback={<Box />}>
                         <Physics gravity={[0, 0, 0]}>
                             {/* <Outline> */}
-                                <Office castShadow={true} />
+                                <Office castShadow={true} action={action} />
                                 {objectList.map((object) => (
                                     <mesh
                                         castShadow={true}
@@ -173,7 +176,7 @@ export default function OfficeCanvas({
                                 object={selectedObject}
                                 objectKey={selectedKey}
                                 orbit={orbitRef}
-                                visible={objectActionVisible && action === "config"}
+                                visible={action === "config"}
                                 handleObject3dDragged={handleObject3dDragged}
                             />
                         </Physics>
