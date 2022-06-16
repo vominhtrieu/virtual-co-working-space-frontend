@@ -16,6 +16,7 @@ import ItemModel from "../models/ItemModel";
 import { userSelectors } from "../../stores/auth-slice";
 import CallingBar from "../../pages/office-detail/calling/CallingBar";
 import { socketSelector } from "../../stores/socket-slice";
+import { Debug } from "@react-three/cannon";
 import Outline from "../models/Outline";
 
 export default function OfficeCanvas({
@@ -48,10 +49,7 @@ export default function OfficeCanvas({
             temp = temp.parent;
         }
 
-        if (temp === selectedObject) {
-            return;
-        }
-        console.log("Hi")
+
         setSelectedObject(temp);
         setSelectedKey(key);
         setObjectActionVisible(true);
@@ -63,7 +61,7 @@ export default function OfficeCanvas({
     };
 
     const handleObject3dPointerMissed = () => {
-        setObjectActionVisible(false);
+        // setObjectActionVisible(false);
     };
     const socket = useAppSelector(socketSelector.getSocket);
     return (
@@ -94,7 +92,8 @@ export default function OfficeCanvas({
                     {/* <Stats /> */}
                     <Suspense fallback={<Box />}>
                         <Physics gravity={[0, 0, 0]}>
-                            {/* <Outline> */}
+                            <Debug>
+                                {/* <Outline> */}
                                 <Office castShadow={true} action={action} />
                                 {objectList.map((object) => (
                                     <mesh
@@ -114,7 +113,12 @@ export default function OfficeCanvas({
                                         onPointerMissed={handleObject3dPointerMissed}
                                     >
                                         <Suspense fallback={null}>
-                                            <ItemModel url={object.item.modelPath} itemId={object.id} />
+                                            <ItemModel url={object.item.modelPath} itemId={object.id}
+                                                rotation={[
+                                                    object.transform.xRotation,
+                                                    object.transform.yRotation,
+                                                    object.transform.zRotation,
+                                                ]} />
                                         </Suspense>
                                     </mesh>
                                 ))}
@@ -168,17 +172,18 @@ export default function OfficeCanvas({
                                         />
                                     )
                                 )}
-                            {/* </Outline> */}
+                                {/* </Outline> */}
 
-                            {/* <Stats className="stats" /> */}
+                                {/* <Stats className="stats" /> */}
 
-                            <CustomTransformControl
-                                object={selectedObject}
-                                objectKey={selectedKey}
-                                orbit={orbitRef}
-                                visible={action === "config"}
-                                handleObject3dDragged={handleObject3dDragged}
-                            />
+                                <CustomTransformControl
+                                    object={selectedObject}
+                                    objectKey={selectedKey}
+                                    orbit={orbitRef}
+                                    visible={action === "config"}
+                                    handleObject3dDragged={handleObject3dDragged}
+                                />
+                            </Debug>
                         </Physics>
                     </Suspense>
                 </Provider>

@@ -8,13 +8,14 @@ import {useFrame} from "@react-three/fiber";
 interface ItemModelProps {
     url: string,
     itemId: number,
+    rotation: any,
 }
 
 function vectorToArray(v) {
     return [v.x, v.y, v.z];
 }
 
-export default function ItemModel({url, itemId}: ItemModelProps) {
+export default function ItemModel({url, itemId, rotation}: ItemModelProps) {
     const obj: any = useGLTF(url);
 
     const colors = new Uint8Array(2);
@@ -47,18 +48,25 @@ export default function ItemModel({url, itemId}: ItemModelProps) {
             max: {x: -Infinity, y: -Infinity, z: -Infinity},
         }
 
+        const calculateBoundingBox = (node:any, position={x:0, y:0,z:0}) => {
+            if (node.type !== "Mesh") {
+                return;
+            }
+            boundingBox.min.x = Math.min(boundingBox.min.x, node.geometry.boundingBox.min.x / node.scale.x);
+            boundingBox.min.y = Math.min(boundingBox.min.y, node.geometry.boundingBox.min.y / node.scale.y);
+            boundingBox.min.z = Math.min(boundingBox.min.z, node.geometry.boundingBox.min.z / node.scale.z);
+            boundingBox.max.x = Math.max(boundingBox.max.x, node.geometry.boundingBox.max.x / node.scale.x);
+            boundingBox.max.y = Math.max(boundingBox.max.y, node.geometry.boundingBox.max.y / node.scale.y);
+            boundingBox.max.z = Math.max(boundingBox.max.z, node.geometry.boundingBox.max.z / node.scale.z);
+            
+            for (let n of node.children) {
+                calculateBoundingBox(n);
+            }
+        }
+
         for (let key in obj.nodes) {
             let node = obj.nodes[key];
-
-            if (node.type !== "Mesh") {
-                continue;
-            }
-            boundingBox.min.x = Math.min(boundingBox.min.x, node.geometry.boundingBox.min.x);
-            boundingBox.min.y = Math.min(boundingBox.min.y, node.geometry.boundingBox.min.y);
-            boundingBox.min.z = Math.min(boundingBox.min.z, node.geometry.boundingBox.min.z);
-            boundingBox.max.x = Math.max(boundingBox.max.x, node.geometry.boundingBox.max.x);
-            boundingBox.max.y = Math.max(boundingBox.max.y, node.geometry.boundingBox.max.y);
-            boundingBox.max.z = Math.max(boundingBox.max.z, node.geometry.boundingBox.max.z);
+            calculateBoundingBox(node);
         }
         const diff = 0 - boundingBox.min.y;
         boundingBox.min.y += diff + 1;
@@ -78,18 +86,19 @@ export default function ItemModel({url, itemId}: ItemModelProps) {
     const [ref, api]: any = useBox(() => ({
         mass: 0,
         position: (ref.current && vectorToArray(ref.current.parent.position)) || [0, 0, 0],
+        rotation: rotation,
         args: (boundingBox && [boundingBox.max.x - boundingBox.min.x, boundingBox.max.y - boundingBox.min.y, boundingBox.max.z - boundingBox.min.z])||[0,0,0],
     }))    
 
     useFrame(()=>{
         if (ref.current && ref.current.parent) {
             const vectorArr = vectorToArray(ref.current.parent.position);
-            api.position.set(vectorArr[0], vectorArr[1], vectorArr[2]);
+            api.position.set(vectorArr[0], vectorArr[1] + (boundingBox.max.y - boundingBox.min.y)/2, vectorArr[2]);
         }
     })
 
     return <>
-        <primitive object={clone}/>
+        <primitive scale={[1,1,1]} object={clone}/>
         <mesh ref={ref} />
     </>
 }

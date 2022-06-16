@@ -133,7 +133,8 @@ export default function Character(props: CharacterProps) {
             }, 2000);
         }
     }, [props.currentEmoji]);
-
+    const visibleRef = useRef<boolean>(true);
+    visibleRef.current = props.visible;
     useThree(({ camera }) => {
         api.position.subscribe((v) => {
             const x = camera.position.x + v[0] - position.current[0];
@@ -141,9 +142,11 @@ export default function Character(props: CharacterProps) {
             const z = camera.position.z + v[2] - position.current[2];
             position.current = v;
 
-            orbitRef.current.target = new THREE.Vector3(v[0], v[1], v[2]);
-            camera.position.set(x, y, z);
-            orbitRef.current.update();
+            if (visibleRef.current) {
+                orbitRef.current.target = new THREE.Vector3(v[0], v[1], v[2]);
+                camera.position.set(x, y, z);
+                orbitRef.current.update();
+            }
         });
         api.rotation.subscribe((v) => {
             rotation.current = v;
@@ -352,7 +355,7 @@ export default function Character(props: CharacterProps) {
 
     const [isVideoOpening, setIsVideoOpening] = useState(false);
     const userInfo = useAppSelector(userSelectors.getUserInfo);
-    
+
     useEffect(() => {
         const interval = setInterval(() => {
             if (props.stream) {
