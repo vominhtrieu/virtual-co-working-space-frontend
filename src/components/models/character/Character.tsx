@@ -104,8 +104,10 @@ export default function Character(props: CharacterProps) {
             let target = e.body;
 
             if (target.category && target.category.name === "Chair") {
-                props.setMessage(null);
-                currentChair.current = null;
+                setTimeout(() => {
+                    props.setMessage(null);
+                    currentChair.current = null;
+                }, 200);
             }
         },
     }));
@@ -126,7 +128,7 @@ export default function Character(props: CharacterProps) {
     const rotation = useRef([0, 0, 0]);
     const count = useRef(0);
 
-    const params = useParams();
+    const match = matchPath({ path: "/office/:id" }, window.location.pathname);
 
     const timeoutId = useRef<NodeJS.Timeout>();
 
@@ -201,7 +203,7 @@ export default function Character(props: CharacterProps) {
         }
         return result;
     };
-    
+
     useFrame((state, delta) => {
         if (!movable.current) {
             return;
@@ -268,7 +270,21 @@ export default function Character(props: CharacterProps) {
                 api.isTrigger.set(true);
                 api.rotation.set(rotation.x, rotation.y, rotation.z);
                 api.position.set(position.x, position.y + 3, position.z);
-                localSetMessage.current(null);
+                if (currentClip.current !== actions["Sitting"]) {
+                    socket.emit("office_member:move", {
+                        xRotation: rotation.x,
+                        yRotation: rotation.y,
+                        zRotation: rotation.z,
+                        xPosition: position.x,
+                        yPosition: position.y + 3,
+                        zPosition: position.z,
+                    });
+                    socket.emit("action", {
+                        officeId: +(match?.params.id + ""),
+                        action: "sit",
+                    });
+                    localSetMessage.current(null);
+                }
             } else if (gesturePlaying) {
                 clip = actions[getGesture()];
             } else {
@@ -332,7 +348,7 @@ export default function Character(props: CharacterProps) {
             );
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [params.id]);
+    }, [match?.params.id]);
 
     const appearance = props.appearance;
 
