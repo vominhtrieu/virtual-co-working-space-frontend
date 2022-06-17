@@ -84,6 +84,7 @@ function AuthenticatedMobileRoutes() {
     <Routes>
       <Route path="/webgl" element={<CharacterCustomMobile />} />
       <Route path="/webgl/office/:id" element={<WorkspaceMobile />} />
+      <Route path="*" element={<NotFound />}></Route>
     </Routes>
   );
 }
@@ -133,7 +134,6 @@ function UnauthenticatedRoutes() {
       <Route path="/auth/register" element={<Register />} />
       <Route path="/auth/reset/:token" element={<ResetPassword />} />
       <Route path="/webgl" element={<CharacterCustomMobile />} />
-      <Route path="*" element={<NotFound />} />
 
       {/* redirect */}
       <Route path="/" element={<Navigate to="/auth/login" replace />} />

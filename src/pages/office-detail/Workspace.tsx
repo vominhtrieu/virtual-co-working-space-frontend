@@ -81,6 +81,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
   const userInfo = useAppSelector(userSelectors.getUserInfo);
 
   const socket = useAppSelector(socketSelector.getSocket);
+  const [message, setMessage] = useState<string|null>(null);
 
   const handleObject3dDragged = useCallback(
     (position, rotation) => {
@@ -340,6 +341,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
         onlineMembers={onlineMembers}
         action={action}
         memberAppearances={memberAppearances}
+        setMessage={setMessage}
       />
       {!mobile && (
         <OfficeInterface
@@ -354,6 +356,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
           object3dClickPos={object3dClickPos}
           isOwner={isOwner}
           setAction={setAction}
+          message={message}
           action={action}
         />
       )}

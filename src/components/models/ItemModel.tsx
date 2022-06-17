@@ -7,7 +7,7 @@ import { useFrame } from "@react-three/fiber";
 
 interface ItemModelProps {
     url: string,
-    itemId: number,
+    item: any,
     rotation: any,
 }
 
@@ -15,7 +15,7 @@ function vectorToArray(v) {
     return [v.x, v.y, v.z];
 }
 
-export default function ItemModel({ url, itemId, rotation }: ItemModelProps) {
+export default function ItemModel({ url, item = {}, rotation }: ItemModelProps) {
     const obj: any = useGLTF(url);
 
     const colors = new Uint8Array(2);
@@ -97,9 +97,9 @@ export default function ItemModel({ url, itemId, rotation }: ItemModelProps) {
             api.position.set(vectorArr[0], vectorArr[1] + (boundingBox.max.y - boundingBox.min.y) / 2, vectorArr[2]);
         }
     })
-
+    
     return <>
         <primitive object={clone} />
-        <mesh ref={ref} />
+        <mesh ref={ref} {...item} />
     </>
 }

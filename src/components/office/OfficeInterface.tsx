@@ -3,6 +3,7 @@ import { FaTrash } from "react-icons/fa";
 import Button from "../UI/button";
 import OfficeBar from "./office-bar";
 import OfficceCheckInModal from "./office-checkin";
+import { OfficeMessage } from "./OfficeMessage";
 
 export default function OfficeInterface({
   open,
@@ -17,6 +18,7 @@ export default function OfficeInterface({
   isOwner,
   setAction,
   action,
+  message
 }) {
   return (
     <>
@@ -99,7 +101,7 @@ export default function OfficeInterface({
           </>
         ) : null}
       </div>
-
+      {message && <OfficeMessage message={message} />}
       <OfficeBar
         officeDetail={officeDetail}
         isOwner={isOwner}

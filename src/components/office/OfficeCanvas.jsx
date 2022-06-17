@@ -33,7 +33,8 @@ export default function OfficeCanvas({
     onlineMembers,
     handleObject3dDragged,
     action,
-    memberAppearances
+    memberAppearances,
+    setMessage,
 }) {
     const orbitRef = useRef(null);
     const appearance = useContext(CharacterContext);
@@ -64,6 +65,7 @@ export default function OfficeCanvas({
         // setObjectActionVisible(false);
     };
     const socket = useAppSelector(socketSelector.getSocket);
+    
     const displayObjects = <>
         {/* <Outline> */}
         <Office castShadow={true} action={action} />
@@ -85,7 +87,10 @@ export default function OfficeCanvas({
                 onPointerMissed={handleObject3dPointerMissed}
             >
                 <Suspense fallback={null}>
-                    <ItemModel url={object.item.modelPath} itemId={object.id}
+                    <ItemModel url={object.item.modelPath} item={{
+                        name: object.item.name,
+                        category: object.item.category,
+                    }}
                         rotation={[
                             object.transform.xRotation,
                             object.transform.yRotation,
@@ -117,6 +122,7 @@ export default function OfficeCanvas({
                     currentEmoji={characterEmoji}
                     currentGesture={characterGesture}
                     visible={action !== "config"}
+                    setMessage={setMessage}
                 />
             ) : (
                 <MemberCharacter
