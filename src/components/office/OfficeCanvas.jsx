@@ -64,6 +64,98 @@ export default function OfficeCanvas({
         // setObjectActionVisible(false);
     };
     const socket = useAppSelector(socketSelector.getSocket);
+    const displayObjects = <>
+        {/* <Outline> */}
+        <Office castShadow={true} action={action} />
+        {objectList.map((object) => (
+            <mesh
+                castShadow={true}
+                key={object.id}
+                position={[
+                    object.transform.xPosition,
+                    object.transform.yPosition,
+                    object.transform.zPosition,
+                ]}
+                rotation={[
+                    object.transform.xRotation,
+                    object.transform.yRotation,
+                    object.transform.zRotation,
+                ]}
+                onClick={(e) => handleObject3dClick(e, object.id)}
+                onPointerMissed={handleObject3dPointerMissed}
+            >
+                <Suspense fallback={null}>
+                    <ItemModel url={object.item.modelPath} itemId={object.id}
+                        rotation={[
+                            object.transform.xRotation,
+                            object.transform.yRotation,
+                            object.transform.zRotation,
+                        ]} />
+                </Suspense>
+            </mesh>
+        ))}
+        {onlineMembers.map((member) =>
+            member.member.id === userInfo.id ? (
+                <Character
+                    key={member.id}
+                    appearance={appearance}
+                    startPosition={[
+                        member.transform.position.x,
+                        2.5,
+                        member.transform.position.z,
+                    ]}
+                    startRotation={[
+                        member.transform.rotation.x,
+                        member.transform.rotation.y,
+                        member.transform.rotation.z,
+                    ]}
+                    stream={myStream}
+                    scale={[2, 2, 2]}
+                    orbitRef={orbitRef}
+                    movable={action === "" || action === "action"}
+                    volume={volume}
+                    currentEmoji={characterEmoji}
+                    currentGesture={characterGesture}
+                    visible={action !== "config"}
+                />
+            ) : (
+                <MemberCharacter
+                    key={member.id}
+                    appearance={memberAppearances.find((memberAppearance) => memberAppearance.userId === member.member.id)?.appearance}
+                    startPosition={[
+                        member.transform.position.x,
+                        2.5,
+                        member.transform.position.z,
+                    ]}
+                    startRotation={[
+                        member.transform.rotation.x,
+                        member.transform.rotation.y,
+                        member.transform.rotation.z,
+                    ]}
+                    scale={[2, 2, 2]}
+                    orbitRef={orbitRef}
+                    stream={otherStreams[member.member.id]}
+                    movable
+                    volume={volume}
+                    currentEmoji={characterEmoji}
+                    currentGesture={characterGesture}
+                    memberId={member.member.id}
+                    visible={action !== "config"}
+                />
+            )
+        )}
+        {/* </Outline> */}
+
+        {/* <Stats className="stats" /> */}
+
+        <CustomTransformControl
+            object={selectedObject}
+            objectKey={selectedKey}
+            orbit={orbitRef}
+            visible={action === "config"}
+            handleObject3dDragged={handleObject3dDragged}
+        />
+    </>
     return (
         <>
             {socket.connected && <CallingBar userInfo={userInfo} myStream={myStream} setMyStream={setMyStream} setOtherStreams={setOtherStreams} />}
@@ -92,98 +184,9 @@ export default function OfficeCanvas({
                     {/* <Stats /> */}
                     <Suspense fallback={<Box />}>
                         <Physics gravity={[0, 0, 0]}>
-                            <Debug>
-                                {/* <Outline> */}
-                                <Office castShadow={true} action={action} />
-                                {objectList.map((object) => (
-                                    <mesh
-                                        castShadow={true}
-                                        key={object.id}
-                                        position={[
-                                            object.transform.xPosition,
-                                            object.transform.yPosition,
-                                            object.transform.zPosition,
-                                        ]}
-                                        rotation={[
-                                            object.transform.xRotation,
-                                            object.transform.yRotation,
-                                            object.transform.zRotation,
-                                        ]}
-                                        onClick={(e) => handleObject3dClick(e, object.id)}
-                                        onPointerMissed={handleObject3dPointerMissed}
-                                    >
-                                        <Suspense fallback={null}>
-                                            <ItemModel url={object.item.modelPath} itemId={object.id}
-                                                rotation={[
-                                                    object.transform.xRotation,
-                                                    object.transform.yRotation,
-                                                    object.transform.zRotation,
-                                                ]} />
-                                        </Suspense>
-                                    </mesh>
-                                ))}
-                                {onlineMembers.map((member) =>
-                                    member.member.id === userInfo.id ? (
-                                        <Character
-                                            key={member.id}
-                                            appearance={appearance}
-                                            startPosition={[
-                                                member.transform.position.x,
-                                                2.5,
-                                                member.transform.position.z,
-                                            ]}
-                                            startRotation={[
-                                                member.transform.rotation.x,
-                                                member.transform.rotation.y,
-                                                member.transform.rotation.z,
-                                            ]}
-                                            stream={myStream}
-                                            scale={[2, 2, 2]}
-                                            orbitRef={orbitRef}
-                                            movable={action === "" || action === "action"}
-                                            volume={volume}
-                                            currentEmoji={characterEmoji}
-                                            currentGesture={characterGesture}
-                                            visible={action !== "config"}
-                                        />
-                                    ) : (
-                                        <MemberCharacter
-                                            key={member.id}
-                                            appearance={memberAppearances.find((memberAppearance) => memberAppearance.userId === member.member.id)?.appearance}
-                                            startPosition={[
-                                                member.transform.position.x,
-                                                2.5,
-                                                member.transform.position.z,
-                                            ]}
-                                            startRotation={[
-                                                member.transform.rotation.x,
-                                                member.transform.rotation.y,
-                                                member.transform.rotation.z,
-                                            ]}
-                                            scale={[2, 2, 2]}
-                                            orbitRef={orbitRef}
-                                            stream={otherStreams[member.member.id]}
-                                            movable
-                                            volume={volume}
-                                            currentEmoji={characterEmoji}
-                                            currentGesture={characterGesture}
-                                            memberId={member.member.id}
-                                            visible={action !== "config"}
-                                        />
-                                    )
-                                )}
-                                {/* </Outline> */}
-
-                                {/* <Stats className="stats" /> */}
-
-                                <CustomTransformControl
-                                    object={selectedObject}
-                                    objectKey={selectedKey}
-                                    orbit={orbitRef}
-                                    visible={action === "config"}
-                                    handleObject3dDragged={handleObject3dDragged}
-                                />
-                            </Debug>
+                            {process.env.REACT_APP_DEBUG === "1" ? <Debug>
+                                {displayObjects}
+                            </Debug> : displayObjects}
                         </Physics>
                     </Suspense>
                 </Provider>
