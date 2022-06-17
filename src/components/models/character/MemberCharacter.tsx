@@ -68,7 +68,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         fixedRotation: true,
         mass: 1,
     }));
-    api.velocity.set(1, 0, 1);
+
     const rotateQuaternion = useRef(new THREE.Quaternion());
     const walkDirection = useRef(new THREE.Vector3());
     const currentClip = useRef<THREE.AnimationClip>(null);
@@ -138,7 +138,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
             Math.sqrt(
                 Math.pow(position.current[0] - updatedPosition.current[0], 2) +
                 Math.pow(position.current[2] - updatedPosition.current[2], 2)
-            ) > 0.05
+            ) > 0.1
         );
     };
 
