@@ -212,8 +212,7 @@ export default function Character(props: CharacterProps) {
         if (isMoving()) {
             if (currentClip.current === actions["Sitting"]) {
                 api.isTrigger.set(false);
-                const position = ref.current.position;
-                api.position.set(position.x, position.y, position.z);
+                api.position.set(position.current[0], position.current[1] - 3, position.current[2]);
             }
             sitting.current = false;
             if (gesturePlaying) {
