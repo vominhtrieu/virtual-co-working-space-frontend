@@ -116,7 +116,7 @@ export const TranslationViPages = {
     // chat box
     chatBox: {
       title: "Hội thoại",
-      enterMessage: "Nhập tin nhắn ...",
+      enterMessage: "Nhập tin nhắn...",
     },
 
     // setting

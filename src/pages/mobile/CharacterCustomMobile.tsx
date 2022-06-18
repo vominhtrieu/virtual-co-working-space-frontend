@@ -21,7 +21,7 @@ const CharacterCustomMobile = () => {
           position: "fixed",
         }}
       >
-        <Stats />
+        {process.env.REACT_APP_DEBUG === "1" && <Stats />}
         <OrbitControls
           addEventListener={undefined}
           hasEventListener={undefined}

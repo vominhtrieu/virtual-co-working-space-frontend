@@ -19,6 +19,7 @@ export default function CallingBar({
     setMyStream,
     setOtherStreams,
     userInfo,
+    mobile,
 }: any) {
     const videoContainer = useRef<any>();
     const myVideo = useRef<any>();
@@ -130,7 +131,7 @@ export default function CallingBar({
         };
     }, [addVideoStream, myPeer, myStream]);
 
-    return <div className="video-button-container">
+    return <div className={`video-button-container ${mobile ? "mobile" : ""}`}>
         <button
             className={`video-button ${cameraEnabled ? "active" : ""}`}
             onClick={() => {
@@ -153,5 +154,5 @@ export default function CallingBar({
         >
             <FaMicrophone fontSize={20} />
         </button>
-    </div>;
+    </div >;
 }

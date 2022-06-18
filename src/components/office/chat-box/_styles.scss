@@ -18,9 +18,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    align-items: center;
     margin-top: 2rem;
+    margin: 0 1rem;
     background-color: $color-secondary-dark-1;
-    padding: 1rem 2rem;
+    padding: 0rem 2rem;
     border-radius: 0.5rem;
   }
 
@@ -58,16 +60,17 @@
 
 .chat-box-item {
   display: flex;
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
 
   &__mess {
     max-width: 20rem;
     word-break: break-all;
+    font-size: 2rem;
   }
 
   &__avatar {
-    width: 4rem;
-    height: 4rem;
+    width: 5rem;
+    height: 5rem;
     border-radius: 50%;
     box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.2);
     object-fit: cover;
@@ -78,7 +81,8 @@
   &__message {
     position: relative;
     background-color: $color-secondary;
-    border-radius: 0.5rem;
+    border-radius: 2rem;
+    min-width: 4rem;
     padding: 1rem;
     color: #fff;
     max-width: 20rem;
@@ -125,4 +129,8 @@
     color: $color-white;
     max-width: 20rem;
   }
+}
+
+#chat-input .ant-input {
+  font-size: 1.5rem !important;
 }

@@ -47,6 +47,10 @@ input:-webkit-autofill:active {
     flex-direction: row;
   }
 
+  .ant-input-affix-wrapper-focused {
+    box-shadow: none;
+  }
+
   .ant-input-affix-wrapper.error {
     border: 1px solid $color-red;
     color: $color-red;

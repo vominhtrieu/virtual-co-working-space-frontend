@@ -1,12 +1,29 @@
 .video-button-container {
   position: fixed;
-  bottom: 70px;
-  right: 10px;
+  bottom: 10px;
+  left: 50%;
+  transform: translate(-50%, 0);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index:11111;
 }
+
+
+.video-button-container.mobile {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index:11111;
+  width: 100vw;
+  background-color: #0C1827;
+}
+
 
 .video-button {
   width: 40px;
@@ -15,15 +32,41 @@
   z-index: 9999999;
   display: flex;
   justify-content: center;
+  border: none;
   align-items: center;
   margin-left: 2px;
   margin-right: 2px;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+.video-button::before {
+  content: "";
+  width: 4px;
+  position: absolute;
+  background-color: white;
+  height: 30px;
+  transform: rotate(40deg);
+  border: 1px solid #0C1827;
+}
+
+
+.video-button.active::before {
+  display: none;
 }
 
 .video-button.active {
-  background-color: #1B1B43;
+  background-color: white;
+}
+
+.video-button.active::before {
+  background-color: transparent;
+}
+
+.video-button svg {
+  color: white;
 }
 
 .video-button.active svg {
-  color: white;
+  color: #0C1827;
 }
