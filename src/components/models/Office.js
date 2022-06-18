@@ -7,7 +7,7 @@ import TV from "./TV";
 
 export default function Office(props) {
     const [ref, api] = useBox(index => ({
-        args: [50, 1, 50],
+        args: [100, 1, 100],
     }));
     const { scene, nodes, materials } = useCustomGLTF("/models/Floor.glb");
 
@@ -21,14 +21,11 @@ export default function Office(props) {
             <mesh position={[0, 0, 45]} scale={[2, 2, 1]}>
                 <ItemModel url="/models/Wall.glb" />
             </mesh>
-            <mesh position={[0, 0, 45]} scale={[2, 1, 1]}>
-                <ItemModel url="/models/Wall.glb" />
-            </mesh>
             <mesh position={[45, 0, 0]} rotation={[0, Math.PI / 2, 0]} scale={[2, 2, 1]}>
-                <ItemModel url="/models/Wall.glb" />
+                <ItemModel url="/models/Wall.glb" rotation={[0, Math.PI / 2, 0]} />
             </mesh>
             <mesh position={[-45, 0, 0]} rotation={[0, -Math.PI / 2, 0]} scale={[2, 2, 1]}>
-                <ItemModel url="/models/Wall.glb" />
+                <ItemModel url="/models/Wall.glb" rotation={[0, -Math.PI / 2, 0]} />
             </mesh>
         </>
     );

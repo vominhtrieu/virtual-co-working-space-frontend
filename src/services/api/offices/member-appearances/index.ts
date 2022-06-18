@@ -37,7 +37,5 @@ export async function getMemberAppearances(officeId: number): Promise<MemberAppe
         return curr;
     })
 
-    console.log(returnData);
-
     return returnData;
 }
