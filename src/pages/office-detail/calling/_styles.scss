@@ -21,9 +21,10 @@
   margin-left: 2px;
   margin-right: 2px;
   overflow: hidden;
+  background-color: transparent;
 }
 
-.video-button.active::before {
+.video-button::before {
   content: "";
   width: 4px;
   position: absolute;
@@ -33,10 +34,23 @@
   border: 1px solid #0C1827;
 }
 
+
+.video-button.active::before {
+  display: none;
+}
+
 .video-button.active {
+  background-color: white;
+}
+
+.video-button.active::before {
   background-color: transparent;
 }
 
-.video-button.active svg {
+.video-button svg {
   color: white;
+}
+
+.video-button.active svg {
+  color: #0C1827;
 }
