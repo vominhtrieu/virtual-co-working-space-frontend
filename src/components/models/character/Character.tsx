@@ -107,7 +107,7 @@ export default function Character(props: CharacterProps) {
                 setTimeout(() => {
                     props.setMessage(null);
                     currentChair.current = null;
-                }, 200);
+                }, 1000);
             }
         },
     }));

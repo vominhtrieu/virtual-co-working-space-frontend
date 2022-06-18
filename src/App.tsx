@@ -38,7 +38,7 @@ import { setAuthenticated, setUserInfo } from "./stores/auth-slice";
 import { CharacterAppearance } from "./types/character";
 import { ProxyStatusEnum } from "./types/http/proxy/ProxyStatus";
 
-function AuthenticatedDesktopRoutes() {
+function AuthenticatedRoutes() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     ProfileProxy()
@@ -74,16 +74,10 @@ function AuthenticatedDesktopRoutes() {
       <Route path="/auth/register" element={<Navigate to="/" replace />} />
       <Route path="/auth/forgot" element={<Navigate to="/" replace />} />
 
-      <Route path="*" element={<NotFound />}></Route>
-    </Routes>
-  );
-}
-
-function AuthenticatedMobileRoutes() {
-  return (
-    <Routes>
       <Route path="/webgl" element={<CharacterCustomMobile />} />
       <Route path="/webgl/office/:id" element={<WorkspaceMobile />} />
+      <Route path="*" element={<NotFound />}></Route>
+
       <Route path="*" element={<NotFound />}></Route>
     </Routes>
   );
@@ -236,10 +230,7 @@ function App() {
       <div className="App">
         <Router>
           {isAuthenticated ? (
-            <>
-              <AuthenticatedDesktopRoutes />
-              <AuthenticatedMobileRoutes />
-            </>
+              <AuthenticatedRoutes />
           ) : (
             <UnauthenticatedRoutes />
           )}
