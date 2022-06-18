@@ -1,7 +1,8 @@
 .video-button-container {
   position: fixed;
-  bottom: 70px;
-  right: 10px;
+  bottom: 10px;
+  left: 50%;
+  transform: translate(-50%, 0);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,13 +16,25 @@
   z-index: 9999999;
   display: flex;
   justify-content: center;
+  border: none;
   align-items: center;
   margin-left: 2px;
   margin-right: 2px;
+  overflow: hidden;
+}
+
+.video-button.active::before {
+  content: "";
+  width: 4px;
+  position: absolute;
+  background-color: white;
+  height: 30px;
+  transform: rotate(40deg);
+  border: 1px solid #0C1827;
 }
 
 .video-button.active {
-  background-color: #1B1B43;
+  background-color: transparent;
 }
 
 .video-button.active svg {

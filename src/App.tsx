@@ -230,7 +230,7 @@ function App() {
       <div className="App">
         <Router>
           {isAuthenticated ? (
-              <AuthenticatedRoutes />
+            <AuthenticatedRoutes />
           ) : (
             <UnauthenticatedRoutes />
           )}
