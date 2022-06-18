@@ -342,6 +342,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
         action={action}
         memberAppearances={memberAppearances}
         setMessage={setMessage}
+        mobile={mobile}
       />
       {!mobile && (
         <OfficeInterface

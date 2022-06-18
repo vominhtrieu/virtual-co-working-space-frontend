@@ -9,6 +9,22 @@
   z-index:11111;
 }
 
+
+.video-button-container.mobile {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index:11111;
+  width: 100vw;
+  background-color: #0C1827;
+}
+
+
 .video-button {
   width: 40px;
   height: 40px;

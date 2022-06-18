@@ -34,6 +34,7 @@ export default function OfficeCanvas({
     action,
     memberAppearances,
     setMessage,
+    mobile,
 }) {
     const orbitRef = useRef(null);
     const appearance = useContext(CharacterContext);
@@ -64,7 +65,7 @@ export default function OfficeCanvas({
         // setObjectActionVisible(false);
     };
     const socket = useAppSelector(socketSelector.getSocket);
-    
+
     const displayObjects = <>
         {/* <Outline> */}
         <Office castShadow={true} action={action} />
@@ -161,9 +162,10 @@ export default function OfficeCanvas({
             handleObject3dDragged={handleObject3dDragged}
         />
     </>
+    console.log(process.env.REACT_APP_DEBUG)
     return (
         <>
-            {socket.connected && <CallingBar userInfo={userInfo} myStream={myStream} setMyStream={setMyStream} setOtherStreams={setOtherStreams} />}
+            {socket.connected && <CallingBar userInfo={userInfo} myStream={myStream} setMyStream={setMyStream} setOtherStreams={setOtherStreams} mobile={mobile} />}
             <Canvas
                 shadows={{ enabled: true, autoUpdate: true }}
                 camera={{ position: [0, 5, 5], rotation: [45, 0, 0] }}
