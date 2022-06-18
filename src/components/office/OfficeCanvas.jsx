@@ -42,6 +42,7 @@ export default function OfficeCanvas({
     const userInfo = useAppSelector(userSelectors.getUserInfo);
     const [myStream, setMyStream] = useState(null);
     const [otherStreams, setOtherStreams] = useState({});
+    const [showCallingBar, setShowCallingBar] = useState(false);
 
     const handleObject3dClick = (e, key) => {
         if (action !== "config") return;
@@ -162,10 +163,16 @@ export default function OfficeCanvas({
             handleObject3dDragged={handleObject3dDragged}
         />
     </>
-    console.log(process.env.REACT_APP_DEBUG)
+
+    useEffect(()=>{
+        socket.on("connect", () => {
+            setShowCallingBar(true);
+          });          
+    }, [])
+
     return (
         <>
-            {socket.connected && <CallingBar userInfo={userInfo} myStream={myStream} setMyStream={setMyStream} setOtherStreams={setOtherStreams} mobile={mobile} />}
+            {(socket.connected || showCallingBar) && <CallingBar userInfo={userInfo} myStream={myStream} setMyStream={setMyStream} setOtherStreams={setOtherStreams} mobile={mobile} />}
             <Canvas
                 shadows={{ enabled: true, autoUpdate: true }}
                 camera={{ position: [0, 5, 5], rotation: [45, 0, 0] }}
