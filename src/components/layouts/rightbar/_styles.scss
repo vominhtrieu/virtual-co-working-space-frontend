@@ -3,7 +3,7 @@
   top: 0;
   right: 0;
   height: calc(100vh - 6rem);
-  width: 35rem;
+  width: 50rem;
   z-index: 100;
 
   &__header {
@@ -63,7 +63,7 @@
   &__content {
     background-color: $color-secondary-dark;
     height: calc(100vh - 12rem);
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
     display: flex;
     flex-direction: column;
   }

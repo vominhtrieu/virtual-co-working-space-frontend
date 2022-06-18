@@ -61,9 +61,10 @@ const ChatBoxItem = (props: ChatBoxItemPropsInterface) => {
 
   return (
     <div className={"chat-box-item" + (isMe ? " mine" : "")}>
-      <Tooltip placement="topLeft" title={alt}>
+      {!isMe && <Tooltip placement="topLeft" title={alt}>
         <img src={src ?? srcTemp} alt={alt} className="chat-box-item__avatar" />
       </Tooltip>
+      }
       <div
         className="chat-box-item__message"
         onClick={() => {

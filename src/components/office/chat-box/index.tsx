@@ -428,8 +428,10 @@ const ChatBox = (props: ChatBoxProps) => {
               outline: "none",
               border: "none",
               borderRadius: "0",
-              borderBottom: "1px solid rgb(255, 255, 255, 0.3)",
+              borderBottom: "none",
+              padding: 0,
               color: "#fff",
+              fontSize: "1.5rem",
             }}
             ref={inputRef}
             changeCursorPosition={handleChangeCursor}
