@@ -71,8 +71,9 @@ let audio = new Audio(stepFoot);
 const url =
     "https://virtual-space-models.s3.ap-southeast-1.amazonaws.com/Character/Character.glb";
 const MovingSpeed: number = 6;
-const itemTimer: number = 500;
-const stuntTimer: number = 1000;
+const ItemTimer: number = 500;
+const StuntTimer: number = 1000;
+const HammerCooldown: number = 5000;
 
 export default function Character(props: CharacterProps) {
     const movable = useRef(true);
@@ -110,7 +111,7 @@ export default function Character(props: CharacterProps) {
                 isStunt.current = true;
                 setTimeout(() => {
                     isStunt.current = false;
-                }, stuntTimer)
+                }, StuntTimer)
             }
         },
         onCollideEnd: (e: CollideEndEvent) => {
@@ -142,6 +143,7 @@ export default function Character(props: CharacterProps) {
     const rotation = useRef<THREE.Euler>(new THREE.Euler());
     const count = useRef(0);
     const itemPosition = useRef([0, 0, 0])
+    const hammerAvailable = useRef(true);
 
     const match = matchPath({ path: "/office/:id" }, window.location.pathname);
 
@@ -201,7 +203,8 @@ export default function Character(props: CharacterProps) {
     }, [emojiPlaying]);
 
     useEffect(() => {
-        if (!isUsingHammer && (keyPressed.Q || keyPressed.q)) {
+        if (hammerAvailable.current && (keyPressed.Q || keyPressed.q)) {
+            hammerAvailable.current = false;
             const direction = new THREE.Vector3(0, 0, 1);
             direction.applyQuaternion(new THREE.Quaternion().setFromEuler(rotation.current))
     
@@ -226,8 +229,12 @@ export default function Character(props: CharacterProps) {
             });
 
             setTimeout(() => {
+                hammerAvailable.current = true;
+            }, HammerCooldown)
+
+            setTimeout(() => {
                 setIsUsingHammer(false);
-            }, itemTimer);
+            }, ItemTimer);
         }
     }, [keyPressed.Q, keyPressed.q])
 
