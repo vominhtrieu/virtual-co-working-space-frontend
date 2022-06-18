@@ -23,6 +23,7 @@ import { userSelectors } from "../../../stores/auth-slice";
 import { socketSelector } from "../../../stores/socket-slice";
 import { CharacterAppearance } from "../../../types/character";
 import VideoAlphaMap from "../../../VideoAlphaMap.png";
+import Hammer from "../toys/Hammer";
 
 const loader = new THREE.TextureLoader();
 export const alphaMap = loader.load(VideoAlphaMap);
@@ -56,11 +57,13 @@ type KeyProps = {
     S?: boolean;
     A?: boolean;
     D?: boolean;
+    Q?: boolean;
+    E?: boolean
     w?: boolean;
     s?: boolean;
     a?: boolean;
     d?: boolean;
-    g?: boolean;
+    q?: boolean;
     e?: boolean;
 };
 
@@ -68,6 +71,9 @@ let audio = new Audio(stepFoot);
 const url =
     "https://virtual-space-models.s3.ap-southeast-1.amazonaws.com/Character/Character.glb";
 const MovingSpeed: number = 6;
+const ItemTimer: number = 500;
+const StuntTimer: number = 1000;
+const HammerCooldown: number = 5000;
 
 export default function Character(props: CharacterProps) {
     const movable = useRef(true);
@@ -86,6 +92,7 @@ export default function Character(props: CharacterProps) {
     const group = useRef<THREE.Group>();
     const localSetMessage = useRef<any>(props.setMessage);
     localSetMessage.current = props.setMessage;
+    const isStunt = useRef(false);
     const currentChair = useRef<any>(null);
     const [ref, api] = useCylinder(() => ({
         args: [1, 1, 4, 8],
@@ -98,6 +105,13 @@ export default function Character(props: CharacterProps) {
             if (target.category && target.category.name === "Chair") {
                 props.setMessage(`Press F To Sit`);
                 currentChair.current = target;
+            }
+
+            if (target.name && target.name === "Hammer") {
+                isStunt.current = true;
+                setTimeout(() => {
+                    isStunt.current = false;
+                }, StuntTimer)
             }
         },
         onCollideEnd: (e: CollideEndEvent) => {
@@ -122,15 +136,18 @@ export default function Character(props: CharacterProps) {
     const [keyPressed, setKeyPressed] = useState<KeyProps>({});
     const [gesturePlaying, setGesturePlaying] = useState<boolean>(false);
     const [emojiPlaying, setEmojiPlaying] = useState<boolean>(false);
+    const [isUsingHammer, setIsUsingHammer] = useState<boolean>(false);
     const sitting = useRef(false);
 
     const position = useRef([0, 0, 0]);
-    const rotation = useRef([0, 0, 0]);
+    const rotation = useRef<THREE.Euler>(new THREE.Euler());
     const count = useRef(0);
+    const itemPosition = useRef([0, 0, 0])
+    const hammerAvailable = useRef(true);
 
     const match = matchPath({ path: "/office/:id" }, window.location.pathname);
 
-    const timeoutId = useRef<NodeJS.Timeout>();
+    const emojiTimeoutId = useRef<NodeJS.Timeout>();
 
     const getGesture = () => {
         if (props.currentGesture && props.currentGesture.idx > 1) {
@@ -149,10 +166,10 @@ export default function Character(props: CharacterProps) {
     useEffect(() => {
         if (props.currentEmoji && props.currentEmoji.idx >= 0) {
             setEmojiPlaying(true);
-            if (timeoutId.current) {
-                clearTimeout(timeoutId.current);
+            if (emojiTimeoutId.current) {
+                clearTimeout(emojiTimeoutId.current);
             }
-            timeoutId.current = setTimeout(() => {
+            emojiTimeoutId.current = setTimeout(() => {
                 setEmojiPlaying(false);
             }, 2000);
         }
@@ -160,7 +177,7 @@ export default function Character(props: CharacterProps) {
     const visibleRef = useRef<boolean>(true);
     visibleRef.current = props.visible;
     useThree(({ camera }) => {
-        api.position.subscribe((v) => {
+        const unsubPosition = api.position.subscribe((v) => {
             const x = camera.position.x + v[0] - position.current[0];
             const y = camera.position.y + v[1] - position.current[1];
             const z = camera.position.z + v[2] - position.current[2];
@@ -172,8 +189,8 @@ export default function Character(props: CharacterProps) {
                 orbitRef.current.update();
             }
         });
-        api.rotation.subscribe((v) => {
-            rotation.current = v;
+        const unsubRotation = api.rotation.subscribe((v) => {
+            rotation.current.fromArray(v);
         });
     });
 
@@ -185,8 +202,44 @@ export default function Character(props: CharacterProps) {
         }
     }, [emojiPlaying]);
 
+    useEffect(() => {
+        if (hammerAvailable.current && (keyPressed.Q || keyPressed.q)) {
+            hammerAvailable.current = false;
+            const direction = new THREE.Vector3(0, 0, 1);
+            direction.applyQuaternion(new THREE.Quaternion().setFromEuler(rotation.current))
+    
+            let positionX = position.current[0]
+            const positionY = position.current[1] + 1.5;
+            let positionZ = position.current[2]
+    
+            if (Math.abs(direction.x) > 0.0005) {
+                positionX += 2 * direction.x
+            }
+    
+            if (Math.abs(direction.z) > 0.0005) {
+                positionZ += 2 * direction.z
+            }
+
+            itemPosition.current = [positionX, positionY, positionZ];
+
+            setIsUsingHammer(true);
+            socket.emit("action", {
+                officeId: +(match?.params.id + ""),
+                action: "bonk",
+            });
+
+            setTimeout(() => {
+                hammerAvailable.current = true;
+            }, HammerCooldown)
+
+            setTimeout(() => {
+                setIsUsingHammer(false);
+            }, ItemTimer);
+        }
+    }, [keyPressed.Q, keyPressed.q])
+
     const isMoving = () => {
-        if (!movable.current) return false;
+        if (!movable.current || isUsingHammer || isStunt.current) return false;
         const moveVector = getMovingVector(keyPressed);
         return Math.abs(moveVector.x) > 0.1 || Math.abs(moveVector.z) > 0.1;
     };
@@ -430,6 +483,9 @@ export default function Character(props: CharacterProps) {
 
     return (
         <>
+            <Hammer spawnPosition={[itemPosition.current[0], itemPosition.current[1], itemPosition.current[2]]}
+                                        spawnRotation={rotation.current.toArray()}
+                                        visible={isUsingHammer} />
             <mesh ref={ref} {...props}>
                 <group ref={group} position={[0, -1, 0]} dispose={null}>
                     <sprite position={[0, 2.6, 0]} visible={emojiPlaying}>

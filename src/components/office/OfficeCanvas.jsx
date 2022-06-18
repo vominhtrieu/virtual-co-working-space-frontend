@@ -1,7 +1,7 @@
 import { OrbitControls } from "@react-three/drei";
-import { Suspense, useContext, useRef, useState } from "react";
+import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import Box from "../models/Box";
-import { Physics } from "@react-three/cannon";
+import { Debug, Physics } from "@react-three/cannon";
 import Office from "../models/Office";
 import Character from "../models/character/Character";
 import MemberCharacter from "../models/character/MemberCharacter";
@@ -16,7 +16,6 @@ import ItemModel from "../models/ItemModel";
 import { userSelectors } from "../../stores/auth-slice";
 import CallingBar from "../../pages/office-detail/calling/CallingBar";
 import { socketSelector } from "../../stores/socket-slice";
-import { Debug } from "@react-three/cannon";
 import Outline from "../models/Outline";
 
 export default function OfficeCanvas({

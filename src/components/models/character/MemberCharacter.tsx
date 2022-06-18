@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, useMemo } from "react";
 import * as THREE from "three";
 import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils";
 import { useGLTF, useAnimations } from "@react-three/drei";
-import { useCylinder } from "@react-three/cannon";
+import { CollideBeginEvent, useCylinder } from "@react-three/cannon";
 import { useThree, useFrame, useGraph } from "@react-three/fiber";
 import {
     GLTFActions,
@@ -19,6 +19,7 @@ import { useAppSelector } from "../../../stores";
 import { AppearanceGroups } from "../../../helpers/constants";
 import { CharacterAppearance } from "../../../types/character";
 import { alphaMap } from "./Character";
+import Hammer from "../toys/Hammer";
 
 const stepFoot = require("../../../assets/audios/foot-step.mp3");
 
@@ -49,6 +50,8 @@ const defaultAppearance: CharacterAppearance = {
     skinColor: 0
 }
 
+const itemTimer = 500;
+
 export default function MemberCharacter(props: MemberCharacterProps) {
     audio.volume = props.volume / 100;
     const socket = useAppSelector(socketSelector.getSocket);
@@ -57,7 +60,6 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     // const { scene, animations, materials } = useCustomGLTF(
     //   "/models/Character.glb"
     // ) as GLTFResult;
-    console.log("Rerender")
     const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
     const { nodes } = useGraph(clone);
 
@@ -80,10 +82,11 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     const [currentEmoji, setCurrentEmoji] = useState({ idx: -1 });
     const [currentGesture, setCurrentGesture] = useState({ idx: -1 });
     const [hairStyle, setHairStyle] = useState("Hair_1");
+    const [isUsingHammer, setIsUsingHammer] = useState(false);
 
     const position = useRef([0, 0, 0]);
     const updatedPosition = useRef(props.startPosition);
-    const rotation = useRef([0, 0, 0]);
+    const rotation = useRef<THREE.Euler>(new THREE.Euler());
     const updatedRotation = useRef<THREE.Euler>(new THREE.Euler());
 
     const loader = new THREE.TextureLoader();
@@ -92,6 +95,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
 
     const timeoutId = useRef<NodeJS.Timeout>();
     const sitting = useRef<boolean>(false);
+    const itemPosition = useRef([0, 0, 0])
 
     const getGesture = (gestureIdx: number) => {
         if (gestureIdx > 1) {
@@ -127,11 +131,38 @@ export default function MemberCharacter(props: MemberCharacterProps) {
 
     useEffect(() => {
         const unsubRotation = api.rotation.subscribe((v) => {
-            rotation.current = v;
+            rotation.current.fromArray(v);
         });
 
         return unsubRotation;
     }, [])
+
+    useEffect(() => {
+        if (isUsingHammer) {
+            setTimeout(() => {
+                setIsUsingHammer(false);
+            }, itemTimer);
+        }
+    }, [isUsingHammer])
+
+    const calculateItemPosition = () => {
+        const direction = new THREE.Vector3(0, 0, 1);
+        direction.applyQuaternion(new THREE.Quaternion().setFromEuler(rotation.current))
+
+        let positionX = position.current[0]
+        const positionY = position.current[1] + 1.5;
+        let positionZ = position.current[2]
+
+        if (Math.abs(direction.x) > 0.0005) {
+            positionX += 2 * direction.x
+        }
+
+        if (Math.abs(direction.z) > 0.0005) {
+            positionZ += 2 * direction.z
+        }
+
+        itemPosition.current = [positionX, positionY, positionZ];
+    }
 
     const shouldUpdate = () => {
         return (
@@ -238,7 +269,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         ref.current.visible = props.visible
     }, [ref, props.visible])
 
-    useSocketEvent(socket, props.memberId, updatedPosition, updatedRotation, setCurrentEmoji, setCurrentGesture, api, sitting);
+    useSocketEvent(socket, props.memberId, updatedPosition, updatedRotation, setCurrentEmoji, setCurrentGesture, api, sitting, setIsUsingHammer, calculateItemPosition);
 
     useEffect(() => {
         let appearance;
@@ -332,6 +363,9 @@ export default function MemberCharacter(props: MemberCharacterProps) {
 
     return (
         <>
+            <Hammer spawnPosition={[itemPosition.current[0], itemPosition.current[1], itemPosition.current[2]]}
+                                spawnRotation={rotation.current.toArray()}
+                                visible={isUsingHammer} />
             <mesh ref={ref} {...props}>
                 <group ref={group} position={[0, -1, 0]} dispose={null}>
                     <sprite position={[0, 2.6, 0]} visible={emojiPlaying}>
@@ -395,7 +429,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     );
 }
 
-const useSocketEvent = (socket, memberId, updatedPosition, updatedRotation, setEmoji, setGesture, api, sitting) => {
+const useSocketEvent = (socket, memberId, updatedPosition, updatedRotation, setEmoji, setGesture, api, sitting, setIsUsingHammer, calculateItemPosition) => {
     useEffect(() => {
         socket.on("office_member:moved", (message) => {
             if (message.memberId === memberId) {
@@ -429,6 +463,10 @@ const useSocketEvent = (socket, memberId, updatedPosition, updatedRotation, setE
                     case "sit":
                         api.isTrigger.set(true);
                         sitting.current = true;
+                        break;
+                    case "bonk":
+                        calculateItemPosition();
+                        setIsUsingHammer(true);
                         break;
                     default:
                         console.log("Unknow action");
