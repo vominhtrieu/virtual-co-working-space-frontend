@@ -17,7 +17,7 @@ export interface ResponseInterface<T = any> {
 
 const HttpClient = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
-  timeout: 3000,
+  timeout: 30000,
   headers: {
     [HTTP_HEADER_KEY.CONTENT_TYPE]: HTTP_HEADER_VALUE.APPLICATION_JSON,
     [HTTP_HEADER_KEY.MODE]: HTTP_HEADER_VALUE.CORS,

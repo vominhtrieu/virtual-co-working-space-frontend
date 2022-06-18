@@ -40,16 +40,42 @@
   }
 }
 
-@keyframes zoomInOut {
+@keyframes moveInTop {
   0% {
-    transform: scale(1);
+    opacity: 0;
+    transform: translateY(-5rem);
+  }
+  80% {
+    transform: translateY(1rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes zoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(0);
   }
 
   50% {
-    transform: scale(1.5);
+    transform: scale(1.2);
   }
 
   100% {
+    opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }
