@@ -3,9 +3,19 @@
 
   &__header {
     background-color: $color-secondary-dark-1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
   }
 
   &__logo {
+  }
+
+  &__action {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
   }
 }
 
