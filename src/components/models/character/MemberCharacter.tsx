@@ -322,7 +322,6 @@ export default function MemberCharacter(props: MemberCharacterProps) {
             return null;
         }
         const selfVideo = document.createElement("video");
-        selfVideo.muted = true;
         selfVideo.srcObject = props.stream;
         selfVideo.addEventListener("loadedmetadata", () => {
             selfVideo.play();
