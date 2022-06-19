@@ -15,7 +15,6 @@ const Hammer = ({spawnPosition, spawnRotation, visible}) => {
         position: spawnPosition,
         args: [1, 2, 1],
     }));
-    const isTrigger = useRef(true);
 
     useEffect(() => {
         ref.current.name = "Hammer";
@@ -23,24 +22,10 @@ const Hammer = ({spawnPosition, spawnRotation, visible}) => {
     }, [])
 
     useEffect(() => {
-        ref.current.visible = visible
+        ref.current.visible = visible;
+        api.position.set(spawnPosition[0], spawnPosition[1], spawnPosition[2]);
+        api.rotation.set(spawnRotation[0], spawnRotation[1] + Math.PI / 2, spawnRotation[2]);
     }, [visible]);
-
-    useEffect(() => {
-        const unsubPosition = api.isTrigger.subscribe((v) => {
-            isTrigger.current = v;
-        })
-
-        return unsubPosition;
-    }, [api.isTrigger])
-
-    useEffect(() => {
-        api.position.set(spawnPosition[0], spawnPosition[1], spawnPosition[2])
-    }, [spawnPosition])
-
-    useEffect(() => {
-        api.rotation.set(spawnRotation[0], spawnRotation[1] + Math.PI / 2, spawnRotation[2])
-    }, [spawnRotation])
 
     useFrame((state, delta) => {
         if (ref.current.visible) {

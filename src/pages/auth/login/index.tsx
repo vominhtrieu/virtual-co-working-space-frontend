@@ -1,7 +1,8 @@
 // import React, { useState } from "react";
 import { Col, Row, Spin } from "antd";
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import loginImage from "../../../assets/images/login/login.gif";
 import IconLanguages from "../../../components/icon-lang";
 import LoginForm from "../../../components/login/login-form";
@@ -19,6 +20,7 @@ function Login() {
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const handleLogin = (values: LoginFormValues) => {
     LoginProxy({
@@ -28,12 +30,12 @@ function Login() {
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
           setIsLoading(false);
-          toastError(res.message ?? "Login fail");
+          toastError(res.message ?? t("default.noti.loginFailed"));
           return;
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          toastSuccess("login success");
+          toastSuccess(t("default.noti.loginSuccess"));
           saveDataLocal("user_id", res.data.userInfo.id);
           saveDataLocal("user_info", JSON.stringify(res.data.userInfo));
           saveDataLocal("access_token", res.data.accessToken);
@@ -46,17 +48,17 @@ function Login() {
         }
       })
       .catch((err) => {
-        toastError(err.message ?? "Login fail");
+        toastError(err.message ?? t("default.noti.loginFailed"));
         setIsLoading(false);
       })
-      .finally(() => { });
+      .finally(() => {});
   };
 
   const FormLogin = () => {
     return (
       <>
         <div className="icon-lang">
-        <IconLanguages />
+          <IconLanguages />
         </div>
         <Row justify="space-around">
           <Col span={12}>

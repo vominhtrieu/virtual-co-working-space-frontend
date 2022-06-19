@@ -17,6 +17,17 @@ export const TranslationEnCommon = {
       "Must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
     phone: "Phone must be a valid phone number",
   },
+  noti: {
+    title: "Notification",
+    success: "Success",
+    error: "Error",
+    loginSuccess: "Login success",
+    loginFailed: "Login failed",
+    joinOfficeSuccess: "Join office success",
+    joinOfficeFailed: "Join office failed",
+    createOfficeSuccess: "Create office success",
+    createOfficeFailed: "Create office failed",
+  },
   action: {
     cancel: "Cancel",
     confirm: "Confirm",

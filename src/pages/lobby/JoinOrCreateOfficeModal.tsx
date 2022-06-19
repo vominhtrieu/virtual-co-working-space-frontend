@@ -32,10 +32,10 @@ export default function JoinOrCreateOfficeModal({
   const { t } = useTranslation();
 
   const createOfficeSchema = yup.object().shape({
-    name: yup.string().required("Name is required"),
+    name: yup.string().required(t("default.error.required", { field: "name" })),
   });
   const joinOfficeSchema = yup.object().shape({
-    code: yup.string().required("pode is required"),
+    code: yup.string().required(t("default.error.required", { field: "code" })),
   });
 
   const handleJoinOfficeSubmit = (data: JoinOfficeFormInputInterface) => {
@@ -45,19 +45,19 @@ export default function JoinOrCreateOfficeModal({
     JoinByCodeProxy(formatData)
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Join office fail");
+          toastError(res.message ?? t("default.noti.joinOfficeFailed"));
           return;
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          toastSuccess("Join office success");
+          toastSuccess(t("default.noti.joinOfficeSuccess"));
           onInsertOffice(res.data.office);
           onClose();
           return;
         }
       })
       .catch((err) => {
-        toastError(err.message ?? "Join office fail");
+        toastError(err.message ?? t("default.noti.joinOfficeFailed"));
       });
   };
   const { control: joinOfficeControl, handleSubmit: joinOfficeHandleSubmit } =
@@ -84,12 +84,12 @@ export default function JoinOrCreateOfficeModal({
     CreateOfficeProxy(values)
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Create office fail");
+          toastError(res.message ?? t("default.noti.createOfficeFailed"));
           return;
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          toastSuccess("Create office success");
+          toastSuccess(t("default.noti.createOfficeSuccess"));
           console.log(data);
           onInsertOffice(res.data.office);
           onClose();
@@ -97,7 +97,7 @@ export default function JoinOrCreateOfficeModal({
         }
       })
       .catch((err) => {
-        toastError(err.message ?? "Create office fail");
+        toastError(err.message ?? t("default.noti.createOfficeFailed"));
       });
   };
 

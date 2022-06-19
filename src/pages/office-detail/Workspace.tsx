@@ -12,23 +12,18 @@ import OfficeSetting from "../../components/office/office-setting";
 import OfficeCanvas from "../../components/office/OfficeCanvas";
 import OfficeInterface from "../../components/office/OfficeInterface";
 import { toastError } from "../../helpers/toast";
-import { groupBy } from "../../helpers/utilities";
 import { Item } from "../../services/api/offices/get-office-item/types";
 import { getMemberAppearances } from "../../services/api/offices/member-appearances";
-import {
-  Appearance,
-  MemberAppearance,
-} from "../../services/api/offices/member-appearances/types";
+import { MemberAppearance } from "../../services/api/offices/member-appearances/types";
 import { OfficeItem } from "../../services/api/offices/officce-item/types";
 import { OfficeMembersInterface } from "../../services/api/offices/office-detail/types";
 import OfficeDetailProxy from "../../services/proxy/offices/office-detail";
 import { useAppSelector } from "../../stores";
 import { userSelectors } from "../../stores/auth-slice";
+import { officeSelectors } from "../../stores/office-slice";
 import { socketSelector } from "../../stores/socket-slice";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import { OfficeDetailInterface } from "../../types/office";
-import { officeSelectors } from "../../stores/office-slice";
-
 
 export type positionType = {
   x: number;
@@ -155,7 +150,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
   useEffect(() => {
     socket.on("office_member:offline", (memberId) => {
       setOnlineMembers(
-        onlineMembers.filter((member) => member.member.id !== memberId),
+        onlineMembers.filter((member) => member.member.id !== memberId)
       );
     });
 
