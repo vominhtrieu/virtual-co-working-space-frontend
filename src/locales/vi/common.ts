@@ -17,6 +17,17 @@ export const TranslationViCommon = {
       "Mật khẩu có ít nhất 8 ký tự, ít nhất 1 chữ hoa, chữ thường, số và ký tự đặc biệt.",
     phone: "Nhập số điện thoại +84",
   },
+  noti: {
+    title: "Thông báo",
+    success: "Thành công",
+    error: "Lỗi",
+    loginSuccess: "Đăng nhập thành công",
+    loginFailed: "Đăng nhập thất bại",
+    joinOfficeSuccess: "Tham gia văn phòng thành công",
+    joinOfficeFailed: "Tham gia văn phòng thất bại",
+    createOfficeSuccess: "Tạo văn phòng thành công",
+    createOfficeFailed: "Tạo văn phòng thất bại",
+  },
   action: {
     cancel: "Hủy",
     confirm: "Xác nhận",
