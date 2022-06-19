@@ -20,6 +20,7 @@ import { AppearanceGroups } from "../../../helpers/constants";
 import { CharacterAppearance } from "../../../types/character";
 import { alphaMap } from "./Character";
 import Hammer from "../toys/Hammer";
+import Fist from "../toys/Fist";
 
 const stepFoot = require("../../../assets/audios/foot-step.mp3");
 
@@ -51,6 +52,7 @@ const defaultAppearance: CharacterAppearance = {
 }
 
 const itemTimer = 500;
+const StuntTimer = 1000
 
 export default function MemberCharacter(props: MemberCharacterProps) {
     audio.volume = props.volume / 100;
@@ -64,11 +66,34 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     const { nodes } = useGraph(clone);
 
     const group = useRef<THREE.Group>();
+    const isStunt = useRef(false);
+    const isKnocked = useRef(false);
+    const knockDirection = useRef<THREE.Vector3>([0, 0, 0]);
     const [ref, api] = useCylinder(() => ({
         args: [1, 1, 4, 8],
         type: "Dynamic",
         fixedRotation: true,
         mass: 1,
+        onCollideBegin: (e: CollideBeginEvent) => {
+            let target = e.body;
+
+            if (target.name && target.name === "Hammer" && target.visible === true) {
+                isStunt.current = true;
+                setTimeout(() => {
+                    isStunt.current = false;
+                }, StuntTimer);
+            }
+
+            if (target.name && target.name === "Fist" && target.visible === true) {
+                isKnocked.current = true;
+                if (target.punchDirection) {
+                    knockDirection.current = target.punchDirection;
+                }
+                setTimeout(() => {
+                    isKnocked.current = false;
+                }, StuntTimer);
+            }
+        }
     }));
 
     const rotateQuaternion = useRef(new THREE.Quaternion());
@@ -83,6 +108,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     const [currentGesture, setCurrentGesture] = useState({ idx: -1 });
     const [hairStyle, setHairStyle] = useState("Hair_1");
     const [isUsingHammer, setIsUsingHammer] = useState(false);
+    const [isUsingFist, setIsUsingFist] = useState(false);
 
     const position = useRef([0, 0, 0]);
     const updatedPosition = useRef(props.startPosition);
@@ -145,6 +171,14 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         }
     }, [isUsingHammer])
 
+    useEffect(() => {
+        if (isUsingFist) {
+            setTimeout(() => {
+                setIsUsingFist(false);
+            }, itemTimer)
+        }
+    }, [isUsingFist])
+
     const calculateItemPosition = () => {
         const direction = new THREE.Vector3(0, 0, 1);
         direction.applyQuaternion(new THREE.Quaternion().setFromEuler(rotation.current))
@@ -165,6 +199,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     }
 
     const shouldUpdate = () => {
+        if (isKnocked.current || isStunt.current) return false;
         return (
             Math.sqrt(
                 Math.pow(position.current[0] - updatedPosition.current[0], 2) +
@@ -218,12 +253,18 @@ export default function MemberCharacter(props: MemberCharacterProps) {
                 api.quaternion.copy(ref.current.quaternion);
             }
         } else {
-            if (gesturePlaying) {
+            api.velocity.set(0, 0, 0);
+            if (isKnocked.current) {
+                clip = actions["FallBackward"];
+                const moveX = knockDirection.current.x * 10;
+                const moveZ = knockDirection.current.z * 10;
+                api.velocity.set(moveX, 0, moveZ);
+                updatedPosition.current = position.current;
+            } else if (gesturePlaying) {
                 clip = actions[getGesture(currentGesture.idx)];
             } else {
                 clip = actions.Idle;
             }
-            api.velocity.set(0, 0, 0);
         }
         if (sitting.current) {
             clip = actions["Sitting"];
@@ -269,7 +310,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         ref.current.visible = props.visible
     }, [ref, props.visible])
 
-    useSocketEvent(socket, props.memberId, updatedPosition, updatedRotation, setCurrentEmoji, setCurrentGesture, api, sitting, setIsUsingHammer, calculateItemPosition);
+    useSocketEvent(socket, props.memberId, updatedPosition, updatedRotation, setCurrentEmoji, setCurrentGesture, api, sitting, setIsUsingHammer, setIsUsingFist, calculateItemPosition);
 
     useEffect(() => {
         let appearance;
@@ -366,6 +407,9 @@ export default function MemberCharacter(props: MemberCharacterProps) {
             <Hammer spawnPosition={[itemPosition.current[0], itemPosition.current[1], itemPosition.current[2]]}
                                 spawnRotation={rotation.current.toArray()}
                                 visible={isUsingHammer} />
+            <Fist spawnPosition={[itemPosition.current[0], itemPosition.current[1], itemPosition.current[2]]}
+                            spawnRotation={rotation.current.toArray()}
+                            visible={isUsingFist} />
             <mesh ref={ref} {...props}>
                 <group ref={group} position={[0, -1, 0]} dispose={null}>
                     <sprite position={[0, 2.6, 0]} visible={emojiPlaying}>
@@ -429,7 +473,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     );
 }
 
-const useSocketEvent = (socket, memberId, updatedPosition, updatedRotation, setEmoji, setGesture, api, sitting, setIsUsingHammer, calculateItemPosition) => {
+const useSocketEvent = (socket, memberId, updatedPosition, updatedRotation, setEmoji, setGesture, api, sitting, setIsUsingHammer, setIsUsingFist, calculateItemPosition) => {
     useEffect(() => {
         socket.on("office_member:moved", (message) => {
             if (message.memberId === memberId) {
@@ -467,6 +511,10 @@ const useSocketEvent = (socket, memberId, updatedPosition, updatedRotation, setE
                     case "bonk":
                         calculateItemPosition();
                         setIsUsingHammer(true);
+                        break;
+                    case "punch":
+                        calculateItemPosition();
+                        setIsUsingFist(true);
                         break;
                     default:
                         console.log("Unknow action");
