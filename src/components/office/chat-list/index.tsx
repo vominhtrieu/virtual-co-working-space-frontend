@@ -39,9 +39,9 @@ const ChatList = (props: ChatListProps) => {
             const addLastMess = curr.map((conversation) => {
               return {
                 ...conversation,
-                lastMess: res.data.conversations.find(
-                  (con) => con.conversation.id === conversation.id
-                )?.conversation.latestMessage.content,
+                lastMess: res?.data?.conversations.find(
+                  (con) => con?.conversation?.id === conversation?.id
+                )?.conversation?.latestMessage?.content,
               };
             });
 
