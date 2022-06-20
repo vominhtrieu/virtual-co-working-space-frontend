@@ -320,7 +320,7 @@ export default function Character(props: CharacterProps) {
                 api.isTrigger.set(false);
                 api.position.set(position.current[0], 2.5, position.current[2]);
             }
-            if (position.current[1] !== 2.5) {
+            if (position.current[1] > 2.5) {
                 api.isTrigger.set(false);
                 api.position.set(position.current[0], 2.5, position.current[2]);
             }
@@ -353,7 +353,6 @@ export default function Character(props: CharacterProps) {
                 rotateQuaternion.current,
                 delta * 10
             );
-            console.log(rotation.current);
 
             api.velocity.set(moveX, 0, moveZ);
             clip = actions.Walking;
