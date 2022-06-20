@@ -67,8 +67,6 @@ export default function OfficeCanvas({
     };
     const socket = useAppSelector(socketSelector.getSocket);
 
-    const myself = onlineMembers.find((member) => member?.member.id === userInfo.id);
-
     const displayObjects = <>
         {/* <Outline> */}
         <Office castShadow={true} action={action} />
@@ -102,31 +100,32 @@ export default function OfficeCanvas({
                 </Suspense>
             </mesh>
         ))}
-        {myself && <Character
-            appearance={appearance}
-            startPosition={[
-                myself.transform.position.x,
-                2.5,
-                myself.transform.position.z,
-            ]}
-            startRotation={[
-                myself.transform.rotation.x,
-                myself.transform.rotation.y,
-                myself.transform.rotation.z,
-            ]}
-            stream={myStream}
-            scale={[2, 2, 2]}
-            orbitRef={orbitRef}
-            movable={action === "" || action === "action"}
-            volume={volume}
-            currentEmoji={characterEmoji}
-            currentGesture={characterGesture}
-            visible={action !== "config"}
-            setMessage={setMessage}
-        />
-        }
-        {onlineMembers.filter((item) => item.member.id !== userInfo.id).map((member) =>
-            member.member.id === userInfo.id && (
+        {onlineMembers.map((member) =>
+            member.member.id === userInfo.id ? (
+                <Character
+                    key={member.id}
+                    appearance={appearance}
+                    startPosition={[
+                        member.transform.position.x,
+                        2.5,
+                        member.transform.position.z,
+                    ]}
+                    startRotation={[
+                        member.transform.rotation.x,
+                        member.transform.rotation.y,
+                        member.transform.rotation.z,
+                    ]}
+                    stream={myStream}
+                    scale={[2, 2, 2]}
+                    orbitRef={orbitRef}
+                    movable={action === "" || action === "action"}
+                    volume={volume}
+                    currentEmoji={characterEmoji}
+                    currentGesture={characterGesture}
+                    visible={action !== "config"}
+                    setMessage={setMessage}
+                />
+            ) : (
                 <MemberCharacter
                     key={member.id}
                     appearance={memberAppearances.find((memberAppearance) => memberAppearance.userId === member.member.id)?.appearance}
@@ -165,10 +164,10 @@ export default function OfficeCanvas({
         />
     </>
 
-    useEffect(() => {
+    useEffect(()=>{
         socket.on("connect", () => {
             setShowCallingBar(true);
-        });
+          });          
     }, [])
 
     return (
