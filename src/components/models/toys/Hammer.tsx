@@ -15,6 +15,8 @@ const Hammer = ({spawnPosition, spawnRotation, visible}) => {
         position: spawnPosition,
         args: [1, 2, 1],
     }));
+    const speed = useRef(1);
+    const direction = useRef<THREE.Vector3>([0, 1, 0]);
 
     useEffect(() => {
         ref.current.name = "Hammer";
@@ -24,18 +26,35 @@ const Hammer = ({spawnPosition, spawnRotation, visible}) => {
     useEffect(() => {
         ref.current.visible = visible;
         api.position.set(spawnPosition[0], spawnPosition[1], spawnPosition[2]);
-        api.rotation.set(spawnRotation[0], spawnRotation[1] + Math.PI / 2, spawnRotation[2]);
+        api.rotation.set(0, spawnRotation[1], 0);
     }, [visible]);
+
+    useEffect(() => {
+        const d = new THREE.Vector3(0, 0, 1);
+        d.applyQuaternion(new THREE.Quaternion().setFromEuler(new THREE.Euler().fromArray(spawnRotation)))
+        d.normalize();
+
+        direction.current = d.cross(new THREE.Vector3(0, 1, 0)).normalize();
+    }, [spawnRotation])
+
+    const myRotation = useRef(spawnRotation);
+    myRotation.current = spawnRotation;
 
     useFrame((state, delta) => {
         if (ref.current.visible) {
-            const target = new THREE.Euler(spawnRotation[0], spawnRotation[1] + Math.PI / 2, Math.PI / 2);
-            const quaternion = new THREE.Quaternion().setFromEuler(target);
+            let angle = Math.PI/2
+
+            // const target = new THREE.Euler(0 + angle, myRotation.current[1], 0);
+            // const quaternion = new THREE.Quaternion().setFromEuler(target);
+            const quaternion = new THREE.Quaternion().setFromAxisAngle(direction.current, -angle);
             ref.current.quaternion.rotateTowards(
                 quaternion,
-                delta * 10
+                delta * 10 * speed.current,
             )
             api.quaternion.copy(ref.current.quaternion);
+            speed.current *= 1.01;
+        } else {
+            speed.current = 1;
         }
     });
 
