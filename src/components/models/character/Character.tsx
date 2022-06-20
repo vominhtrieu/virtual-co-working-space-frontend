@@ -222,15 +222,15 @@ export default function Character(props: CharacterProps) {
             hammerAvailable.current = false;
             const direction = new THREE.Vector3(0, 0, 1);
             direction.applyQuaternion(new THREE.Quaternion().setFromEuler(rotation.current))
-    
+
             let positionX = position.current[0]
             const positionY = position.current[1] + 1.5;
             let positionZ = position.current[2]
-    
+
             if (Math.abs(direction.x) > 0.0005) {
                 positionX += 2 * direction.x
             }
-    
+
             if (Math.abs(direction.z) > 0.0005) {
                 positionZ += 2 * direction.z
             }
@@ -258,15 +258,15 @@ export default function Character(props: CharacterProps) {
             fistAvailable.current = false;
             const direction = new THREE.Vector3(0, 0, 1);
             direction.applyQuaternion(new THREE.Quaternion().setFromEuler(rotation.current))
-    
+
             let positionX = position.current[0]
             const positionY = position.current[1] + 1.5;
             let positionZ = position.current[2]
-    
+
             if (Math.abs(direction.x) > 0.0005) {
                 positionX += 2 * direction.x
             }
-    
+
             if (Math.abs(direction.z) > 0.0005) {
                 positionZ += 2 * direction.z
             }
@@ -314,11 +314,15 @@ export default function Character(props: CharacterProps) {
         }
         const { camera } = state;
         let clip: THREE.AnimationClip = null;
-
+        
         if (isMoving()) {
-            if (currentClip.current === actions["Sitting"]) {
+            if ( sitting.current) {
                 api.isTrigger.set(false);
-                api.position.set(position.current[0], position.current[1] - 3, position.current[2]);
+                api.position.set(position.current[0], 2.5, position.current[2]);
+            }
+            if (position.current[1] !== 2.5) {
+                api.isTrigger.set(false);
+                api.position.set(position.current[0], 2.5, position.current[2]);
             }
             sitting.current = false;
             if (gesturePlaying) {
@@ -396,10 +400,12 @@ export default function Character(props: CharacterProps) {
                 const moveX = knockDirection.current.x * 10;
                 const moveZ = knockDirection.current.z * 10;
                 api.velocity.set(moveX, 0, moveZ);
-            } else if (gesturePlaying) {
-                clip = actions[getGesture()];
-            } else {
-                clip = actions.Idle;
+            } else if (!sitting.current) {
+                if (gesturePlaying) {
+                    clip = actions[getGesture()];
+                } else {
+                    clip = actions.Idle;
+                }
             }
         }
 
@@ -541,11 +547,11 @@ export default function Character(props: CharacterProps) {
     return (
         <>
             <Hammer spawnPosition={[itemPosition.current[0], itemPosition.current[1], itemPosition.current[2]]}
-                                        spawnRotation={rotation.current.toArray()}
-                                        visible={isUsingHammer} />
+                spawnRotation={rotation.current.toArray()}
+                visible={isUsingHammer} />
             <Fist spawnPosition={[itemPosition.current[0], itemPosition.current[1], itemPosition.current[2]]}
-                                        spawnRotation={rotation.current.toArray()}
-                                        visible={isUsingFist} />
+                spawnRotation={rotation.current.toArray()}
+                visible={isUsingFist} />
             <mesh ref={ref} {...props}>
                 <group ref={group} position={[0, -1, 0]} dispose={null}>
                     <sprite position={[0, 2.6, 0]} visible={emojiPlaying}>
