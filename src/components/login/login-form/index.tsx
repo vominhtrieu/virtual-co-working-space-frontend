@@ -14,6 +14,7 @@ import { FormPropsInterface, InputInterface } from "./types";
 const LoginForm = (props: FormPropsInterface) => {
   const { handleLoginSubmit } = props;
   const isLoading = useAppSelector(loadSelectors.getIsLoad);
+  console.log(isLoading)
   const { t } = useTranslation();
 
   const schema = yup.object().shape({

@@ -24,15 +24,17 @@ export const TranslationViPages = {
   },
   forgot: {
     title: "Quên mật khẩu",
-    content: "Vui lòng nhập email để đặt mật khẩu mới",
+    content: "Vui lòng nhập email để đặt mật khẩu mới.",
     email: "Email",
     login: "Đăng nhập",
+    submit: "Xác nhận"
   },
   reset: {
     title: "Mật khẩu mới",
     password: "Mật khẩu",
     confirmPassword: "Nhập lại mật khẩu",
     login: "Đăng nhập",
+    submit: "Xác nhận"
   },
   profile: {
     name: "Tên",

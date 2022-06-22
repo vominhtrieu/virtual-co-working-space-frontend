@@ -27,12 +27,14 @@ export const TranslationEnPages = {
     content: "Enter your email to reset password",
     email: "Email",
     login: "Login",
+    submit: "Submit"
   },
   reset: {
     title: "New Password",
     password: "Password",
     confirmPassword: "Password Confirmation",
     login: "Login",
+    submit: "Submit"
   },
   profile: {
     name: "Name",

@@ -48,7 +48,7 @@ const ResetForm = ({handleResetSubmit}: FormPropsInterface) => {
 
     return (
         <form className='reset-form' onSubmit={handleSubmit(onResetSubmit)}>
-            <h3 className='reset-form__title'>New Password</h3>
+            <h3 className='reset-form__title'>{t('pages.reset.title')}</h3>
             <div className='reset-form__input-block'>
                 <InputText
                     type='password'
@@ -56,8 +56,8 @@ const ResetForm = ({handleResetSubmit}: FormPropsInterface) => {
                     control={control}
                     prefix={<FaKey/>}
                     size='large'
-                    label="Password"
-                    placeholder="Password"
+                    label={t('pages.register.password')}
+                    placeholder={t('pages.register.password')}
                 />
             </div>
 
@@ -68,13 +68,13 @@ const ResetForm = ({handleResetSubmit}: FormPropsInterface) => {
                     control={control}
                     prefix={<FaKey/>}
                     size='large'
-                    label="Confirm Password"
-                    placeholder=" Confirm Password"
+                    label={t('pages.register.confirmPassword')}
+                    placeholder={t('pages.register.confirmPassword')}
                 />
             </div>
             <button type='submit' className='reset-form__btn' disabled={isLoading}>
                 {isLoading ? <Spin style={{paddingRight: 5}}/> : null}
-                Submit
+                {t('pages.forgot.submit')}
             </button>
 
             <div className='reset-form__an-account'>
