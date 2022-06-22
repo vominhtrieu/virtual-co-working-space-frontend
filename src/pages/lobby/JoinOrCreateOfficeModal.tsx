@@ -45,7 +45,7 @@ export default function JoinOrCreateOfficeModal({
     JoinByCodeProxy(formatData)
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? t("default.noti.joinOfficeFailed"));
+          toastError(t(`error.${res.message}`) ?? t("default.noti.joinOfficeFailed"));
           return;
         }
 
@@ -57,7 +57,7 @@ export default function JoinOrCreateOfficeModal({
         }
       })
       .catch((err) => {
-        toastError(err.message ?? t("default.noti.joinOfficeFailed"));
+        toastError(t(`error.${err.message}`) ?? t("default.noti.joinOfficeFailed"));
       });
   };
   const { control: joinOfficeControl, handleSubmit: joinOfficeHandleSubmit } =
@@ -84,7 +84,7 @@ export default function JoinOrCreateOfficeModal({
     CreateOfficeProxy(values)
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? t("default.noti.createOfficeFailed"));
+          toastError(t(`error.${res.message}`) ?? t("default.noti.createOfficeFailed"));
           return;
         }
 
@@ -97,7 +97,7 @@ export default function JoinOrCreateOfficeModal({
         }
       })
       .catch((err) => {
-        toastError(err.message ?? t("default.noti.createOfficeFailed"));
+        toastError(t(`error.${err.message}`) ?? t("default.noti.createOfficeFailed"));
       });
   };
 

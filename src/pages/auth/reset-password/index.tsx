@@ -8,10 +8,12 @@ import { toastError, toastSuccess } from "../../../helpers/toast";
 import ResetProxy from "../../../services/proxy/auth/reset-password";
 import ResetForm from "../../../components/password/reset-form";
 import forgetImg from "../../../assets/images/forgot/forgot.gif";
+import { useTranslation } from "react-i18next";
 
 function ResetPassword() {
   const params = useParams();
   const { token }: any = params;
+  const { t } = useTranslation();
 
   const navigation = useNavigate();
 
@@ -22,7 +24,7 @@ function ResetPassword() {
     })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          console.log(res.message);
+          console.log(t(`error.${res.message}`));
           toastError("reset password fail");
         }
 
@@ -41,9 +43,9 @@ function ResetPassword() {
 
   return (
     <section className="reset">
-             <div className="icon-lang">
+      <div className="icon-lang">
         <IconLanguages />
-        </div>
+      </div>
       <Row justify="space-around">
         <Col span={8}>
           <div className="reset__img">

@@ -30,7 +30,9 @@ function Login() {
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
           setIsLoading(false);
-          toastError(res.message ?? t("default.noti.loginFailed"));
+          toastError(
+            t(`error.${res.message}`) ?? t("default.noti.loginFailed")
+          );
           return;
         }
 
@@ -48,7 +50,7 @@ function Login() {
         }
       })
       .catch((err) => {
-        toastError(err.message ?? t("default.noti.loginFailed"));
+        toastError(t(`error.${err.message}`) ?? t("default.noti.loginFailed"));
         setIsLoading(false);
       })
       .finally(() => {});

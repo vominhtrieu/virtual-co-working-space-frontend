@@ -72,7 +72,7 @@ const Profile = () => {
       })
         .then((res) => {
           if (res.status === ProxyStatusEnum.FAIL) {
-            toastError(res.message ?? 'update fail')
+            toastError(t(`error.${res.message}`) ?? 'update fail')
           }
 
           if (res.status === ProxyStatusEnum.SUCCESS) {
@@ -82,7 +82,7 @@ const Profile = () => {
           }
         })
         .catch((err) => {
-          toastError(err.message ?? 'update fail')
+          toastError(t(`error.${err.message}`) ?? 'update fail')
         })
         .finally(() => { })
     }
@@ -93,7 +93,7 @@ const Profile = () => {
       .then((res) => {
         console.log(res)
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? 'Change password fail!')
+          toastError(t(`error.${res.message}`) ?? 'Change password fail!')
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
@@ -104,7 +104,7 @@ const Profile = () => {
         }
       })
       .catch((err) => {
-        toastError(err.message ?? 'Change password fail!')
+        toastError(t(`error.${err.message}`) ?? 'Change password fail!')
       })
       .finally(() => { })
   }
@@ -113,7 +113,7 @@ const Profile = () => {
     ProfileProxy()
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? 'Load data fail!')
+          toastError(t(`error.${res.message}`) ?? 'Load data fail!')
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
@@ -121,7 +121,7 @@ const Profile = () => {
         }
       })
       .catch((err) => {
-        toastError(err.message ?? 'Load data fail!')
+        toastError(t(`error.${err.message}`) ?? 'Load data fail!')
       })
       .finally(() => { })
   }, [dispatch])

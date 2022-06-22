@@ -65,7 +65,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
     })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Update office fail");
+          toastError(t(`error.${res.message}`) ?? "Update office fail");
           return;
         }
 
@@ -83,7 +83,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
     DeleteOfficeProxy({ id: id })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Delete office fail");
+          toastError(t(`error.${res.message}`) ?? "Delete office fail");
           return;
         }
 
@@ -105,7 +105,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
     CreateByEmailProxy({ email: values.email, officeId: values.officeId })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Create invitation fail");
+          toastError(t(`error.${res.message}`) ?? "Create invitation fail");
           return;
         }
 

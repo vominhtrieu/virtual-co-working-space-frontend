@@ -32,8 +32,7 @@ const LoginProxy = async (
   params: LoginProxyParams
 ): Promise<ProxyFuncType<LoginProxyResponseInterface>> => {
   const res = await login(params);
-  console.log("login");
-  
+
   if (res?.code && res?.code !== 200) {
     return {
       status: ProxyStatusEnum.FAIL,
@@ -44,7 +43,7 @@ const LoginProxy = async (
   }
 
   const loginRespTransformed = loginTransform(res?.data);
-  console.log(loginRespTransformed)
+  console.log(loginRespTransformed);
   return {
     status: ProxyStatusEnum.SUCCESS,
     data: loginRespTransformed,

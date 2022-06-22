@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import CharacterForm from "../../components/character-form";
@@ -76,7 +77,9 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
   const userInfo = useAppSelector(userSelectors.getUserInfo);
 
   const socket = useAppSelector(socketSelector.getSocket);
-  const [message, setMessage] = useState<string|null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+
+  const { t } = useTranslation();
 
   const handleObject3dDragged = useCallback(
     (position, rotation) => {
@@ -259,7 +262,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
     OfficeDetailProxy({ id: officeId })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Get offices detail fail");
+          toastError(t(`error.${res.message}`) ?? "Get offices detail fail");
           return;
         }
 

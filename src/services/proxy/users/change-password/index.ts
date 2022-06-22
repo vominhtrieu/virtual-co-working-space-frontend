@@ -7,19 +7,18 @@ import {
   ProxyBody,
 } from "./type";
 
-const Transform = (
-  res: ProxyTransformInterface
-): ProxyResponseInterface => {
+const Transform = (res: ProxyTransformInterface): ProxyResponseInterface => {
   const transform = {
-    msg: res?.msg??"",
+    msg: res?.msg ?? "",
   };
   return transform;
 };
 
-const ChangePasswordProxy = async ( body: ProxyBody
+const ChangePasswordProxy = async (
+  body: ProxyBody
 ): Promise<ProxyFuncType<ProxyResponseInterface>> => {
   const res = await changePassword(body);
-  if (res?.code && res?.code !==200) {
+  if (res?.code && res?.code !== 200) {
     return {
       status: ProxyStatusEnum.FAIL,
       message: res.message,
