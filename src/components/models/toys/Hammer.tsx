@@ -16,25 +16,41 @@ const Hammer = ({spawnPosition, spawnRotation, visible}) => {
         args: [1, 2, 1],
     }));
     const speed = useRef(1);
-    const direction = useRef<THREE.Vector3>([0, 1, 0]);
+    const rotateAxis = useRef<THREE.Vector3>([0, 1, 0]);
+    const rotation = useRef(new THREE.Euler());
+
+    useEffect(() => {
+        const unsubRotation = api.rotation.subscribe((v) => {
+            rotation.current.fromArray(v);
+        })
+
+        return unsubRotation;
+    }, [api.rotation])
 
     useEffect(() => {
         ref.current.name = "Hammer";
         api.isTrigger.set(true);
-    }, [])
+    }, [ref, api.isTrigger])
 
     useEffect(() => {
         ref.current.visible = visible;
         api.position.set(spawnPosition[0], spawnPosition[1], spawnPosition[2]);
         api.rotation.set(0, spawnRotation[1], 0);
-    }, [visible]);
+        ref.current.quaternion.copy(new THREE.Quaternion(0, 0, 0, 0));
+        console.log("eeeee");
+    }, [visible, api.position, api.rotation]);
 
     useEffect(() => {
         const d = new THREE.Vector3(0, 0, 1);
         d.applyQuaternion(new THREE.Quaternion().setFromEuler(new THREE.Euler().fromArray(spawnRotation)))
         d.normalize();
 
-        direction.current = d.cross(new THREE.Vector3(0, 1, 0)).normalize();
+        if (Math.abs(d.x) >= 0.9) {
+            console.log(d);
+            api.rotation.set(0, spawnRotation[1], 0);
+        }
+
+        rotateAxis.current = d.cross(new THREE.Vector3(0, 1, 0)).normalize();
     }, [spawnRotation])
 
     const myRotation = useRef(spawnRotation);
@@ -44,14 +60,13 @@ const Hammer = ({spawnPosition, spawnRotation, visible}) => {
         if (ref.current.visible) {
             let angle = Math.PI/2
 
-            // const target = new THREE.Euler(0 + angle, myRotation.current[1], 0);
-            // const quaternion = new THREE.Quaternion().setFromEuler(target);
-            const quaternion = new THREE.Quaternion().setFromAxisAngle(direction.current, -angle);
+            api.quaternion.copy(ref.current.quaternion);
+
+            const quaternion = new THREE.Quaternion().setFromAxisAngle(rotateAxis.current, -angle);
             ref.current.quaternion.rotateTowards(
                 quaternion,
                 delta * 10 * speed.current,
             )
-            api.quaternion.copy(ref.current.quaternion);
             speed.current *= 1.01;
         } else {
             speed.current = 1;

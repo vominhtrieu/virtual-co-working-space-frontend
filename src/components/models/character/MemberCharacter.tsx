@@ -52,7 +52,7 @@ const defaultAppearance: CharacterAppearance = {
 }
 
 const itemTimer = 500;
-const StuntTimer = 1000
+const StuntTimer = 2000
 
 export default function MemberCharacter(props: MemberCharacterProps) {
     audio.volume = props.volume / 100;
@@ -115,7 +115,9 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     const rotation = useRef<THREE.Euler>(new THREE.Euler());
     const updatedRotation = useRef<THREE.Euler>(new THREE.Euler());
 
-    const loader = new THREE.TextureLoader();
+    const loader = useMemo(() => {
+        return new THREE.TextureLoader();
+    }, []);
 
     const match = matchPath({ path: "/office/:id" }, window.location.pathname);
 
@@ -262,6 +264,8 @@ export default function MemberCharacter(props: MemberCharacterProps) {
                 updatedPosition.current = position.current;
             } else if (gesturePlaying) {
                 clip = actions[getGesture(currentGesture.idx)];
+            } else if (isStunt.current) {
+                clip = actions["Stunned"];
             } else {
                 clip = actions.Idle;
             }

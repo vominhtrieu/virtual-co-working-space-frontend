@@ -403,7 +403,9 @@ export default function Character(props: CharacterProps) {
             } else if (!sitting.current) {
                 if (gesturePlaying) {
                     clip = actions[getGesture()];
-                } else {
+                } else if (isStunt.current) {
+                    clip = actions["Stunned"];
+                }  else {
                     clip = actions.Idle;
                 }
             }
