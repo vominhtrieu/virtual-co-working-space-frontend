@@ -1,31 +1,25 @@
-importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');
-
-// Initialize the Firebase app in the service worker by passing the generated config
-const firebaseConfig = {
-  apiKey: "AIzaSyA60w72t95mZ6wNULiuQnG4Ufl_7wwTEiM",
-  authDomain: "push-9bfc4.firebaseapp.com",
-  projectId: "push-9bfc4",
-  storageBucket: "push-9bfc4.appspot.com",
-  messagingSenderId: "645986432",
-  appId: "1:645986432:web:d8cb947e20d0999ed90e65",
-  measurementId: "G-88101N6FWD"
-};
-
-
-firebase.initializeApp(firebaseConfig);
-
-// Retrieve firebase messaging
+importScripts(
+  "https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"
+);
+importScripts(
+  "https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js"
+);
+// Initialize Firebase
+firebase.initializeApp({
+  apiKey: "AIzaSyAlYUcwWTOpsg3yTGC2tEl6ufl_GUQoOfo",
+  authDomain: "vispace-ed2ac.firebaseapp.com",
+  projectId: "vispace-ed2ac",
+  storageBucket: "vispace-ed2ac.appspot.com",
+  messagingSenderId: "351864430510",
+  appId: "1:351864430510:web:0bd27b05c1f74b5db4323f"
+});
+// Initialize Firebase Cloud Messaging and get a reference to the service
 const messaging = firebase.messaging();
-
-messaging.onBackgroundMessage(function(payload) {
+messaging.onBackgroundMessage(function (payload) {
+  console.log("Received background message ", payload);
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
-    body: payload.notification.body,
+      body: payload.notification.body,
   };
-
-  self.registration.showNotification(notificationTitle,
-    notificationOptions);
+  self.registration.showNotification(notificationTitle, notificationOptions);
 });
-
-

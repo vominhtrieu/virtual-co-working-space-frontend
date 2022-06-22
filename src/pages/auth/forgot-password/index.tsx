@@ -10,6 +10,7 @@ import forgetImg from "../../../assets/images/forgot/forgot.gif";
 function ForgotPassword() {
 
   const handleForgot = (values: ForgotPasswordFormValues) => {
+    console.log(values);
     ForgotProxy({
       email: values.email,
     })

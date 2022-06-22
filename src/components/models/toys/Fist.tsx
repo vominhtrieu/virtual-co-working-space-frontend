@@ -52,10 +52,9 @@ const Fist = ({spawnPosition, spawnRotation, visible}) => {
             direction.applyQuaternion(new THREE.Quaternion().setFromEuler(new THREE.Euler().fromArray(rotation.current)))
             direction.normalize();
     
-            const moveX = direction.x * 5;
-            const moveY = calculateYVelocity(frameCount.current, direction.y);
-            const moveZ = direction.z * 5;
-            api.velocity.set(moveX, moveY, moveZ);
+            const moveX = calculateVelocity(frameCount.current, direction.x);
+            const moveZ = calculateVelocity(frameCount.current, direction.z);
+            api.velocity.set(moveX, 0, moveZ);
             frameCount.current++;
         } else {
             frameCount.current = 0;
@@ -72,8 +71,8 @@ const Fist = ({spawnPosition, spawnRotation, visible}) => {
     )
 }
 
-const calculateYVelocity = (frameCount, yValue) => {
-    return yValue * 5 + frameCount * 0.8;
+const calculateVelocity = (frameCount, value) => {
+    return value * (frameCount) * 2; 
 }
 
 export default Fist;

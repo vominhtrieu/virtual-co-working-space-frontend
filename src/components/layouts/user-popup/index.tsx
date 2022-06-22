@@ -6,7 +6,8 @@ import { useTranslation } from "react-i18next";
 import { FaSignOutAlt, FaTshirt, FaUserAlt,FaCog } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { removeAll } from "../../../helpers/cookies";
-import { removeAllDataLocal } from "../../../helpers/localStorage";
+import { getDataLocal, removeAllDataLocal, saveDataLocal } from "../../../helpers/localStorage";
+import UnsubcribeProxy from "../../../services/proxy/notification/unsubcribe";
 import { useAppDispatch, useAppSelector } from "../../../stores";
 import {
   setAuthenticated,
@@ -15,6 +16,8 @@ import {
 } from "../../../stores/auth-slice";
 import CharacterForm from "../../character-form";
 import Setting from "./setting";
+import { toastError, toastSuccess } from "../../../helpers/toast";
+import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
 
 const UserPopup = () => {
   const dispatch = useAppDispatch();
@@ -26,6 +29,18 @@ const UserPopup = () => {
   const { t } = useTranslation();
 
   const handleLogout = () => {
+    UnsubcribeProxy({pushToken:getDataLocal("push_token")}) .then((res) => {  
+      if (res.status === ProxyStatusEnum.FAIL) {
+        toastError(res.message ?? "");
+      }
+      // if (res.status === ProxyStatusEnum.SUCCESS) {
+      //   saveDataLocal("push_token",res?.data?.pushToken);
+      // }
+    })
+    .catch((err) => {
+
+      toastError(err.message ?? "Get offices fail");
+    });
     dispatch(setAuthenticated(false));
     dispatch(setUserInfo({}));
     removeAllDataLocal();

@@ -15,27 +15,61 @@ const Hammer = ({spawnPosition, spawnRotation, visible}) => {
         position: spawnPosition,
         args: [1, 2, 1],
     }));
+    const speed = useRef(1);
+    const rotateAxis = useRef<THREE.Vector3>([0, 1, 0]);
+    const rotation = useRef(new THREE.Euler());
+
+    useEffect(() => {
+        const unsubRotation = api.rotation.subscribe((v) => {
+            rotation.current.fromArray(v);
+        })
+
+        return unsubRotation;
+    }, [api.rotation])
 
     useEffect(() => {
         ref.current.name = "Hammer";
         api.isTrigger.set(true);
-    }, [])
+    }, [ref, api.isTrigger])
 
     useEffect(() => {
         ref.current.visible = visible;
         api.position.set(spawnPosition[0], spawnPosition[1], spawnPosition[2]);
-        api.rotation.set(spawnRotation[0], spawnRotation[1] + Math.PI / 2, spawnRotation[2]);
-    }, [visible]);
+        api.rotation.set(0, spawnRotation[1], 0);
+        ref.current.quaternion.copy(new THREE.Quaternion(0, 0, 0, 0));
+        console.log("eeeee");
+    }, [visible, api.position, api.rotation]);
+
+    useEffect(() => {
+        const d = new THREE.Vector3(0, 0, 1);
+        d.applyQuaternion(new THREE.Quaternion().setFromEuler(new THREE.Euler().fromArray(spawnRotation)))
+        d.normalize();
+
+        if (Math.abs(d.x) >= 0.9) {
+            console.log(d);
+            api.rotation.set(0, spawnRotation[1], 0);
+        }
+
+        rotateAxis.current = d.cross(new THREE.Vector3(0, 1, 0)).normalize();
+    }, [spawnRotation])
+
+    const myRotation = useRef(spawnRotation);
+    myRotation.current = spawnRotation;
 
     useFrame((state, delta) => {
         if (ref.current.visible) {
-            const target = new THREE.Euler(spawnRotation[0], spawnRotation[1] + Math.PI / 2, Math.PI / 2);
-            const quaternion = new THREE.Quaternion().setFromEuler(target);
+            let angle = Math.PI/2
+
+            api.quaternion.copy(ref.current.quaternion);
+
+            const quaternion = new THREE.Quaternion().setFromAxisAngle(rotateAxis.current, -angle);
             ref.current.quaternion.rotateTowards(
                 quaternion,
-                delta * 10
+                delta * 10 * speed.current,
             )
-            api.quaternion.copy(ref.current.quaternion);
+            speed.current *= 1.01;
+        } else {
+            speed.current = 1;
         }
     });
 
