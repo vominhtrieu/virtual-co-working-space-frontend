@@ -66,4 +66,21 @@
   &__icon {
     font-size: 2rem;
   }
+
+  &__gamestart-btn {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $color-secondary-dark-1;
+    background-color: #fff;
+    padding: 0.5rem 1.5rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right: 2rem;
+
+    &:hover {
+      background-color: $color-secondary-light;
+      color: #fff;
+    }
+  }
 }

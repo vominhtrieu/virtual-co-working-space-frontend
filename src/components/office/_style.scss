@@ -15,3 +15,28 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.4);
     font-weight: bold;
 }
+
+.gamestart-message {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 400px;
+    height: 200px;
+    background-color: #132e48d5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+
+    & p {
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    &__countdown {
+        font-size: 32px;
+    }
+}

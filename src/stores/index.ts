@@ -7,6 +7,7 @@ import officeReducer from './office-slice/index'
 import loadReducer from './load-slice/index'
 import socketReducer from './socket-slice/index'
 import socketMiddleware from "./socket-middleware"
+import GameReducer from "./game-slice/index"
 
 
 const store = configureStore({
@@ -16,7 +17,8 @@ const store = configureStore({
     volume: volumeReducer,
     office: officeReducer,
     load: loadReducer,
-    socket: socketReducer
+    socket: socketReducer,
+    game: GameReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: {

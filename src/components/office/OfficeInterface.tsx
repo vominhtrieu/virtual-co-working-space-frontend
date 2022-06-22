@@ -1,8 +1,12 @@
+import { useState } from "react";
 import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
 import { FaTrash } from "react-icons/fa";
+import { useAppSelector } from "../../stores";
+import { gameSelectors } from "../../stores/game-slice";
+import { GameState } from "../../types/game-state";
 import Button from "../UI/button";
+import { GameStartMessage } from "./GameStartMessage";
 import OfficeBar from "./office-bar";
-import OfficceCheckInModal from "./office-checkin";
 import { OfficeMessage } from "./OfficeMessage";
 
 export default function OfficeInterface({
@@ -20,9 +24,9 @@ export default function OfficeInterface({
   action,
   message
 }) {
+  const gameState = useAppSelector(gameSelectors.getGameState);
   return (
     <>
-      <OfficceCheckInModal />
       <div
         style={{
           position: "absolute",
@@ -102,6 +106,7 @@ export default function OfficeInterface({
         ) : null}
       </div>
       {message && <OfficeMessage message={message} />}
+      {gameState === GameState.PREPARE && <GameStartMessage /> }
       <OfficeBar
         officeDetail={officeDetail}
         isOwner={isOwner}
