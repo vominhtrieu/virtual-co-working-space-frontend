@@ -45,11 +45,6 @@ const Hammer = ({spawnPosition, spawnRotation, visible}) => {
         d.applyQuaternion(new THREE.Quaternion().setFromEuler(new THREE.Euler().fromArray(spawnRotation)))
         d.normalize();
 
-        if (Math.abs(d.x) >= 0.9) {
-            console.log(d);
-            api.rotation.set(0, spawnRotation[1], 0);
-        }
-
         rotateAxis.current = d.cross(new THREE.Vector3(0, 1, 0)).normalize();
     }, [spawnRotation])
 

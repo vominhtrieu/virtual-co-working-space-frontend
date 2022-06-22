@@ -1,3 +1,4 @@
+import { Button } from 'antd'
 import {
   FaCog,
   FaComments,
@@ -9,12 +10,16 @@ import {
   FaUserFriends,
 } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
+import { useAppDispatch } from '../../../stores'
+import { setGameState } from '../../../stores/game-slice'
+import { GameState } from '../../../types/game-state'
 import { OfficeBarPropsInterface } from './types'
 
 const OfficeBar = (props: OfficeBarPropsInterface) => {
   const { action, setAction, officeDetail } = props
 
   const navigate = useNavigate()
+  const dispatch = useAppDispatch();
 
   const formatName = (name: any) => {
     if (name.length > 30 )
@@ -29,6 +34,9 @@ const OfficeBar = (props: OfficeBarPropsInterface) => {
       </div>
 
       <div className="office-bar__right-content">
+        <div className={`office-bar__gamestart-btn`} onClick={() => dispatch(setGameState(GameState.PREPARE))}>
+          Start Game
+        </div>
         <div
           className={`office-bar__icon-btn + ${
             action === 'action' ? 'active' : ''
