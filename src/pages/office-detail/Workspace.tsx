@@ -152,6 +152,9 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
 
   useEffect(() => {
     socket.on("office_member:offline", (memberId) => {
+      if (memberId === userInfo.id) {
+        return;
+      }
       setOnlineMembers(
         onlineMembers.filter((member) => member.member.id !== memberId)
       );
