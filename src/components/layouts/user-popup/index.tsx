@@ -31,7 +31,7 @@ const UserPopup = () => {
   const handleLogout = () => {
     UnsubcribeProxy({pushToken:getDataLocal("push_token")}) .then((res) => {  
       if (res.status === ProxyStatusEnum.FAIL) {
-        toastError(res.message ?? "");
+        toastError(t(`error.${res.message}`) ?? "");
       }
       // if (res.status === ProxyStatusEnum.SUCCESS) {
       //   saveDataLocal("push_token",res?.data?.pushToken);
@@ -39,7 +39,7 @@ const UserPopup = () => {
     })
     .catch((err) => {
 
-      toastError(err.message ?? "Get offices fail");
+      toastError(t(`error.${err.message}`) ?? "Get offices fail");
     });
     dispatch(setAuthenticated(false));
     dispatch(setUserInfo({}));

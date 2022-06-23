@@ -7,12 +7,11 @@ import ActiveProxy from "../../../services/proxy/auth/active";
 import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
 import Lobby from "../../lobby";
 
-
 function Active() {
   const params = useParams();
-  const {token}: any = params;
+  const { token }: any = params;
   const navigate = useNavigate();
-  
+
   const handleActive = () => {
     ActiveProxy(token)
       .then((res) => {
@@ -34,13 +33,10 @@ function Active() {
   };
 
   useEffect(() => {
-      handleActive();
-  }, [])
+    handleActive();
+  }, []);
 
-
-  return (
-    <Lobby/>
-  );
+  return <Lobby />;
 }
 
 export default Active;

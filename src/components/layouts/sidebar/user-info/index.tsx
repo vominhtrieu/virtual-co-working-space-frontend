@@ -16,6 +16,7 @@ import {
 } from "./types";
 import { loadSelectors } from "../../../../stores/load-slice";
 import { Skeleton } from "antd";
+import { useTranslation } from "react-i18next";
 
 const SidebarUser = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -23,14 +24,14 @@ const SidebarUser = () => {
   const userInfo = useAppSelector(userSelectors.getUserInfo);
   const isLoading = useAppSelector(loadSelectors.getIsLoad);
   const arrThumnail: number[] = new Array(0, 1, 2, 3);
+  const { t } = useTranslation();
 
   const dispatch = useAppDispatch();
 
   const handleChangeProfile = (values: EditProfileFormValuesInterface) => {
     if (values.avatar === "") {
       toastError("Avatar is require");
-    }
-    else {
+    } else {
       UpdateProfileProxy({
         name: values.name,
         phone: values.phone,
@@ -38,7 +39,7 @@ const SidebarUser = () => {
       })
         .then((res) => {
           if (res.status === ProxyStatusEnum.FAIL) {
-            toastError(res.message ?? "update fail");
+            toastError(t(`error.${res.message}`) ?? "update fail");
           }
 
           if (res.status === ProxyStatusEnum.SUCCESS) {
@@ -48,35 +49,37 @@ const SidebarUser = () => {
           }
         })
         .catch((err) => {
-          toastError(err.message ?? "update fail");
+          toastError(t(`error.${err.message}`) ?? "update fail");
         })
-        .finally(() => { });
+        .finally(() => {});
     }
   };
 
   const handleChangePassword = (values: ChangePasswordFormValuesInterface) => {
     ChangePasswordProxy(values)
-    .then((res) => {
-      if (res.status === ProxyStatusEnum.FAIL) {
-        toastError(res.message ?? "Change password fail!");
-      }
+      .then((res) => {
+        if (res.status === ProxyStatusEnum.FAIL) {
+          toastError(t(`error.${res.message}`) ?? "Change password fail!");
+        }
 
-      if (res.status === ProxyStatusEnum.SUCCESS) {
-        setIsChangingPass(false);
-        toastSuccess("Password changed successfully.");
-      }
-    })
-    .catch((err) => {
-      toastError(err.message ?? "Change password fail!");
-    })
-    .finally(() => { });
+        if (res.status === ProxyStatusEnum.SUCCESS) {
+          setIsChangingPass(false);
+          toastSuccess("Password changed successfully.");
+        }
+      })
+      .catch((err) => {
+        toastError(
+          t(`error.${err.message}`) ?? "Change password fail!"
+        );
+      })
+      .finally(() => {});
   };
 
   useEffect(() => {
     ProfileProxy()
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Load data fail!");
+          toastError(t(`error.${res.message}`) ?? "Load data fail!");
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
@@ -84,14 +87,16 @@ const SidebarUser = () => {
         }
       })
       .catch((err) => {
-        toastError(err.message ?? "Load data fail!");
+        toastError(
+          t(`error.${err.message}`) ?? "Load data fail!"
+        );
       })
-      .finally(() => { });
+      .finally(() => {});
   }, [dispatch]);
 
   const padTo2Digits = (num: number) => {
-    return num.toString().padStart(2, '0');
-  }
+    return num.toString().padStart(2, "0");
+  };
 
   const parseStringToDate = (dateSTr) => {
     if (dateSTr) {
@@ -103,7 +108,7 @@ const SidebarUser = () => {
       ].join("/");
     }
     return "";
-  }
+  };
 
   return (
     <>
@@ -116,11 +121,11 @@ const SidebarUser = () => {
         />
       ) : null}
       <SidebarBox>
-        <div className='sidebar-user'>
-          <div className='sidebar-user__title'>Information</div>
-          <div className='sidebar-user__container'>
+        <div className="sidebar-user">
+          <div className="sidebar-user__title">Information</div>
+          <div className="sidebar-user__container">
             {/* user info - start */}
-            <div className='sidebar-user__info'>
+            <div className="sidebar-user__info">
               {isEditing ? (
                 <EditProfileForm
                   onClose={() => {
@@ -130,64 +135,68 @@ const SidebarUser = () => {
                 />
               ) : (
                 <>
-                  {isLoading ?
-                    <>{arrThumnail?.map(() => (
-                      <li className='sidebar-user__item'>
-                        {/* <div className='sidebar-user__item-title'>Email:</div>
+                  {isLoading ? (
+                    <>
+                      {arrThumnail?.map(() => (
+                        <li className="sidebar-user__item">
+                          {/* <div className='sidebar-user__item-title'>Email:</div>
                       <div className='sidebar-user__item-content'>
                         {userInfo.email}
                       </div> */}
-                        <Skeleton.Button className="sidebar-user__item-title" />
-                        <Skeleton.Button className="sidebar-user__item-content" />
-                      </li>
-                    ))
-                    }
-                      <div className='sidebar-user__group-btn'>
-                      <Skeleton.Button />
-                      <Skeleton.Button />
+                          <Skeleton.Button className="sidebar-user__item-title" />
+                          <Skeleton.Button className="sidebar-user__item-content" />
+                        </li>
+                      ))}
+                      <div className="sidebar-user__group-btn">
+                        <Skeleton.Button />
+                        <Skeleton.Button />
                       </div>
-                    </> : <>
-                      <ul className='sidebar-user__items'>
+                    </>
+                  ) : (
+                    <>
+                      <ul className="sidebar-user__items">
                         {/* user item - start */}
-                        <li className='sidebar-user__item'>
-                          <div className='sidebar-user__item-title'>Họ và tên:</div>
-                          <div className='sidebar-user__item-content'>
+                        <li className="sidebar-user__item">
+                          <div className="sidebar-user__item-title">
+                            Họ và tên:
+                          </div>
+                          <div className="sidebar-user__item-content">
                             {userInfo.name}
                           </div>
                         </li>
                         {/* user item - end */}
                         {/* user item - start */}
-                        <li className='sidebar-user__item'>
-                          <div className='sidebar-user__item-title'>Email:</div>
-                          <div className='sidebar-user__item-content'>
+                        <li className="sidebar-user__item">
+                          <div className="sidebar-user__item-title">Email:</div>
+                          <div className="sidebar-user__item-content">
                             {userInfo.email}
                           </div>
                         </li>
                         {/* user item - end */}
                         {/* user item - start */}
-                        <li className='sidebar-user__item'>
-                          <div className='sidebar-user__item-title'>
+                        <li className="sidebar-user__item">
+                          <div className="sidebar-user__item-title">
                             Số điện thoại:
                           </div>
-                          <div className='sidebar-user__item-content'>
+                          <div className="sidebar-user__item-content">
                             {userInfo.phone}
                           </div>
                         </li>
                         {/* user item - end */}
                         {/* user item - start */}
-                        <li className='sidebar-user__item'>
-                          <div className='sidebar-user__item-title'>
+                        <li className="sidebar-user__item">
+                          <div className="sidebar-user__item-title">
                             Ngày tham gia:
                           </div>
-                          <div className='sidebar-user__item-content'>
+                          <div className="sidebar-user__item-content">
                             {parseStringToDate(userInfo.createdAt)}
                           </div>
                         </li>
                         {/* user item - end */}
                       </ul>
-                      <div className='sidebar-user__group-btn'>
+                      <div className="sidebar-user__group-btn">
                         <Button
-                          variant='primary'
+                          variant="primary"
                           onClick={() => {
                             setIsEditing(true);
                           }}
@@ -196,7 +205,7 @@ const SidebarUser = () => {
                         </Button>
 
                         <Button
-                          variant='primary'
+                          variant="primary"
                           onClick={() => {
                             setIsChangingPass(true);
                           }}
@@ -205,8 +214,7 @@ const SidebarUser = () => {
                         </Button>
                       </div>
                     </>
-                  }
-
+                  )}
                 </>
               )}
             </div>

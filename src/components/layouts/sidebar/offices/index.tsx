@@ -13,12 +13,16 @@ import Thumbnail from "../../../UI/thumbnail";
 import SidebarBox from "../sidebar-box";
 import CreateOfficeForm from "./create-office-form";
 import JoinOfficeForm from "./join-by-code";
-import { CreateOfficeFormValuesInterface, JoinOfficeFormValuesInterface } from "../../../../pages/lobby/types";
+import {
+  CreateOfficeFormValuesInterface,
+  JoinOfficeFormValuesInterface,
+} from "../../../../pages/lobby/types";
 import { useAppDispatch } from "../../../../stores";
 import { setIsOffice } from "../../../../stores/office-slice";
 import { officeSelectors } from "../../../../stores/office-slice";
 import { loadSelectors } from "../../../../stores/load-slice";
-import { Skeleton } from 'antd';
+import { Skeleton } from "antd";
+import { useTranslation } from "react-i18next";
 
 const Offices = () => {
   const [officeList, setOfficeList] = useState<OfficeInterface[]>();
@@ -33,6 +37,8 @@ const Offices = () => {
   const userInfo = useAppSelector(userSelectors.getUserInfo);
   const { id: userId } = userInfo;
 
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,7 +48,9 @@ const Offices = () => {
         if (!isMounted) return;
 
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Get offices fail");
+          toastError(
+            t(`error.${res.message}`) ?? "Get offices fail"
+          );
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
@@ -50,8 +58,9 @@ const Offices = () => {
         }
       })
       .catch((err) => {
-
-        toastError(err.message ?? "Get offices fail");
+        toastError(
+          t(`error.${err.message}`) ?? "Get offices fail"
+        );
       });
 
     return () => {
@@ -65,7 +74,9 @@ const Offices = () => {
     CreateOfficeProxy(values)
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Create office fail");
+          toastError(
+            t(`error.${res.message}`) ?? "Create office fail"
+          );
           return;
         }
 
@@ -78,18 +89,17 @@ const Offices = () => {
         }
       })
       .catch((err) => {
-        toastError(err.message ?? "Create office fail");
+        toastError(
+          t(`error.${err.message}`) ?? "Create office fail"
+        );
       });
   };
 
-  const handleJoinOfficeSubmit = (
-    values: JoinOfficeFormValuesInterface
-  ) => {
+  const handleJoinOfficeSubmit = (values: JoinOfficeFormValuesInterface) => {
     JoinByCodeProxy(values)
       .then((res) => {
-        
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Join office fail");
+          toastError(t(`error.${res.message}`) ?? "Join office fail");
           return;
         }
 
@@ -102,10 +112,11 @@ const Offices = () => {
         }
       })
       .catch((err) => {
-        toastError(err.message ?? "Join office fail");
+        toastError(
+          t(`error.${err.message}`) ?? "Join office fail"
+        );
       });
   };
-
 
   return (
     <>
@@ -129,36 +140,38 @@ const Offices = () => {
 
       <SidebarBox>
         <div className="sidebar-offices">
-          <div className="sidebar-offices__title">
-            Offices
-          </div>
+          <div className="sidebar-offices__title">Offices</div>
 
           <div className="sidebar-offices__container">
             {/* box content - start */}
             <div className="sidebar-offices__group">
               <div className="sidebar-offices__items">
-                {isLoading ?
-                  arrThumnail?.map((item) => (
-                    <div className='thumbnail-sketalon'>
-                      <Skeleton.Image className='thumbnail__img' />
-                      <Skeleton paragraph={{ rows: 0, width: 100 }} className='thumbnail__content' />
-                    </div>
-                  )) : officeList?.map((office, key) => {
-                    return (
-                      <Thumbnail
-                        office={office}
-                        key={key}
-                        src={office.avatarUrl}
-                        onClick={() => {
-                          navigate(`/office/${office.id}`, {
-                            state: {
-                              officeId: office.id,
-                            },
-                          });
-                        }}
-                      />
-                    );
-                  })}
+                {isLoading
+                  ? arrThumnail?.map((item) => (
+                      <div className="thumbnail-sketalon">
+                        <Skeleton.Image className="thumbnail__img" />
+                        <Skeleton
+                          paragraph={{ rows: 0, width: 100 }}
+                          className="thumbnail__content"
+                        />
+                      </div>
+                    ))
+                  : officeList?.map((office, key) => {
+                      return (
+                        <Thumbnail
+                          office={office}
+                          key={key}
+                          src={office.avatarUrl}
+                          onClick={() => {
+                            navigate(`/office/${office.id}`, {
+                              state: {
+                                officeId: office.id,
+                              },
+                            });
+                          }}
+                        />
+                      );
+                    })}
               </div>
             </div>
             {/* box content - end */}

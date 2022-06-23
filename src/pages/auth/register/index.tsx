@@ -7,19 +7,22 @@ import RegisterProxy from "../../../services/proxy/auth/register";
 import { ProxyStatusEnum } from "../../../types/http/proxy/ProxyStatus";
 import { useNavigate } from "react-router-dom";
 import { toastError, toastSuccess } from "../../../helpers/toast";
+import { useTranslation } from "react-i18next";
 
 function Register() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const handleRegister = (values: RegisterFormValues) => {
     RegisterProxy({
       name: values.name,
       email: values.email,
       password: values.password,
-      passwordConfirm: values.passwordConfirm
+      passwordConfirm: values.passwordConfirm,
     })
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "Register fail");
+          toastError(t(`error.${res.message}`) ?? "Register fail");
           return;
         }
 
@@ -29,30 +32,28 @@ function Register() {
           return;
         }
       })
-      .catch((err) => {
-      })
-      .finally(() => { });
+      .catch((err) => {})
+      .finally(() => {});
   };
 
-
   return (
-    <section className='register'>
-            <div className="icon-lang">
+    <section className="register">
+      <div className="icon-lang">
         <IconLanguages />
-        </div>
-    <Row justify='space-around'>
-      <Col span={12}>
-        <div className='register__img'>
-          <img src={registerImage} alt='ViWorkSpaceloginImage' />
-        </div>
-      </Col>
-      <Col span={6}>
-        <div className='register__form'>
-          <RegisterForm handleRegisterSubmit={handleRegister} />
-        </div>
-      </Col>
-    </Row>
-  </section>
+      </div>
+      <Row justify="space-around">
+        <Col span={12}>
+          <div className="register__img">
+            <img src={registerImage} alt="ViWorkSpaceloginImage" />
+          </div>
+        </Col>
+        <Col span={6}>
+          <div className="register__form">
+            <RegisterForm handleRegisterSubmit={handleRegister} />
+          </div>
+        </Col>
+      </Row>
+    </section>
   );
 }
 

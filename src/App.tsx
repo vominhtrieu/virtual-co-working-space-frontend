@@ -37,41 +37,51 @@ import { useAppDispatch } from "./stores";
 import { setAuthenticated, setUserInfo } from "./stores/auth-slice";
 import { CharacterAppearance } from "./types/character";
 import { ProxyStatusEnum } from "./types/http/proxy/ProxyStatus";
-import firebaseConfig from "./helpers/firebase"
-import { initializeApp } from 'firebase/app';
-import { getMessaging, getToken, Messaging, onMessage } from "firebase/messaging";
+import firebaseConfig from "./helpers/firebase";
+import { initializeApp } from "firebase/app";
+import {
+  getMessaging,
+  getToken,
+  Messaging,
+  onMessage,
+} from "firebase/messaging";
 import SubcribeProxy from "./services/proxy/notification/subcribe";
-
 
 function AuthenticatedRoutes() {
   const dispatch = useAppDispatch();
-
   initializeApp(firebaseConfig);
   const messaging: Messaging = getMessaging();
-  getToken(messaging, { vapidKey: 'BBqJD3eYPE0rCWRvGN56V2_i6Pfe6jjXLn6h6NesHYIkjvwDJQkZUjf2-EROAE1ZL7AXmhTZb0Lkxzq0oz7CbKA' }).then((currentToken) => {
-    if (currentToken) {
-      SubcribeProxy({ pushToken: currentToken, device: "web" }).then((res) => {
-        if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res.message ?? "");
-
-        }
-        if (res.status === ProxyStatusEnum.SUCCESS) {
-          saveDataLocal("push_token", res?.data?.pushToken);
-        }
-      })
-        .catch((err) => {
-
+  getToken(messaging, {
+    vapidKey:
+      "BBqJD3eYPE0rCWRvGN56V2_i6Pfe6jjXLn6h6NesHYIkjvwDJQkZUjf2-EROAE1ZL7AXmhTZb0Lkxzq0oz7CbKA",
+  })
+    .then((currentToken) => {
+      if (currentToken) {
+        console.log(currentToken);
+        SubcribeProxy({ pushToken: currentToken, device: "web" })
+          .then((res) => {
+            if (res.status === ProxyStatusEnum.FAIL) {
+              return;
+            }
+            if (res.status === ProxyStatusEnum.SUCCESS) {
+              saveDataLocal("push_token", res?.data?.pushToken);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        onMessage(messaging, (payload) => {
+          console.log("Message received. ", payload);
         });
-      onMessage(messaging, (payload) => {
-        console.log('Message received. ', payload);
-      });
-    } else {
-      console.log('No registration token available. Request permission to generate one.');
-    }
-  }).catch((err) => {
-    console.log('An error occurred while retrieving token. ', err);
-  });
-
+      } else {
+        console.log(
+          "No registration token available. Request permission to generate one."
+        );
+      }
+    })
+    .catch((err) => {
+      console.log("An error occurred while retrieving token. ", err);
+    });
 
   useEffect(() => {
     ProfileProxy()
@@ -109,8 +119,6 @@ function AuthenticatedRoutes() {
 
       <Route path="/webgl" element={<CharacterCustomMobile />} />
       <Route path="/webgl/office/:id" element={<WorkspaceMobile />} />
-      <Route path="*" element={<NotFound />}></Route>
-
       <Route path="*" element={<NotFound />}></Route>
     </Routes>
   );
