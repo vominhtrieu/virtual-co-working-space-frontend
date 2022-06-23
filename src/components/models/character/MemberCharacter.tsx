@@ -6,7 +6,7 @@ import * as THREE from "three";
 import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { CollideBeginEvent, useCylinder } from "@react-three/cannon";
-import { useThree, useFrame, useGraph } from "@react-three/fiber";
+import { useFrame, useGraph } from "@react-three/fiber";
 import {
     GLTFActions,
     GLTFResult,
@@ -110,7 +110,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     const [isUsingHammer, setIsUsingHammer] = useState(false);
     const [isUsingFist, setIsUsingFist] = useState(false);
 
-    const position = useRef([0, 0, 0]);
+    const position = useRef(props.startPosition);
     const updatedPosition = useRef(props.startPosition);
     const rotation = useRef<THREE.Euler>(new THREE.Euler());
     const updatedRotation = useRef<THREE.Euler>(new THREE.Euler());
@@ -155,7 +155,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         });
 
         return unsubPosition
-    }, []);
+    }, [api.position]);
 
     useEffect(() => {
         const unsubRotation = api.rotation.subscribe((v) => {
@@ -163,7 +163,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         });
 
         return unsubRotation;
-    }, [])
+    }, [api.rotation])
 
     useEffect(() => {
         if (isUsingHammer) {
@@ -306,6 +306,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
                 props.startRotation[1],
                 props.startRotation[2]
             );
+            updatedPosition.current = props.startPosition;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [match?.params.id]);

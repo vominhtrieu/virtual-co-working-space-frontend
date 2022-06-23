@@ -20,8 +20,10 @@ import {
 } from "../../../helpers/utilities";
 import { useAppSelector } from "../../../stores";
 import { userSelectors } from "../../../stores/auth-slice";
+import { gameSelectors } from "../../../stores/game-slice";
 import { socketSelector } from "../../../stores/socket-slice";
 import { CharacterAppearance } from "../../../types/character";
+import { GameState } from "../../../types/game-state";
 import VideoAlphaMap from "../../../VideoAlphaMap.png";
 import Fist from "../toys/Fist";
 import Hammer from "../toys/Hammer";
@@ -78,17 +80,14 @@ const ItemCooldown: number = 2000;
 
 export default function Character(props: CharacterProps) {
     const movable = useRef(true);
-    movable.current = props.movable;
+    // movable.current = props.movable;
     audio.volume = props.volume / 100;
     const socket = useAppSelector(socketSelector.getSocket);
 
     const { scene, animations, materials } = useCustomGLTF(url) as GLTFResult;
-    // const { scene, animations, materials } = useCustomGLTF(
-    //   "/models/Character.glb"
-    // ) as GLTFResult;
     const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
     const { nodes } = useGraph(clone);
-    const [nearbyObject, setNearByObject] = useState(null);
+    const gameState = useAppSelector(gameSelectors.getGameState);
 
     const group = useRef<THREE.Group>();
     const localSetMessage = useRef<any>(props.setMessage);
@@ -97,6 +96,8 @@ export default function Character(props: CharacterProps) {
     const isKnocked = useRef(false);
     const currentChair = useRef<any>(null);
     const knockDirection = useRef<THREE.Vector3>([0, 0, 0])
+    const gameStateRef = useRef(gameState);
+
     const [ref, api] = useCylinder(() => ({
         args: [1, 1, 4, 8],
         type: "Dynamic",
@@ -122,9 +123,16 @@ export default function Character(props: CharacterProps) {
                 if (target.punchDirection) {
                     knockDirection.current = target.punchDirection;
                 }
-                setTimeout(() => {
-                    isKnocked.current = false;
-                }, StuntTimer);
+                if (gameStateRef.current === GameState.PLAYING) {
+                    setTimeout(() => {
+                        api.velocity.set(0, 0, 0);
+                        movable.current = false;
+                    }, StuntTimer);
+                } else {
+                    setTimeout(() => {
+                        isKnocked.current = false;
+                    }, StuntTimer);
+                }
             }
         },
         onCollideEnd: (e: CollideEndEvent) => {
@@ -138,6 +146,10 @@ export default function Character(props: CharacterProps) {
             }
         },
     }));
+
+    useEffect(() => {
+        gameStateRef.current = gameState;
+    }, [gameState])
 
     const rotateAngle = useRef<THREE.Vector3>(new THREE.Vector3(0, 1, 0));
     const rotateQuaternion = useRef(new THREE.Quaternion());
@@ -164,6 +176,9 @@ export default function Character(props: CharacterProps) {
 
     const emojiTimeoutId = useRef<NodeJS.Timeout>();
 
+    const visibleRef = useRef<boolean>(true);
+    visibleRef.current = props.visible;
+
     const getGesture = () => {
         if (props.currentGesture && props.currentGesture.idx > 1) {
             return ANIMATION_LIST[props.currentGesture?.idx!];
@@ -171,6 +186,13 @@ export default function Character(props: CharacterProps) {
             return ANIMATION_LIST[0];
         }
     };
+
+    useEffect(() => {
+        movable.current = props.movable;
+        if (gameState === GameState.PLAYING && isKnocked.current) {
+            movable.current = false;
+        }
+    }, [props.movable])
 
     useEffect(() => {
         if (props.currentGesture && props.currentGesture.idx >= 0) {
@@ -189,10 +211,10 @@ export default function Character(props: CharacterProps) {
             }, 2000);
         }
     }, [props.currentEmoji]);
-    const visibleRef = useRef<boolean>(true);
-    visibleRef.current = props.visible;
+
+
     useThree(({ camera }) => {
-        const unsubPosition = api.position.subscribe((v) => {
+            api.position.subscribe((v) => {
             const x = camera.position.x + v[0] - position.current[0];
             const y = camera.position.y + v[1] - position.current[1];
             const z = camera.position.z + v[2] - position.current[2];
@@ -204,7 +226,7 @@ export default function Character(props: CharacterProps) {
                 orbitRef.current.update();
             }
         });
-        const unsubRotation = api.rotation.subscribe((v) => {
+        api.rotation.subscribe((v) => {
             rotation.current.fromArray(v);
         });
     });
@@ -218,7 +240,7 @@ export default function Character(props: CharacterProps) {
     }, [emojiPlaying]);
 
     useEffect(() => {
-        if (hammerAvailable.current && (keyPressed.Q || keyPressed.q)) {
+        if (gameState !== GameState.PREPARE && hammerAvailable.current && (keyPressed.Q || keyPressed.q)) {
             hammerAvailable.current = false;
             const direction = new THREE.Vector3(0, 0, 1);
             direction.applyQuaternion(new THREE.Quaternion().setFromEuler(rotation.current))
@@ -251,10 +273,10 @@ export default function Character(props: CharacterProps) {
                 setIsUsingHammer(false);
             }, ItemTimer);
         }
-    }, [keyPressed.Q, keyPressed.q])
+    }, [keyPressed.Q, keyPressed.q, gameState])
 
     useEffect(() => {
-        if (fistAvailable.current && (keyPressed.E || keyPressed.e)) {
+        if (gameState !== GameState.PREPARE && fistAvailable.current && (keyPressed.E || keyPressed.e)) {
             fistAvailable.current = false;
             const direction = new THREE.Vector3(0, 0, 1);
             direction.applyQuaternion(new THREE.Quaternion().setFromEuler(rotation.current))
@@ -287,7 +309,7 @@ export default function Character(props: CharacterProps) {
                 setIsUsingFist(false);
             }, ItemTimer);
         }
-    }, [keyPressed.E, keyPressed.e])
+    }, [keyPressed.E, keyPressed.e, gameState])
 
     const isMoving = () => {
         if (!movable.current || isUsingHammer || isUsingFist || isStunt.current) return false;
@@ -316,7 +338,7 @@ export default function Character(props: CharacterProps) {
         let clip: THREE.AnimationClip = null;
         
         if (isMoving()) {
-            if ( sitting.current) {
+            if (sitting.current) {
                 api.isTrigger.set(false);
                 api.position.set(position.current[0], 2.5, position.current[2]);
             }
@@ -326,7 +348,7 @@ export default function Character(props: CharacterProps) {
             }
             sitting.current = false;
             if (gesturePlaying) {
-                setGesturePlaying(false);
+                setGesturePlaying(false);  
             }
 
             const directionOffset = getDirectionOffset();
@@ -414,6 +436,10 @@ export default function Character(props: CharacterProps) {
         if (clip && clip !== currentClip.current) {
             if (currentClip.current) {
                 currentClip.current.fadeOut(0.2);
+            }
+            if (isKnocked.current && gameState === GameState.PLAYING) {
+                clip.clampWhenFinished = true;
+                clip.loop = THREE.LoopOnce;
             }
             clip.reset().fadeIn(0.2).play();
             currentClip.current = clip;
