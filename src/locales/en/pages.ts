@@ -39,28 +39,28 @@ export const TranslationEnPages = {
     email: "Email",
     phone: "Phone number",
     date: "Joined date",
-    changeProfile:"Change Profile",
+    changeProfile: "Change Profile",
     changePassword: "ChangePassword",
     editProfile: {
-      title:"Change Profile",
+      title: "Change Profile",
       name: "Name",
       enterName: "Enter name ...",
       phone: "Phone number",
       enterPhone: "Enter phone number...",
-      avatar:{
+      avatar: {
         title: "Edit your avatar",
-        change: "Change your avatar"
-      }
+        change: "Change your avatar",
+      },
     },
     updatePassword: {
-      title:"Change password",
-      currentPass:"Current Password",
-      newPass:"New Password",
-      passConfirm:"Password Confirmation",
-      enterCurrent:"Enter current password",
-      enterNew:"Enter new password",
-      enterConfirm:"Enter password confirmation",
-    }
+      title: "Change password",
+      currentPass: "Current Password",
+      newPass: "New Password",
+      passConfirm: "Password Confirmation",
+      enterCurrent: "Enter current password",
+      enterNew: "Enter new password",
+      enterConfirm: "Enter password confirmation",
+    },
   },
   lobby: {
     title: "Lobby",
@@ -88,11 +88,16 @@ export const TranslationEnPages = {
       account: "Your Account",
       editCharacter: "Edit Character",
       logout: "Logout",
-      setting:"Setting"
+      setting: "Setting",
     },
   },
   office: {
     title: "Office",
+
+    invitation: {
+      wantJoin: "Do you want join?",
+      inviteJoin: "invite you to join the office",
+    },
 
     // office detail
     officeDetail: {

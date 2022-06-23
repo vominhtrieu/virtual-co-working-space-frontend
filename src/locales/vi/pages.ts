@@ -39,28 +39,28 @@ export const TranslationViPages = {
     email: "Email",
     phone: "Số điện thoại",
     date: "Ngày tham gia",
-    changeProfile:"Thay đổi thông tin",
+    changeProfile: "Thay đổi thông tin",
     changePassword: "Thay đổi mật khẩu",
     editProfile: {
-      title:"Thay đổi thông tin",
+      title: "Thay đổi thông tin",
       name: "Tên",
       enterName: "Nhập tên ...",
       phone: "Số điện thoại",
       enterPhone: "Nhập số điện thoại...",
-      avatar:{
+      avatar: {
         title: "Chỉnh sửa ảnh đại diện",
-        change: "Thay đổi ảnh đại diện"
-      }
+        change: "Thay đổi ảnh đại diện",
+      },
     },
     updatePassword: {
-      title:"Thay đổi mật khẩu",
-      currentPass:"Mật khẩu hiện tại",
-      newPass:"Mật khẩu mới",
-      passConfirm:"Xác thực mật khẩu",
-      enterCurrent:"Nhập mật khẩu hiện tại...",
-      enterNew:"Nhập mật khẩu mới...",
-      enterConfirm:"Nhập lại mật khẩu...",
-    }
+      title: "Thay đổi mật khẩu",
+      currentPass: "Mật khẩu hiện tại",
+      newPass: "Mật khẩu mới",
+      passConfirm: "Xác thực mật khẩu",
+      enterCurrent: "Nhập mật khẩu hiện tại...",
+      enterNew: "Nhập mật khẩu mới...",
+      enterConfirm: "Nhập lại mật khẩu...",
+    },
   },
   lobby: {
     title: "Sảnh chính",
@@ -88,11 +88,16 @@ export const TranslationViPages = {
       account: "Tài khoản của bạn",
       editCharacter: "Sửa nhân vật",
       logout: "Đăng xuất",
-      setting:"Cài đặt"
+      setting: "Cài đặt",
     },
   },
   office: {
     title: "Văn phòng",
+
+    invitation: {
+      wantJoin: "Bạn có muốn tham gia không?",
+      inviteJoin: "mời bạn tham gia văn phòng"
+    },
 
     // office detail
     officeDetail: {
