@@ -41,7 +41,7 @@
 
 .slide {
   width: 70%;
-  height: 100vh;
+  height: calc(100vh - 7rem);
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -102,8 +102,241 @@
   }
 }
 
-.features {
-  width: 100%;
-  height: 60vh;
-  background-color: #fff;
+.home {
+  &__block {
+    width: 100%;
+
+    &--white {
+      background-color: #fff;
+    }
+
+    &--dark {
+      background-color: $color-primary-dark;
+    }
+  }
+
+  &__our-story {
+    height: max-content;
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: 3rem;
+    margin: 0 auto;
+    padding: 5rem 0;
+    width: 70%;
+
+    @include respond(tab-land) {
+      width: 80%;
+    }
+
+    @include respond(tab-port) {
+      width: 90%;
+    }
+  }
+
+  &__services {
+    height: max-content;
+    margin: 0 auto;
+    padding: 5rem 0;
+    width: 70%;
+
+    @include respond(tab-land) {
+      width: 80%;
+    }
+
+    @include respond(tab-port) {
+      width: 90%;
+    }
+  }
+
+  &__team {
+    height: max-content;
+    margin: 0 auto;
+    padding: 5rem 0;
+    width: 70%;
+
+    @include respond(tab-land) {
+      width: 80%;
+    }
+
+    @include respond(tab-port) {
+      width: 90%;
+    }
+  }
+}
+
+.our-story {
+  &__image {
+    width: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 2px 15px 5px rgba($color: #333, $alpha: 0.1);
+    }
+  }
+
+  &__header {
+    display: inline-block;
+    font-size: 3.5rem;
+    font-weight: 700;
+    position: relative;
+    margin-bottom: 2rem;
+
+    &::before {
+      content: "";
+      width: 65%;
+      height: 5px;
+      position: absolute;
+      top: 90%;
+      left: 0;
+      background-color: #3ab0ff;
+    }
+  }
+
+  &__title {
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+
+  &__text {
+    font-size: 1.7rem;
+    font-weight: 400;
+    color: #555;
+  }
+}
+
+.services {
+  &__header {
+    color: #333;
+    text-align: center;
+    font-size: 3.5rem;
+    font-weight: 700;
+    position: relative;
+    margin-bottom: 5rem;
+
+    &::before {
+      content: "";
+      width: 10rem;
+      height: 5px;
+      position: absolute;
+      top: 90%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #3ab0ff;
+    }
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  &__item {
+    border-radius: 5px;
+    padding: 2rem;
+    border: 1px solid #eee;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 2px 15px 5px rgba($color: #333, $alpha: 0.1);
+    }
+  }
+
+  &__item:hover &__icon-box {
+    background-color: #3ab0ff;
+  }
+
+  &__item:hover &__icon {
+    color: white;
+  }
+
+  &__icon-box {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 999rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #3ab0ff;
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+  }
+
+  &__icon {
+    font-size: 2rem;
+    color: #3ab0ff;
+    transition: all 0.3s ease;
+  }
+
+  &__title {
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+  }
+
+  &__content {
+    font-size: 1.7rem;
+    font-weight: 400;
+    color: #555;
+  }
+}
+
+.team {
+  &__header {
+    color: #333;
+    font-size: 3.5rem;
+    font-weight: 700;
+    position: relative;
+    margin-bottom: 5rem;
+
+    &::before {
+      content: "";
+      width: 10rem;
+      height: 5px;
+      position: absolute;
+      top: 90%;
+      left: 0;
+      background-color: #3ab0ff;
+    }
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2rem;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &:hover &-avt {
+      transform: scale(1.1);
+    }
+
+    &-avt {
+      width: 10rem;
+      height: 10rem;
+      border-radius: 999rem;
+      object-fit: cover;
+      transition: all 0.3s ease;
+      margin-bottom: 1rem;
+    }
+
+    &-name {
+      font-size: 1.5rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    &-student-id {
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: #555;
+    }
+  }
 }
