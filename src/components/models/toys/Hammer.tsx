@@ -37,7 +37,6 @@ const Hammer = ({spawnPosition, spawnRotation, visible}) => {
         api.position.set(spawnPosition[0], spawnPosition[1], spawnPosition[2]);
         api.rotation.set(0, spawnRotation[1], 0);
         ref.current.quaternion.copy(new THREE.Quaternion(0, 0, 0, 0));
-        console.log("eeeee");
     }, [visible, api.position, api.rotation]);
 
     useEffect(() => {

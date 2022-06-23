@@ -1,3 +1,52 @@
+.mobile-gesture-emoji {
+  width: 40px;
+  height: 40px;
+  border-radius: 15px;
+  position: fixed;
+  top: 65px;
+  right: 5px;
+  background-color: #0C1827;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+
+  &:active {
+    background-color: #000000;
+  }
+}
+
+.winner-box {
+  position: fixed;
+  width: 340px;
+  height: 140px;
+  top: 10px;
+  left: 50%;
+  transform: translate(-50%,0);
+  background-color: #132e48d5;
+  border-radius: 15px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transition: all 1s;
+
+  & .winner-header {
+    font-size: 24px;
+  }
+
+  & .winner-name {
+    font-size: 36px;
+    color: #F5C43A;
+  }
+}
+
+.winner-box.hide {
+  opacity: 0;
+}
+
 .office-detail {
   &__group-btn {
     position: fixed;

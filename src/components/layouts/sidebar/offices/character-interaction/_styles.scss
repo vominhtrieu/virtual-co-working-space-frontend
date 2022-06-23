@@ -9,6 +9,39 @@
   z-index: 200;
   overflow: hidden;
 
+  &.mobile {
+    width: 100vw;
+    height: 200px;
+    right: 0;
+    bottom: 0;
+    
+    & .interact-menu__content {
+      grid-template-columns: repeat(3, 1fr);
+      display: flex;
+      justify-content: center;
+    }
+
+    & .interact-menu__content {
+      height: 200px !important;
+      max-height: 300px;
+    }
+
+    & .interact-menu__item {
+      width: 150px !important;
+      height: 150px !important;
+      max-width: 150px;
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      & img {
+        width: 100px;
+        height: 100px;
+      }
+    }
+  }
+
   &__content {
     display: flex;
     justify-content: flex-start;

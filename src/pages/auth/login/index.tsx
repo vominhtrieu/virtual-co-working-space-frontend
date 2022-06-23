@@ -23,6 +23,7 @@ function Login() {
   const { t } = useTranslation();
 
   const handleLogin = (values: LoginFormValues) => {
+    setIsLoading(true);
     LoginProxy({
       email: values.email,
       password: values.password,
@@ -70,7 +71,7 @@ function Login() {
           </Col>
           <Col span={6}>
             <div className="login__form">
-              <LoginForm handleLoginSubmit={handleLogin} />
+              <LoginForm handleLoginSubmit={handleLogin} loading={isLoading} />
             </div>
           </Col>
         </Row>

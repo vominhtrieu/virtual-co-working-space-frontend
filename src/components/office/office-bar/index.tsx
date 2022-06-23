@@ -10,8 +10,8 @@ import {
   FaUserFriends,
 } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
-import { useAppDispatch } from '../../../stores'
-import { setGameState } from '../../../stores/game-slice'
+import { useAppDispatch, useAppSelector } from '../../../stores'
+import { gameSelectors, setGameState } from '../../../stores/game-slice'
 import { GameState } from '../../../types/game-state'
 import { OfficeBarPropsInterface } from './types'
 
@@ -20,6 +20,7 @@ const OfficeBar = (props: OfficeBarPropsInterface) => {
 
   const navigate = useNavigate()
   const dispatch = useAppDispatch();
+  const gameState = useAppSelector(gameSelectors.getGameState);
 
   const formatName = (name: any) => {
     if (name.length > 30 )
@@ -34,9 +35,6 @@ const OfficeBar = (props: OfficeBarPropsInterface) => {
       </div>
 
       <div className="office-bar__right-content">
-        <div className={`office-bar__gamestart-btn`} onClick={() => dispatch(setGameState(GameState.PREPARE))}>
-          Start Game
-        </div>
         <div
           className={`office-bar__icon-btn + ${
             action === 'action' ? 'active' : ''

@@ -43,8 +43,9 @@ export default function CallingBar({
             });
 
             return p;
-        }, [userInfo.id]
+        }, [userInfo.id, socket]
     );
+    
     const addVideoStream = useCallback(
         (video: HTMLVideoElement, stream: MediaStream) => {
             video.srcObject = stream;
@@ -76,6 +77,7 @@ export default function CallingBar({
                 // stream.userId = userInfo.id;
                 setMyStream(stream);
                 const streamMap = {};
+
                 myPeer.on("call", (call) => {
                     call.answer(stream);
                     call.on("stream", (userVideoStream: any) => {
@@ -102,7 +104,6 @@ export default function CallingBar({
         }
         const streamMap = {};
         socket.on("calling:join", ({ userId, peerId }) => {
-            console.log("Received a call")
             setTimeout(() => {
                 const call = myPeer.call(peerId, myStream, {
                     metadata: {

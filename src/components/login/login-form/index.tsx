@@ -13,8 +13,6 @@ import { FormPropsInterface, InputInterface } from "./types";
 
 const LoginForm = (props: FormPropsInterface) => {
   const { handleLoginSubmit } = props;
-  const isLoading = useAppSelector(loadSelectors.getIsLoad);
-  console.log(isLoading)
   const { t } = useTranslation();
 
   const schema = yup.object().shape({
@@ -92,8 +90,8 @@ const LoginForm = (props: FormPropsInterface) => {
         <Link to="/auth/forgot">{t("pages.login.forgotPass")}</Link>
       </div>
 
-      <button type="submit" className="login-form__btn" disabled={isLoading}>
-        {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
+      <button type="submit" className="login-form__btn" disabled={props.loading}>
+        {props.loading ? <Spin style={{ paddingRight: 5 }} /> : null}
         {t("pages.login.title")}
       </button>
 

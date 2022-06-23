@@ -6,7 +6,7 @@ import * as THREE from "three";
 import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { CollideBeginEvent, useCylinder } from "@react-three/cannon";
-import { useThree, useFrame, useGraph } from "@react-three/fiber";
+import { useFrame, useGraph } from "@react-three/fiber";
 import {
     GLTFActions,
     GLTFResult,
@@ -110,7 +110,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     const [isUsingHammer, setIsUsingHammer] = useState(false);
     const [isUsingFist, setIsUsingFist] = useState(false);
 
-    const position = useRef([0, 0, 0]);
+    const position = useRef(props.startPosition);
     const updatedPosition = useRef(props.startPosition);
     const rotation = useRef<THREE.Euler>(new THREE.Euler());
     const updatedRotation = useRef<THREE.Euler>(new THREE.Euler());
@@ -155,7 +155,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         });
 
         return unsubPosition
-    }, []);
+    }, [api.position]);
 
     useEffect(() => {
         const unsubRotation = api.rotation.subscribe((v) => {
@@ -163,7 +163,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         });
 
         return unsubRotation;
-    }, [])
+    }, [api.rotation])
 
     useEffect(() => {
         if (isUsingHammer) {
@@ -201,7 +201,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     }
 
     const shouldUpdate = () => {
-        if (isKnocked.current || isStunt.current) return false;
+        if (isStunt.current) return false;
         return (
             Math.sqrt(
                 Math.pow(position.current[0] - updatedPosition.current[0], 2) +
@@ -230,7 +230,11 @@ export default function MemberCharacter(props: MemberCharacterProps) {
                 if (gesturePlaying) {
                     setGesturePlaying(false);
                 }
-                clip = actions.Walking;
+                if (isKnocked.current) {
+                    clip = actions["FallBackward"];
+                } else {
+                    clip = actions.Walking;
+                }
 
                 const newDirection = new THREE.Vector3(
                     updatedPosition.current[0] - position.current[0],
@@ -256,13 +260,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
             }
         } else {
             api.velocity.set(0, 0, 0);
-            if (isKnocked.current) {
-                clip = actions["FallBackward"];
-                const moveX = knockDirection.current.x * 10;
-                const moveZ = knockDirection.current.z * 10;
-                api.velocity.set(moveX, 0, moveZ);
-                updatedPosition.current = position.current;
-            } else if (gesturePlaying) {
+            if (gesturePlaying) {
                 clip = actions[getGesture(currentGesture.idx)];
             } else if (isStunt.current) {
                 clip = actions["Stunned"];
@@ -306,6 +304,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
                 props.startRotation[1],
                 props.startRotation[2]
             );
+            updatedPosition.current = props.startPosition;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [match?.params.id]);
@@ -518,6 +517,8 @@ const useSocketEvent = (socket, memberId, updatedPosition, updatedRotation, setE
                     case "punch":
                         calculateItemPosition();
                         setIsUsingFist(true);
+                        break;
+                    case "start-game":
                         break;
                     default:
                         console.log("Unknow action");

@@ -6,16 +6,18 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
-  }
-
-  &__logo {
+    padding: 1rem 10rem;
   }
 
   &__action {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: 2rem;
+
+    a {
+      font-size: 2rem;
+      color: white;
+    }
   }
 }
 
@@ -30,6 +32,10 @@
 
   @include respond(tab-port) {
     width: 90%;
+  }
+
+  .btn {
+    font-size: 3rem;
   }
 }
 

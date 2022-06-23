@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { FaGrin } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import CharacterForm from "../../components/character-form";
@@ -19,12 +20,15 @@ import { MemberAppearance } from "../../services/api/offices/member-appearances/
 import { OfficeItem } from "../../services/api/offices/officce-item/types";
 import { OfficeMembersInterface } from "../../services/api/offices/office-detail/types";
 import OfficeDetailProxy from "../../services/proxy/offices/office-detail";
-import { useAppSelector } from "../../stores";
+import { useAppDispatch, useAppSelector } from "../../stores";
 import { userSelectors } from "../../stores/auth-slice";
+import { gameSelectors, playerOut, setPlayerLeft } from "../../stores/game-slice";
 import { officeSelectors } from "../../stores/office-slice";
 import { socketSelector } from "../../stores/socket-slice";
+import { GameState } from "../../types/game-state";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import { OfficeDetailInterface } from "../../types/office";
+import WinnerBox from "./WinnerBox";
 
 export type positionType = {
   x: number;
@@ -75,9 +79,12 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
   const officeId = +params.id;
 
   const userInfo = useAppSelector(userSelectors.getUserInfo);
-
+  const gameState = useAppSelector(gameSelectors.getGameState);
   const socket = useAppSelector(socketSelector.getSocket);
   const [message, setMessage] = useState<string | null>(null);
+  const [winnerBoxVisible, setWinnerBoxVisible] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   const { t } = useTranslation();
 
@@ -152,9 +159,13 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
 
   useEffect(() => {
     socket.on("office_member:offline", (memberId) => {
+      if (memberId === userInfo.id) {
+        return;
+      }
       setOnlineMembers(
         onlineMembers.filter((member) => member.member.id !== memberId)
       );
+      dispatch(playerOut());
     });
 
     return () => {
@@ -302,17 +313,17 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
       setOfficeDetail((curr) => {
         return curr
           ? {
-              ...curr,
-              conversations: curr?.conversations.map((conversation) => {
-                if (conversation.id === value.conversation.id) {
-                  return {
-                    ...conversation,
-                    name: value.conversation.name,
-                  };
-                }
-                return conversation;
-              }),
-            }
+            ...curr,
+            conversations: curr?.conversations.map((conversation) => {
+              if (conversation.id === value.conversation.id) {
+                return {
+                  ...conversation,
+                  name: value.conversation.name,
+                };
+              }
+              return conversation;
+            }),
+          }
           : undefined;
       });
     });
@@ -321,6 +332,12 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
       socket.off("conversation:updated");
     };
   }, [socket]);
+
+  useEffect(() => {
+    if (gameState !== GameState.NOT_PLAYING) {
+      dispatch(setPlayerLeft(onlineMembers.length));
+    }
+  }, [gameState])
 
   return (
     <>
@@ -405,10 +422,17 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
         <CharacterForm onClose={() => setAction("")} />
       )}
 
+      {mobile && <button onClick={() => {
+        setAction(action === "action" ? "" : "action")
+      }} className="mobile-gesture-emoji">
+        <FaGrin size={20} />
+      </button>}
+      <WinnerBox name="Trung" onEnd={() => { setWinnerBoxVisible(false) }} visible={winnerBoxVisible} />
       {action === "action" && (
         <InteractionMenu
           onGestureClick={handleGestureClick}
           onEmojiClick={handleEmojiClick}
+          mobile={mobile}
         />
       )}
 
