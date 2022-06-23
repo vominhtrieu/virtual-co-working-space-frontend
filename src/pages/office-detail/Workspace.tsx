@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { FaGrin } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import CharacterForm from "../../components/character-form";
@@ -27,6 +28,7 @@ import { socketSelector } from "../../stores/socket-slice";
 import { GameState } from "../../types/game-state";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import { OfficeDetailInterface } from "../../types/office";
+import WinnerBox from "./WinnerBox";
 
 export type positionType = {
   x: number;
@@ -80,6 +82,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
   const gameState = useAppSelector(gameSelectors.getGameState);
   const socket = useAppSelector(socketSelector.getSocket);
   const [message, setMessage] = useState<string | null>(null);
+  const [winnerBoxVisible, setWinnerBoxVisible] = useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -310,17 +313,17 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
       setOfficeDetail((curr) => {
         return curr
           ? {
-              ...curr,
-              conversations: curr?.conversations.map((conversation) => {
-                if (conversation.id === value.conversation.id) {
-                  return {
-                    ...conversation,
-                    name: value.conversation.name,
-                  };
-                }
-                return conversation;
-              }),
-            }
+            ...curr,
+            conversations: curr?.conversations.map((conversation) => {
+              if (conversation.id === value.conversation.id) {
+                return {
+                  ...conversation,
+                  name: value.conversation.name,
+                };
+              }
+              return conversation;
+            }),
+          }
           : undefined;
       });
     });
@@ -419,10 +422,17 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
         <CharacterForm onClose={() => setAction("")} />
       )}
 
+      {mobile && <button onClick={() => {
+        setAction(action === "action" ? "" : "action")
+      }} className="mobile-gesture-emoji">
+        <FaGrin size={20} />
+      </button>}
+      <WinnerBox name="Trung" onEnd={() => { setWinnerBoxVisible(false) }} visible={winnerBoxVisible} />
       {action === "action" && (
         <InteractionMenu
           onGestureClick={handleGestureClick}
           onEmojiClick={handleEmojiClick}
+          mobile={mobile}
         />
       )}
 
