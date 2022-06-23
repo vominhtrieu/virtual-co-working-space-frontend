@@ -7,9 +7,9 @@ const { TabPane } = Tabs;
 
 const InteractionMenu = (props: InteractionMenuProps) => {
   const { t } = useTranslation();
-
+  console.log(props.mobile)
   return (
-    <div className="interact-menu">
+    <div className={`interact-menu${props.mobile ? " mobile" : ""}`}>
       <Tabs defaultActiveKey="1">
         <TabPane tab={t("pages.office.emoji.gestures")} key="1">
           <div className="interact-menu__content">
