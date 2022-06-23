@@ -35,9 +35,6 @@ const OfficeBar = (props: OfficeBarPropsInterface) => {
       </div>
 
       <div className="office-bar__right-content">
-        {gameState === GameState.NOT_PLAYING && <div className={`office-bar__gamestart-btn`} onClick={() => dispatch(setGameState(GameState.PREPARE))}>
-          Start Game
-        </div>}
         <div
           className={`office-bar__icon-btn + ${
             action === 'action' ? 'active' : ''

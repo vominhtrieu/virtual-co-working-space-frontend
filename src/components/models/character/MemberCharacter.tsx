@@ -518,6 +518,8 @@ const useSocketEvent = (socket, memberId, updatedPosition, updatedRotation, setE
                         calculateItemPosition();
                         setIsUsingFist(true);
                         break;
+                    case "start-game":
+                        break;
                     default:
                         console.log("Unknow action");
                 }

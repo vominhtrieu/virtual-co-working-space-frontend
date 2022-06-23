@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiRotateLeft, BiRotateRight } from "react-icons/bi";
 import { FaTrash } from "react-icons/fa";
-import { useAppSelector } from "../../stores";
-import { gameSelectors } from "../../stores/game-slice";
+import { useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../stores";
+import { gameSelectors, setGameState } from "../../stores/game-slice";
+import { socketSelector } from "../../stores/socket-slice";
 import { GameState } from "../../types/game-state";
 import Button from "../UI/button";
 import { GameStartMessage } from "./GameStartMessage";
@@ -25,6 +27,25 @@ export default function OfficeInterface({
   message
 }) {
   const gameState = useAppSelector(gameSelectors.getGameState);
+  const socket = useAppSelector(socketSelector.getSocket);
+
+  const dispatch = useAppDispatch();
+
+  const params = useParams();
+
+  useEffect(() => {
+    socket.on("action", (message) => {
+      console.log(message);
+      if (message.action === "start-game") {
+        dispatch(setGameState(GameState.PREPARE));
+      }
+    })
+
+    return () => {
+      socket.removeListener("action");
+    }
+  }, [])
+
   return (
     <>
       <div
@@ -106,6 +127,15 @@ export default function OfficeInterface({
         ) : null}
       </div>
       {message && <OfficeMessage message={message} />}
+      {gameState === GameState.NOT_PLAYING && <div className={`gamestart-btn`} onClick={() => {
+        dispatch(setGameState(GameState.PREPARE))
+        socket.emit("action", {
+          officeId: +params.id!,
+          action: "start-game"
+        })
+        }}>
+          Start Game
+        </div>}
       {gameState === GameState.PREPARE && <GameStartMessage /> }
       <OfficeBar
         officeDetail={officeDetail}
