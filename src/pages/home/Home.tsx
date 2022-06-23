@@ -17,7 +17,7 @@ const Home = () => {
         </div>
 
         <div className="home__action">
-          <Link to={"/auth/register"}>Đăng nhập</Link>
+          <Link to={"/auth/login"}>Đăng nhập</Link>
           <Link to={"/auth/register"}>Đăng ký</Link>
         </div>
       </div>

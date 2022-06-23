@@ -5,6 +5,7 @@ export interface InputInterface {
 
 export interface FormPropsInterface {
   handleLoginSubmit: (values: InputFormatInterface) => void;
+  loading: boolean;
 }
 
 export interface InputFormatInterface {
