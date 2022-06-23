@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/UI/button";
 import imgsrc from "../../assets/images/Saly-10.png";
 import DarkLogo from "../../assets/images/DarkLogo.png";
@@ -17,18 +17,8 @@ const Home = () => {
         </div>
 
         <div className="home__action">
-          <NewButton
-            content="Đăng ký"
-            variant="outlined"
-            onClick={() => navigate("/auth/register")}
-            icon={<FaSignInAlt />}
-          />
-          <NewButton
-            content="Đăng nhập"
-            variant="secondary"
-            onClick={() => navigate("/auth/login")}
-            icon={<FaSignInAlt />}
-          />
+          <Link to={"/auth/register"}>Đăng nhập</Link>
+          <Link to={"/auth/register"}>Đăng ký</Link>
         </div>
       </div>
       <div className="slide">
@@ -38,6 +28,7 @@ const Home = () => {
           </h1>
           <p className="slide__sub">Tạo văn phòng riêng cho nhóm của bạn.</p>
           <Button
+            variant="primary"
             onClick={() => {
               navigate("/auth/login");
             }}
