@@ -7,14 +7,17 @@ const GameSlice = createSlice({
     initialState: {
         gameState: GameState.NOT_PLAYING,
         playerLeft: 0,
+        isWinner: false,
     },
     reducers: {
         setGameState: (state, action) => {
             state.gameState = action.payload;
+            if (state.gameState === GameState.PLAYING && state.playerLeft === 1) {
+                state.gameState = GameState.NOT_PLAYING;
+            }
         },
         setPlayerLeft: (state, action) => {
             state.playerLeft = action.payload;
-            console.log(state.playerLeft)
         },
         playerOut: (state) => {
             if (state.playerLeft > 1) {
@@ -23,19 +26,23 @@ const GameSlice = createSlice({
             if (state.playerLeft === 1) {
                 state.gameState = GameState.NOT_PLAYING;
             }
-            console.log(state.playerLeft)
+        },
+        setIsWinner: (state, action) => {
+            state.isWinner = action.payload;
         }
     }
 })
 
 const getGameState = (state: RootState) => state.game.gameState;
 const getPlayerLeft = (state: RootState) => state.game.playerLeft;
+const getIsWinner = (state: RootState) => state.game.isWinner;
 
 export const gameSelectors = {
     getGameState,
-    getPlayerLeft
+    getPlayerLeft,
+    getIsWinner
 };
 
 const { actions, reducer } = GameSlice;
-export const { setGameState, setPlayerLeft, playerOut } = actions;
+export const { setGameState, setPlayerLeft, playerOut, setIsWinner } = actions;
 export default reducer;

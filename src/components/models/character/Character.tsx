@@ -18,9 +18,9 @@ import {
     GLTFResult,
     useCustomGLTF,
 } from "../../../helpers/utilities";
-import { useAppSelector } from "../../../stores";
+import { useAppDispatch, useAppSelector } from "../../../stores";
 import { userSelectors } from "../../../stores/auth-slice";
-import { gameSelectors } from "../../../stores/game-slice";
+import { gameSelectors, playerOut, setIsWinner } from "../../../stores/game-slice";
 import { socketSelector } from "../../../stores/socket-slice";
 import { CharacterAppearance } from "../../../types/character";
 import { GameState } from "../../../types/game-state";
@@ -74,9 +74,10 @@ let audio = new Audio(stepFoot);
 const url =
     "https://virtual-space-models.s3.ap-southeast-1.amazonaws.com/Character/Character.glb";
 const MovingSpeed: number = 6;
-const ItemTimer: number = 500;
+const ItemTimer: number = 250;
 const StuntTimer: number = 2000;
-const ItemCooldown: number = 2000;
+const HammerCooldown: number = 2000;
+const FistCooldown: number = 5000;
 
 export default function Character(props: CharacterProps) {
     const movable = useRef(true);
@@ -88,6 +89,7 @@ export default function Character(props: CharacterProps) {
     const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
     const { nodes } = useGraph(clone);
     const gameState = useAppSelector(gameSelectors.getGameState);
+    const playerLeft = useAppSelector(gameSelectors.getPlayerLeft);
 
     const group = useRef<THREE.Group>();
     const localSetMessage = useRef<any>(props.setMessage);
@@ -97,6 +99,7 @@ export default function Character(props: CharacterProps) {
     const currentChair = useRef<any>(null);
     const knockDirection = useRef<THREE.Vector3>([0, 0, 0])
     const gameStateRef = useRef(gameState);
+    const dispatch = useAppDispatch();
 
     const [ref, api] = useCylinder(() => ({
         args: [1, 1, 4, 8],
@@ -127,6 +130,7 @@ export default function Character(props: CharacterProps) {
                     setTimeout(() => {
                         api.velocity.set(0, 0, 0);
                         movable.current = false;
+                        dispatch(playerOut());
                     }, StuntTimer);
                 } else {
                     setTimeout(() => {
@@ -146,10 +150,6 @@ export default function Character(props: CharacterProps) {
             }
         },
     }));
-
-    useEffect(() => {
-        gameStateRef.current = gameState;
-    }, [gameState])
 
     const rotateAngle = useRef<THREE.Vector3>(new THREE.Vector3(0, 1, 0));
     const rotateQuaternion = useRef(new THREE.Quaternion());
@@ -179,6 +179,10 @@ export default function Character(props: CharacterProps) {
     const visibleRef = useRef<boolean>(true);
     visibleRef.current = props.visible;
 
+    const userInfo = useAppSelector(userSelectors.getUserInfo);
+
+    const isWinner = useRef(false);
+
     const getGesture = () => {
         if (props.currentGesture && props.currentGesture.idx > 1) {
             return ANIMATION_LIST[props.currentGesture?.idx!];
@@ -186,6 +190,23 @@ export default function Character(props: CharacterProps) {
             return ANIMATION_LIST[0];
         }
     };
+
+    useEffect(() => {
+        gameStateRef.current = gameState;
+        if (gameState === GameState.NOT_PLAYING) {
+            if (playerLeft === 1 && !isKnocked.current) {
+                isWinner.current = true;
+                setEmojiPlaying(true);
+                dispatch(setIsWinner(true));
+                socket.emit("action", {
+                    officeId: +(match?.params.id + ""),
+                    action: "win"
+                })
+            }
+            movable.current = true;
+            isKnocked.current = false;
+        }
+    }, [gameState])
 
     useEffect(() => {
         movable.current = props.movable;
@@ -203,12 +224,6 @@ export default function Character(props: CharacterProps) {
     useEffect(() => {
         if (props.currentEmoji && props.currentEmoji.idx >= 0) {
             setEmojiPlaying(true);
-            if (emojiTimeoutId.current) {
-                clearTimeout(emojiTimeoutId.current);
-            }
-            emojiTimeoutId.current = setTimeout(() => {
-                setEmojiPlaying(false);
-            }, 2000);
         }
     }, [props.currentEmoji]);
 
@@ -233,14 +248,17 @@ export default function Character(props: CharacterProps) {
 
     useEffect(() => {
         if (emojiPlaying) {
-            setTimeout(() => {
+            if (emojiTimeoutId.current) {
+                clearTimeout(emojiTimeoutId.current);
+            }
+            emojiTimeoutId.current = setTimeout(() => {
                 setEmojiPlaying(false);
             }, 2000);
         }
     }, [emojiPlaying]);
 
     useEffect(() => {
-        if (gameState !== GameState.PREPARE && hammerAvailable.current && (keyPressed.Q || keyPressed.q)) {
+        if (gameState !== GameState.PREPARE && movable.current && hammerAvailable.current && (keyPressed.Q || keyPressed.q)) {
             hammerAvailable.current = false;
             const direction = new THREE.Vector3(0, 0, 1);
             direction.applyQuaternion(new THREE.Quaternion().setFromEuler(rotation.current))
@@ -267,7 +285,7 @@ export default function Character(props: CharacterProps) {
 
             setTimeout(() => {
                 hammerAvailable.current = true;
-            }, ItemCooldown)
+            }, HammerCooldown)
 
             setTimeout(() => {
                 setIsUsingHammer(false);
@@ -276,7 +294,7 @@ export default function Character(props: CharacterProps) {
     }, [keyPressed.Q, keyPressed.q, gameState])
 
     useEffect(() => {
-        if (gameState !== GameState.PREPARE && fistAvailable.current && (keyPressed.E || keyPressed.e)) {
+        if (gameState !== GameState.PREPARE && movable.current && fistAvailable.current && (keyPressed.E || keyPressed.e)) {
             fistAvailable.current = false;
             const direction = new THREE.Vector3(0, 0, 1);
             direction.applyQuaternion(new THREE.Quaternion().setFromEuler(rotation.current))
@@ -286,11 +304,11 @@ export default function Character(props: CharacterProps) {
             let positionZ = position.current[2]
 
             if (Math.abs(direction.x) > 0.0005) {
-                positionX += 2 * direction.x
+                positionX += 2.5 * direction.x
             }
 
             if (Math.abs(direction.z) > 0.0005) {
-                positionZ += 2 * direction.z
+                positionZ += 2.5 * direction.z
             }
 
             itemPosition.current = [positionX, positionY, positionZ];
@@ -303,16 +321,16 @@ export default function Character(props: CharacterProps) {
 
             setTimeout(() => {
                 fistAvailable.current = true;
-            }, ItemCooldown)
+            }, FistCooldown)
 
             setTimeout(() => {
                 setIsUsingFist(false);
-            }, ItemTimer);
+            }, ItemTimer * 0.8);
         }
     }, [keyPressed.E, keyPressed.e, gameState])
 
     const isMoving = () => {
-        if (!movable.current || isUsingHammer || isUsingFist || isStunt.current) return false;
+        if (!movable.current || isUsingHammer || isUsingFist || isStunt.current || isKnocked.current) return false;
         const moveVector = getMovingVector(keyPressed);
         return Math.abs(moveVector.x) > 0.1 || Math.abs(moveVector.z) > 0.1;
     };
@@ -338,6 +356,7 @@ export default function Character(props: CharacterProps) {
         let clip: THREE.AnimationClip = null;
         
         if (isMoving()) {
+            if (isWinner.current) isWinner.current = false;
             if (sitting.current) {
                 api.isTrigger.set(false);
                 api.position.set(position.current[0], 2.5, position.current[2]);
@@ -444,6 +463,8 @@ export default function Character(props: CharacterProps) {
                     clip = actions[getGesture()];
                 } else if (isStunt.current) {
                     clip = actions["Stunned"];
+                } else if (isWinner.current) {
+                    clip = actions["Rumba"];
                 }  else {
                     clip = actions.Idle;
                 }
@@ -558,7 +579,11 @@ export default function Character(props: CharacterProps) {
     }, [props.stream]);
 
     const emojiTexture = useMemo(() => {
-        if (props.currentEmoji && props.currentEmoji.idx >= 0) {
+        if (isWinner.current) {
+            return loader.load(
+                require(`../../../assets/images/emojis/GoldTrophy.png`)
+            );
+        } else if (props.currentEmoji && props.currentEmoji.idx >= 0) {
             return loader.load(
                 require(`../../../assets/images/emojis/${EMOJI_LIST[props.currentEmoji?.idx!]
                     }.png`)
@@ -566,10 +591,9 @@ export default function Character(props: CharacterProps) {
         } else {
             return loader.load();
         }
-    }, [props.currentEmoji])
+    }, [props.currentEmoji, isWinner.current])
 
     const [isVideoOpening, setIsVideoOpening] = useState(false);
-    const userInfo = useAppSelector(userSelectors.getUserInfo);
 
     useEffect(() => {
         const interval = setInterval(() => {
