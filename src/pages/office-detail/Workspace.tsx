@@ -28,6 +28,7 @@ import { socketSelector } from "../../stores/socket-slice";
 import { GameState } from "../../types/game-state";
 import { ProxyStatusEnum } from "../../types/http/proxy/ProxyStatus";
 import { OfficeDetailInterface } from "../../types/office";
+import WinnerBox from "./WinnerBox";
 
 export type positionType = {
   x: number;
@@ -81,6 +82,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
   const gameState = useAppSelector(gameSelectors.getGameState);
   const socket = useAppSelector(socketSelector.getSocket);
   const [message, setMessage] = useState<string | null>(null);
+  const [winnerBoxVisible, setWinnerBoxVisible] = useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -420,12 +422,12 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
         <CharacterForm onClose={() => setAction("")} />
       )}
 
-      {mobile && <button onClick={() => { 
-        setAction(action==="action"?"":"action") 
+      {mobile && <button onClick={() => {
+        setAction(action === "action" ? "" : "action")
       }} className="mobile-gesture-emoji">
         <FaGrin size={20} />
       </button>}
-
+      <WinnerBox name="Trung" onEnd={() => { setWinnerBoxVisible(false) }} visible={winnerBoxVisible} />
       {action === "action" && (
         <InteractionMenu
           onGestureClick={handleGestureClick}
