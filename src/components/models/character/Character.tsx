@@ -119,10 +119,10 @@ export default function Character(props: CharacterProps) {
             }
 
             if (target.name && target.name === "Fist" && target.visible === true) {
-                isKnocked.current = true;
                 if (target.punchDirection) {
                     knockDirection.current = target.punchDirection;
                 }
+                isKnocked.current = true;
                 if (gameStateRef.current === GameState.PLAYING) {
                     setTimeout(() => {
                         api.velocity.set(0, 0, 0);
@@ -419,9 +419,26 @@ export default function Character(props: CharacterProps) {
                 }
             } else if (isKnocked.current) {
                 clip = actions["FallBackward"];
+                api.quaternion.copy(ref.current.quaternion);    
                 const moveX = knockDirection.current.x * 10;
                 const moveZ = knockDirection.current.z * 10;
                 api.velocity.set(moveX, 0, moveZ);
+                rotateQuaternion.current.setFromUnitVectors(
+                    new THREE.Vector3(0, 0, 1),
+                    new THREE.Vector3(-moveX, 0, -moveZ).normalize()
+                );
+                ref.current.quaternion.rotateTowards(
+                    rotateQuaternion.current,
+                    delta * 10
+                );
+                socket.emit("office_member:move", {
+                    xRotation: rotation.current.x,
+                    yRotation: rotation.current.y,
+                    zRotation: rotation.current.z,
+                    xPosition: position.current[0],
+                    yPosition: position.current[1],
+                    zPosition: position.current[2],
+                });
             } else if (!sitting.current) {
                 if (gesturePlaying) {
                     clip = actions[getGesture()];

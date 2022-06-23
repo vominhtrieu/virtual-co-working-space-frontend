@@ -201,7 +201,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     }
 
     const shouldUpdate = () => {
-        if (isKnocked.current || isStunt.current) return false;
+        if (isStunt.current) return false;
         return (
             Math.sqrt(
                 Math.pow(position.current[0] - updatedPosition.current[0], 2) +
@@ -230,7 +230,11 @@ export default function MemberCharacter(props: MemberCharacterProps) {
                 if (gesturePlaying) {
                     setGesturePlaying(false);
                 }
-                clip = actions.Walking;
+                if (isKnocked.current) {
+                    clip = actions["FallBackward"];
+                } else {
+                    clip = actions.Walking;
+                }
 
                 const newDirection = new THREE.Vector3(
                     updatedPosition.current[0] - position.current[0],
@@ -256,13 +260,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
             }
         } else {
             api.velocity.set(0, 0, 0);
-            if (isKnocked.current) {
-                clip = actions["FallBackward"];
-                const moveX = knockDirection.current.x * 10;
-                const moveZ = knockDirection.current.z * 10;
-                api.velocity.set(moveX, 0, moveZ);
-                updatedPosition.current = position.current;
-            } else if (gesturePlaying) {
+            if (gesturePlaying) {
                 clip = actions[getGesture(currentGesture.idx)];
             } else if (isStunt.current) {
                 clip = actions["Stunned"];
