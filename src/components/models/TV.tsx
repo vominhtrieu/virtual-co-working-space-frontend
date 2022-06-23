@@ -22,6 +22,7 @@ export default function Model(props) {
   const [callerId, setCallerId] = useState("");
   const officeId = match?.params.id;
   const id = useMemo(() => v4(), []);
+  const sharing = useRef(false);
 
   const myPeer = useMemo(
     () => {
@@ -38,56 +39,69 @@ export default function Model(props) {
 
   useEffect(() => {
     socket.on("calling:share-screen", (data) => {
-      if (data.callerId !== callerId) {
-        setTimeout(() => {
-          navigator.mediaDevices.getUserMedia({
-            audio: {
-              width: 256,
-              height: 256,
-            },
-            video: false,
-          }).then((stream: MediaStream) => {
-            const call = myPeer.call(data.callerId, stream);
-            console.log("hiii")
-            call.on("error", (err) => {
-              console.log(err)
-            })
-            call.on("stream", (stream) => {
-              setStream(stream);
-              console.log("hiiiii")
-            })
-            call.on("close", () => "Closed")
+      sharing.current = false;
+      setTimeout(() => {
+        navigator.mediaDevices.getUserMedia({
+          audio: {
+            width: 256,
+            height: 256,
+          },
+          video: false,
+        }).then((stream: MediaStream) => {
+          const call = myPeer.call(data.callerId, stream);
+          call.on("stream", (stream) => {
+            setStream(stream);
           })
-        }, 1000)
-      }
+          call.on("close", () => "Closed")
+        })
+      }, 1000)
     })
     return () => {
       socket.removeAllListeners("calling:share-screen");
     }
   }, [socket, myPeer, callerId]);
 
+  useEffect(() => {
+    myPeer.on("call", (call) => {
+      if (sharing.current) {
+        return;
+      }
+      navigator.mediaDevices.getUserMedia({
+        audio: {
+          width: 256,
+          height: 256,
+        },
+        video: false,
+      }).then((stream: MediaStream) => {
+        call.answer(stream);
+        call.on("stream", (stream) => {
+          setStream(stream);
+        })
+      });
+    });
+  })
+
   const shareScreen = () => {
     if (props.action === "config")
       return;
-    navigator.mediaDevices.getUserMedia({
+    navigator.mediaDevices.getDisplayMedia({
       video: {
-        width: 720,
-        height: 480,
+        width: 1280,
+        height: 720,
       },
       audio: false,
     }).then((stream: MediaStream) => {
       setStream(stream);
+      sharing.current = true;
       socket.emit("calling:share-screen", {
         officeId: +(officeId + ""),
         callerId: myPeer.id,
       })
       myPeer.on("call", (call) => {
-        call.answer(stream);
-        call.on("error", (err) => {
-          console.log(err)
+        const c = myPeer.call(call.peer, stream);
+        c.on("stream", (stream) => {
+
         })
-        call.on("stream", (stream) => {})
-        call.on("close", () => "Closed")
       });
     });
   }
