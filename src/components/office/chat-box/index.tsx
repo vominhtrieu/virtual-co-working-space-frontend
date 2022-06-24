@@ -3,6 +3,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FaGrin, FaPaperPlane } from "react-icons/fa";
 import { v4 as uuidv4 } from "uuid";
+import { getConversation } from "../../../services/api/conversations/get-conversation";
 import GetMessagesProxy from "../../../services/proxy/conversations/get-messages";
 import { useAppSelector } from "../../../stores";
 import { userSelectors } from "../../../stores/auth-slice";
@@ -32,6 +33,8 @@ const ChatBox = (props: ChatBoxProps) => {
   const [isShowUpdateForm, setIsShowUpdateForm] = useState(false);
   const [isShowAddMemberForm, setIsShowAddMemberForm] = useState(false);
   const [currentCursor, setCurrentCursor] = useState(1);
+  const [conversationInfo, setConversationInfo] = useState<any>({})
+  const [countGetConversation, setCountGetConversation] = useState(1)
 
   const scrollRef = useRef<any>(null);
   const emojiBoxRef = useRef<any>(null);
@@ -40,6 +43,14 @@ const ChatBox = (props: ChatBoxProps) => {
   const userInfo = useAppSelector(userSelectors.getUserInfo);
 
   const { t } = useTranslation();
+
+  useEffect(() => {
+    getConversation({ id: conversationId }).then(res => {
+      if (res.code !== 200) return;
+
+      setConversationInfo(res?.data?.conversation)
+    })
+  }, [conversationId, countGetConversation])
 
   useEffect(() => {
     GetMessagesProxy({ id: conversationId })
@@ -71,20 +82,20 @@ const ChatBox = (props: ChatBoxProps) => {
                 senderId: mess?.senderId,
                 reader: mess?.readers
                   ? mess?.readers.map((r) => {
-                      return {
-                        id: r.readerId,
-                        name:
-                          officeDetail.officeMembers.find(
-                            (m) => m.member.id === r.readerId
-                          )?.member.name ?? "Tên",
+                    return {
+                      id: r.readerId,
+                      name:
+                        officeDetail.officeMembers.find(
+                          (m) => m.member.id === r.readerId
+                        )?.member.name ?? "Tên",
 
-                        avatar:
-                          officeDetail.officeMembers.find(
-                            (m) => m.member.id === r.readerId
-                          )?.member.avatar ??
-                          "https://static.vecteezy.com/system/resources/thumbnails/003/337/584/small/default-avatar-photo-placeholder-profile-icon-vector.jpg",
-                      };
-                    })
+                      avatar:
+                        officeDetail.officeMembers.find(
+                          (m) => m.member.id === r.readerId
+                        )?.member.avatar ??
+                        "https://static.vecteezy.com/system/resources/thumbnails/003/337/584/small/default-avatar-photo-placeholder-profile-icon-vector.jpg",
+                    };
+                  })
                   : [],
               };
             });
@@ -274,19 +285,7 @@ const ChatBox = (props: ChatBoxProps) => {
 
   useEffect(() => {
     socket.on("conversation:members_added", (value) => {
-      console.log(value);
-      // setConversationList((prev) => {
-      //   return prev.map((item) => {
-      //     if (item.id === value.conversation.id) {
-      //       return {
-      //         ...item,
-      //         ...value.conversation,
-      //       };
-      //     }
-
-      //     return item;
-      //   });
-      // });
+      setCountGetConversation(curr => curr + 1)
     });
 
     return () => {
@@ -327,20 +326,20 @@ const ChatBox = (props: ChatBoxProps) => {
                   senderId: mess?.senderId,
                   reader: mess?.readers
                     ? mess?.readers.map((r) => {
-                        return {
-                          id: r.readerId,
-                          name:
-                            officeDetail.officeMembers.find(
-                              (m) => m.member.id === r.readerId
-                            )?.member.name ?? "Tên",
+                      return {
+                        id: r.readerId,
+                        name:
+                          officeDetail.officeMembers.find(
+                            (m) => m.member.id === r.readerId
+                          )?.member.name ?? "Tên",
 
-                          avatar:
-                            officeDetail.officeMembers.find(
-                              (m) => m.member.id === r.readerId
-                            )?.member.avatar ??
-                            "https://static.vecteezy.com/system/resources/thumbnails/003/337/584/small/default-avatar-photo-placeholder-profile-icon-vector.jpg",
-                        };
-                      })
+                        avatar:
+                          officeDetail.officeMembers.find(
+                            (m) => m.member.id === r.readerId
+                          )?.member.avatar ??
+                          "https://static.vecteezy.com/system/resources/thumbnails/003/337/584/small/default-avatar-photo-placeholder-profile-icon-vector.jpg",
+                      };
+                    })
                     : [],
                 };
               });
@@ -452,6 +451,7 @@ const ChatBox = (props: ChatBoxProps) => {
         <UpdateConversationForm
           onClose={() => setIsShowUpdateForm(false)}
           onSubmit={handleUpdateConversation}
+          conversationName={conversationName}
         />
       )}
 
@@ -460,7 +460,9 @@ const ChatBox = (props: ChatBoxProps) => {
           onClose={() => setIsShowAddMemberForm(false)}
           onSubmit={handleAddMemberConversation}
           memberList={officeDetail.officeMembers.filter((item) => {
-            return item.member.id !== userInfo.id;
+            return conversationInfo?.members?.findIndex(member => {
+              return member?.user?.id === item?.member?.id
+            }) < 0;
           })}
         />
       )}

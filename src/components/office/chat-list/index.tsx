@@ -19,6 +19,7 @@ const ChatList = (props: ChatListProps) => {
       name: string;
       type: string;
       lastMess?: string;
+      avatarUrl?: string;
     }[]
   >([]);
 
@@ -37,11 +38,14 @@ const ChatList = (props: ChatListProps) => {
         if (res.code === 200) {
           setConversationList((curr) => {
             const addLastMess = curr.map((conversation) => {
+              const lastMess = res?.data?.conversations.find(
+                (con) => con?.conversation?.id === conversation?.id
+              )?.conversation?.latestMessage;
+
               return {
                 ...conversation,
-                lastMess: res?.data?.conversations.find(
-                  (con) => con?.conversation?.id === conversation?.id
-                )?.conversation?.latestMessage?.content,
+                lastMess: lastMess?.content,
+                avatarUrl: officeDetail.officeMembers.find(item => item.member.id === lastMess?.senderId)?.member.avatar,
               };
             });
 
@@ -52,7 +56,7 @@ const ChatList = (props: ChatListProps) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [officeDetail.id]);
+  }, [officeDetail?.id]);
 
   const handleCreateConversation = (values) => {
     socket.emit("conversation:create", {
@@ -104,6 +108,7 @@ const ChatList = (props: ChatListProps) => {
               conversationId={conversation.id}
               name={conversation.name ?? "Tên cuộc trò chuyện"}
               lastMess={conversation?.lastMess ?? ""}
+              avatarUrl={conversation?.avatarUrl ?? "https://via.placeholder.com/150"}
               isOnline
             />
           );

@@ -32,7 +32,7 @@ const ChatItem = (props: ChatItemProps) => {
         <div className="chat-item__avatar">
           <img
             className="chat-item__image"
-            src={avatarUrl ?? "https://via.placeholder.com/150"}
+            src={avatarUrl}
             alt="avatar"
           />
           <span className={`chat-item__online ${isOnline ? "onl" : "off"}`} />
