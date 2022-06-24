@@ -57,7 +57,6 @@ function AuthenticatedRoutes() {
   })
     .then((currentToken) => {
       if (currentToken) {
-        console.log(currentToken);
         SubcribeProxy({ pushToken: currentToken, device: "web" })
           .then((res) => {
             if (res.status === ProxyStatusEnum.FAIL) {
