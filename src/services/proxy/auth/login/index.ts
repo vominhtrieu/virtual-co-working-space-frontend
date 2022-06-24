@@ -43,7 +43,6 @@ const LoginProxy = async (
   }
 
   const loginRespTransformed = loginTransform(res?.data);
-  console.log(loginRespTransformed);
   return {
     status: ProxyStatusEnum.SUCCESS,
     data: loginRespTransformed,

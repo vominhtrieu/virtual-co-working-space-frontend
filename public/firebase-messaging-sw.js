@@ -16,7 +16,6 @@ firebase.initializeApp({
 // Initialize Firebase Cloud Messaging and get a reference to the service
 const messaging = firebase.messaging();
 messaging.onBackgroundMessage(function (payload) {
-  console.log("Received background message ", payload);
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
       body: payload.notification.body,
