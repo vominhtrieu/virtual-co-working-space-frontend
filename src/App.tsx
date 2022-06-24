@@ -49,9 +49,9 @@ import SubcribeProxy from "./services/proxy/notification/subcribe";
 
 function AuthenticatedRoutes() {
   const dispatch = useAppDispatch();
-  initializeApp(firebaseConfig);
 
   useEffect(() => {
+    initializeApp(firebaseConfig);
     const messaging: Messaging = getMessaging();
     getToken(messaging, {
       vapidKey:
