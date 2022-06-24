@@ -170,7 +170,7 @@ const Home = () => {
                 <div className="team__item-student-id">18120615</div>
               </div>
             </a>
-            <a href="https://www.facebook.com/profile.php?id=100005642647089" target="_blank" rel="noreferrer">
+            <a href="https://www.facebook.com/nh.trung227" target="_blank" rel="noreferrer">
               <div className="team__item">
                 <img src="https://i.imgur.com/mw5hgaO.jpg" alt="" className="team__item-avt" />
                 <div className="team__item-name">Nguyễn Hoàng Trung</div>
