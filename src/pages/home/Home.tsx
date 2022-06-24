@@ -158,21 +158,21 @@ const Home = () => {
             </a>
             <a href="https://www.facebook.com/tricua2000" target="_blank" rel="noreferrer">
               <div className="team__item">
-                <img src="https://scontent.fsgn13-2.fna.fbcdn.net/v/t1.6435-9/35817922_2082528495336145_534863839422840832_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=174925&_nc_ohc=2TgyK1Qw_E8AX8hRhdw&_nc_ht=scontent.fsgn13-2.fna&oh=00_AT_4GVyHldTYGyxZcI42DmKJJxVKOzFab-jZdRveMz9QUA&oe=62D899B1" alt="" className="team__item-avt" />
+                <img src="https://i.imgur.com/HOrOyWz.jpeg" alt="" className="team__item-avt" />
                 <div className="team__item-name">Nguyễn Đức Minh Trí </div>
                 <div className="team__item-student-id">18120612</div>
               </div>
             </a>
             <a href="https://www.facebook.com/trieu.vm" target="_blank" rel="noreferrer">
               <div className="team__item">
-                <img src="https://ca.slack-edge.com/T03ANC0U03Y-U03AV1SJE90-a6e100f4f72d-512" alt="" className="team__item-avt" />
+                <img src="https://media-exp2.licdn.com/dms/image/C5603AQFrP-X0npnzng/profile-displayphoto-shrink_800_800/0/1648476924297?e=1661385600&v=beta&t=dRs8SnUMAAeHUvQ0AbjlZsgY94D4gzRXGniW_wESfIw" alt="" className="team__item-avt" />
                 <div className="team__item-name">Võ Minh Triều</div>
                 <div className="team__item-student-id">18120615</div>
               </div>
             </a>
             <a href="https://www.facebook.com/profile.php?id=100005642647089" target="_blank" rel="noreferrer">
               <div className="team__item">
-                <img src={nhtImg} alt="" className="team__item-avt" />
+                <img src="https://i.imgur.com/mw5hgaO.jpg" alt="" className="team__item-avt" />
                 <div className="team__item-name">Nguyễn Hoàng Trung</div>
                 <div className="team__item-student-id">18120623</div>
               </div>
