@@ -8,6 +8,6 @@ export async function changePassword(body:BodyInterface) {
     URL,
     body
   );
-  console.log(response.data);
+
   return response.data;
 }

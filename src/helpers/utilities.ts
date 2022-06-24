@@ -1,3 +1,4 @@
+import { ObjectMap, useGraph } from '@react-three/fiber';
 import * as THREE from 'three'
 import {useGLTF} from "@react-three/drei";
 import {GLTF} from "three-stdlib/loaders/GLTFLoader";
@@ -24,6 +25,33 @@ export type GLTFResult = GLTF & {
 
 export function useCustomGLTF(path: string): GLTFResult {
     const result = useGLTF(path) as GLTFResult;
+    const colors = new Uint8Array(2);
+
+    for (let c = 0; c <= colors.length; c++) {
+        colors[c] = (c / colors.length) * 256;
+    }
+
+    const gradientMap = new THREE.DataTexture(colors, colors.length, 1, THREE.RedFormat);
+    gradientMap.needsUpdate = true;
+
+    if (result.materials) {
+        for (let key in result.materials) {
+            const currentMaterial = result.materials[key];
+
+            const material = new THREE.MeshToonMaterial({
+                color: currentMaterial.color,
+                gradientMap: gradientMap,
+                map: currentMaterial.map,
+            });
+
+            result.materials[key] = material;
+        }
+    }
+    return result;
+}
+
+export function useCustomGraph(object: THREE.Object3D): ObjectMap {
+    const result = useGraph(object);
     const colors = new Uint8Array(2);
 
     for (let c = 0; c <= colors.length; c++) {

@@ -5,6 +5,5 @@ const URL ="/notifications/subscribe";
 
 export async function subscribe(body: BodyInterface) {
     const response = await HttpClient.post<ApiResponseInterface>(URL, body);
-    console.log(response.data);
     return response.data;
 }

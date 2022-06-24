@@ -42,11 +42,11 @@ export default function Model(props) {
       sharing.current = false;
       setTimeout(() => {
         navigator.mediaDevices.getUserMedia({
-          audio: {
-            width: 256,
-            height: 256,
+          video: {
+            width: 1,
+            height: 1,
           },
-          video: false,
+          audio: false,
         }).then((stream: MediaStream) => {
           const call = myPeer.call(data.callerId, stream);
           call.on("stream", (stream) => {
@@ -67,11 +67,11 @@ export default function Model(props) {
         return;
       }
       navigator.mediaDevices.getUserMedia({
-        audio: {
-          width: 256,
-          height: 256,
+        video: {
+          width: 1,
+          height: 1,
         },
-        video: false,
+        audio: false,
       }).then((stream: MediaStream) => {
         call.answer(stream);
         call.on("stream", (stream) => {

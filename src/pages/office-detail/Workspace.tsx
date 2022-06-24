@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaGrin } from "react-icons/fa";
 import { useSelector } from "react-redux";
@@ -80,6 +80,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
 
   const userInfo = useAppSelector(userSelectors.getUserInfo);
   const gameState = useAppSelector(gameSelectors.getGameState);
+  const isWinner = useAppSelector(gameSelectors.getIsWinner);
   const socket = useAppSelector(socketSelector.getSocket);
   const [message, setMessage] = useState<string | null>(null);
   const [winnerBoxVisible, setWinnerBoxVisible] = useState(false);
@@ -87,6 +88,8 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
   const dispatch = useAppDispatch();
 
   const { t } = useTranslation();
+
+  const gameWinner = useRef<string>("");
 
   const handleObject3dDragged = useCallback(
     (position, rotation) => {
@@ -334,10 +337,30 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
   }, [socket]);
 
   useEffect(() => {
+    socket.on("action", (message) => {
+      if (message.action === "win") {
+        const winnerId = message.userId;
+        const winner = officeDetail?.officeMembers.find((member) => member.member.id === winnerId);
+        if (winner) {
+          gameWinner.current = winner.member.name;
+          setWinnerBoxVisible(true);
+        }
+      }
+    })
+  })
+
+  useEffect(() => {
     if (gameState !== GameState.NOT_PLAYING) {
       dispatch(setPlayerLeft(onlineMembers.length));
     }
   }, [gameState])
+
+  useEffect(() => {
+    if (isWinner) {
+      gameWinner.current = userInfo.name;
+      setWinnerBoxVisible(true);
+    }
+  }, [isWinner])
 
   return (
     <>
@@ -427,7 +450,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
       }} className="mobile-gesture-emoji">
         <FaGrin size={20} />
       </button>}
-      <WinnerBox name="Trung" onEnd={() => { setWinnerBoxVisible(false) }} visible={winnerBoxVisible} />
+      <WinnerBox name={gameWinner.current} onEnd={() => { setWinnerBoxVisible(false) }} visible={winnerBoxVisible} />
       {action === "action" && (
         <InteractionMenu
           onGestureClick={handleGestureClick}

@@ -29,18 +29,12 @@ const UserPopup = () => {
   const { t } = useTranslation();
 
   const handleLogout = () => {
-    UnsubcribeProxy({pushToken:getDataLocal("push_token")}) .then((res) => {  
-      if (res.status === ProxyStatusEnum.FAIL) {
-        toastError(t(`error.${res.message}`) ?? "");
-      }
-      // if (res.status === ProxyStatusEnum.SUCCESS) {
-      //   saveDataLocal("push_token",res?.data?.pushToken);
-      // }
-    })
-    .catch((err) => {
+    if (getDataLocal("push_token"))
+      UnsubcribeProxy({pushToken:getDataLocal("push_token")}) .then((res) => {  
 
-      toastError(t(`error.${err.message}`) ?? "Get offices fail");
-    });
+      })
+      .catch((err) => {
+      });
     dispatch(setAuthenticated(false));
     dispatch(setUserInfo({}));
     removeAllDataLocal();

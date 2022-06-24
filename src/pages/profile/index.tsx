@@ -91,7 +91,6 @@ const Profile = () => {
   const handleChangePassword = (values: ChangePasswordFormValuesInterface) => {
     ChangePasswordProxy(values)
       .then((res) => {
-        console.log(res)
         if (res.status === ProxyStatusEnum.FAIL) {
           toastError(t(`error.${res.message}`) ?? 'Change password fail!')
         }

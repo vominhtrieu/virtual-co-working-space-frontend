@@ -13,13 +13,14 @@ export async function getMemberAppearances(officeId: number): Promise<MemberAppe
     }
 
     const returnData = [] as MemberAppearance[];
-    response.data.data.appearances.reduce((acc, curr) => {
-        const idx = returnData.findIndex((value) => value.userId === acc.userId)
+
+    response.data.data.appearances.forEach((appearance) => {
+        const idx = returnData.findIndex((value) => value.userId === appearance.userId);
         if (idx >= 0) {
-            returnData[idx].appearance[acc.key] = acc.value
+            returnData[idx].appearance[appearance.key] = appearance.value
         } else {
             const memberAppearance: MemberAppearance = {
-                userId: acc.userId,
+                userId: appearance.userId,
                 appearance: {
                     hairColor: 0,
                     hairStyle: 0,
@@ -30,11 +31,9 @@ export async function getMemberAppearances(officeId: number): Promise<MemberAppe
                     eyeStyle: 0
                 }
             }
-            memberAppearance.appearance[acc.key] = acc.value;
+            memberAppearance.appearance[appearance.key] = appearance.value;
             returnData.push(memberAppearance);
         }
-
-        return curr;
     })
 
     return returnData;

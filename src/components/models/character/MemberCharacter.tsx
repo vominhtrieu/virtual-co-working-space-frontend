@@ -11,16 +11,19 @@ import {
     GLTFActions,
     GLTFResult,
     useCustomGLTF,
+    useCustomGraph,
 } from "../../../helpers/utilities";
 import { matchPath } from "react-router-dom";
 import { ANIMATION_LIST, EMOJI_LIST } from "../../../helpers/constants";
 import { socketSelector } from "../../../stores/socket-slice";
-import { useAppSelector } from "../../../stores";
+import { useAppDispatch, useAppSelector } from "../../../stores";
 import { AppearanceGroups } from "../../../helpers/constants";
 import { CharacterAppearance } from "../../../types/character";
 import { alphaMap } from "./Character";
 import Hammer from "../toys/Hammer";
 import Fist from "../toys/Fist";
+import { gameSelectors, playerOut } from "../../../stores/game-slice";
+import { GameState } from "../../../types/game-state";
 
 const stepFoot = require("../../../assets/audios/foot-step.mp3");
 
@@ -58,17 +61,18 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     audio.volume = props.volume / 100;
     const socket = useAppSelector(socketSelector.getSocket);
 
-    const { scene, animations, materials } = useCustomGLTF(url) as GLTFResult
-    // const { scene, animations, materials } = useCustomGLTF(
-    //   "/models/Character.glb"
-    // ) as GLTFResult;
+    const { scene, animations } = useCustomGLTF(url) as GLTFResult
     const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
-    const { nodes } = useGraph(clone);
+    const { nodes, materials } = useCustomGraph(clone);
 
     const group = useRef<THREE.Group>();
     const isStunt = useRef(false);
     const isKnocked = useRef(false);
     const knockDirection = useRef<THREE.Vector3>([0, 0, 0]);
+    const gameState = useAppSelector(gameSelectors.getGameState);
+    const gameStateRef = useRef(gameState);
+
+    const dispatch = useAppDispatch();
     const [ref, api] = useCylinder(() => ({
         args: [1, 1, 4, 8],
         type: "Dynamic",
@@ -89,9 +93,15 @@ export default function MemberCharacter(props: MemberCharacterProps) {
                 if (target.punchDirection) {
                     knockDirection.current = target.punchDirection;
                 }
-                setTimeout(() => {
-                    isKnocked.current = false;
-                }, StuntTimer);
+                if (gameStateRef.current === GameState.PLAYING) {
+                    setTimeout(() => {
+                        dispatch(playerOut());
+                    }, StuntTimer);
+                } else {
+                    setTimeout(() => {
+                        isKnocked.current = false;
+                    }, StuntTimer);
+                }
             }
         }
     }));
@@ -123,7 +133,8 @@ export default function MemberCharacter(props: MemberCharacterProps) {
 
     const timeoutId = useRef<NodeJS.Timeout>();
     const sitting = useRef<boolean>(false);
-    const itemPosition = useRef([0, 0, 0])
+    const itemPosition = useRef([0, 0, 0]);
+    const isWinner = useRef(false);
 
     const getGesture = (gestureIdx: number) => {
         if (gestureIdx > 1) {
@@ -132,6 +143,13 @@ export default function MemberCharacter(props: MemberCharacterProps) {
             return ANIMATION_LIST[0];
         }
     };
+
+    useEffect(() => {
+        gameStateRef.current = gameState;
+        if (gameState === GameState.NOT_PLAYING) {
+            isKnocked.current = false;
+        } 
+    }, [gameState])
 
     useEffect(() => {
         if (currentGesture.idx > 1)
@@ -148,6 +166,17 @@ export default function MemberCharacter(props: MemberCharacterProps) {
             setEmojiPlaying(false);
         }, 2000);
     }, [currentEmoji]);
+
+    useEffect(() => {
+        if (emojiPlaying) {
+            if (timeoutId.current) {
+                clearTimeout(timeoutId.current);
+            }
+            timeoutId.current = setTimeout(() => {
+                setEmojiPlaying(false);
+            }, 2000);
+        }
+    }, [emojiPlaying]);
 
     useEffect(() => {
         const unsubPosition = api.position.subscribe((v) => {
@@ -177,7 +206,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         if (isUsingFist) {
             setTimeout(() => {
                 setIsUsingFist(false);
-            }, itemTimer)
+            }, itemTimer * 0.8)
         }
     }, [isUsingFist])
 
@@ -190,11 +219,11 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         let positionZ = position.current[2]
 
         if (Math.abs(direction.x) > 0.0005) {
-            positionX += 2 * direction.x
+            positionX += 2.5 * direction.x
         }
 
         if (Math.abs(direction.z) > 0.0005) {
-            positionZ += 2 * direction.z
+            positionZ += 2.5 * direction.z
         }
 
         itemPosition.current = [positionX, positionY, positionZ];
@@ -202,11 +231,16 @@ export default function MemberCharacter(props: MemberCharacterProps) {
 
     const shouldUpdate = () => {
         if (isStunt.current) return false;
+        const positionDiff = Math.sqrt(
+            Math.pow(position.current[0] - updatedPosition.current[0], 2) +
+            Math.pow(position.current[2] - updatedPosition.current[2], 2)
+        );
+        const rotationDiff = Math.sqrt(
+            Math.pow(rotation.current[0] - updatedRotation.current[0], 2) +
+            Math.pow(rotation.current[2] - updatedRotation.current[2], 2)
+        );
         return (
-            Math.sqrt(
-                Math.pow(position.current[0] - updatedPosition.current[0], 2) +
-                Math.pow(position.current[2] - updatedPosition.current[2], 2)
-            ) > 0.1
+            positionDiff >= 0.1 || rotationDiff >= 0.05
         );
     };
 
@@ -219,6 +253,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
 
         //update from remote position
         if (shouldUpdate()) {
+            if (isWinner.current) isWinner.current = false;
             if (sitting.current) {
                 api.position.set(updatedPosition.current[0], updatedPosition.current[1], updatedPosition.current[2])
                 api.rotation.set(updatedRotation.current._x, updatedRotation.current._y, updatedRotation.current._z)
@@ -232,6 +267,10 @@ export default function MemberCharacter(props: MemberCharacterProps) {
                 }
                 if (isKnocked.current) {
                     clip = actions["FallBackward"];
+                    if (gameState === GameState.PLAYING) {
+                        clip.clampWhenFinished = true;
+                        clip.loop = THREE.LoopOnce;
+                    }
                 } else {
                     clip = actions.Walking;
                 }
@@ -270,6 +309,9 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         }
         if (sitting.current) {
             clip = actions["Sitting"];
+        }
+        if (isWinner.current) {
+            clip = actions["Rumba"];
         }
         if (clip && clip !== currentClip.current) {
             if (currentClip.current) {
@@ -313,7 +355,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         ref.current.visible = props.visible
     }, [ref, props.visible])
 
-    useSocketEvent(socket, props.memberId, updatedPosition, updatedRotation, setCurrentEmoji, setCurrentGesture, api, sitting, setIsUsingHammer, setIsUsingFist, calculateItemPosition);
+    useSocketEvent(socket, props.memberId, updatedPosition, updatedRotation, setCurrentEmoji, setCurrentGesture, api, sitting, setIsUsingHammer, setIsUsingFist, calculateItemPosition, isWinner);
 
     useEffect(() => {
         let appearance;
@@ -324,20 +366,8 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         }
 
         const hairStyle = `Hair_${appearance.hairStyle + 1}`;
-        // const hairMesh = (
-        //   <skinnedMesh
-        //     geometry={nodes[hairStyle]?.geometry}
-        //     material={materials[hairStyle]}
-        //     skeleton={nodes[hairStyle].skeleton}
-        //   />
-        // );
-        materials[hairStyle].color.setStyle(AppearanceGroups[2].items[appearance.hairColor].hex);
 
-        // if (hair && hairMesh.props.material) {
-        //     hairMesh.props.material.color.setStyle(
-        //     AppearanceGroups[2].items[appearance.hairColor].hex
-        //   );
-        // }
+        materials[hairStyle].color.setStyle(AppearanceGroups[2].items[appearance.hairColor].hex);
 
         setHairStyle(hairStyle);
 
@@ -359,6 +389,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         materials.Shoes.color.setStyle(
             AppearanceGroups[5].items[appearance.shoeColor].hex
         );
+
     }, [props.appearance]);
 
     const texture = useMemo(() => {
@@ -374,15 +405,20 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     }, [props.stream]);
 
     const emojiTexture = useMemo(() => {
-        if (currentEmoji && currentEmoji.idx >= 0) {
+        if (isWinner.current) {
+            setEmojiPlaying(true);
             return loader.load(
-                require(`../../../assets/images/emojis/${EMOJI_LIST[currentEmoji.idx]
+                require(`../../../assets/images/emojis/GoldTrophy.png`)
+            );
+        } else if (currentEmoji && currentEmoji.idx >= 0) {
+            return loader.load(
+                require(`../../../assets/images/emojis/${EMOJI_LIST[props.currentEmoji?.idx!]
                     }.png`)
             );
         } else {
             return loader.load();
         }
-    }, [currentEmoji, loader])
+    }, [currentEmoji, isWinner.current])
 
     const [isVideoOpening, setIsVideoOpening] = useState(false);
 
@@ -475,7 +511,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     );
 }
 
-const useSocketEvent = (socket, memberId, updatedPosition, updatedRotation, setEmoji, setGesture, api, sitting, setIsUsingHammer, setIsUsingFist, calculateItemPosition) => {
+const useSocketEvent = (socket, memberId, updatedPosition, updatedRotation, setEmoji, setGesture, api, sitting, setIsUsingHammer, setIsUsingFist, calculateItemPosition, isWinner) => {
     useEffect(() => {
         socket.on("office_member:moved", (message) => {
             if (message.memberId === memberId) {
@@ -519,6 +555,9 @@ const useSocketEvent = (socket, memberId, updatedPosition, updatedRotation, setE
                         setIsUsingFist(true);
                         break;
                     case "start-game":
+                        break;
+                    case "win":
+                        isWinner.current = true;
                         break;
                     default:
                         console.log("Unknow action");

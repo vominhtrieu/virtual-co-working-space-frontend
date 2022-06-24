@@ -90,7 +90,6 @@ export default function JoinOrCreateOfficeModal({
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
           toastSuccess(t("default.noti.createOfficeSuccess"));
-          console.log(data);
           onInsertOffice(res.data.office);
           onClose();
           return;

@@ -47,43 +47,44 @@ import {
 } from "firebase/messaging";
 import SubcribeProxy from "./services/proxy/notification/subcribe";
 
-console.log("huhu");
-initializeApp(firebaseConfig);
-const messaging: Messaging = getMessaging();
-getToken(messaging, {
-  vapidKey:
-    "BBqJD3eYPE0rCWRvGN56V2_i6Pfe6jjXLn6h6NesHYIkjvwDJQkZUjf2-EROAE1ZL7AXmhTZb0Lkxzq0oz7CbKA",
-})
-  .then((currentToken) => {
-    if (currentToken) {
-      console.log(currentToken);
-      SubcribeProxy({ pushToken: currentToken, device: "web" })
-        .then((res) => {
-          if (res.status === ProxyStatusEnum.FAIL) {
-            return;
-          }
-          if (res.status === ProxyStatusEnum.SUCCESS) {
-            saveDataLocal("push_token", res?.data?.pushToken);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      onMessage(messaging, (payload) => {
-        console.log("Message received. ", payload);
-      });
-    } else {
-      console.log(
-        "No registration token available. Request permission to generate one."
-      );
-    }
-  })
-  .catch((err) => {
-    console.log("An error occurred while retrieving token. ", err);
-  });
-
 function AuthenticatedRoutes() {
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    initializeApp(firebaseConfig);
+    const messaging: Messaging = getMessaging();
+    getToken(messaging, {
+      vapidKey:
+        "BBqJD3eYPE0rCWRvGN56V2_i6Pfe6jjXLn6h6NesHYIkjvwDJQkZUjf2-EROAE1ZL7AXmhTZb0Lkxzq0oz7CbKA",
+    })
+      .then((currentToken) => {
+        if (currentToken) {
+          SubcribeProxy({ pushToken: currentToken, device: "web" })
+            .then((res) => {
+              if (res.status === ProxyStatusEnum.FAIL) {
+                return;
+              }
+              if (res.status === ProxyStatusEnum.SUCCESS) {
+                saveDataLocal("push_token", res?.data?.pushToken);
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+          onMessage(messaging, (payload) => {
+            console.log("Message received. ", payload);
+          });
+        } else {
+          console.log(
+            "No registration token available. Request permission to generate one."
+          );
+        }
+      })
+      .catch((err) => {
+        console.log("An error occurred while retrieving token. ", err);
+      });
+  }, []);
+
   useEffect(() => {
     ProfileProxy()
       .then((res) => {

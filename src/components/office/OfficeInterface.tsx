@@ -35,7 +35,6 @@ export default function OfficeInterface({
 
   useEffect(() => {
     socket.on("action", (message) => {
-      console.log(message);
       if (message.action === "start-game") {
         dispatch(setGameState(GameState.PREPARE));
       }

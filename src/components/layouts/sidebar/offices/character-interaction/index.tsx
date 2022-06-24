@@ -7,7 +7,7 @@ const { TabPane } = Tabs;
 
 const InteractionMenu = (props: InteractionMenuProps) => {
   const { t } = useTranslation();
-  console.log(props.mobile)
+
   return (
     <div className={`interact-menu${props.mobile ? " mobile" : ""}`}>
       <Tabs defaultActiveKey="1">

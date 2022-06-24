@@ -19,7 +19,7 @@ const ForgotTransform = (
 const ForgotProxy = async (
   params: ForgotProxyParams
 ): Promise<ProxyFuncType<ForgotProxyResponseInterface>> => {
-  console.log(params);
+
   const res = await forgot(params);
   console.log(res);
   if (res?.code && res?.code !==200) {

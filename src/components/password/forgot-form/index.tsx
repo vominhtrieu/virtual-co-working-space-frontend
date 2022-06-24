@@ -38,8 +38,8 @@ const ForgotForm= ({ handleForgotSubmit }: FormPropsInterface) => {
 
   return (
     <form className='forgot-form' onSubmit={handleSubmit(onForgotSubmit)}>
-      <h3 className='forgot-form__title'>Forgot Password</h3>
-      <p className='forgot-form__content'> Enter your email to reset password.</p> 
+      <h3 className='forgot-form__title'>{t('pages.forgot.title')}</h3>
+      <p className='forgot-form__content'> {t('pages.forgot.content')}</p> 
       <div className='forgot-form__input-block'>
         <InputText
           type='text'
@@ -53,7 +53,7 @@ const ForgotForm= ({ handleForgotSubmit }: FormPropsInterface) => {
       </div>
       <button type='submit' className='forgot-form__btn' disabled={isLoading}>
       {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
-        Submit
+      {t('pages.forgot.submit')}
       </button>
 
       <div className='register-form__an-account'>
