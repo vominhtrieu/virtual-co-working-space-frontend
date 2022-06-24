@@ -179,6 +179,7 @@ const Home = () => {
             </a>
           </div>
         </div>
+        <div className="license">Bản quyền thuộc về ViSpace Team</div>
       </div>
     </section>
   );
