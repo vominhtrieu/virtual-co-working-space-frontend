@@ -7,7 +7,7 @@ import {
 const URL = "/offices/:id/leave";
 
 export async function leaveOffice(params: LeaveOfficeParamsInterface) {
-  const response = await HttpClient.get<LeaveOfficeApiResponseInterface>(
+  const response = await HttpClient.delete<LeaveOfficeApiResponseInterface>(
     URL.replace(":id", params.id.toString())
   );
 
