@@ -1,0 +1,1 @@
+export const CHARACTER_URL = "https://virtual-space-models.s3.ap-southeast-1.amazonaws.com/Character/Character.glb";

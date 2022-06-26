@@ -23,6 +23,7 @@ import Hammer from "../toys/Hammer";
 import Fist from "../toys/Fist";
 import { gameSelectors, playerOut } from "../../../stores/game-slice";
 import { GameState } from "../../../types/game-state";
+import { CHARACTER_URL } from "./constant";
 
 const stepFoot = require("../../../assets/audios/foot-step.mp3");
 
@@ -40,8 +41,6 @@ type MemberCharacterProps = JSX.IntrinsicElements["group"] & {
 
 let audio = new Audio(stepFoot);
 const MovingSpeed: number = 6;
-const url =
-    'https://virtual-space-models.s3.ap-southeast-1.amazonaws.com/Character/Character.glb'
 
 const defaultAppearance: CharacterAppearance = {
     hairColor: 0,
@@ -60,7 +59,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     audio.volume = props.volume / 100;
     const socket = useAppSelector(socketSelector.getSocket);
 
-    const { scene, animations, materials } = useCustomGLTF(url) as GLTFResult
+    const { scene, animations, materials } = useCustomGLTF(CHARACTER_URL) as GLTFResult
     // const { scene, animations, materials } = useCustomGLTF(
     //   "/models/Character.glb"
     // ) as GLTFResult;
@@ -150,7 +149,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         gameStateRef.current = gameState;
         if (gameState === GameState.NOT_PLAYING) {
             isKnocked.current = false;
-        } 
+        }
     }, [gameState])
 
     useEffect(() => {
@@ -439,11 +438,11 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     return (
         <>
             <Hammer spawnPosition={[itemPosition.current[0], itemPosition.current[1], itemPosition.current[2]]}
-                                spawnRotation={rotation.current.toArray()}
-                                visible={isUsingHammer} />
+                spawnRotation={rotation.current.toArray()}
+                visible={isUsingHammer} />
             <Fist spawnPosition={[itemPosition.current[0], itemPosition.current[1], itemPosition.current[2]]}
-                            spawnRotation={rotation.current.toArray()}
-                            visible={isUsingFist} />
+                spawnRotation={rotation.current.toArray()}
+                visible={isUsingFist} />
             <mesh ref={ref} {...props}>
                 <group ref={group} position={[0, -1, 0]} dispose={null}>
                     <sprite position={[0, 2.6, 0]} visible={emojiPlaying}>

@@ -27,6 +27,7 @@ import { GameState } from "../../../types/game-state";
 import VideoAlphaMap from "../../../VideoAlphaMap.png";
 import Fist from "../toys/Fist";
 import Hammer from "../toys/Hammer";
+import { CHARACTER_URL } from "./constant";
 
 const loader = new THREE.TextureLoader();
 export const alphaMap = loader.load(VideoAlphaMap);
@@ -71,8 +72,6 @@ type KeyProps = {
 };
 
 let audio = new Audio(stepFoot);
-const url =
-    "https://virtual-space-models.s3.ap-southeast-1.amazonaws.com/Character/Character.glb";
 const MovingSpeed: number = 6;
 const ItemTimer: number = 250;
 const StuntTimer: number = 2000;
@@ -85,7 +84,7 @@ export default function Character(props: CharacterProps) {
     audio.volume = props.volume / 100;
     const socket = useAppSelector(socketSelector.getSocket);
 
-    const { scene, animations, materials } = useCustomGLTF(url) as GLTFResult;
+    const { scene, animations, materials } = useCustomGLTF(CHARACTER_URL) as GLTFResult;
     const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
     const { nodes } = useGraph(clone);
     const gameState = useAppSelector(gameSelectors.getGameState);

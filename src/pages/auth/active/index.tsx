@@ -17,12 +17,13 @@ function Active() {
       .then((res) => {
         if (res.status === ProxyStatusEnum.FAIL) {
           toastError(res.message ?? "Active user fail");
+          navigate("/");
           return;
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
           toastSuccess("Active user success");
-          navigate("/");
+          navigate("/auth/login");
           return;
         }
       })
@@ -36,7 +37,7 @@ function Active() {
     handleActive();
   }, []);
 
-  return <Lobby />;
+  return null;
 }
 
 export default Active;
