@@ -112,12 +112,12 @@ function AuthenticatedRoutes() {
       <Route path="/office/:id" element={<Workspace />} />
       <Route path="invites/:token" element={<PublicInvitation />} />
       <Route path="invites/token/:token" element={<PrivateInvitation />} />
-      <Route path="/auth/activate/:token" element={<Active />} />
 
       {/* redirect */}
       <Route path="/auth/login" element={<Navigate to="/" replace />} />
       <Route path="/auth/register" element={<Navigate to="/" replace />} />
       <Route path="/auth/forgot" element={<Navigate to="/" replace />} />
+      <Route path="/auth/activate/:token" element={<Navigate to="/" replace />} />
 
       <Route path="/webgl" element={<CharacterCustomMobile />} />
       <Route path="/webgl/office/:id" element={<WorkspaceMobile />} />
@@ -171,6 +171,7 @@ function UnauthenticatedRoutes() {
       <Route path="/auth/register" element={<Register />} />
       <Route path="/auth/reset/:token" element={<ResetPassword />} />
       <Route path="/webgl" element={<CharacterCustomMobile />} />
+      <Route path="/auth/activate/:token" element={<Active />} />
 
       {/* redirect */}
       <Route path="/" element={<Navigate to="/auth/login" replace />} />
