@@ -9,7 +9,7 @@ import {
 } from "./types";
 
 const UpdateConversationForm = (props: UpdateConversationFormProps) => {
-  const { onClose, onSubmit } = props;
+  const { onClose, onSubmit, conversationName } = props;
 
   const schema = yup.object().shape({
     name: yup.string().required("Name is required"),
@@ -41,7 +41,7 @@ const UpdateConversationForm = (props: UpdateConversationFormProps) => {
     >
       <form onSubmit={handleSubmit(handleUpdateConversationSubmit)}>
         <div className="create-conversation-form__input-block">
-          <InputText name="name" control={control} label="Tên hội thoại" />
+          <InputText name="name" control={control} label="Tên hội thoại" placeholder={conversationName ?? ""} />
         </div>
       </form>
     </Popup>

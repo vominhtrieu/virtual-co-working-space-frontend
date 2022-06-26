@@ -15,7 +15,6 @@ export async function updateOffice(params: UpdateOfficeParamsInterface) {
       description: params.description
     }
   );
-  console.log(params.description);
-  console.log(response.data);
+
   return response.data;
 }

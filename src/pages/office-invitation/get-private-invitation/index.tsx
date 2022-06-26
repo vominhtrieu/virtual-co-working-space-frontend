@@ -11,6 +11,7 @@ import { InvitationInterface } from "./type";
 import { useAppSelector } from "../../../stores";
 import { loadSelectors } from "../../../stores/load-slice";
 import { Spin } from "antd";
+import { useTranslation } from "react-i18next";
 
 function PrivateInvitation() {
   const params = useParams();
@@ -18,43 +19,44 @@ function PrivateInvitation() {
   const navigate = useNavigate();
   const [invitation, setInvitation] = useState<InvitationInterface>();
   const isLoading = useAppSelector(loadSelectors.getIsLoad);
+  const { t } = useTranslation();
 
-  useEffect(()=>{
-     GetPrivateInvitationProxy({id: token})
-        .then((res) => {
-          
-          if (res.status === ProxyStatusEnum.FAIL) {
-            toastError(res?.message??"Invitation fail");
-            navigate("/");
-          }
-  
-          if (res.status === ProxyStatusEnum.SUCCESS) {
-            toastSuccess("Invitation success");
-            setInvitation(res?.data);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => { });
-  },[]);
+  useEffect(() => {
+    GetPrivateInvitationProxy({ id: token })
+      .then((res) => {
+
+        if (res.status === ProxyStatusEnum.FAIL) {
+          toastError(res?.message ?? "Invitation fail");
+          navigate("/");
+        }
+
+        if (res.status === ProxyStatusEnum.SUCCESS) {
+          toastSuccess("Invitation success");
+          setInvitation(res?.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => { });
+  }, []);
 
   const handleAcceptPrivate = () => {
     AcceptPrivateInvitation({
       id: token,
     })
       .then((res) => {
-        
+
         if (res.status === ProxyStatusEnum.FAIL) {
-          toastError(res?.message??"Join office fail");
+          toastError(res?.message ?? "Join office fail");
           navigate("/");
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
           toastSuccess("Join office success");
-          navigate(`/office/${invitation?.invitation?.office?.id??0}`, {
+          navigate(`/office/${invitation?.invitation?.office?.id ?? 0}`, {
             state: {
-              officeId: invitation?.invitation?.office?.id??0,
+              officeId: invitation?.invitation?.office?.id ?? 0,
             },
           });
         }
@@ -64,32 +66,32 @@ function PrivateInvitation() {
       })
       .finally(() => { });
   };
-  
-  
+
+
   return (
     <>
       <section className='public-invitation'>
         <IconLanguages />
-        {invitation?
+        {invitation ?
           <div className="public-invitation__container">
-          <p className='public-invitation__title'>{invitation?.invitation?.inviter?.name} mời bạn tham gia văn phòng {invitation?.invitation?.office?.name}. 
-          Bạn có muốn tham gia không?</p>
-          <div className='public-invitation__group-btn'>
-            <Button
-              type='submit'
-              variant='primary'
-              onClick={handleAcceptPrivate}
-              disabled={isLoading}
-            >
-              {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
-              Đồng ý
-            </Button>
+            <p className='public-invitation__title'>{invitation?.invitation?.inviter?.name} {t("page.office.invitation.inviteJoin")} {invitation?.invitation?.office?.name}.
+              {t("page.office.invitation.wantJoin")}</p>
+            <div className='public-invitation__group-btn'>
+              <Button
+                type='submit'
+                variant='primary'
+                onClick={handleAcceptPrivate}
+                disabled={isLoading}
+              >
+                {isLoading ? <Spin style={{ paddingRight: 5 }} /> : null}
+                {t("default.action.accept")}
+              </Button>
 
-            <Button type='reset' variant='outlined' onClick={() => navigate("/")}>
-              Huỷ
-            </Button>
-          </div>
-        </div>:null}
+              <Button type='reset' variant='outlined' onClick={() => navigate("/")}>
+                {t("default.action.cancel")}
+              </Button>
+            </div>
+          </div> : null}
       </section>
     </>
   );

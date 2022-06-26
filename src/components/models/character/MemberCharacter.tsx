@@ -11,6 +11,7 @@ import {
     GLTFActions,
     GLTFResult,
     useCustomGLTF,
+    useCustomGraph,
 } from "../../../helpers/utilities";
 import { matchPath } from "react-router-dom";
 import { ANIMATION_LIST, EMOJI_LIST } from "../../../helpers/constants";
@@ -59,12 +60,9 @@ export default function MemberCharacter(props: MemberCharacterProps) {
     audio.volume = props.volume / 100;
     const socket = useAppSelector(socketSelector.getSocket);
 
-    const { scene, animations, materials } = useCustomGLTF(CHARACTER_URL) as GLTFResult
-    // const { scene, animations, materials } = useCustomGLTF(
-    //   "/models/Character.glb"
-    // ) as GLTFResult;
+    const { scene, animations } = useCustomGLTF(CHARACTER_URL) as GLTFResult
     const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
-    const { nodes } = useGraph(clone);
+    const { nodes, materials } = useCustomGraph(clone);
 
     const group = useRef<THREE.Group>();
     const isStunt = useRef(false);
@@ -232,11 +230,16 @@ export default function MemberCharacter(props: MemberCharacterProps) {
 
     const shouldUpdate = () => {
         if (isStunt.current) return false;
+        const positionDiff = Math.sqrt(
+            Math.pow(position.current[0] - updatedPosition.current[0], 2) +
+            Math.pow(position.current[2] - updatedPosition.current[2], 2)
+        );
+        const rotationDiff = Math.sqrt(
+            Math.pow(rotation.current[0] - updatedRotation.current[0], 2) +
+            Math.pow(rotation.current[2] - updatedRotation.current[2], 2)
+        );
         return (
-            Math.sqrt(
-                Math.pow(position.current[0] - updatedPosition.current[0], 2) +
-                Math.pow(position.current[2] - updatedPosition.current[2], 2)
-            ) > 0.1
+            positionDiff >= 0.1 || rotationDiff >= 0.05
         );
     };
 
@@ -385,6 +388,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         materials.Shoes.color.setStyle(
             AppearanceGroups[5].items[appearance.shoeColor].hex
         );
+
     }, [props.appearance]);
 
     const texture = useMemo(() => {

@@ -41,7 +41,6 @@ export default function CallingBar() {
             });
 
         peer.on("call", (call) => {
-            console.log(call);
             navigator.mediaDevices
                 .getUserMedia({
                     video: true,

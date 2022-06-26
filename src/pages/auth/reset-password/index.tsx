@@ -29,7 +29,6 @@ function ResetPassword() {
         }
 
         if (res.status === ProxyStatusEnum.SUCCESS) {
-          console.log(res.data);
           toastSuccess("reset password successfully.");
           navigation("/auth/login");
         }

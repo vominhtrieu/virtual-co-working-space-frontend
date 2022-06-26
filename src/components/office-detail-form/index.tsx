@@ -2,7 +2,9 @@ import { Skeleton } from "antd";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaLink, FaLocationArrow } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { toastError, toastSuccess } from "../../helpers/toast";
+import { leaveOffice } from "../../services/api/offices/leave-office";
 import CreateByEmailProxy from "../../services/proxy/office-invitation/create-by-email";
 import DeleteOfficeProxy from "../../services/proxy/offices/delete-office";
 import OfficeDetailProxy from "../../services/proxy/offices/office-detail";
@@ -20,9 +22,8 @@ import {
   CreateInvitationFormValuesInterface,
   EditOfficeDetailFormValuesInterface,
   OfficeDetailFormProps,
-  OfficeDetailInterface,
+  OfficeDetailInterface
 } from "./types";
-import { Navigate, useNavigate } from "react-router-dom";
 
 const OfficeDetailForm = (props: OfficeDetailFormProps) => {
   const [officeDetail, setOfficeDetail] = useState<OfficeDetailInterface>();
@@ -76,7 +77,7 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
           setIsEditing(false);
         }
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   const handleDelete = () => {
@@ -112,12 +113,12 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
         if (res.status === ProxyStatusEnum.SUCCESS) {
           toastSuccess("Create invitation success");
           dispatch(setIsOffice(!isOffice));
-          
+
           onClose();
           setIsCreate(false);
         }
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   const padTo2Digits = (num: number) => {
@@ -239,6 +240,22 @@ const OfficeDetailForm = (props: OfficeDetailFormProps) => {
               >
                 {t("default.action.delete")}
               </Button>
+            </div>
+          )}
+          {!isOwner && (
+            <div className="office-detail-form__group-btn">
+              <Button
+                variant="primary"
+                onClick={() => {
+                  leaveOffice({ id: officeDetail?.id ?? 0 }).then(res => {
+                    if (res.code !== 200) return;
+                    navigate("/lobby")
+                  })
+                }}
+              >
+                {t("default.action.leave")}
+              </Button>
+
             </div>
           )}
         </div>

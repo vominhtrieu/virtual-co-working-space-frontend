@@ -82,7 +82,6 @@ const ChangePasswordForm = (props: ChangePasswordFormProps) => {
       oldPassword: data.oldPassword,
       newPassword: data.newPassword,
     }
-    console.log(formatData)
     onSubmit(formatData)
   }
 
