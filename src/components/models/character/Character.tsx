@@ -218,12 +218,18 @@ export default function Character(props: CharacterProps) {
     useEffect(() => {
         if (props.currentGesture && props.currentGesture.idx >= 0) {
             setGesturePlaying(true);
+            if (isWinner.current) {
+                isWinner.current = false;
+            }
         }
     }, [props.currentGesture]);
 
     useEffect(() => {
         if (props.currentEmoji && props.currentEmoji.idx >= 0) {
             setEmojiPlaying(true);
+            if (isWinner.current) {
+                isWinner.current = false;
+            }
         }
     }, [props.currentEmoji]);
 
