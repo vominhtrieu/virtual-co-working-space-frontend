@@ -32,9 +32,9 @@ const Fist = ({spawnPosition, spawnRotation, visible}) => {
         return unsubRotation;
     }, [])
 
-    useEffect(() => {
-        api.isTrigger.set(!visible);
-    }, [visible])
+    // useEffect(() => {
+    //     api.isTrigger.set(!visible);
+    // }, [visible])
 
     useEffect(() => {
         ref.current.visible = visible;
