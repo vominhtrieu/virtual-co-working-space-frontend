@@ -33,6 +33,10 @@ const Fist = ({spawnPosition, spawnRotation, visible}) => {
     }, [])
 
     useEffect(() => {
+        api.isTrigger.set(!visible);
+    }, [visible])
+
+    useEffect(() => {
         ref.current.visible = visible;
         api.position.set(spawnPosition[0], spawnPosition[1] - 1.5, spawnPosition[2]);
         api.rotation.set(spawnRotation[0], spawnRotation[1], spawnRotation[2]);
