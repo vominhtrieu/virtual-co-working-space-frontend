@@ -10,7 +10,7 @@ export const TranslationViCommon = {
     email: "{{field}} phải là địa chỉ email hợp lệ",
     confirmPassword: "Mật khẩu không trùng khớp.",
     oneUppercase: "{{field}} phải có it nhất 1 ký tự hoa",
-    oneLowecase: "{{field}} phải có it nhất 1 ký tự thường",
+    oneLowercase: "{{field}} phải có it nhất 1 ký tự thường",
     oneNumber: "{{field}} phải có it nhất 1 số",
     oneSpecial: "{{field}} phải có it nhất 1 ký tự đặc biệt",
     password:
