@@ -411,7 +411,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
             );
         } else if (currentEmoji && currentEmoji.idx >= 0) {
             return loader.load(
-                require(`../../../assets/images/emojis/${EMOJI_LIST[props.currentEmoji?.idx!]
+                require(`../../../assets/images/emojis/${EMOJI_LIST[currentEmoji.idx]
                     }.png`)
             );
         } else {
