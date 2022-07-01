@@ -27,6 +27,7 @@ const profileTransform = (
 
 const ProfileProxy = async (): Promise<ProxyFuncType<ProfileProxyResponseInterface>> => {
   const res = await getProfile();
+  console.log(res)
   if (res?.code && res?.code!==200) {
     return {
       status: ProxyStatusEnum.FAIL,

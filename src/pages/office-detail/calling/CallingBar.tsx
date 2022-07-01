@@ -27,7 +27,6 @@ export default function CallingBar({
     const socket = useAppSelector(socketSelector.getSocket);
     const [cameraEnabled, setCameraEnabled] = useState(true);
     const [microphoneEnabled, setMicrophoneEnabled] = useState(true);
-
     const myPeer = useMemo(
         () => {
             const p = new Peer(v4(), {
@@ -45,7 +44,7 @@ export default function CallingBar({
             return p;
         }, [userInfo.id, socket]
     );
-    
+
     const addVideoStream = useCallback(
         (video: HTMLVideoElement, stream: MediaStream) => {
             video.srcObject = stream;
@@ -65,37 +64,43 @@ export default function CallingBar({
     );
 
     useEffect(() => {
-        navigator.mediaDevices
-            .getUserMedia({
-                video: {
-                    width: 360,
-                    height: 360,
-                },
-                audio: true,
-            })
-            .then((stream: any) => {
-                // stream.userId = userInfo.id;
-                setMyStream(stream);
-                const streamMap = {};
+        try {
+            navigator.mediaDevices
+                .getUserMedia({
+                    video: {
+                        width: 360,
+                        height: 360,
+                    },
+                    audio: true,
+                })
+                .then((stream: any) => {
+                    // stream.userId = userInfo.id;
+                    setMyStream(stream);
+                    const streamMap = {};
 
-                myPeer.on("call", (call) => {
-                    call.answer(stream);
-                    call.on("stream", (userVideoStream: any) => {
-                        if (streamMap[userVideoStream.id]) {
-                            return;
-                        }
-                        streamMap[userVideoStream.id] = true;
-                        setOtherStreams((streams) => {
-                            const temp = { ...streams };
-                            temp[call.metadata.userId] = userVideoStream;
-                            return temp;
-                        })
+                    myPeer.on("call", (call) => {
+                        call.answer(stream);
+                        call.on("stream", (userVideoStream: any) => {
+                            if (streamMap[userVideoStream.id]) {
+                                return;
+                            }
+                            streamMap[userVideoStream.id] = true;
+                            setOtherStreams((streams) => {
+                                const temp = { ...streams };
+                                temp[call.metadata.userId] = userVideoStream;
+                                return temp;
+                            })
+                        });
                     });
+                    if (myVideo.current) {
+                        myVideo.current.srcObject = stream;
+                    }
+                }).catch(err => {
+                    console.log(err)
                 });
-                if (myVideo.current) {
-                    myVideo.current.srcObject = stream;
-                }
-            });
+        } catch (err) {
+            console.log(err);
+        }
     }, [myPeer, params.id]);
 
     useEffect(() => {

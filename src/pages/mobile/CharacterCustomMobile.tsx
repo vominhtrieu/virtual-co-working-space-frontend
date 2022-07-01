@@ -6,10 +6,14 @@ import Box from "../../components/models/Box";
 import CharacterContext from "../../context/CharacterContext";
 import DisplayCharacter from "../../components/models/character/DisplayCharacter";
 import { AppearanceGroups } from "../../helpers/constants";
+import { useSelector } from "react-redux";
+import { useAppSelector } from "../../stores";
+import { userSelectors } from "../../stores/auth-slice";
 
 const CharacterCustomMobile = () => {
   const character = useContext(CharacterContext);
-
+  const userInfo = useAppSelector(userSelectors.getUserInfo);
+  
   return (
     <>
       <Canvas

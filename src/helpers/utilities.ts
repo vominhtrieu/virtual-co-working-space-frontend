@@ -24,6 +24,7 @@ export type GLTFResult = GLTF & {
 }
 
 export function useCustomGLTF(path: string): GLTFResult {
+    console.log(path)
     const result = useGLTF(path) as GLTFResult;
     const colors = new Uint8Array(2);
 

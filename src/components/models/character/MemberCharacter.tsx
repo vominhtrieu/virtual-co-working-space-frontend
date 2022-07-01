@@ -218,7 +218,7 @@ export default function MemberCharacter(props: MemberCharacterProps) {
         let positionZ = position.current[2]
 
         if (Math.abs(direction.x) > 0.0005) {
-            positionX += 2.5 * direction.x
+        positionX += 2.5 * direction.x
         }
 
         if (Math.abs(direction.z) > 0.0005) {

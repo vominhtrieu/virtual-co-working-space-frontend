@@ -10,6 +10,7 @@ import Lobby from "../../lobby";
 function Active() {
   const params = useParams();
   const { token }: any = params;
+  console.log(token)
   const navigate = useNavigate();
 
   const handleActive = () => {

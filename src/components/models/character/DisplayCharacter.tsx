@@ -8,13 +8,14 @@ import {useGLTF, useAnimations} from '@react-three/drei'
 import {GLTFActions, GLTFResult, useCustomGLTF} from "../../../helpers/utilities";
 import {AppearanceGroups} from "../../../helpers/constants";
 import {CharacterAppearance} from "../../../types/character";
+import { CHARACTER_URL } from './constant';
 
 type CharacterProps = JSX.IntrinsicElements['group'] & {
     startPosition: number[],
     appearance: CharacterAppearance,
 }
 
-const url = "https://virtual-space-models.s3.ap-southeast-1.amazonaws.com/Character/Character.gltf";
+const url = CHARACTER_URL;
 
 export default function DisplayCharacter({startPosition, appearance}: CharacterProps) {
     const group = useRef<THREE.Group>()
@@ -23,7 +24,6 @@ export default function DisplayCharacter({startPosition, appearance}: CharacterP
     useEffect(() => {
         actions.Idle?.play();
     }, [actions.Idle]);
-
     let hair: any = null;
     switch (appearance.hairStyle) {
         case 0:
