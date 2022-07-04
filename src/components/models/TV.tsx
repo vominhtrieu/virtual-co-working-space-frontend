@@ -38,6 +38,16 @@ export default function Model(props) {
     }, []);
 
   useEffect(() => {
+    window.addEventListener("keydown", (e) => {
+      if (e.code === "Escape" && props.shareScreenVideoContainer.current && props.shareScreenVideoContainer.current.children.length > 1) {
+        const node = props.shareScreenVideoContainer.current;
+        node.removeChild(node.lastChild);
+        node.style.display = "none";
+      }
+    })
+  }, [])
+
+  useEffect(() => {
     socket.on("calling:share-screen", (data) => {
       sharing.current = false;
       setTimeout(() => {
@@ -126,7 +136,20 @@ export default function Model(props) {
   return (
     <group ref={group} {...props}>
       <mesh geometry={nodes.Cube_1.geometry} material={materials.Border} />
-      <mesh geometry={nodes.Cube_2.geometry} material={material} onDoubleClick={shareScreen} />
+      <mesh geometry={nodes.Cube_2.geometry} material={material} onDoubleClick={shareScreen} onClick={() => {
+        if (!stream || !props.shareScreenVideoContainer.current) {
+          return;
+        }
+        const selfVideo = document.createElement("video");
+        selfVideo.style.width = "100vw";
+        selfVideo.muted = true;
+        selfVideo.srcObject = stream;
+        selfVideo.addEventListener("loadedmetadata", () => {
+          selfVideo.play();
+        });
+        props.shareScreenVideoContainer.current.style.display = "flex";
+        props.shareScreenVideoContainer.current.appendChild(selfVideo);
+      }} />
     </group>
   )
 }

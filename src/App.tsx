@@ -212,6 +212,8 @@ function App() {
 
   const changeAppearance = useCallback(
     (groupId: number, itemIdx: number) => {
+      console.log("Current");
+      console.log(character);
       let newData: CharacterAppearance;
 
       switch (groupId) {
@@ -251,9 +253,12 @@ function App() {
   }, []);
 
   useEffect(() => {
+    console.log(isAuthenticated)
     if (isAuthenticated) {
       getAppearance().then((data) => {
-        setCharacter(data);
+        if (data.hairColor >= 0) {
+          setCharacter(data);
+        }
       });
     }
   }, [isAuthenticated]);

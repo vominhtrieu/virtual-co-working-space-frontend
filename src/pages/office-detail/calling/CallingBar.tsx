@@ -68,8 +68,8 @@ export default function CallingBar({
             navigator.mediaDevices
                 .getUserMedia({
                     video: {
-                        width: 360,
-                        height: 360,
+                        width: 240,
+                        height: 240,
                     },
                     audio: true,
                 })
@@ -99,6 +99,7 @@ export default function CallingBar({
                     console.log(err)
                 });
         } catch (err) {
+            console.log("Calling error");
             console.log(err);
         }
     }, [myPeer, params.id]);

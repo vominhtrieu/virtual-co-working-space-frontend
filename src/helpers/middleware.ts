@@ -52,6 +52,8 @@ const SetupInterceptors = (store) => {
             headers: { "x-refresh-token": `${getData("refresh_token")}` },
           }
         );
+        console.log("Refresh token")
+        console.log(getData("refresh_token"))
 
         if (!refreshTokenResponse || refreshTokenResponse.data.code === 401) {
           store.dispatch(setAuthenticated(false));

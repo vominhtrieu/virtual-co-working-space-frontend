@@ -13,7 +13,7 @@ export default function Office(props) {
 
     return (
         <>
-            <TV scale={[-20,20,20]} rotation={[0,Math.PI,0]} position={[0, 5, 42]} action={props.action} />
+            <TV scale={[-20,20,20]} rotation={[0,Math.PI,0]} position={[0, 5, 42]} action={props.action} shareScreenVideoContainer={props.shareScreenVideoContainer} />
             <primitive scale={[10, 1, 10]} object={scene} />
             <mesh position={[0, 0, -45]} scale={[2, 2, 1]}>
                 <ItemModel url="/models/Wall.glb" />

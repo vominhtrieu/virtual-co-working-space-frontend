@@ -18,9 +18,11 @@ type CharacterProps = JSX.IntrinsicElements['group'] & {
 const url = CHARACTER_URL;
 
 export default function DisplayCharacter({startPosition, appearance}: CharacterProps) {
+    console.log(appearance)
     const group = useRef<THREE.Group>()
     const {nodes, materials, animations} = useCustomGLTF(url) as GLTFResult
     const {actions} = useAnimations<GLTFActions>(animations, group);
+    
     useEffect(() => {
         actions.Idle?.play();
     }, [actions.Idle]);

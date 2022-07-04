@@ -17,6 +17,7 @@ import { userSelectors } from "../../stores/auth-slice";
 import CallingBar from "../../pages/office-detail/calling/CallingBar";
 import { socketSelector } from "../../stores/socket-slice";
 import Outline from "../models/Outline";
+import { FaCross, FaTimes } from "react-icons/fa";
 
 export default function OfficeCanvas({
     setObjectionClickPos,
@@ -67,9 +68,11 @@ export default function OfficeCanvas({
     };
     const socket = useAppSelector(socketSelector.getSocket);
 
+    const shareScreenVideoContainer = useRef(null);
+
     const displayObjects = <>
         {/* <Outline> */}
-        <Office castShadow={true} action={action} />
+        <Office castShadow={true} action={action} shareScreenVideoContainer={shareScreenVideoContainer} />
         {objectList.map((object) => (
             <mesh
                 castShadow={true}
@@ -164,15 +167,37 @@ export default function OfficeCanvas({
         />
     </>
 
-    useEffect(()=>{
+    useEffect(() => {
         socket.on("connect", () => {
             setShowCallingBar(true);
-          });          
+        });
     }, [])
 
     return (
         <>
             {(socket.connected || showCallingBar) && <CallingBar userInfo={userInfo} myStream={myStream} setMyStream={setMyStream} setOtherStreams={setOtherStreams} mobile={mobile} />}
+            <div style={{
+                position: "fixed",
+                display: "none",
+                width: "100vw",
+                height: "100vh",
+                top: 0,
+                left: 0,
+                background: "black",
+                zIndex: 999999999999,
+                alignItems: "center",
+            }} ref={shareScreenVideoContainer}>
+                <button style={{ background: "none", border: "none", zIndex: 9999999999, position: "fixed", top: 20, right: 20, cursor: "pointer" }} onClick={() => {
+                    const node = shareScreenVideoContainer.current;
+                    if (node.children.length > 1) {
+                        node.removeChild(node.lastChild);
+                        node.style.display = "none";
+                    }
+                }}>
+                    <FaTimes style={{ fontSize: 40 }} color="white" />
+                </button>
+            </div>
+
             <Canvas
                 shadows={{ enabled: true, autoUpdate: true }}
                 camera={{ position: [0, 5, 5], rotation: [45, 0, 0] }}

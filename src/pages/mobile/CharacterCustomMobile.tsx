@@ -13,7 +13,7 @@ import { userSelectors } from "../../stores/auth-slice";
 const CharacterCustomMobile = () => {
   const character = useContext(CharacterContext);
   const userInfo = useAppSelector(userSelectors.getUserInfo);
-  
+
   return (
     <>
       <Canvas
@@ -38,7 +38,7 @@ const CharacterCustomMobile = () => {
         <directionalLight shadow={true} position={[0, 10, 10]} rotateX={45} />
         <ambientLight />
         <Suspense fallback={<Box />}>
-          <DisplayCharacter startPosition={[0, -1, 0]} appearance={character} />
+          {character && <DisplayCharacter startPosition={[0, -1, 0]} appearance={character} />}
         </Suspense>
       </Canvas>
       <div
