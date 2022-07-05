@@ -217,9 +217,11 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
   }, [socket, objectList]);
 
   useEffect(() => {
-    socket.emit("office_member:join", {
-      officeId: officeId,
-    });
+    socket.on("connect", () => {
+      socket.emit("office_member:join", {
+        officeId: officeId,
+      });
+    })
   }, [officeId, socket]);
 
   const handleItemInBottomMenuClick = (item: Item) => {
