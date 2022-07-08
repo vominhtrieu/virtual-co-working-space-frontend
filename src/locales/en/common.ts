@@ -39,5 +39,7 @@ export const TranslationEnCommon = {
     send: "Send",
     accept: "Accept",
     leave: "Leave",
+    no: "No",
+    yes: "Yes",
   },
 };

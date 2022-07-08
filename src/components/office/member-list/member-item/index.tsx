@@ -1,15 +1,20 @@
-import { FaWrench } from "react-icons/fa";
+import { FaRegTrashAlt, FaWrench } from "react-icons/fa";
 import { MemberItemProps } from "./types";
 
 const MemberItem = (props: MemberItemProps) => {
-  const { avatarUrl, userName, userId, role, isOnline, onClick } = props;
+  const { avatarUrl, userName, userId, role, isOnline, onClick, onKickMember } =
+    props;
 
   const handleOpenSettingPopup = () => {
     onClick(userId);
   };
 
+  const handleKickMember = () => {
+    onKickMember(userId);
+  };
+
   return (
-    <div className="member-item" onClick={handleOpenSettingPopup}>
+    <div className="member-item">
       <div className="member-item__user-box">
         <div className="member-item__avatar">
           <img
@@ -26,8 +31,13 @@ const MemberItem = (props: MemberItemProps) => {
         </div>
       </div>
 
-      <div className="member-item__action">
-        <FaWrench className="member-item__setting" />
+      <div className="member-item__group-btn">
+        <div className="member-item__action" onClick={handleKickMember}>
+          <FaRegTrashAlt className="member-item__setting" />
+        </div>
+        <div className="member-item__action" onClick={handleOpenSettingPopup}>
+          <FaWrench className="member-item__setting" />
+        </div>
       </div>
     </div>
   );

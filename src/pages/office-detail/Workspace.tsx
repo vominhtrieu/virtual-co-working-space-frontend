@@ -22,7 +22,11 @@ import { OfficeMembersInterface } from "../../services/api/offices/office-detail
 import OfficeDetailProxy from "../../services/proxy/offices/office-detail";
 import { useAppDispatch, useAppSelector } from "../../stores";
 import { userSelectors } from "../../stores/auth-slice";
-import { gameSelectors, playerOut, setPlayerLeft } from "../../stores/game-slice";
+import {
+  gameSelectors,
+  playerOut,
+  setPlayerLeft,
+} from "../../stores/game-slice";
 import { officeSelectors } from "../../stores/office-slice";
 import { socketSelector } from "../../stores/socket-slice";
 import { GameState } from "../../types/game-state";
@@ -40,6 +44,7 @@ interface WorkspaceProps {
 }
 
 const Workspace = ({ mobile = false }: WorkspaceProps) => {
+  const [isRefetchData, setIsRefetchData] = useState(1);
   const [conversationId, setConversationId] = useState<number>(0);
   const [isOwner, setIsOwner] = useState(false);
   const { open } = useSelector((state: any) => state.sidebar);
@@ -221,7 +226,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
       socket.emit("office_member:join", {
         officeId: officeId,
       });
-    })
+    });
   }, [officeId, socket]);
 
   const handleItemInBottomMenuClick = (item: Item) => {
@@ -304,7 +309,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [officeId, userInfo.id, isOffice]);
+  }, [officeId, userInfo.id, isOffice, isRefetchData]);
 
   useEffect(() => {
     getMemberAppearances(officeId).then((data) => {
@@ -318,17 +323,17 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
       setOfficeDetail((curr) => {
         return curr
           ? {
-            ...curr,
-            conversations: curr?.conversations.map((conversation) => {
-              if (conversation.id === value.conversation.id) {
-                return {
-                  ...conversation,
-                  name: value.conversation.name,
-                };
-              }
-              return conversation;
-            }),
-          }
+              ...curr,
+              conversations: curr?.conversations.map((conversation) => {
+                if (conversation.id === value.conversation.id) {
+                  return {
+                    ...conversation,
+                    name: value.conversation.name,
+                  };
+                }
+                return conversation;
+              }),
+            }
           : undefined;
       });
     });
@@ -342,27 +347,29 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
     socket.on("action", (message) => {
       if (message.action === "win") {
         const winnerId = message.userId;
-        const winner = officeDetail?.officeMembers.find((member) => member.member.id === winnerId);
+        const winner = officeDetail?.officeMembers.find(
+          (member) => member.member.id === winnerId
+        );
         if (winner) {
           gameWinner.current = winner.member.name;
           setWinnerBoxVisible(true);
         }
       }
-    })
-  })
+    });
+  });
 
   useEffect(() => {
     if (gameState !== GameState.NOT_PLAYING) {
       dispatch(setPlayerLeft(onlineMembers.length));
     }
-  }, [gameState])
+  }, [gameState]);
 
   useEffect(() => {
     if (isWinner) {
       gameWinner.current = userInfo.name;
       setWinnerBoxVisible(true);
     }
-  }, [isWinner])
+  }, [isWinner]);
 
   return (
     <>
@@ -440,6 +447,7 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
         <MemberList
           onClose={() => setAction("")}
           officeDetail={officeDetail!}
+          onRefetchData={() => setIsRefetchData((curr) => curr + 1)}
         />
       )}
 
@@ -447,12 +455,23 @@ const Workspace = ({ mobile = false }: WorkspaceProps) => {
         <CharacterForm onClose={() => setAction("")} />
       )}
 
-      {mobile && <button onClick={() => {
-        setAction(action === "action" ? "" : "action")
-      }} className="mobile-gesture-emoji">
-        <FaGrin size={20} />
-      </button>}
-      <WinnerBox name={gameWinner.current} onEnd={() => { setWinnerBoxVisible(false) }} visible={winnerBoxVisible} />
+      {mobile && (
+        <button
+          onClick={() => {
+            setAction(action === "action" ? "" : "action");
+          }}
+          className="mobile-gesture-emoji"
+        >
+          <FaGrin size={20} />
+        </button>
+      )}
+      <WinnerBox
+        name={gameWinner.current}
+        onEnd={() => {
+          setWinnerBoxVisible(false);
+        }}
+        visible={winnerBoxVisible}
+      />
       {action === "action" && (
         <InteractionMenu
           onGestureClick={handleGestureClick}

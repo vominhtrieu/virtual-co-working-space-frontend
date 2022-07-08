@@ -27,14 +27,14 @@ export const TranslationEnPages = {
     content: "Enter your email to reset password",
     email: "Email",
     login: "Login",
-    submit: "Submit"
+    submit: "Submit",
   },
   reset: {
     title: "New Password",
     password: "Password",
     confirmPassword: "Password Confirmation",
     login: "Login",
-    submit: "Submit"
+    submit: "Submit",
   },
   profile: {
     name: "Name",
@@ -136,10 +136,11 @@ export const TranslationEnPages = {
     // member list
     memberList: {
       title: "Member List",
-      owner: "Owner",
-      member: "Member",
-      admin: "Admin",
+      OWNER: "Owner",
+      MEMBER: "Member",
+      ADMIN: "Admin",
       changeRole: "Change Role",
+      kickMember: "Kick member",
     },
 
     // edit character

@@ -77,4 +77,5 @@ export const TranslationEnError = {
   user_is_already_a_member_in_office: "user is already a member in office",
   user_is_not_a_member_of_office: "user is not a member of office",
   password_reset_token_expired: "password reset token expired",
+
 };

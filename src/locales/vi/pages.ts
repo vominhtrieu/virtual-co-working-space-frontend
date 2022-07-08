@@ -27,14 +27,14 @@ export const TranslationViPages = {
     content: "Vui lòng nhập email để đặt mật khẩu mới.",
     email: "Email",
     login: "Đăng nhập",
-    submit: "Xác nhận"
+    submit: "Xác nhận",
   },
   reset: {
     title: "Mật khẩu mới",
     password: "Mật khẩu",
     confirmPassword: "Nhập lại mật khẩu",
     login: "Đăng nhập",
-    submit: "Xác nhận"
+    submit: "Xác nhận",
   },
   profile: {
     name: "Tên",
@@ -98,7 +98,7 @@ export const TranslationViPages = {
 
     invitation: {
       wantJoin: "Bạn có muốn tham gia không?",
-      inviteJoin: "mời bạn tham gia văn phòng"
+      inviteJoin: "mời bạn tham gia văn phòng",
     },
 
     // office detail
@@ -136,10 +136,11 @@ export const TranslationViPages = {
     // member list
     memberList: {
       title: "Danh sách thành viên",
-      owner: "Chủ phòng",
-      member: "Thành viên",
-      admin: "Quản trị",
+      OWNER: "Chủ phòng",
+      MEMBER: "Thành viên",
+      ADMIN: "Quản trị",
       changeRole: "Thay đổi vai trò",
+      kickMember: "Đuổi thành viên",
     },
 
     // edit character

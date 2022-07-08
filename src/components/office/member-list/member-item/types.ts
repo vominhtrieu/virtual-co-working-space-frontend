@@ -5,4 +5,5 @@ export interface MemberItemProps {
   userId: number;
   isOnline?: boolean;
   onClick: (userId: number) => void;
+  onKickMember: (memberId: number) => void;
 }

@@ -39,5 +39,7 @@ export const TranslationViCommon = {
     send: "Gửi",
     accept: "Đồng ý",
     leave: "Rời",
+    no: "Không",
+    yes: "Có",
   },
 };

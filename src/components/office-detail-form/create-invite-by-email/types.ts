@@ -8,10 +8,10 @@ export interface FormProps {
 
 export interface FormInputInterface {
   email: string;
-  officeId:number;
+  officeId: number;
 }
 
 export interface FormDataInterface {
   email: string;
-  officeId:number;
+  officeId: number;
 }

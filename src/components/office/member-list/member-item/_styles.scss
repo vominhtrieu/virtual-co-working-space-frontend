@@ -2,13 +2,8 @@
   display: flex;
   justify-content: space-between;
   padding: 1rem;
-  cursor: pointer;
   transition: all 0.3s ease;
   border-radius: 1rem;
-
-  &:hover {
-    background-color: $color-secondary-light;
-  }
 
   &__user-box {
     display: flex;
@@ -67,5 +62,28 @@
   &__setting {
     color: #fff;
     font-size: 1.5rem;
+    cursor: pointer;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    width: max-content;
+    height: max-content;
+
+    &:hover {
+      background-color: $color-secondary-light;
+    }
+  }
+
+  &__warning {
+    color: #fff;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  &__group-btn {
+    display: flex;
+  }
+
+  &__btn {
+    margin-left: 1rem;
   }
 }

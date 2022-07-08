@@ -58,4 +58,8 @@ interface OfficeMembersInterface {
       z: number;
     };
   };
+  roles: {
+    id: 1 | 2 | 3;
+    name: "OWNER" | "ADMIN" | "MEMBER";
+  }[];
 }
