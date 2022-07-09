@@ -27,6 +27,7 @@ export default function CallingBar({
     const socket = useAppSelector(socketSelector.getSocket);
     const [cameraEnabled, setCameraEnabled] = useState(true);
     const [microphoneEnabled, setMicrophoneEnabled] = useState(true);
+    const hotKeyCallback = useRef<(event: KeyboardEvent) => void>();
     const myPeer = useMemo(
         () => {
             const p = new Peer(v4(), {
@@ -62,6 +63,20 @@ export default function CallingBar({
         },
         []
     );
+
+    const toggleMicrophone = useCallback(() => {
+        const vidTrack = myStream?.getAudioTracks();
+        vidTrack.forEach(
+            (track) => (track.enabled = !microphoneEnabled)
+        );
+        setMicrophoneEnabled(!microphoneEnabled);
+    }, [myStream, microphoneEnabled])
+
+    const toggleCamera = useCallback(() => {
+        const vidTrack = myStream?.getVideoTracks();
+        vidTrack.forEach((track) => (track.enabled = !cameraEnabled));
+        setCameraEnabled(!cameraEnabled);
+    }, [myStream, cameraEnabled])
 
     useEffect(() => {
         try {
@@ -138,6 +153,22 @@ export default function CallingBar({
         };
     }, [addVideoStream, myPeer, myStream]);
 
+    useEffect(() => {
+        if (hotKeyCallback) {
+            document.removeEventListener("keydown", hotKeyCallback.current!);
+        }
+        hotKeyCallback.current = (event: KeyboardEvent) => {
+            if (!event.altKey) return;
+            if (event.key === "v" || event.key === "V") {
+                toggleMicrophone();
+            }
+            if (event.key === "c" || event.key === "C") {
+                toggleCamera();
+            }
+        }
+        document.addEventListener("keydown", hotKeyCallback.current)
+    })
+
     return <div className={`video-button-container ${mobile ? "mobile" : ""}`}>
         <button
             className={`video-button ${cameraEnabled ? "active" : ""}`}
@@ -151,13 +182,7 @@ export default function CallingBar({
         </button>
         <button
             className={`video-button ${microphoneEnabled ? "active" : ""}`}
-            onClick={() => {
-                const vidTrack = myStream?.getAudioTracks();
-                vidTrack.forEach(
-                    (track) => (track.enabled = !microphoneEnabled)
-                );
-                setMicrophoneEnabled(!microphoneEnabled);
-            }}
+            onClick={() => toggleMicrophone()}
         >
             <FaMicrophone fontSize={20} />
         </button>
