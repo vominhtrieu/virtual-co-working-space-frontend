@@ -21,19 +21,21 @@ const MemberItem = (props: MemberItemProps) => {
   const userInfo = useAppSelector(userSelectors.getUserInfo);
 
   useEffect(() => {
-    const userMember = officeDetail.officeMembers.find(
-      (member) => member.member.id === userInfo.id
+    const userMember = officeDetail?.officeMembers.find(
+      (member) => member?.member?.id === userInfo?.id
     );
 
-    const memberInfo = officeDetail.officeMembers.find(
-      (member) => member.id === userId
+    const memberInfo = officeDetail?.officeMembers.find(
+      (member) => member?.id === userId
     );
 
     if (!userMember || !memberInfo) return;
 
     if (
-      (userMember?.roles[0].id === 1 || userMember?.roles[0].id === 2) &&
-      memberInfo?.roles[0].id > userMember.roles[0].id
+      (userMember?.roles[userMember?.roles?.length - 1]?.id === 1 ||
+        userMember?.roles[userMember?.roles?.length - 1]?.id === 2) &&
+      memberInfo?.roles[userMember?.roles?.length - 1]?.id >
+        userMember.roles[userMember?.roles?.length - 1]?.id
     ) {
       setIsShowBtn(true);
     }

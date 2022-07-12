@@ -30,7 +30,7 @@ const MemberList = (props: MemberListProps) => {
 
   const handleChangeRole = (role: number) => {
     ChangeRole({
-      officeId: officeDetail.id,
+      officeId: officeDetail?.id,
       memberId: memberSelected,
       roleId: role,
     })
@@ -50,7 +50,7 @@ const MemberList = (props: MemberListProps) => {
   };
 
   const handleKickMember = () => {
-    KickMember({ officeId: officeDetail.id, memberId: memberSelected })
+    KickMember({ officeId: officeDetail?.id, memberId: memberSelected })
       .then((res) => {
         if (res.code !== 200) {
           toastError(t(`error.${res.message}`) ?? "Đuổi thành viên thất bại");
@@ -83,11 +83,15 @@ const MemberList = (props: MemberListProps) => {
       {officeDetail?.officeMembers?.map((member) => {
         return (
           <MemberItem
-            key={member.id}
-            userId={member.id}
+            key={member?.id}
+            userId={member?.id}
             userName={member.member.name}
             avatarUrl={member.member.avatar}
-            role={t(`pages.office.memberList.${member.roles[0].name}`)}
+            role={t(
+              `pages.office.memberList.${
+                member?.roles[member?.roles?.length - 1].name
+              }`
+            )}
             isOnline={member.onlineStatus === "online"}
             onClick={handleOpenSettingPopup}
             onKickMember={handleOpenKickMemberPopup}
