@@ -3,8 +3,6 @@ import { useTranslation } from "react-i18next";
 import { toastError } from "../../../helpers/toast";
 import { ChangeRole } from "../../../services/api/offices/change-role";
 import { KickMember } from "../../../services/api/offices/kick-member";
-import { useAppSelector } from "../../../stores";
-import { userSelectors } from "../../../stores/auth-slice";
 import RightBar from "../../layouts/rightbar";
 import ChangeRoleForm from "./change-role-form";
 import KickMemberForm from "./kick-member-form";
@@ -18,46 +16,16 @@ const MemberList = (props: MemberListProps) => {
   const [isKickMember, setIsKickMember] = useState(false);
   const { t } = useTranslation();
 
-  const userInfo = useAppSelector(userSelectors.getUserInfo);
-
   const handleOpenSettingPopup = (memberId: number) => {
     setMemberSelected(memberId);
 
-    const userMember = officeDetail.officeMembers.find(
-      (member) => member.member.id === userInfo.id
-    );
-
-    const memberInfo = officeDetail.officeMembers.find(
-      (member) => member.member.id === memberId
-    );
-
-    if (!userMember || !memberInfo) return;
-
-    if (
-      (userMember?.roles[0].id === 1 || userMember?.roles[0].id === 2) &&
-      memberInfo?.roles[0].id > userMember.roles[0].id
-    ) {
-      setIsChangeRole(true);
-    }
+    setIsChangeRole(true);
   };
+
   const handleOpenKickMemberPopup = (memberId: number) => {
     setMemberSelected(memberId);
-    const userMember = officeDetail.officeMembers.find(
-      (member) => member.member.id === userInfo.id
-    );
 
-    const memberInfo = officeDetail.officeMembers.find(
-      (member) => member.member.id === memberId
-    );
-
-    if (!userMember || !memberInfo) return;
-
-    if (
-      (userMember?.roles[0].id === 1 || userMember?.roles[0].id === 2) &&
-      memberInfo?.roles[0].id > userMember.roles[0].id
-    ) {
-      setIsKickMember(true);
-    }
+    setIsKickMember(true);
   };
 
   const handleChangeRole = (role: number) => {
@@ -115,14 +83,15 @@ const MemberList = (props: MemberListProps) => {
       {officeDetail?.officeMembers?.map((member) => {
         return (
           <MemberItem
-            key={member.member.id}
-            userId={member.member.id}
+            key={member.id}
+            userId={member.id}
             userName={member.member.name}
             avatarUrl={member.member.avatar}
             role={t(`pages.office.memberList.${member.roles[0].name}`)}
             isOnline={member.onlineStatus === "online"}
             onClick={handleOpenSettingPopup}
             onKickMember={handleOpenKickMemberPopup}
+            officeDetail={officeDetail}
           />
         );
       })}

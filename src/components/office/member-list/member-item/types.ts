@@ -1,3 +1,5 @@
+import { OfficeDetailInterface } from "../../../office-detail-form/types";
+
 export interface MemberItemProps {
   avatarUrl?: string;
   userName: string;
@@ -6,4 +8,5 @@ export interface MemberItemProps {
   isOnline?: boolean;
   onClick: (userId: number) => void;
   onKickMember: (memberId: number) => void;
+  officeDetail: OfficeDetailInterface;
 }
